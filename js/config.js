@@ -6,7 +6,7 @@
    ============================================================ */
 window.CONFIG = {
   nombre: 'Luis Franco Serrano',
-  email: 'lfranco5@xtec.cat',
+  email: '',
 
   // Enlace de la sección Solidaridad
   ong: { nombre: 'Bhai Nepal', url: 'https://bhainepal.com' },
