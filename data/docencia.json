@@ -1,0 +1,42 @@
+{
+  "universitaria": [
+    { "titulo": "Biología Celular" },
+    { "titulo": "Biología Molecular y Genética" },
+    { "titulo": "Microbiología" },
+    { "titulo": "Farmacología" }
+  ],
+  "formacionProfesional": [
+    {
+      "titulo": "Técnico en Cuidados Auxiliares de Enfermería",
+      "icono": "fa-solid fa-user-nurse",
+      "descripcion": "El Técnico en Cuidados Auxiliares de Enfermería (TCAE) proporciona cuidados básicos de enfermería a pacientes, bajo la supervisión de personal de enfermería. Sus funciones principales incluyen la higiene, alimentación, movilización y el apoyo en la administración de tratamientos en centros sanitarios o sociosanitarios."
+    },
+    {
+      "titulo": "Técnico de Atención a Personas en Situación de Dependencia",
+      "icono": "fa-solid fa-hands-holding-child",
+      "descripcion": "El Técnico en Atención a Personas en Situación de Dependencia (TAPSD) se encarga de intervenir de forma directa para cubrir las necesidades físicas, sociales y psicológicas de personas dependientes. Su labor se centra en la asistencia a la autonomía personal, la promoción de la salud y la organización de actividades de ocio, tanto en el domicilio como en instituciones."
+    },
+    {
+      "titulo": "Anatomía Patológica y Citodiagnóstico",
+      "icono": "fa-solid fa-microscope",
+      "descripcion": "El Técnico Superior en Anatomía Patológica y Citodiagnóstico se dedica a obtener, procesar y estudiar muestras biológicas (tejidos y células) para la detección y el diagnóstico de enfermedades. Sus funciones incluyen la preparación de tejidos (histología) y extendidos (citología), la realización de necropsias y la asistencia técnica al médico patólogo en el diagnóstico."
+    }
+  ],
+  "formacionContinuada": [
+    {
+      "titulo": "Necropsias y medicina legal",
+      "icono": "fa-solid fa-scale-balanced",
+      "descripcion": "La necropsia médico-legal es un examen judicial del cadáver para determinar la causa, mecanismo y, crucialmente, la manera legal (homicidio, accidente, etc.) de una muerte sospechosa o violenta. Busca proporcionar evidencia forense rigurosa mediante el examen externo, la disección interna y la toma de muestras toxicológicas y de tejido."
+    },
+    {
+      "titulo": "Primeros auxilios",
+      "icono": "fa-solid fa-kit-medical",
+      "descripcion": "Los primeros auxilios son las atenciones inmediatas y básicas dadas a una persona lesionada o enferma en una emergencia. Buscan mantener la vida y evitar el agravamiento de las lesiones hasta que llegue el personal sanitario especializado."
+    },
+    {
+      "titulo": "Prevención de infecciones nosocomiales",
+      "icono": "fa-solid fa-hands-bubbles",
+      "descripcion": "Prevenir las infecciones hospitalarias es la máxima expresión de cuidado y respeto hacia la vulnerabilidad del paciente, protegiéndolo de complicaciones graves o de la muerte por causas ajenas a su dolencia original. Cada gesto de asepsia es un acto directo que salva vidas, especialmente cuando recordamos que algo tan simple como una correcta higiene de manos puede prevenir hasta el 50% de estas infecciones."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "intro": "Actualmente, mi línea de investigación se centra en la fascinante relación entre la microbiota y las enfermedades metabólicas. A través de proyectos innovadores, busco comprender cómo la composición y función de las comunidades microbianas, especialmente en el intestino, influyen en el desarrollo y la progresión de patologías o inversamente, los cambios que producen determinadas enfermedades en el ecosistema microbiano. Utilizo herramientas avanzadas de proteómica y bioinformática para desentrañar estos complejos mecanismos y buscar posibles vías para el diagnóstico o nuevas estrategias terapéuticas.",
+  "tituloLineas": "Proteínas multifuncionales",
+  "lineas": [
+    { "titulo": "Base de datos de proteínas multifuncionales", "texto": "Durante mi tesis doctoral, conjuntamente con mi grupo de investigación, construimos la primera base de datos de proteínas multifuncionales." },
+    { "titulo": "Relación entre proteínas multifuncionales y patologías humanas", "texto": "Analizamos la relación que tiene la multifuncionalidad de las proteínas con las enfermedades humanas." },
+    { "titulo": "Evolución de las proteínas", "texto": "Aplicamos nuestros conocimientos sobre las proteínas multifuncionales para entender como han evolucionado en el tiempo y entre los diferentes organismos." },
+    { "titulo": "Proteínas multifuncionales y patógenos", "texto": "Investigamos como los microorganismos patógenos utilizan el mimetismo que les proporcionan las proteínas multifuncionales altamente conservadas, para escapar de nuestro sistema inmunológico." }
+  ]
+}

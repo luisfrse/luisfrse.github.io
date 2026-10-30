@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luis Franco Serrano · Investigación, docencia y solidaridad</title>
+  <meta name="description" content="Espacio personal de Luis Franco Serrano, doctor en Inmunología: docencia, investigación científica, divulgación y solidaridad.">
+  <meta property="og:title" content="Luis Franco Serrano">
+  <meta property="og:description" content="Un lugar para compartir docencia, investigación científica y solidaridad.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#223850">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#app">Saltar al contenido</a>
+
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#/inicio"><span class="brand-mark">LF</span><span class="brand-name">Luis Franco Serrano</span></a>
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+      <nav id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="#/inicio" data-r="inicio">Inicio</a></li>
+          <li><a href="#/sobre-mi" data-r="sobre-mi">Sobre mí</a></li>
+          <li class="has-sub">
+            <a href="#/docencia" data-r="docencia">Docencia <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a>
+            <ul class="sub">
+              <li><a href="#/docencia/universitaria">Universitaria</a></li>
+              <li><a href="#/docencia/formacion-profesional">Formación Profesional</a></li>
+              <li><a href="#/docencia/formacion-continuada">Formación Continuada</a></li>
+            </ul>
+          </li>
+          <li><a href="#/aplicaciones" data-r="aplicaciones">Aplicaciones</a></li>
+          <li><a href="#/investigacion" data-r="investigacion">Investigación</a></li>
+          <li><a href="#/divulgacion" data-r="divulgacion">Divulgación</a></li>
+          <li><a href="#/fotografia" data-r="fotografia">Fotografía</a></li>
+          <li><a href="#/solidaridad" data-r="solidaridad">Solidaridad</a></li>
+          <li><a href="#/contacto" data-r="contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div id="footer-social" class="socials"></div>
+      <p class="copy">© <span id="year"></span> Luis Franco Serrano · Investigación | Docencia | Solidaridad | Naturaleza</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
