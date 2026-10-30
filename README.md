@@ -87,3 +87,9 @@ Campos opcionales de cada asignatura, curso o ciclo:
 }
 ```
 Si no hay contenido, la página muestra «Contenido próximamente». Si pones `"enlace"`, la tarjeta va a ese enlace en lugar de a su página.
+
+## Si un cambio de CSS/JS no se ve en la web
+Los archivos `css/style.css`, `js/config.js` y `js/app.js` se piden con un número de versión en `index.html`
+(por ejemplo `js/app.js?v=3`). Si cambias alguno de esos tres archivos y la web sigue mostrando la versión
+vieja, sube el número (`v=4`, `v=5`…) en las tres líneas de `index.html`, haz Commit y se descargarán de nuevo.
+Los cambios en `data/*.json` no lo necesitan.
