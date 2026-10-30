@@ -95,6 +95,7 @@
     const ultimas = Array.isArray(div) ? div.slice(0, 3) : [];
     const accesos = [
       { icono: 'fa-solid fa-chalkboard-user', titulo: 'Docencia', descripcion: 'Universitaria, Formación Profesional y Formación Continuada.', enlace: '#/docencia' },
+      { icono: 'fa-solid fa-laptop-code', titulo: 'Aplicaciones', descripcion: 'Herramientas y aplicaciones propias.', enlace: '#/aplicaciones' },
       { icono: 'fa-solid fa-dna', titulo: 'Investigación', descripcion: 'Líneas actuales y producción científica.', enlace: '#/investigacion' },
       { icono: 'fa-solid fa-microphone-lines', titulo: 'Divulgación', descripcion: 'Artículos, entrevistas y participaciones en medios.', enlace: '#/divulgacion' },
       { icono: 'fa-solid fa-camera-retro', titulo: 'Fotografía', descripcion: 'Imágenes de aficionado, una a una.', enlace: '#/fotografia' },
@@ -148,20 +149,54 @@
       </div>
     </div></section>`;
 
-  pages.docencia = async () => {
+  /* Docencia: cada asignatura/curso tiene su propia página (#/docencia/<bloque>/<id>).
+     El <id> sale del título (sin tildes ni espacios) o de un campo "id" opcional. */
+  const slug = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const idDe = a => a.id || slug(a.titulo);
+  const BLOQUES = [
+    { id: 'universitaria', clave: 'universitaria', titulo: 'Universitaria', lead: 'Profesor en la escuela de Salud de la Universitat Oberta de Catalunya (UOC).' },
+    { id: 'formacion-profesional', clave: 'formacionProfesional', titulo: 'Formación Profesional', lead: 'Coordinador de formación profesional en el instituto público Josep Puig i Cadafalch.' },
+    { id: 'formacion-continuada', clave: 'formacionContinuada', titulo: 'Formación Continuada', lead: '' }
+  ];
+  let extraTitle = '';
+
+  const asignatura = (b, a) => {
+    extraTitle = a.titulo;
+    const parrafos = a.texto ? (Array.isArray(a.texto) ? a.texto : [a.texto]) : [];
+    const temas = Array.isArray(a.temas) ? a.temas : [];
+    const recursos = Array.isArray(a.recursos) ? a.recursos : [];
+    const vacio = !a.descripcion && !parrafos.length && !temas.length && !recursos.length;
+    return `${pageHead(esc(a.titulo), `Docencia · ${esc(b.titulo)}`)}
+      <section class="section"><div class="wrap subject">
+        <a class="back" href="#/docencia/${b.id}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a ${esc(b.titulo)}</a>
+        ${a.descripcion ? `<p class="lead-text reveal">${esc(a.descripcion)}</p>` : ''}
+        ${parrafos.map(p => `<p class="reveal">${esc(p)}</p>`).join('')}
+        ${temas.length ? `<h2 class="reveal">Temario</h2><ul class="topics reveal">${temas.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+        ${recursos.length ? `<h2 class="reveal">Recursos</h2><ul class="resources">${recursos.map(r => `<li class="reveal"><a href="${url(r.enlace)}"${ext(r.enlace)}><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> ${esc(r.titulo || r.enlace)}</a></li>`).join('')}</ul>` : ''}
+        ${vacio ? '<div class="empty">Contenido próximamente.</div>' : ''}
+      </div></section>`;
+  };
+
+  pages.docencia = async (sub, sub2) => {
     const d = await data('docencia');
     if (!d || Array.isArray(d)) return pageHead('Docencia') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
-    const bloque = (id, titulo, lead, lista) => `
-      <div class="teach-block" id="${id}">
-        <span class="kicker">Docencia</span><h2>${titulo}</h2>
-        ${lead ? `<p class="lead-text">${lead}</p>` : ''}
-        ${lista && lista.length ? `<div class="grid">${lista.map(card).join('')}</div>` : '<div class="empty" style="margin-top:24px">Próximamente.</div>'}
+    if (sub2) {
+      const b = BLOQUES.find(x => x.id === sub);
+      const a = b && (d[b.clave] || []).find(x => idDe(x) === sub2);
+      if (a) return asignatura(b, a);
+    }
+    const bloque = b => {
+      const lista = (d[b.clave] || []).map(a => ({ ...a, enlace: a.enlace || `#/docencia/${b.id}/${idDe(a)}` }));
+      return `
+      <div class="teach-block" id="${b.id}">
+        <span class="kicker">Docencia</span><h2>${b.titulo}</h2>
+        ${b.lead ? `<p class="lead-text">${b.lead}</p>` : ''}
+        ${lista.length ? `<div class="grid">${lista.map(card).join('')}</div>` : '<div class="empty" style="margin-top:24px">Próximamente.</div>'}
       </div>`;
+    };
     return `${pageHead('Docencia', 'Formar a futuros profesionales de la salud y del cuidado.')}
       <section class="section"><div class="wrap">
-        ${bloque('universitaria', 'Universitaria', 'Profesor en la escuela de Salud de la Universitat Oberta de Catalunya (UOC).', d.universitaria)}
-        ${bloque('formacion-profesional', 'Formación Profesional', 'Coordinador de formación profesional en el instituto público Josep Puig i Cadafalch.', d.formacionProfesional)}
-        ${bloque('formacion-continuada', 'Formación Continuada', '', d.formacionContinuada)}
+        ${BLOQUES.map(bloque).join('')}
       </div></section>`;
   };
 
@@ -238,9 +273,8 @@
     ${pageHead('Contacto', 'Escríbeme y te responderé lo antes posible.')}
     <section class="section"><div class="wrap"><div class="split">
       <div class="reveal">
-        <h2>Correo electrónico</h2>
-        <div class="contact-line"><span class="ico"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span><a href="mailto:${esc(C.email)}">${esc(C.email)}</a></div>
-        <h3 style="margin-top:32px">También en redes</h3>
+        <h2>Redes sociales</h2>
+        <p class="lead-text">Para cualquier consulta, usa el formulario o escríbeme por mis redes.</p>
         <div class="socials">${socials()}</div>
       </div>
       <form class="form reveal" id="contact" novalidate>
@@ -249,6 +283,7 @@
         <label>Correo electrónico<input name="email" type="email" required autocomplete="email"></label>
         <label>Mensaje<textarea name="mensaje" required></textarea></label>
         <input class="hp" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+        ${C.web3formsKey ? '<div class="h-captcha" data-captcha="true"></div>' : ''}
         <button class="btn btn-primary" type="submit">Enviar mensaje</button>
         <p class="form-msg" id="form-msg" role="status"></p>
       </form>
@@ -319,18 +354,45 @@
   function initContact() {
     const f = $('#contact'); if (!f) return;
     const msg = $('#form-msg');
+    // Web3Forms: el script de su captcha (hCaptcha) se vuelve a cargar cada vez para que pinte la casilla
+    if (C.web3formsKey) {
+      $$('script[data-w3f]').forEach(s => s.remove());
+      const s = document.createElement('script');
+      s.src = 'https://web3forms.com/client/script.js'; s.async = true; s.defer = true; s.dataset.w3f = '1';
+      document.body.appendChild(s);
+    }
     f.addEventListener('submit', async ev => {
       ev.preventDefault();
       const d = Object.fromEntries(new FormData(f));
       if (d.web) return; // anti-spam
       if (!d.nombre || !d.email || !d.mensaje || !/^\S+@\S+\.\S+$/.test(d.email)) { msg.textContent = 'Revisa el nombre, el correo y el mensaje.'; return; }
-      if (C.formEndpoint) {
+      if (C.web3formsKey) {
+        if (!d['h-captcha-response']) { msg.textContent = 'Marca la casilla «No soy un robot» antes de enviar.'; return; }
+        msg.textContent = 'Enviando…';
+        try {
+          const fd = new FormData();
+          fd.append('access_key', C.web3formsKey);
+          fd.append('subject', 'Contacto desde luisfs.com');
+          fd.append('from_name', 'Web luisfs.com');
+          fd.append('name', d.nombre);
+          fd.append('email', d.email);
+          fd.append('message', d.mensaje);
+          fd.append('h-captcha-response', d['h-captcha-response']);
+          const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok || j.success === false) throw new Error(j.message || r.status);
+          f.reset(); if (window.hcaptcha) try { window.hcaptcha.reset(); } catch (_) {}
+          msg.textContent = 'Mensaje enviado. ¡Gracias!';
+        } catch (e) { console.error(e); msg.textContent = 'No se pudo enviar el mensaje. Inténtalo de nuevo más tarde o escríbeme por mis redes.'; }
+      } else if (C.formEndpoint) {
         msg.textContent = 'Enviando…';
         try {
           const r = await fetch(C.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ nombre: d.nombre, email: d.email, mensaje: d.mensaje }) });
           if (!r.ok) throw new Error(r.status);
           f.reset(); msg.textContent = 'Mensaje enviado. ¡Gracias!';
-        } catch (e) { msg.textContent = `No se pudo enviar. Escríbeme directamente a ${C.email}.`; }
+        } catch (e) { msg.textContent = 'No se pudo enviar el mensaje. Inténtalo de nuevo más tarde o escríbeme por mis redes.'; }
+      } else if (!C.email) {
+        msg.textContent = 'El formulario no está disponible por ahora. Escríbeme por mis redes.';
       } else {
         const body = `${d.mensaje}\n\n— ${d.nombre} (${d.email})`;
         location.href = `mailto:${C.email}?subject=${encodeURIComponent('Contacto desde la web')}&body=${encodeURIComponent(body)}`;
@@ -351,7 +413,8 @@
 
   let token = 0;
   async function render() {
-    const [p, sub] = location.hash.replace(/^#\/?/, '').split('/');
+    const [p, sub, sub2] = location.hash.replace(/^#\/?/, '').split('/');
+    extraTitle = '';
     route = pages[p] ? p : 'inicio';
     const my = ++token;
     if (cleanup) { cleanup(); cleanup = null; }
@@ -359,8 +422,9 @@
     $$('#menu a[data-r]').forEach(a => a.classList.toggle('active', a.dataset.r === route));
     document.title = route === 'inicio' ? 'Luis Franco Serrano · Investigación, docencia y solidaridad' : `${TITLES[route]} · Luis Franco Serrano`;
     let html;
-    try { html = await pages[route](); } catch (e) { console.error(e); html = pageHead('Error') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`; }
+    try { html = await pages[route](sub, sub2); } catch (e) { console.error(e); html = pageHead('Error') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`; }
     if (my !== token) return;
+    if (extraTitle) document.title = `${extraTitle} · Docencia · Luis Franco Serrano`;
     app.innerHTML = html;
     setNav();
     observeReveals();

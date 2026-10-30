@@ -71,3 +71,19 @@ crea un formulario en formspree.io y pega su URL en `formEndpoint` (`js/config.j
 ## Probar en local
 Los navegadores bloquean la carga de datos si abres `index.html` con doble clic. Desde esta carpeta:
 `python3 -m http.server 8000` y abre http://localhost:8000
+
+## Páginas de asignatura (Docencia)
+Cada tarjeta de `data/docencia.json` enlaza sola a su propia página (`#/docencia/<bloque>/<id>`).
+El `<id>` sale del título sin tildes ni espacios (p. ej. «Bioquímica y Metabolismo» → `bioquimica-y-metabolismo`).
+Campos opcionales de cada asignatura, curso o ciclo:
+```json
+{
+  "titulo": "Fisiología",
+  "icono": "fa-solid fa-heart-pulse",
+  "descripcion": "Texto breve que sale en la tarjeta y al inicio de la página.",
+  "texto": ["Párrafo 1 de la página.", "Párrafo 2."],
+  "temas": ["Tema 1", "Tema 2"],
+  "recursos": [ { "titulo": "Apuntes en PDF", "enlace": "https://..." } ]
+}
+```
+Si no hay contenido, la página muestra «Contenido próximamente». Si pones `"enlace"`, la tarjeta va a ese enlace en lugar de a su página.

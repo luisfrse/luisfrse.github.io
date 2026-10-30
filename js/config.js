@@ -20,9 +20,16 @@ window.CONFIG = {
     { nombre: 'YouTube',   url: 'https://www.youtube.com/@skyrun21', icono: 'fa-brands fa-youtube' }
   ],
 
-  // Formulario de contacto. Si lo dejas vacío, el botón abre tu programa de correo.
-  // Para recibir los mensajes directamente: crea un formulario gratis en formspree.io
-  // y pega aquí su URL, por ejemplo 'https://formspree.io/f/xxxxxxx'
+  // Formulario de contacto con Web3Forms (recomendado): pega aquí la "Access Key" que te
+  // envían por correo al crear el formulario en web3forms.com. Es pública, no es una contraseña.
+  // Activa además hCaptcha en el panel de Web3Forms. Si lo dejas vacío, se usan las opciones de abajo.
+  web3formsKey: 'b1bea1d6-008d-4ec6-8a87-17f7b3a9ff92',
+
+  // Alternativa: otro servicio de formularios (p. ej. Formspree). Si lo dejas vacío, el botón abre el programa de correo del visitante
+  // y usa el "email" de arriba (que entonces queda visible en el código de la web).
+  // Para recibir los mensajes sin mostrar tu correo: crea un formulario gratis en formspree.io
+  // y pega aquí su URL, por ejemplo 'https://formspree.io/f/xxxxxxx'.
+  // Cuando funcione, puedes dejar vacío el "email" de arriba.
   formEndpoint: '',
 
   // OPCIONAL: gestionar listas desde una hoja de Google Sheets (ver README.md).

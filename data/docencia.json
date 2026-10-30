@@ -1,9 +1,29 @@
 {
   "universitaria": [
-    { "titulo": "Biología Celular" },
-    { "titulo": "Biología Molecular y Genética" },
-    { "titulo": "Microbiología" },
-    { "titulo": "Farmacología" }
+    {
+      "titulo": "Biología Celular"
+    },
+    {
+      "titulo": "Biología Molecular y Genética"
+    },
+    {
+      "titulo": "Microbiología"
+    },
+    {
+      "titulo": "Farmacología"
+    },
+    {
+      "titulo": "Bioquímica y Metabolismo"
+    },
+    {
+      "titulo": "Fisiología"
+    },
+    {
+      "titulo": "Fisiopatología"
+    },
+    {
+      "titulo": "Anatomía"
+    }
   ],
   "formacionProfesional": [
     {

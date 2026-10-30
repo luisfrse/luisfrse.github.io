@@ -192,3 +192,16 @@ a.card{text-decoration:none;color:inherit}
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal,.pills span,.hero-content .eyebrow,.hero h1,.hero .lead,.cta{opacity:1;transform:none}
 }
+
+/* Páginas de asignatura (Docencia) */
+.subject .back{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--sea);text-decoration:none;margin-bottom:28px}
+.subject .back:hover{text-decoration:underline}
+.subject h2{margin-top:40px}
+.subject p{max-width:760px}
+.subject .topics{max-width:760px;margin:16px 0 0;padding-left:1.2em;color:var(--ink-soft)}
+.subject .topics li{margin:.35em 0}
+.subject .resources{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px;max-width:760px}
+.subject .resources a{display:flex;gap:10px;align-items:center;padding:14px 18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;color:inherit;font-weight:600;transition:transform .2s,box-shadow .2s}
+.subject .resources a:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,58,82,.1)}
+.subject .resources i{color:var(--sea)}
+.form .h-captcha{margin:4px 0 12px}
