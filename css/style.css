@@ -205,3 +205,12 @@ a.card{text-decoration:none;color:inherit}
 .subject .resources a:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,58,82,.1)}
 .subject .resources i{color:var(--sea)}
 .form .h-captcha{margin:4px 0 12px}
+
+/* Imágenes fijas: Investigación y Solidaridad */
+.res-intro{display:grid;gap:40px;align-items:start;grid-template-columns:1fr minmax(0,400px)}
+.side-photo{margin:0}
+.side-photo img{width:100%;max-width:432px;height:auto;display:block;border-radius:var(--radius);box-shadow:0 24px 50px rgba(8,24,42,.25)}
+.res-intro:not(:has(.side-photo)){grid-template-columns:1fr}
+.wide-photo{margin:48px 0 0}
+.wide-photo img{width:100%;height:auto;display:block;border-radius:var(--radius);box-shadow:0 24px 50px rgba(8,24,42,.22)}
+@media (max-width:820px){.res-intro{grid-template-columns:1fr;gap:24px}.side-photo img{max-width:420px}}

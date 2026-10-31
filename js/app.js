@@ -213,8 +213,13 @@
     const lineas = inv && inv.lineas ? inv.lineas : [];
     return `${pageHead('Investigación', 'Líneas actuales de investigación y producción científica.')}
       <section class="section"><div class="wrap">
-        <span class="kicker">Líneas actuales</span><h2>En qué estoy trabajando</h2>
-        ${inv ? `<p class="lead-text reveal">${esc(inv.intro)}</p>` : errorBox()}
+        <div class="res-intro">
+          <div>
+            <span class="kicker">Líneas actuales</span><h2>En qué estoy trabajando</h2>
+            ${inv ? `<p class="lead-text reveal">${esc(inv.intro)}</p>` : errorBox()}
+          </div>
+          <figure class="side-photo reveal"><img src="assets/investigacion.jpg" alt="Micrografía en falso color de microorganismos" onerror="this.closest('.side-photo').remove()"></figure>
+        </div>
         ${lineas.length ? `<h2 style="margin-top:48px">${esc(inv.tituloLineas || 'Líneas de trabajo')}</h2><div class="grid">${lineas.map(l => card({ titulo: l.titulo, descripcion: l.texto })).join('')}</div>` : ''}
       </div></section>
       <section class="section alt"><div class="wrap">
@@ -266,6 +271,7 @@
           <div class="card reveal"><div class="ico"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></div>
             <h3>Toda la información, en su web</h3><p>Proyectos, cómo colaborar y novedades de la ONG están en su página oficial.</p></div>
         </div>
+        <figure class="wide-photo reveal"><img loading="lazy" src="assets/solidaridad.jpg" alt="Un grupo de niños y niñas sonriendo y haciendo el signo de la victoria" onerror="this.closest('.wide-photo').remove()"></figure>
       </div></section>`;
   };
 
