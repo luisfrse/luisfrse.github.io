@@ -127,27 +127,24 @@
     </div></section>` : ''}`;
   };
 
-  pages['sobre-mi'] = async () => `
-    ${pageHead('Sobre mí', 'Investigación | Docencia | Solidaridad | Naturaleza')}
+  pages['sobre-mi'] = async () => {
+    const a = await data('sobre-mi');
+    if (!a || Array.isArray(a)) return pageHead('Sobre mí') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
+    const parrafos = Array.isArray(a.parrafos) ? a.parrafos : [];
+    const cifras = Array.isArray(a.cifras) ? a.cifras : [];
+    return `
+    ${pageHead('Sobre mí', esc(a.subtitulo || ''))}
     <section class="section"><div class="wrap">
       <div class="about-grid">
         <div class="portrait-wrap reveal"><img class="portrait" src="assets/foto-perfil.jpg?v=5" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
         <div class="about-text reveal">
-          <h2>Entre la ciencia, la educación y el compromiso social</h2>
-          <p>Soy Luis Franco, y mi vida transcurre entre la ciencia, la educación y el compromiso social.</p>
-          <p>Como Doctor en Inmunología por la UAB, mi pasión es la investigación. Me sumerjo en el mundo de la proteómica para entender mejor sus aplicaciones en la microbiología y la inmunología, una labor que desarrollo desde hace más de 8 años.</p>
-          <p>Pero no creo en el conocimiento si no se comparte. Por eso, mi otra gran vocación es la docencia, a la que he dedicado más de 14 años. Actualmente, tengo el privilegio de formar a futuros profesionales como profesor en la escuela de Salud de la Universitat Oberta de Catalunya (UOC) y como coordinador de formación profesional en el instituto público Josep Puig i Cadafalch.</p>
-          <p>Mi compromiso va más allá del laboratorio y el aula. Soy presidente y socio fundador de la ONG de cooperación internacional Bhai Nepal, un proyecto que me conecta con el mundo de una forma diferente.</p>
-          <p>Y cuando necesito recargar energía, la encuentro en la naturaleza. Soy un apasionado de los deportes de montaña: el senderismo, el alpinismo y la escalada son mi refugio.</p>
+          ${a.titulo ? `<h2>${esc(a.titulo)}</h2>` : ''}
+          ${parrafos.map(p => `<p>${esc(p)}</p>`).join('')}
         </div>
       </div>
-      <div class="stats reveal">
-        <div class="stat"><b>8+</b><span>años de investigación en proteómica</span></div>
-        <div class="stat"><b>14+</b><span>años dedicados a la docencia</span></div>
-        <div class="stat"><b>UAB</b><span>Doctor en Inmunología</span></div>
-        <div class="stat"><b>UOC</b><span>Profesor en la escuela de Salud</span></div>
-      </div>
+      ${cifras.length ? `<div class="stats reveal">${cifras.map(c => `<div class="stat"><b>${esc(c.valor)}</b><span>${esc(c.texto)}</span></div>`).join('')}</div>` : ''}
     </div></section>`;
+  };
 
   /* Docencia: cada asignatura/curso tiene su propia página (#/docencia/<bloque>/<id>).
      El <id> sale del título (sin tildes ni espacios) o de un campo "id" opcional. */
