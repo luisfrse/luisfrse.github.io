@@ -131,7 +131,7 @@
     ${pageHead('Sobre mí', 'Investigación | Docencia | Solidaridad | Naturaleza')}
     <section class="section"><div class="wrap">
       <div class="about-grid">
-        <div class="portrait-wrap reveal"><img class="portrait" src="assets/foto-perfil.jpg" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
+        <div class="portrait-wrap reveal"><img class="portrait" src="assets/foto-perfil.jpg?v=5" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
         <div class="about-text reveal">
           <h2>Entre la ciencia, la educación y el compromiso social</h2>
           <p>Soy Luis Franco, y mi vida transcurre entre la ciencia, la educación y el compromiso social.</p>
