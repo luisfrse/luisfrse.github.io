@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador d'higiene del pacient · Luis Franco Serrano</title>
+<meta name="description" content="Joc per practicar l'ordre dels passos de la higiene del pacient enllitat i de la dutxa amb cadira.">
+<meta name="theme-color" content="#223850">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0d1a2a; --deep:#1c3a5c; --sea:#3b6ea5; --accent:#b08be0; --accent-ink:#5a2d86; --purple:#36005a;
+  --radius:18px;
+  --font-head:'Roboto',system-ui,-apple-system,sans-serif;
+  --font-body:'Lato','Roboto',system-ui,sans-serif;
+  --ok:#2ecc71; --bad:#ef4444;
+  --panel:rgba(255,255,255,.06); --line:rgba(255,255,255,.14); --muted:#b9c6d6;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+html,body{margin:0}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:#fff;font-family:var(--font-body);line-height:1.5;-webkit-font-smoothing:antialiased;background:linear-gradient(160deg,var(--night) 0%,var(--deep) 100%)}
+a{color:var(--accent)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(14px,3vw,32px)}
+.back{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-family:var(--font-head);font-weight:700;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}
+.back:hover,.back:focus-visible{background:rgba(255,255,255,.14)}
+h1{font-family:var(--font-head);font-size:clamp(1rem,2.4vw,1.35rem);margin:0;font-weight:700;text-align:center;flex:1}
+h2{font-family:var(--font-head);margin:0 0 10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:99px;font:700 1rem var(--font-body);border:2px solid transparent;cursor:pointer;background:var(--accent);color:var(--accent-ink);min-height:44px}
+.btn:hover{background:#c4a6ec}
+.btn.ghost{background:transparent;color:#fff;border-color:var(--line)}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.btn:focus-visible,.opt:focus-visible,.pick:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+main{flex:1;width:100%;max-width:1280px;margin:0 auto;padding:0 clamp(14px,3vw,32px) 18px}
+[hidden]{display:none!important}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.muted{color:var(--muted)}
+
+/* inici */
+.intro{max-width:760px;margin:6px auto 20px;text-align:center}
+.intro p{margin:.4em 0;color:var(--muted)}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:980px;margin:0 auto}
+.pick{text-align:left;cursor:pointer;color:#fff;font:inherit;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;transition:transform .2s,background .2s}
+.pick:hover{background:rgba(255,255,255,.12);transform:translateY(-2px)}
+.pick b{display:block;font-family:var(--font-head);font-size:1.3rem;margin-bottom:6px}
+.pick span{display:block;color:var(--muted);font-size:.95rem}
+.pick i{display:inline-block;margin-top:12px;font-style:normal;font-weight:700;color:var(--accent)}
+
+/* joc */
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-bottom:10px}
+.bar .t{font-family:var(--font-head);font-weight:700;font-size:1.15rem;margin-right:auto}
+.stat{color:var(--muted);font-size:.95rem}.stat b{color:#fff;font-variant-numeric:tabular-nums}
+.prog{height:8px;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:12px}
+.prog>div{height:100%;width:0;background:var(--accent);transition:width .3s}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;min-height:30px}
+.chip{font-size:.82rem;padding:4px 12px;border-radius:99px;border:1px solid var(--line);color:var(--muted);transition:background .3s,color .3s,border-color .3s}
+.chip.on{background:rgba(46,204,113,.2);border-color:var(--ok);color:#fff}
+.chip.on::before{content:"✓ "}
+.play{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(14px,2.5vw,28px);align-items:start}
+.scene{background:#dfe6ee;border:3px solid transparent;border-radius:var(--radius);overflow:hidden;aspect-ratio:520/520;width:min(100%,calc(100dvh - 250px));min-width:260px;margin:0 auto;transition:border-color .2s}
+.scene.over{border-color:var(--accent)}
+.scene svg{display:block;width:100%;height:100%}
+.lyr{opacity:0;pointer-events:none;transition:opacity .35s}
+.lyr.on{opacity:1}
+.side h2{font-size:1.2rem}
+.opts{display:grid;gap:10px}
+.opt{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;text-align:left;font:inherit;color:#fff;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;min-height:60px;transition:background .15s,border-color .15s,opacity .15s}
+.opt:hover{background:rgba(255,255,255,.13)}
+.opt.lifting{opacity:.35}
+.opt.bad{border-color:var(--bad);background:rgba(239,68,68,.15);animation:shake .35s;cursor:not-allowed}
+.opt.good{border-color:var(--ok);background:rgba(46,204,113,.2)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.dragghost{position:fixed;left:0;top:0;z-index:50;pointer-events:none;max-width:320px;padding:12px 14px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.fb{min-height:3.2em;margin:12px 2px 6px;font-size:1rem}
+.fb.ok{color:var(--ok)}.fb.no{color:#ff8f8f}
+details{margin-top:6px}
+summary{cursor:pointer;color:var(--muted);padding:6px 0}
+ol.log{margin:6px 0 0;padding-left:1.6em;max-height:220px;overflow:auto;font-size:.92rem;color:var(--muted)}
+ol.log li{margin:3px 0}
+
+/* final */
+.end{max-width:760px;margin:10px auto;text-align:center}
+.stars{font-size:3rem;letter-spacing:.1em;color:#f5b82e;line-height:1.1}
+.end .nums{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:10px 0 16px}
+.end .nums div{color:var(--muted)}.end .nums b{display:block;font-family:var(--font-head);font-size:1.8rem;color:#fff}
+.end ol{text-align:left;max-width:640px;margin:14px auto;color:var(--muted);font-size:.95rem}
+.end .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.note{color:var(--muted);font-size:.85rem;text-align:center;padding:6px clamp(14px,3vw,32px) 18px;max-width:900px;margin:0 auto}
+
+@media (max-width:820px){
+  .play{grid-template-columns:1fr}
+  .scene{position:sticky;top:6px;z-index:5;align-self:start;width:min(100%,40dvh);min-width:0;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="https://luisfs.com/">← luisfs.com</a>
+  <h1>Simulador d'higiene del pacient</h1>
+  <span style="width:110px" aria-hidden="true"></span>
+</header>
+
+<main>
+  <section id="start">
+    <div class="intro">
+      <p style="font-size:1.1rem;color:#fff">Practica l'<b>ordre dels passos</b> de la higiene del pacient.</p>
+      <p>A cada pas apareixen diverses accions: <b>arrossega la correcta cap a l'escena</b> (o fes-hi clic). A la dreta tens el <b>mapa del cos</b>: les zones es pinten a mesura que les renteu. Si t'equivoques, no avances i compta com un error.</p>
+    </div>
+    <div class="picks" id="picks"></div>
+  </section>
+
+  <section id="game" hidden>
+    <div class="bar">
+      <span class="t" id="gTitle"></span>
+      <span class="stat">Pas <b id="gStep">1</b> de <b id="gTotal">1</b></span>
+      <span class="stat">Errors <b id="gErr">0</b></span>
+      <span class="stat">Temps <b id="gTime">0:00</b></span>
+      <button class="btn ghost" id="gExit" type="button" style="min-height:38px;padding:6px 16px">Canvia de procediment</button>
+    </div>
+    <div class="prog" aria-hidden="true"><div id="gProg"></div></div>
+    <div class="chips" id="chips"></div>
+    <div class="play">
+      <div class="scene" id="scene"><svg id="svg" viewBox="0 0 520 520" role="img" aria-label="Escena des de dalt amb el pacient i el mapa del cos"></svg></div>
+      <div class="side">
+        <h2>Quin és el següent pas?</h2>
+        <div class="opts" id="opts"></div>
+        <p class="fb" id="fb" role="status" aria-live="polite"></p>
+        <details open><summary>Passos fets</summary><ol class="log" id="log"></ol></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="end" hidden>
+    <div class="card end">
+      <h2 id="eTitle"></h2>
+      <div class="stars" id="eStars" aria-hidden="true"></div>
+      <div class="nums"><div><b id="eErr">0</b>errors</div><div><b id="eTime">0:00</b>temps</div></div>
+      <p class="muted" id="eMsg"></p>
+      <details><summary>Repassa la seqüència completa</summary><ol id="eList"></ol></details>
+      <div class="actions">
+        <button class="btn" id="eAgain" type="button">Torna-ho a provar</button>
+        <button class="btn ghost" id="eOther" type="button">Triar un altre procediment</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p class="note">Seqüències adaptades de: <a href="https://ioc.xtec.cat/materials/FP/Recursos/fp_cai_c03_/web/fp_cai_c03_htmlindex/WebContent/u1/a2/continguts.html" target="_blank" rel="noopener">IOC, Cures auxiliars d'infermeria (C3)</a> (higiene del pacient enllitat) i <a href="https://aragon.es/documents/d/guest/protocolo-de-aseo-e-higiene-de-los-usuarios-de-centros-del-imserso-pdf" target="_blank" rel="noopener">Protocol d'aseo i higiene de l'IMSERSO</a> (dutxa amb cadira). Material educatiu: confirma sempre l'ordre amb el protocol del teu centre. Les il·lustracions són esquemàtiques.</p>
+
+<!-- DADES: aquí pots editar o afegir passos i procediments (veure instruccions a part) -->
+<script type="application/json" id="dades">
+{
+ "procediments": [
+  {
+   "id": "llit",
+   "escena": "llit",
+   "font": "IOC",
+   "titol": "Higiene del pacient enllitat",
+   "desc": "Higiene corporal completa al llit: de la zona més neta a la més bruta, descobrint només la part que es renta, i amb el pacient en decúbit supí i lateral.",
+   "hud": [
+    [
+     "mans_ini",
+     "Mans rentades"
+    ],
+    [
+     "guants",
+     "Guants"
+    ],
+    [
+     "informat",
+     "Pacient informat"
+    ],
+    [
+     "intimitat",
+     "Intimitat"
+    ],
+    [
+     "aigua",
+     "Habitació i aigua a punt"
+    ],
+    [
+     "mans_fi",
+     "Mans rentades (final)"
+    ],
+    [
+     "registre",
+     "Registrat"
+    ]
+   ],
+   "inici": [
+    "brut_bajera",
+    "cobertes",
+    "camiso"
+   ],
+   "pacient": "supi",
+   "passos": [
+    {
+     "t": "Preparar tot el material i tenir-lo a l'abast.",
+     "fx": {
+      "show": [
+       "props"
+      ]
+     }
+    },
+    {
+     "t": "Rentar-se les mans i posar-se guants d'un sol ús.",
+     "fx": {
+      "hud": [
+       "mans_ini",
+       "guants"
+      ]
+     }
+    },
+    {
+     "t": "Explicar el procediment al pacient, demanar-ne la col·laboració i preservar-ne la intimitat amb un paravent o una cortina.",
+     "fx": {
+      "hud": [
+       "informat",
+       "intimitat"
+      ],
+      "show": [
+       "paravent"
+      ]
+     }
+    },
+    {
+     "t": "Comprovar que l'habitació està entre 22 i 24 ºC, sense corrents d'aire, i que l'aigua està entre 35 i 37 ºC.",
+     "fx": {
+      "hud": [
+       "aigua"
+      ]
+     }
+    },
+    {
+     "t": "Protegir el matalàs amb una tovallola o un empapador.",
+     "why": "Cal escórrer bé l'esponja per no mullar el llit més del necessari.",
+     "fx": {
+      "show": [
+       "empapador"
+      ]
+     }
+    },
+    {
+     "t": "Col·locar el pacient en decúbit supí.",
+     "fx": {
+      "pose": "supi"
+     }
+    },
+    {
+     "t": "Retirar la roba del llit i el camisó, i cobrir amb una tovallola o un llençol la zona que no es renta.",
+     "why": "Només es descobreix la zona que es renta, per preservar la intimitat.",
+     "fx": {
+      "hide": [
+       "cobertes",
+       "camiso"
+      ],
+      "show": [
+       "tovallola"
+      ]
+     }
+    },
+    {
+     "t": "Començar per la cara, només amb aigua.",
+     "why": "La cara es renta només amb aigua.",
+     "fx": {
+      "foc": "cara",
+      "show": [
+       "w_cara"
+      ]
+     }
+    },
+    {
+     "t": "Rentar els ulls amb una gasa humida, de la zona interna cap a l'externa, amb una gasa diferent per a cada ull, i eixugar-los.",
+     "fx": {
+      "foc": "cara"
+     }
+    },
+    {
+     "t": "Continuar amb el coll i les orelles amb l'esponja sabonosa; aclarir i eixugar.",
+     "fx": {
+      "foc": "coll",
+      "show": [
+       "w_coll",
+       "w_orelles"
+      ]
+     }
+    },
+    {
+     "t": "Rentar braços, aixelles i mans (amb una tovallola a sota) amb moviments circulars; aclarir i eixugar suaument, sense arrossegar la tovallola per la pell.",
+     "fx": {
+      "foc": "bracos",
+      "show": [
+       "w_bracos"
+      ]
+     }
+    },
+    {
+     "t": "Baixar pel tòrax i l'abdomen; aclarir i eixugar, amb atenció a la zona submamària i al melic.",
+     "fx": {
+      "foc": "torax",
+      "show": [
+       "w_torax",
+       "w_abdomen"
+      ]
+     }
+    },
+    {
+     "t": "Continuar amb les extremitats inferiors i els peus; aclarir i eixugar, amb atenció als espais entre els dits.",
+     "why": "Durant el rentat s'observa la pell: zones envermellides o amb risc d'úlcera.",
+     "fx": {
+      "foc": "cames",
+      "show": [
+       "w_cames",
+       "w_peus"
+      ]
+     }
+    },
+    {
+     "t": "Col·locar el pacient en decúbit lateral.",
+     "fx": {
+      "pose": "lat"
+     }
+    },
+    {
+     "t": "Rentar la part posterior del coll, les espatlles i l'esquena; aclarir i eixugar.",
+     "fx": {
+      "foc": "esquena",
+      "show": [
+       "w_coll_post",
+       "w_esquena"
+      ]
+     }
+    },
+    {
+     "t": "Rentar les cuixes i les natges; aclarir i eixugar.",
+     "fx": {
+      "foc": "natges",
+      "show": [
+       "w_cuixes",
+       "w_natges"
+      ]
+     }
+    },
+    {
+     "t": "Fer la higiene genital segons el seu protocol específic.",
+     "why": "La higiene genital es fa al final de la higiene general.",
+     "fx": {
+      "foc": "genital",
+      "show": [
+       "w_genital"
+      ]
+     }
+    },
+    {
+     "t": "Hidratar la pell amb crema, sobretot si està seca, amb massatges suaus.",
+     "fx": {}
+    },
+    {
+     "t": "Col·locar material absorbent d'incontinència, si cal.",
+     "fx": {}
+    },
+    {
+     "t": "Posar el camisó, el pijama o la roba del pacient.",
+     "fx": {
+      "show": [
+       "camiso"
+      ],
+      "hide": [
+       "tovallola"
+      ]
+     }
+    },
+    {
+     "t": "Aplicar colònia i pentinar el pacient.",
+     "fx": {}
+    },
+    {
+     "t": "Fer el llit amb roba neta, sense plecs que puguin fer mal a la pell o dificultar els moviments.",
+     "fx": {
+      "hide": [
+       "brut_bajera",
+       "empapador"
+      ],
+      "show": [
+       "net_bajera",
+       "cobertes_net"
+      ]
+     }
+    },
+    {
+     "t": "Deixar el pacient còmodament instal·lat.",
+     "fx": {
+      "pose": "supi"
+     }
+    },
+    {
+     "t": "Controlar el risc de caigudes.",
+     "fx": {
+      "show": [
+       "barana"
+      ]
+     }
+    },
+    {
+     "t": "Ordenar, recollir i netejar o llençar el material segons el protocol.",
+     "fx": {
+      "hide": [
+       "props"
+      ]
+     }
+    },
+    {
+     "t": "Treure's els guants i rentar-se les mans.",
+     "fx": {
+      "hud": [
+       "mans_fi"
+      ]
+     }
+    },
+    {
+     "t": "Planificar i registrar el procediment al pla d'infermeria i comunicar qualsevol incidència.",
+     "fx": {
+      "hud": [
+       "registre"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "dutxa",
+   "escena": "dutxa",
+   "font": "IMSERSO",
+   "titol": "Dutxa amb cadira de dutxa",
+   "desc": "Higiene a la dutxa d'una persona asseguda a la cadira de dutxa: cabell, cara, cos de dalt a baix, genitals i, per acabar, esquena i cuixes.",
+   "hud": [
+    [
+     "informat",
+     "Usuari informat"
+    ],
+    [
+     "intimitat",
+     "Intimitat i corrents"
+    ],
+    [
+     "mans_ini",
+     "Mans rentades"
+    ],
+    [
+     "guants",
+     "Guants"
+    ],
+    [
+     "aigua",
+     "Aigua a 38-40 ºC"
+    ],
+    [
+     "mans_fi",
+     "Mans rentades (final)"
+    ],
+    [
+     "timbre",
+     "Timbre a l'abast"
+    ],
+    [
+     "registre",
+     "Registrat"
+    ]
+   ],
+   "inici": [
+    "roba"
+   ],
+   "pacient": "seient",
+   "passos": [
+    {
+     "t": "Preparar tot el material i tenir-lo a l'abast: l'usuari no es pot deixar sol en cap moment.",
+     "fx": {
+      "show": [
+       "props"
+      ]
+     }
+    },
+    {
+     "t": "Explicar el procediment a l'usuari, demanar-li la col·laboració i escoltar els seus suggeriments.",
+     "f": "IOC",
+     "fx": {
+      "hud": [
+       "informat"
+      ]
+     }
+    },
+    {
+     "t": "Tancar la porta i la finestra, evitar corrents d'aire i protegir la intimitat durant tot el procediment.",
+     "fx": {
+      "hud": [
+       "intimitat"
+      ]
+     }
+    },
+    {
+     "t": "Rentar-se les mans i posar-se guants d'un sol ús.",
+     "fx": {
+      "hud": [
+       "mans_ini",
+       "guants"
+      ]
+     }
+    },
+    {
+     "t": "Desvestir l'usuari i col·locar-lo correctament a la cadira de dutxa.",
+     "fx": {
+      "hide": [
+       "roba"
+      ],
+      "pose": "seient"
+     }
+    },
+    {
+     "t": "Obrir l'aigua i comprovar que la temperatura és l'adequada (38-40 ºC).",
+     "fx": {
+      "show": [
+       "aigua"
+      ],
+      "hud": [
+       "aigua"
+      ]
+     }
+    },
+    {
+     "t": "Retirar el material de continència, si en porta.",
+     "fx": {}
+    },
+    {
+     "t": "Afaitar la barba, si cal.",
+     "why": "Si cal afaitar, es fa abans de rentar la cara.",
+     "fx": {}
+    },
+    {
+     "t": "Rentar el cabell amb dos enjabonats i dos aclarits (i aplicar el tractament capil·lar, si cal).",
+     "fx": {
+      "foc": "cabell",
+      "show": [
+       "w_cabell",
+       "escuma"
+      ]
+     }
+    },
+    {
+     "t": "Rentar la cara (només amb aigua), les orelles i el coll.",
+     "fx": {
+      "foc": "cara",
+      "hide": [
+       "escuma"
+      ],
+      "show": [
+       "w_cara",
+       "w_orelles",
+       "w_coll"
+      ]
+     }
+    },
+    {
+     "t": "Rentar les extremitats superiors, el tòrax i les aixelles, amb atenció a les aixelles, a la zona sota els pits i als espais entre els dits.",
+     "fx": {
+      "foc": "torax",
+      "show": [
+       "w_bracos",
+       "w_torax"
+      ]
+     }
+    },
+    {
+     "t": "Rentar l'abdomen i les extremitats inferiors, insistint en el melic, l'engonal, la cavitat poplítia i els espais entre els dits.",
+     "fx": {
+      "foc": "abdomen",
+      "show": [
+       "w_abdomen",
+       "w_cames",
+       "w_peus"
+      ]
+     }
+    },
+    {
+     "t": "Canviar l'esponja no desbotable, o fer servir la destinada a la zona genital.",
+     "fx": {}
+    },
+    {
+     "t": "Rentar els genitals i el perineu, del pubis cap al perineu, sense retrocedir.",
+     "why": "Cal canviar l'aigua i les esponges tantes vegades com calgui, sobretot per als genitals i el perineu.",
+     "fx": {
+      "foc": "genital",
+      "show": [
+       "w_genital"
+      ]
+     }
+    },
+    {
+     "t": "Col·locar l'usuari en decúbit lateral parcial o dempeus.",
+     "fx": {
+      "pose": "dret"
+     }
+    },
+    {
+     "t": "Rentar les natges i la regió anal amb l'esponja de genitals o una de desbotable.",
+     "fx": {
+      "foc": "natges",
+      "show": [
+       "w_natges"
+      ]
+     }
+    },
+    {
+     "t": "Continuar amb una esponja nova: coll posterior, esquena i cuixes.",
+     "fx": {
+      "foc": "esquena",
+      "show": [
+       "w_coll_post",
+       "w_esquena",
+       "w_cuixes"
+      ]
+     }
+    },
+    {
+     "t": "Aclarir i eixugar a fons amb tovalloles netes, sense fregar, insistint en els plecs i els espais entre els dits.",
+     "why": "Eixugar bé redueix el risc de dermatitis i de proliferació bacteriana.",
+     "fx": {
+      "hide": [
+       "aigua"
+      ],
+      "show": [
+       "tovallola"
+      ]
+     }
+    },
+    {
+     "t": "Aplicar una mica de crema hidratant amb un lleuger massatge fins que s'absorbeixi.",
+     "fx": {}
+    },
+    {
+     "t": "Valorar l'estat de la pell durant el procediment i, si no és íntegra, avisar infermeria i deixar-ne registre.",
+     "fx": {}
+    },
+    {
+     "t": "Col·locar el material de continència, si cal.",
+     "fx": {}
+    },
+    {
+     "t": "Vestir i calçar l'usuari, pentinar-lo i aplicar-li colònia si ho desitja.",
+     "fx": {
+      "show": [
+       "roba"
+      ],
+      "hide": [
+       "tovallola"
+      ],
+      "pose": "seient"
+     }
+    },
+    {
+     "t": "Netejar la cadira de dutxa amb productes desinfectants.",
+     "fx": {
+      "show": [
+       "neteja"
+      ]
+     }
+    },
+    {
+     "t": "Llençar els guants, recollir l'habitació i portar la roba bruta a rentar.",
+     "fx": {
+      "hide": [
+       "props"
+      ]
+     }
+    },
+    {
+     "t": "Rentar-se les mans.",
+     "f": "IOC",
+     "fx": {
+      "hud": [
+       "mans_fi"
+      ]
+     }
+    },
+    {
+     "t": "Senyalitzar el terra mullat amb el cartell i recollir l'aigua sobrant.",
+     "fx": {
+      "show": [
+       "cartell"
+      ]
+     }
+    },
+    {
+     "t": "Deixar l'usuari còmode, amb el timbre i el que necessiti a l'abast.",
+     "f": "IOC",
+     "fx": {
+      "show": [
+       "timbre"
+      ],
+      "hud": [
+       "timbre"
+      ]
+     }
+    },
+    {
+     "t": "Registrar la tècnica.",
+     "f": "IOC",
+     "fx": {
+      "hud": [
+       "registre"
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<script>
+(function(){
+  'use strict';
+  var D = JSON.parse(document.getElementById('dades').textContent);
+  function $(id){ return document.getElementById(id); }
+  var el = {
+    start:$('start'), game:$('game'), end:$('end'), picks:$('picks'),
+    gTitle:$('gTitle'), gStep:$('gStep'), gTotal:$('gTotal'), gErr:$('gErr'), gTime:$('gTime'), gProg:$('gProg'), gExit:$('gExit'),
+    chips:$('chips'), scene:$('scene'), svg:$('svg'), opts:$('opts'), fb:$('fb'), log:$('log'),
+    eTitle:$('eTitle'), eStars:$('eStars'), eErr:$('eErr'), eTime:$('eTime'), eMsg:$('eMsg'), eList:$('eList'), eAgain:$('eAgain'), eOther:$('eOther')
+  };
+
+  /* ================= ESCENA (SVG, vista des de dalt + mapa del cos) ================= */
+  function R(x,y,w,h,f,s,rx,x2){ return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+(rx||0)+'" fill="'+f+'" stroke="'+(s||'none')+'" stroke-width="1.3"'+(x2||'')+'/>'; }
+  function E(cx,cy,rx,ry,f,s,x2){ return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+f+'" stroke="'+(s||'none')+'" stroke-width="1.3"'+(x2||'')+'/>'; }
+  function T(x,y,t,sz,col){ return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="'+(sz||12)+'" fill="'+(col||'#51606f')+'" font-family="Lato,sans-serif">'+t+'</text>'; }
+  function G(id,inner){ return '<g class="lyr" id="L_'+id+'">'+inner+'</g>'; }
+
+  /* ---- mapa del cos: davant (cx 365) i darrere (cx 470) ---- */
+  var FX=349, BX=457;
+  function zones(){
+    var z = {};
+    z.cabell = function(f,s){ return E(FX,72,24,16,f,s); };
+    z.cara   = function(f,s){ return E(FX,89,21,21,f,s); };
+    z.orelles= function(f,s){ return E(FX-24,90,4.5,8,f,s)+E(FX+24,90,4.5,8,f,s); };
+    z.coll   = function(f,s){ return R(FX-9,108,18,16,f,s,4); };
+    z.bracos = function(f,s){ return R(FX-52,126,14,126,f,s,7)+R(FX+38,126,14,126,f,s,7); };
+    z.torax  = function(f,s){ return R(FX-36,124,72,66,f,s,18); };
+    z.abdomen= function(f,s){ return R(FX-34,190,68,52,f,s,14); };
+    z.genital= function(f,s){ return E(FX,252,16,12,f,s); };
+    z.cames  = function(f,s){ return R(FX-33,266,29,150,f,s,13)+R(FX+4,266,29,150,f,s,13); };
+    z.peus   = function(f,s){ return E(FX-19,428,15,10,f,s)+E(FX+19,428,15,10,f,s); };
+    z.coll_post = function(f,s){ return R(BX-9,108,18,16,f,s,4); };
+    z.esquena= function(f,s){ return R(BX-36,124,72,92,f,s,18); };
+    z.natges = function(f,s){ return R(BX-35,216,70,38,f,s,16); };
+    z.cuixes = function(f,s){ return R(BX-35,254,32,84,f,s,13)+R(BX+3,254,32,84,f,s,13); };
+    return z;
+  }
+  var Z = zones();
+  function mapBase(){
+    var s = '<rect x="294" y="18" width="218" height="484" rx="16" fill="#f4f7fb" stroke="#c9d5e3"/>';
+    var f='#e7ecf2', st='#9fb0c4';
+    ['cabell','cara','orelles','coll','bracos','torax','abdomen','genital','cames','peus'].forEach(function(k){ s += Z[k](f,st); });
+    s += E(BX,89,21,21,f,st)+E(BX,72,24,16,'#d6dde6',st);
+    s += R(BX-52,126,14,126,f,st,7)+R(BX+38,126,14,126,f,st,7)+R(BX-33,338,29,78,f,st,13)+R(BX+4,338,29,78,f,st,13)+E(BX-19,428,15,10,f,st)+E(BX+19,428,15,10,f,st);
+    ['coll_post','esquena','natges','cuixes'].forEach(function(k){ s += Z[k](f,st); });
+    s += T(FX,462,'Davant',12)+T(BX,462,'Darrere',12);
+    return s;
+  }
+  function mapLayers(){
+    var o=[], c='#2fb8a2', st='#1d8c7a';
+    ['cabell','cara','orelles','coll','bracos','torax','abdomen','genital','cames','peus','coll_post','esquena','natges','cuixes'].forEach(function(k){
+      o.push(G('w_'+k, Z[k](c,st,' opacity=".85"')));
+    });
+    return o.join('');
+  }
+  var FOC = {
+    cabell:{x:FX,y:74,rx:34,ry:30,n:'Cabell'}, cara:{x:FX,y:90,rx:30,ry:30,n:'Cara'}, coll:{x:FX,y:114,rx:24,ry:14,n:'Coll'},
+    bracos:{x:FX,y:190,rx:56,ry:74,n:'Braços i mans'}, torax:{x:FX,y:156,rx:46,ry:38,n:'Tòrax'}, abdomen:{x:FX,y:216,rx:42,ry:30,n:'Abdomen'},
+    genital:{x:FX,y:252,rx:26,ry:20,n:'Zona genital'}, cames:{x:FX,y:346,rx:46,ry:96,n:'Cames i peus'},
+    esquena:{x:BX,y:168,rx:46,ry:60,n:'Esquena'}, natges:{x:BX,y:236,rx:44,ry:26,n:'Natges'}
+  };
+  function focusSVG(f){
+    return E(f.x,f.y,f.rx,f.ry,'#b08be0','#5a2d86',' fill-opacity=".22" stroke-width="3" stroke-dasharray="7 5"')+
+           '<rect x="'+(403-62)+'" y="472" width="124" height="22" rx="11" fill="#5a2d86"/>'+T(403,487,f.n,12,'#fff');
+  }
+
+  /* ---- escena esquerra: llit ---- */
+  function bedScene(){
+    var o = [];
+    o.push(R(0,0,290,520,'#dfe6ee'));
+    o.push('<g stroke="#cfd8e3">'+(function(){var s='',i;for(i=40;i<290;i+=40)s+='<line x1="'+i+'" y1="0" x2="'+i+'" y2="520"/>';for(i=40;i<520;i+=40)s+='<line x1="0" y1="'+i+'" x2="290" y2="'+i+'"/>';return s;})()+'</g>');
+    o.push(R(30,24,200,476,'#8a6a50','#6a4f3a',12)+R(42,50,176,430,'#c9def0','#9db8d1',8));
+    o.push(R(78,56,104,56,'#ffffff','#b9c4d2',18));                                    /* coixí */
+    o.push(G('brut_bajera', R(42,50,176,430,'#e3d8bb','#c9bb98',8)+E(100,150,18,11,'#a88f58','',' opacity=".35"')+E(160,300,22,13,'#a88f58','',' opacity=".3"')+E(120,410,14,9,'#a88f58','',' opacity=".3"')));
+    o.push(G('net_bajera', R(42,50,176,430,'#f4f0e6','#cbc6b8',8)));
+    o.push(G('empapador', R(42,205,176,110,'#8fd3c6','#6bb3a6')));
+    o.push('<g id="P_body"></g>');
+    o.push(G('camiso','<g id="P_camiso"></g>'));
+    o.push(G('tovallola', R(50,176,160,150,'#fff7e0','#d9c68e',8)+'<g stroke="#eadfb8"><line x1="50" y1="226" x2="210" y2="226"/><line x1="50" y1="276" x2="210" y2="276"/></g>'));
+    o.push(G('cobertes', R(46,170,168,308,'#8a7a9e','#6e5f83',6)+R(46,170,168,26,'#f2eee6','#c8c0ae',3)));
+    o.push(G('cobertes_net', R(46,170,168,308,'#8e6bbf','#6f4fa0',6)+R(46,170,168,26,'#ffffff','#b9c4d2',3)));
+    o.push('<g id="P_head"></g>');
+    o.push(G('barana', R(222,60,10,400,'#aeb9c6','#7f8c9c',5)+[90,170,250,330,410].map(function(y){return '<rect x="218" y="'+y+'" width="18" height="8" rx="4" fill="#8e9bab"/>';}).join('')));
+    o.push(G('paravent', [0,1,2].map(function(i){ return '<polygon points="'+(244)+','+(120+i*90)+' '+(272)+','+(135+i*90)+' '+(272)+','+(205+i*90)+' '+(244)+','+(190+i*90)+'" fill="#bcd0e6" stroke="#7f9ab8" stroke-width="2"/>'; }).join('')+T(258,402,'Paravent',11)));
+    o.push(G('props', R(236,424,48,68,'#b8c4d2','#8d9bb0',6)+E(260,448,16,11,'#e8f4fb','#7fa3c7')+R(246,468,28,14,'#ffffff','#b9c4d2',3)+T(260,512,'Material',11)));
+    return o.join('');
+  }
+  /* ---- escena esquerra: dutxa ---- */
+  function showerScene(){
+    var o = [];
+    o.push(R(0,0,290,520,'#dfe6ee'));
+    o.push(R(16,20,258,470,'#cfe3ee','#9fbdd0',10));
+    o.push('<g stroke="#b9d3e2">'+(function(){var s='',i;for(i=56;i<274;i+=40)s+='<line x1="'+i+'" y1="20" x2="'+i+'" y2="490"/>';for(i=60;i<490;i+=40)s+='<line x1="16" y1="'+i+'" x2="274" y2="'+i+'"/>';return s;})()+'</g>');
+    o.push(R(16,20,258,22,'#aebfcc','#8798a8',6)+E(145,31,16,8,'#8e9bab','#6b7889')+T(145,16,'Dutxa',11));
+    o.push(E(70,414,12,12,'#c8d2dc','#8a97a6')+E(70,414,4,4,'#8a97a6'));                /* desguàs */
+    o.push(G('aigua', [0,1,2,3,4,5,6,7].map(function(i){ var x=98+i*13; return '<line x1="'+x+'" y1="'+(48+(i%2)*6)+'" x2="'+(x+(i%2?4:-4))+'" y2="'+(150+(i%3)*12)+'" stroke="#3b9ad9" stroke-width="3" stroke-linecap="round" opacity=".7"/>'; }).join('')));
+    /* cadira de dutxa */
+    o.push(R(100,206,90,104,'#d7dee6','#8d9bb0',14)+R(100,196,90,16,'#c4cfda','#8d9bb0',8)+R(104,310,8,60,'#aeb9c6')+R(178,310,8,60,'#aeb9c6'));
+    o.push(G('neteja', [[120,230],[170,230],[120,290],[170,290]].map(function(p){ return '<path d="M'+p[0]+' '+(p[1]-14)+' L'+(p[0]+4)+' '+(p[1]-4)+' L'+(p[0]+14)+' '+p[1]+' L'+(p[0]+4)+' '+(p[1]+4)+' L'+p[0]+' '+(p[1]+14)+' L'+(p[0]-4)+' '+(p[1]+4)+' L'+(p[0]-14)+' '+p[1]+' L'+(p[0]-4)+' '+(p[1]-4)+' Z" fill="#f5c542" stroke="#d9a21a"/>'; }).join('')));
+    o.push('<g id="P_body"></g>');
+    o.push(G('roba','<g id="P_roba"></g>'));
+    o.push(G('tovallola', R(104,214,82,26,'#fff7e0','#d9c68e',10)));
+    o.push(G('escuma', [[126,214],[146,206],[166,214],[134,228],[158,228],[146,220]].map(function(p){ return E(p[0],p[1],11,9,'#ffffff','#bcd2e4'); }).join('')));
+    o.push(G('timbre', '<path d="M262 230 Q250 260 235 258" fill="none" stroke="#8a97a6" stroke-width="2"/>'+E(262,222,10,10,'#e0453a','#fff',' stroke-width="2"')+T(250,248,'Timbre',10)));
+    o.push(G('cartell','<polygon points="60,436 92,436 76,406" fill="#f5c542" stroke="#b8860b" stroke-width="2"/><text x="76" y="432" text-anchor="middle" font-size="16" font-weight="700" fill="#5a3a00" font-family="Lato,sans-serif">!</text>'+T(76,454,'Terra mullat',10)));
+    o.push(G('props', R(206,380,62,86,'#b8c4d2','#8d9bb0',6)+R(214,388,16,28,'#7fb2e0','#4d7fb0',4)+R(236,388,16,28,'#e0b84f','#b08a20',4)+R(214,424,38,20,'#ffffff','#b9c4d2',3)+T(237,484,'Material',11)));
+    return o.join('');
+  }
+  var DRAW = {
+    llit:{
+      body:function(p){
+        var sk='#e6c3a3', st='#c49d7c';
+        if(p==='lat') return R(112,114,38,130,sk,st,18)+R(116,238,34,108,sk,st,15)+R(120,340,30,96,sk,st,14)+R(92,150,22,64,sk,st,10);
+        return R(98,114,64,132,sk,st,26)+R(100,240,27,196,sk,st,12)+R(133,240,27,196,sk,st,12)+R(74,122,20,134,sk,st,10)+R(166,122,20,134,sk,st,10);
+      },
+      camiso:function(p){
+        var g='#a9c6e3', st='#7fa3c7';
+        if(p==='lat') return R(108,112,46,140,g,st,18);
+        return R(94,112,72,140,g,st,24)+R(72,120,24,58,g,st,10)+R(164,120,24,58,g,st,10);
+      },
+      head:function(p){ return E(p==='lat'?126:130,86,20,20,'#e6c3a3','#c49d7c'); }
+    },
+    dutxa:{
+      body:function(p){
+        var sk='#e6c3a3', st='#c49d7c';
+        if(p==='dret') return E(145,214,46,19,sk,st)+E(130,300,9,16,sk,st)+E(160,300,9,16,sk,st)+R(92,206,14,52,sk,st,7)+R(184,206,14,52,sk,st,7)+E(145,214,17,17,'#7a5c3e','#5a432c');
+        return E(145,236,46,19,sk,st)+R(96,240,14,56,sk,st,7)+R(180,240,14,56,sk,st,7)+R(116,262,26,100,sk,st,12)+R(148,262,26,100,sk,st,12)+E(129,372,14,9,sk,st)+E(161,372,14,9,sk,st)+E(145,236,17,17,'#7a5c3e','#5a432c');
+      },
+      roba:function(p){
+        if(p==='dret') return E(145,214,46,19,'#6fa3d6','#4f80b0',' opacity=".95"')+E(130,300,9,16,'#4b5b73','#33405a')+E(160,300,9,16,'#4b5b73','#33405a')+E(145,214,17,17,'#7a5c3e','#5a432c');
+        return E(145,236,46,19,'#6fa3d6','#4f80b0',' opacity=".95"')+R(116,262,26,100,'#4b5b73','#33405a',12)+R(148,262,26,100,'#4b5b73','#33405a',12)+E(145,236,17,17,'#7a5c3e','#5a432c');
+      }
+    }
+  };
+  function sceneSVG(sc){
+    return '<defs></defs>'+R(0,0,520,520,'#dfe6ee')+(sc==='dutxa'?showerScene():bedScene())+mapBase()+mapLayers()+'<g id="P_focus"></g>';
+  }
+
+  /* ================= JOC ================= */
+  var S = null;           // estat de la partida
+  var cache = {};
+  function layer(id){ return cache[id] || (cache[id] = document.getElementById('L_'+id)); }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function fmt(s){ var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+
+  function renderScene(){
+    var all = el.svg.querySelectorAll('.lyr');
+    for(var i=0;i<all.length;i++){
+      var id = all[i].id.slice(2);
+      all[i].classList.toggle('on', S.on.has(id));
+    }
+    var sc = S.proc.escena, d = DRAW[sc];
+    Object.keys(d).forEach(function(k){ var g = $('P_'+k); if(g) g.innerHTML = d[k](S.pose); });
+    var f = S.foc && FOC[S.foc];
+    $('P_focus').innerHTML = f ? focusSVG(f) : '';
+  }
+  function renderChips(){
+    el.chips.innerHTML = '';
+    S.proc.hud.forEach(function(h){
+      var c = document.createElement('span');
+      c.className = 'chip' + (S.hud.has(h[0]) ? ' on' : '');
+      c.textContent = h[1];
+      el.chips.appendChild(c);
+    });
+  }
+  function applyFx(fx){
+    fx = fx || {};
+    (fx.show||[]).forEach(function(i){ S.on.add(i); });
+    (fx.hide||[]).forEach(function(i){ S.on.delete(i); });
+    (fx.hud||[]).forEach(function(i){ S.hud.add(i); });
+    if(fx.pose) S.pose = fx.pose;
+    S.foc = fx.foc || null;
+  }
+
+  function startProc(proc){
+    cache = {};
+    el.svg.innerHTML = sceneSVG(proc.escena);
+    S = { proc:proc, idx:0, err:0, t0:Date.now(), done:[], on:new Set(proc.inici), hud:new Set(), pose:proc.pacient, foc:null, sec:0, timer:null, over:false, finished:false };
+    el.start.hidden = true; el.end.hidden = true; el.game.hidden = false;
+    el.gTitle.textContent = proc.titol; el.gTotal.textContent = proc.passos.length;
+    el.log.innerHTML = ''; el.fb.textContent = ''; el.fb.className = 'fb';
+    renderScene(); renderChips(); renderOptions(); updateBar();
+    S.timer = setInterval(function(){ S.sec = Math.floor((Date.now()-S.t0)/1000); el.gTime.textContent = fmt(S.sec); }, 500);
+    window.scrollTo(0,0);
+  }
+  function updateBar(){
+    el.gStep.textContent = Math.min(S.idx+1, S.proc.passos.length);
+    el.gErr.textContent = S.err;
+    el.gProg.style.width = (S.idx / S.proc.passos.length * 100) + '%';
+  }
+
+  function renderOptions(){
+    var passos = S.proc.passos, cur = passos[S.idx], opts = [{ t:cur.t, ok:true }];
+    var future = shuffle(passos.slice(S.idx+1).filter(function(p){ return p.t !== cur.t; }));
+    var past = shuffle(passos.slice(0, S.idx).filter(function(p){ return p.t !== cur.t; }));
+    var used = {}; used[cur.t] = true;
+    var want = 3;                                   // 3 falses (4 opcions) quan n'hi ha prou
+    function take(list, kind){
+      for(var i=0;i<list.length && opts.length < want+1;i++){
+        if(used[list[i].t]) continue;
+        used[list[i].t] = true; opts.push({ t:list[i].t, ok:false, kind:kind });
+      }
+    }
+    take(future, 'future');                         // primer, passos que vénen més endavant
+    take(past, 'past');                             // si en queden pocs, passos que ja s'han fet
+    shuffle(opts);
+    el.opts.innerHTML = '';
+    opts.forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.textContent = o.t;
+      bindCard(b, o);
+      el.opts.appendChild(b);
+    });
+  }
+
+  function choose(o, btn){
+    if(!S || S.finished || btn.disabled) return;
+    if(o.ok){
+      var step = S.proc.passos[S.idx];
+      applyFx(step.fx);
+      S.done.push(step.t);
+      var li = document.createElement('li'); li.textContent = step.t; el.log.appendChild(li);
+      el.log.scrollTop = el.log.scrollHeight;
+      S.idx++;
+      el.fb.className = 'fb ok';
+      el.fb.textContent = 'Correcte!' + (step.why ? ' ' + step.why : '');
+      renderScene(); renderChips(); updateBar();
+      if(S.idx >= S.proc.passos.length){ finish(); } else { renderOptions(); }
+    }else{
+      S.err++; updateBar();
+      btn.classList.add('bad'); btn.disabled = true;
+      el.fb.className = 'fb no';
+      el.fb.textContent = o.kind==='past' ? 'Aquest pas ja l\'has fet. Pensa quin toca ara.' : 'Encara no: aquest pas va més endavant. Pensa quin toca ara.';
+    }
+  }
+
+  function finish(){
+    S.finished = true; clearInterval(S.timer);
+    S.sec = Math.floor((Date.now()-S.t0)/1000);
+    setTimeout(function(){
+      el.game.hidden = true; el.end.hidden = false;
+      el.eTitle.textContent = S.proc.titol + ' fet!';
+      var stars = S.err <= 2 ? 3 : S.err <= 6 ? 2 : 1;
+      el.eStars.textContent = '★★★'.slice(0,stars) + '☆☆☆'.slice(0,3-stars);
+      el.eErr.textContent = S.err; el.eTime.textContent = fmt(S.sec);
+      el.eMsg.textContent = S.err === 0 ? 'Cap error: seqüència perfecta.' : S.err <= 2 ? 'Molt bé: quasi perfecte.' : S.err <= 6 ? 'Bé, però repassa els passos on has dubtat.' : 'Repassa la seqüència i torna-ho a provar.';
+      el.eList.innerHTML = '';
+      S.proc.passos.forEach(function(p){
+        var li=document.createElement('li'); li.textContent=p.t;
+        var tag = p.extra ? 'complement: pas habitual en protocols' : (p.f && p.f !== S.proc.font ? 'font: ' + p.f : '');
+        if(tag){ var m=document.createElement('em'); m.textContent=' (' + tag + ')'; li.appendChild(m); }
+        el.eList.appendChild(li);
+      });
+      window.scrollTo(0,0);
+    }, 700);
+  }
+
+  /* ---- arrossegar (o clic) ---- */
+  var suppressClick = false;
+  function overScene(e){ var r = el.scene.getBoundingClientRect(); return e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom; }
+  function bindCard(btn, o){
+    var sx=0, sy=0, drag=false, ghost=null, pid=null;
+    function endDrag(e, cancel){
+      if(pid===null) return;
+      var was = drag, inside = was && !cancel && overScene(e);
+      if(ghost){ ghost.remove(); ghost=null; }
+      btn.classList.remove('lifting'); el.scene.classList.remove('over');
+      try{ btn.releasePointerCapture(pid); }catch(_){}
+      pid = null; drag = false;
+      if(was){ suppressClick = true; setTimeout(function(){ suppressClick = false; }, 0); }
+      if(inside) choose(o, btn);
+    }
+    btn.addEventListener('pointerdown', function(e){
+      if(btn.disabled || (e.pointerType==='mouse' && e.button!==0)) return;
+      sx = e.clientX; sy = e.clientY; drag = false; pid = e.pointerId;
+      try{ btn.setPointerCapture(pid); }catch(_){}
+    });
+    btn.addEventListener('pointermove', function(e){
+      if(pid===null || e.pointerId!==pid) return;
+      if(!drag && Math.hypot(e.clientX-sx, e.clientY-sy) > 8){
+        drag = true; ghost = document.createElement('div'); ghost.className = 'dragghost'; ghost.textContent = btn.textContent;
+        document.body.appendChild(ghost); btn.classList.add('lifting');
+      }
+      if(drag){
+        ghost.style.transform = 'translate('+(e.clientX - ghost.offsetWidth/2)+'px,'+(e.clientY - 24)+'px)';
+        el.scene.classList.toggle('over', overScene(e));
+      }
+    });
+    btn.addEventListener('pointerup', function(e){ endDrag(e,false); });
+    btn.addEventListener('pointercancel', function(e){ endDrag(e,true); });
+    btn.addEventListener('click', function(){ if(suppressClick){ suppressClick=false; return; } choose(o, btn); });
+  }
+
+  /* ---- inici ---- */
+  function showStart(){
+    if(S && S.timer) clearInterval(S.timer);
+    el.game.hidden = true; el.end.hidden = true; el.start.hidden = false;
+  }
+  D.procediments.forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pick';
+    b.innerHTML = '<b></b><span></span><i>' + p.passos.length + ' passos · Comença →</i>';
+    b.querySelector('b').textContent = p.titol; b.querySelector('span').textContent = p.desc;
+    b.addEventListener('click', function(){ startProc(p); });
+    el.picks.appendChild(b);
+  });
+  el.gExit.addEventListener('click', showStart);
+  el.eOther.addEventListener('click', showStart);
+  el.eAgain.addEventListener('click', function(){ startProc(S.proc); });
+})();
+</script>
+</body>
+</html>

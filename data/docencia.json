@@ -31,7 +31,8 @@
       "icono": "fa-solid fa-user-nurse",
       "descripcion": "El Técnico en Cuidados Auxiliares de Enfermería (TCAE) proporciona cuidados básicos de enfermería a pacientes, bajo la supervisión de personal de enfermería. Sus funciones principales incluyen la higiene, alimentación, movilización y el apoyo en la administración de tratamientos en centros sanitarios o sociosanitarios.",
       "recursos": [
-    { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" }
+        { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
+        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" }
       ]
     },
     {
@@ -39,7 +40,8 @@
       "icono": "fa-solid fa-hands-holding-child",
       "descripcion": "El Técnico en Atención a Personas en Situación de Dependencia (TAPSD) se encarga de intervenir de forma directa para cubrir las necesidades físicas, sociales y psicológicas de personas dependientes. Su labor se centra en la asistencia a la autonomía personal, la promoción de la salud y la organización de actividades de ocio, tanto en el domicilio como en instituciones.",
       "recursos": [
-    { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" }
+        { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
+        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" }
       ]
     },
     {
