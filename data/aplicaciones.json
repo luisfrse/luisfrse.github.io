@@ -1,3 +1,4 @@
 [
-  { "titulo": "Quest App", "descripcion": "Cuestionarios interactivos para evaluación de conocimientos en la clase.", "enlace": "https://quest.luisfs.com/profesor", "icono": "fa-solid fa-circle-question" }
+  { "titulo": "Quest App", "descripcion": "Cuestionarios interactivos para evaluación de conocimientos en la clase.", "enlace": "https://quest.luisfs.com/profesor", "icono": "fa-solid fa-circle-question" },
+  { "titulo": "Sonómetro de aula", "descripcion": "Semáforo de ruido para clase: usa el micrófono del navegador, sin enviar ni grabar audio.", "enlace": "/sonometro/", "icono": "fa-solid fa-volume-high" }
 ]
