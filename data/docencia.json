@@ -33,7 +33,7 @@
       "recursos": [
         { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
         { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" },
-        { "titulo": "Escape room infeccions", "enlace": "https://luisfs.com/escape-infeccions/" }
+        { "titulo": "Escape room infeccions", "enlace": "https://luisfs.com/escape-infeccions/?temps=40" }
       ]
     },
     {
