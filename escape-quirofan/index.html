@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Codi Silenci: escape room d'instrumental</title>
+  <meta name="description" content="Escape room digital: un ciberatac a l'hospital obliga a preparar l'instrumental quirúrgic a mà. Identifica, classifica i coneix la funció de cada instrument.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#06181b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2306181b'/%3E%3Cpath d='M18 46 46 18M24 20l20 20' stroke='%233fe0d0' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='46' r='6' fill='%23ff4fa0'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body data-stage="intro">
+  <div class="scan" aria-hidden="true"></div>
+  <div class="amb" aria-hidden="true"><div class="vig"></div></div>
+
+  <header class="bar">
+    <div class="brand"><span class="brand-ico" aria-hidden="true"></span><span class="brand-t">Codi Silenci</span></div>
+    <div class="bar-tools">
+      <div class="clock" id="timer-wrap" title="Temps"><b id="timer">45:00</b></div>
+      <div class="chip-ro" title="Pistes utilitzades"><span class="lbl">Pistes</span><b id="hint-count">0</b></div>
+      <button type="button" class="ico-btn" id="btn-log" data-act="log" aria-expanded="false" aria-controls="log" title="Bitàcola"></button>
+      <button type="button" class="ico-btn" id="btn-sound" data-act="sound" aria-pressed="false" title="So"></button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="tray" id="tray" aria-label="Safata d'instrumental"></aside>
+    <main id="stage" tabindex="-1" aria-live="polite"></main>
+  </div>
+
+  <aside id="log" class="log" aria-label="Bitàcola"></aside>
+  <div id="fx" class="fx" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status"></div>
+  <noscript><p style="padding:24px;color:#fff">Cal activar JavaScript per jugar a l’escape room.</p></noscript>
+
+  <script src="js/sha256.js?v=1"></script>
+  <script src="js/xor.js?v=1"></script>
+  <script src="js/answers.js?v=1"></script>
+  <script src="js/content.js?v=1"></script>
+  <script src="js/fx.js?v=1"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>
