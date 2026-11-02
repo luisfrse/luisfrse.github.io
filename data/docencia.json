@@ -32,7 +32,8 @@
       "descripcion": "El Técnico en Cuidados Auxiliares de Enfermería (TCAE) proporciona cuidados básicos de enfermería a pacientes, bajo la supervisión de personal de enfermería. Sus funciones principales incluyen la higiene, alimentación, movilización y el apoyo en la administración de tratamientos en centros sanitarios o sociosanitarios.",
       "recursos": [
         { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
-        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" }
+        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" },
+        { "titulo": "Escape room infeccions", "enlace": "https://luisfs.com/escape-infeccions/" }
       ]
     },
     {

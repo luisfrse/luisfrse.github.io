@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Escape room: infeccions</title>
+  <meta name="description" content="Escape room digital sobre infeccions: sis proves per activar el sistema de descontaminació del laboratori BSL-4.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#09131a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@500;600;700&display=swap">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2309131a'/%3E%3Cg fill='none' stroke='%23f3c613' stroke-width='5'%3E%3Ccircle cx='32' cy='22' r='12'/%3E%3Ccircle cx='41' cy='38' r='12'/%3E%3Ccircle cx='23' cy='38' r='12'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css?v=1">
+</head>
+<body data-stage="intro">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="bio" viewBox="-50 -50 100 100">
+      <g fill="none" stroke="currentColor" stroke-width="5">
+        <circle cx="0" cy="-17" r="19"/><circle cx="14.7" cy="8.5" r="19"/><circle cx="-14.7" cy="8.5" r="19"/>
+        <circle r="46" stroke-width="2.5" stroke-dasharray="46 14.1"/>
+      </g>
+      <circle r="6" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <div class="amb" aria-hidden="true"><div class="beam"></div><div class="vig"></div></div>
+
+  <header class="bar">
+    <div class="brand">
+      <svg class="brand-ico" aria-hidden="true"><use href="#bio"/></svg>
+      <span class="brand-t">Laboratori BSL-4</span>
+    </div>
+    <div class="bar-tools">
+      <div class="chip-ro" id="timer-wrap" title="Temps"><span class="lbl">Temps</span><b id="timer">00:00</b></div>
+      <div class="chip-ro" id="hints-wrap" title="Pistes utilitzades"><span class="lbl">Pistes</span><b id="hint-count">0</b></div>
+      <button type="button" class="ico-btn" id="btn-log" data-act="log" aria-expanded="false" aria-controls="log" title="Bitàcola"></button>
+      <button type="button" class="ico-btn" id="btn-sound" data-act="sound" aria-pressed="false" title="So"></button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="gauge" id="gauge" aria-label="Progrés de la descontaminació"></aside>
+    <main id="stage" tabindex="-1" aria-live="polite"></main>
+  </div>
+
+  <aside id="log" class="log" aria-label="Bitàcola" hidden></aside>
+  <div id="fx" class="fx" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <noscript><p style="padding:24px;color:#fff">Cal activar JavaScript per jugar a l’escape room.</p></noscript>
+
+  <script src="js/sha256.js?v=1"></script>
+  <script src="js/answers.js?v=1"></script>
+  <script src="js/content.js?v=1"></script>
+  <script src="js/fx.js?v=1"></script>
+  <script src="js/app.js?v=1"></script>
+</body>
+</html>
