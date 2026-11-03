@@ -26,6 +26,7 @@
     return { stage: 'intro', name: '', start: 0, end: 0, penalty: 0, checks: 0, fails: 0, hints: 0, sel: {}, done: {}, hu: {}, flag: {}, line: [], sound: false, over: false };
   }
   let S = fresh();
+  if (window.CampusAct && CampusAct.fresh) { try { localStorage.removeItem(KEY); } catch (e) { /* res */ } }
   try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && r.stage) S = Object.assign(fresh(), r); } catch (e) { /* sense emmagatzematge */ }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* res */ } }
   let fb = null;                                               // missatge transitori { msg, cls }
@@ -242,7 +243,7 @@
   function finalCheck() {
     const word = S.line.map(fragOf).join('');
     S.checks++;
-    if (sha(A.salt + '|code|final|' + word) === A.final) { S.end = Date.now(); S.stage = 'done'; fb = null; save(); sfx('finale'); FX.siren(false); render(); return; }
+    if (sha(A.salt + '|code|final|' + word) === A.final) { S.end = Date.now(); S.stage = 'done'; fb = null; save(); sfx('finale'); FX.siren(false); render(); if (window.CampusAct) CampusAct.finish({ errors: S.fails, hints: S.hints, checks: S.checks }); return; }
     S.fails++; S.line = []; sfx('buzz'); penalize(FAIL_PEN, 'clau incorrecta');
     fb = { msg: 'La clau no és correcta. Els fragments s’han tornat a la safata.', cls: 'err' }; render();
   }
@@ -304,7 +305,7 @@
     if (a === 'log') { const o = !logEl.classList.contains('open'); logEl.classList.toggle('open', o); $('#btn-log').setAttribute('aria-expanded', o); if (o) renderLog(); return; }
     if (a === 'sound') { S.sound = !S.sound; FX.set(S.sound); b.setAttribute('aria-pressed', S.sound); b.innerHTML = S.sound ? ICO.on : ICO.off; save(); if (S.sound) { FX.click(); if (/^p|final/.test(S.stage)) FX.siren(true); } return; }
     if (a === 'to-brief') { S.name = ($('#in-name').value || '').trim(); S.stage = 'brief'; save(); sfx('click'); render(); return; }
-    if (a === 'begin') { S.stage = 'p1'; S.start = Date.now(); save(); sfx('unlock'); render(); return; }
+    if (a === 'begin') { S.stage = 'p1'; S.start = Date.now(); if (window.CampusAct) CampusAct.begin(); save(); sfx('unlock'); render(); return; }
     if (a === 'check') return check();
     if (a === 'hint') return hint();
     if (a === 'next') { fb = null; S.stage = pidx() + 1 < NP ? 'p' + (pidx() + 2) : 'final'; save(); sfx('click'); render(); window.scrollTo({ top: 0 }); return; }

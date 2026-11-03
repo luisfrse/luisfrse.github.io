@@ -257,6 +257,7 @@ ol.log li{margin:3px 0}
 }
 </script>
 
+<script src="https://campus.luisfs.com/campus-act.js"></script>
 <script>
 (function(){
   'use strict';
@@ -402,6 +403,7 @@ ol.log li{margin:3px 0}
     el.log.innerHTML = ''; el.fb.textContent = ''; el.fb.className = 'fb';
     renderScene(); renderChips(); renderOptions(); updateBar();
     S.timer = setInterval(function(){ S.sec = Math.floor((Date.now()-S.t0)/1000); el.gTime.textContent = fmt(S.sec); }, 500);
+    if(window.CampusAct) CampusAct.begin();
     window.scrollTo(0,0);
   }
   function updateBar(){
@@ -458,6 +460,7 @@ ol.log li{margin:3px 0}
   function finish(){
     S.finished = true; clearInterval(S.timer);
     S.sec = Math.floor((Date.now()-S.t0)/1000);
+    if(window.CampusAct) CampusAct.finish({errors:S.err,hints:0,checks:0});
     setTimeout(function(){
       el.game.hidden = true; el.end.hidden = false;
       el.eTitle.textContent = S.proc.titol + ' fet!';
@@ -523,6 +526,11 @@ ol.log li{margin:3px 0}
   el.gExit.addEventListener('click', showStart);
   el.eOther.addEventListener('click', showStart);
   el.eAgain.addEventListener('click', function(){ startProc(S.proc); });
+  if(window.CampusAct && CampusAct.active){
+    el.gExit.hidden = true; el.eOther.hidden = true;
+    var pp = D.procediments.filter(function(x){ return x.id === CampusAct.proc; })[0];
+    if(pp) startProc(pp);
+  }
 })();
 </script>
 </body>

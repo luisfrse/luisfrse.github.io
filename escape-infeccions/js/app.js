@@ -15,10 +15,11 @@
   const LIMIT = (parseInt(params.get('temps'), 10) || 0) * 60000; // ?temps=40 → compte enrere de 40 min
 
   /* ---------- Estat i persistència ---------- */
-  const fresh = () => ({ stage: 'intro', name: '', start: 0, end: 0, codes: {}, hints: {}, checks: 0, sel: {}, marks: {}, sound: false });
+  const fresh = () => ({ stage: 'intro', name: '', start: 0, end: 0, codes: {}, hints: {}, checks: 0, fails: 0, sel: {}, marks: {}, sound: false });
   let S = load();
   function load() {
     try {
+      if (window.CampusAct && CampusAct.fresh) { localStorage.removeItem(KEY); return fresh(); }
       const o = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (o && ORDER.indexOf(o.stage) !== -1) return Object.assign(fresh(), o);
     } catch (e) { /* sense emmagatzematge */ }
@@ -312,6 +313,7 @@
       if (ok === total) setFb(fb, 'Totes les respostes són correctes. Ara extreu la paraula clau.', 'ok');
       else setFb(fb, ok + ' de ' + total + ' respostes correctes.', 'info');
     }
+    if (!(ok === total && !wrong)) S.fails = (S.fails | 0) + 1;
     save();
     ok === total && !wrong ? FX.ok() : FX.tick();
   }
@@ -326,6 +328,7 @@
   }
   function wrongCode(msg) {
     const f = $('#f-code'); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
+    S.fails = (S.fails | 0) + 1; save();
     setFb($('#fb'), msg, 'err'); FX.buzz();
     const inp = $('#in-code'); inp.select();
   }
@@ -334,7 +337,7 @@
     const val = norm($('#in-code').value);
     if (!val) { wrongCode('Escriu la paraula clau.'); return; }
     if (S.stage === 'final') {
-      if (codeOk('final', val)) { S.end = Date.now(); S.stage = 'done'; save(); render(true); FX.finale(); }
+      if (codeOk('final', val)) { S.end = Date.now(); S.stage = 'done'; save(); render(true); FX.finale(); if (window.CampusAct) CampusAct.finish({ errors: S.fails | 0, hints: hintTotal(), checks: S.checks }); }
       else wrongCode('Codi d’activació incorrecte. Revisa els fragments i l’ordre.');
       return;
     }
@@ -343,7 +346,7 @@
   }
 
   const actions = {
-    begin() { if (!S.start) S.start = Date.now(); FX.click(); go('p1'); },
+    begin() { if (!S.start) S.start = Date.now(); if (window.CampusAct) CampusAct.begin(); FX.click(); go('p1'); },
     next() { const i = idx(); FX.click(); go(ORDER[i + 1]); },
     check, hint,
     sound() {
