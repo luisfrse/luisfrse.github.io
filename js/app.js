@@ -94,7 +94,7 @@
     const [div] = await Promise.all([data('divulgacion')]);
     const ultimas = Array.isArray(div) ? div.slice(0, 3) : [];
     const accesos = [
-      { icono: 'fa-solid fa-chalkboard-user', titulo: 'Docencia', descripcion: 'Universitaria, Formación Profesional y Formación Continuada.', enlace: '#/docencia' },
+      { icono: 'fa-solid fa-chalkboard-user', titulo: 'Docencia', descripcion: 'Campus: materiales, notas y seguimiento para el alumnado matriculado (Universidad, FP y Formación Continuada).', enlace: 'https://campus.luisfs.com' },
       { icono: 'fa-solid fa-laptop-code', titulo: 'Aplicaciones', descripcion: 'Herramientas y aplicaciones propias.', enlace: '#/aplicaciones' },
       { icono: 'fa-solid fa-dna', titulo: 'Investigación', descripcion: 'Líneas actuales y producción científica.', enlace: '#/investigacion' },
       { icono: 'fa-solid fa-microphone-lines', titulo: 'Divulgación', descripcion: 'Artículos, entrevistas y participaciones en medios.', enlace: '#/divulgacion' },
