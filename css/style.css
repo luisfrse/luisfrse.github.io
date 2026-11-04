@@ -18,8 +18,10 @@ p{margin:0 0 1em}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
 
 /* ============ Navegación ============ */
-.nav{position:fixed;inset:0 0 auto 0;height:var(--nav-h);z-index:100;transition:background .3s,box-shadow .3s;background:transparent}
-.nav.solid{background:rgba(8,24,42,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
+.nav{isolation:isolate;position:fixed;inset:0 0 auto 0;height:var(--nav-h);z-index:100;transition:background .3s,box-shadow .3s;background:transparent}
+/* El fondo con blur va en un pseudo-elemento: un backdrop-filter en .nav haría de él el bloque contenedor del menú móvil (position:fixed) y lo recortaría a la altura de la barra. */
+.nav::before{content:'';position:absolute;inset:0;z-index:-1;background:transparent;transition:background .3s,box-shadow .3s}
+.nav.solid::before{background:rgba(8,24,42,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
 .nav-inner{width:min(1240px,100% - 32px);height:100%;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-family:var(--font-head);font-weight:700;font-size:1.05rem;white-space:nowrap}
 .brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--night);font-size:.95rem}
