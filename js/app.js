@@ -76,9 +76,10 @@
       <h3>${esc(c.titulo)}</h3>${c.descripcion ? `<p>${esc(c.descripcion)}</p>` : ''}${c.enlace ? '<span class="more">Ver más →</span>' : ''}`;
     return c.enlace ? `<a class="card reveal" href="${url(c.enlace)}"${ext(c.enlace)}>${inner}</a>` : `<div class="card reveal">${inner}</div>`;
   };
+  const IMG_DEFECTO = 'assets/divulgacion-defecto.svg'; // se usa si una entrada no tiene imagen o falla al cargar
   const entryCard = e => `
     <article class="card entry reveal" data-tipo="${esc((e.tipo || '').toLowerCase())}">
-      ${e.imagen ? `<img class="thumb" loading="lazy" src="${url(e.imagen)}" alt="">` : ''}
+      <img class="thumb" loading="lazy" referrerpolicy="no-referrer" src="${e.imagen ? url(e.imagen) : IMG_DEFECTO}" alt="" onerror="this.onerror=null;this.src='${IMG_DEFECTO}'">
       <div class="meta">${e.tipo ? `<span class="badge">${esc(tipoLabel(e.tipo))}</span>` : ''}
         ${e.medio ? `<span class="src">${esc(e.medio)}</span>` : ''}${e.fecha ? `<span class="src">· ${esc(fecha(e.fecha))}</span>` : ''}</div>
       <h3>${esc(e.titulo)}</h3>

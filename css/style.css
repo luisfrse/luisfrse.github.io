@@ -159,7 +159,7 @@ a.card{text-decoration:none;color:inherit}
 .entry .src{color:var(--ink-soft)}
 .entry h3{font-size:1.12rem}
 .entry audio{width:100%;margin-top:14px}
-.entry img.thumb{border-radius:12px;margin:-6px 0 16px;aspect-ratio:16/9;object-fit:cover;width:100%}
+.entry img.thumb{border-radius:12px;margin:-6px 0 16px;aspect-ratio:16/9;object-fit:cover;width:100%;background:var(--deep)}
 
 /* Fotografía */
 .photos{display:grid;gap:72px}
