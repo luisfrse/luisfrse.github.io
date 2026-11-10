@@ -13,28 +13,33 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
-  <a class="skip" href="#app">Saltar al contenido</a>
+  <a class="skip" href="#app" data-i18n="skip">Saltar al contenido</a>
 
   <header class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="#/inicio"><span class="brand-mark">LF</span><span class="brand-name">Luis Franco Serrano</span></a>
-      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-      <nav id="menu" aria-label="Principal">
+      <nav id="menu" aria-label="Principal" data-i18n-aria="menuAria">
         <ul>
-          <li><a href="#/inicio" data-r="inicio">Inicio</a></li>
-          <li><a href="#/sobre-mi" data-r="sobre-mi">Sobre mí</a></li>
-          <li><a href="https://campus.luisfs.com" rel="noopener">Docencia <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" style="font-size:.7em"></i></a></li>
-          <li><a href="#/aplicaciones" data-r="aplicaciones">Aplicaciones</a></li>
-          <li><a href="#/investigacion" data-r="investigacion">Investigación</a></li>
-          <li><a href="#/divulgacion" data-r="divulgacion">Divulgación</a></li>
-          <li><a href="#/fotografia" data-r="fotografia">Fotografía</a></li>
-          <li><a href="#/solidaridad" data-r="solidaridad">Solidaridad</a></li>
-          <li><a href="#/contacto" data-r="contacto">Contacto</a></li>
+          <li><a href="#/inicio" data-r="inicio" data-i18n="nav.inicio">Inicio</a></li>
+          <li><a href="#/sobre-mi" data-r="sobre-mi" data-i18n="nav.sobre-mi">Sobre mí</a></li>
+          <li><a href="https://campus.luisfs.com" rel="noopener"><span data-i18n="nav.docencia">Docencia</span> <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" style="font-size:.7em"></i></a></li>
+          <li><a href="#/aplicaciones" data-r="aplicaciones" data-i18n="nav.aplicaciones">Aplicaciones</a></li>
+          <li><a href="#/investigacion" data-r="investigacion" data-i18n="nav.investigacion">Investigación</a></li>
+          <li><a href="#/divulgacion" data-r="divulgacion" data-i18n="nav.divulgacion">Divulgación</a></li>
+          <li><a href="#/fotografia" data-r="fotografia" data-i18n="nav.fotografia">Fotografía</a></li>
+          <li><a href="#/solidaridad" data-r="solidaridad" data-i18n="nav.solidaridad">Solidaridad</a></li>
+          <li><a href="#/contacto" data-r="contacto" data-i18n="nav.contacto">Contacto</a></li>
         </ul>
       </nav>
+      <div class="lang" id="lang" role="group" aria-label="Idioma" data-i18n-aria="langAria">
+        <button type="button" data-lang="es" lang="es" title="Castellano">ES</button>
+        <button type="button" data-lang="ca" lang="ca" title="Català">CA</button>
+        <button type="button" data-lang="en" lang="en" title="English">EN</button>
+      </div>
+      <button class="burger" id="burger" aria-label="Abrir menú" data-i18n-aria="menuOpen" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
     </div>
   </header>
 
@@ -43,11 +48,12 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div id="footer-social" class="socials"></div>
-      <p class="copy">© <span id="year"></span> Luis Franco Serrano · Investigación | Docencia | Solidaridad | Naturaleza</p>
+      <p class="copy">© <span id="year"></span> Luis Franco Serrano · <span data-i18n="copy">Investigación | Docencia | Solidaridad | Naturaleza</span></p>
     </div>
   </footer>
 
   <script src="js/config.js?v=8"></script>
-  <script src="js/app.js?v=8"></script>
+  <script src="js/i18n.js?v=1"></script>
+  <script src="js/app.js?v=12"></script>
 </body>
 </html>

@@ -1,72 +1,80 @@
 {
   "universitaria": [
-    {
-      "titulo": "Biología Celular"
-    },
-    {
-      "titulo": "Biología Molecular y Genética"
-    },
-    {
-      "titulo": "Microbiología"
-    },
-    {
-      "titulo": "Farmacología"
-    },
-    {
-      "titulo": "Bioquímica y Metabolismo"
-    },
-    {
-      "titulo": "Fisiología"
-    },
-    {
-      "titulo": "Fisiopatología"
-    },
-    {
-      "titulo": "Anatomía"
-    }
+    { "titulo": "Biología Celular", "titulo_ca": "Biologia Cel·lular", "titulo_en": "Cell Biology" },
+    { "titulo": "Biología Molecular y Genética", "titulo_ca": "Biologia Molecular i Genètica", "titulo_en": "Molecular Biology and Genetics" },
+    { "titulo": "Microbiología", "titulo_ca": "Microbiologia", "titulo_en": "Microbiology" },
+    { "titulo": "Farmacología", "titulo_ca": "Farmacologia", "titulo_en": "Pharmacology" },
+    { "titulo": "Bioquímica y Metabolismo", "titulo_ca": "Bioquímica i Metabolisme", "titulo_en": "Biochemistry and Metabolism" },
+    { "titulo": "Fisiología", "titulo_ca": "Fisiologia", "titulo_en": "Physiology" },
+    { "titulo": "Fisiopatología", "titulo_ca": "Fisiopatologia", "titulo_en": "Pathophysiology" },
+    { "titulo": "Anatomía", "titulo_ca": "Anatomia", "titulo_en": "Anatomy" }
   ],
   "formacionProfesional": [
     {
       "titulo": "Técnico en Cuidados Auxiliares de Enfermería",
+      "titulo_ca": "Tècnic en Cures Auxiliars d'Infermeria",
+      "titulo_en": "Nursing Care Assistant Technician",
       "icono": "fa-solid fa-user-nurse",
       "descripcion": "El Técnico en Cuidados Auxiliares de Enfermería (TCAE) proporciona cuidados básicos de enfermería a pacientes, bajo la supervisión de personal de enfermería. Sus funciones principales incluyen la higiene, alimentación, movilización y el apoyo en la administración de tratamientos en centros sanitarios o sociosanitarios.",
+      "descripcion_ca": "El Tècnic en Cures Auxiliars d'Infermeria (TCAI) proporciona cures bàsiques d'infermeria als pacients, sota la supervisió de personal d'infermeria. Les seves funcions principals inclouen la higiene, l'alimentació, la mobilització i el suport en l'administració de tractaments en centres sanitaris o sociosanitaris.",
+      "descripcion_en": "The Nursing Care Assistant Technician provides basic nursing care to patients under the supervision of nursing staff. Their main duties include hygiene, feeding, mobilisation and support with the administration of treatments in healthcare and social care settings.",
       "recursos": [
-        { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
-        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" },
-        { "titulo": "Escape room infeccions", "enlace": "https://luisfs.com/escape-infeccions/?temps=40" },
-        { "titulo": "Escape room instrumental", "enlace": "https://luisfs.com/escape-instrumental/?temps=45" }
+        { "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)", "titulo_ca": "Simulador de llits: obert, tancat i ocupat", "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)", "enlace": "/simulaciones/simulador-llits/" },
+        { "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)", "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)", "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)", "enlace": "https://luisfs.com/simulaciones/simulador-higiene/" },
+        { "titulo": "Escape room de infecciones (en catalán)", "titulo_ca": "Escape room infeccions", "titulo_en": "Infections escape room (in Catalan)", "enlace": "https://luisfs.com/simulaciones/escape-infeccions/?temps=40" },
+        { "titulo": "Escape room de instrumental (en catalán)", "titulo_ca": "Escape room instrumental", "titulo_en": "Instruments escape room (in Catalan)", "enlace": "https://luisfs.com/simulaciones/escape-instrumental/?temps=45" }
       ]
     },
     {
       "titulo": "Técnico de Atención a Personas en Situación de Dependencia",
+      "titulo_ca": "Tècnic d'Atenció a Persones en Situació de Dependència",
+      "titulo_en": "Care Technician for Dependent Persons",
       "icono": "fa-solid fa-hands-holding-child",
       "descripcion": "El Técnico en Atención a Personas en Situación de Dependencia (TAPSD) se encarga de intervenir de forma directa para cubrir las necesidades físicas, sociales y psicológicas de personas dependientes. Su labor se centra en la asistencia a la autonomía personal, la promoción de la salud y la organización de actividades de ocio, tanto en el domicilio como en instituciones.",
+      "descripcion_ca": "El Tècnic en Atenció a Persones en Situació de Dependència intervé de forma directa per cobrir les necessitats físiques, socials i psicològiques de les persones dependents. La seva tasca se centra en l'assistència a l'autonomia personal, la promoció de la salut i l'organització d'activitats d'oci, tant al domicili com en institucions.",
+      "descripcion_en": "The Care Technician for Dependent Persons works directly to meet the physical, social and psychological needs of dependent people. Their work focuses on supporting personal autonomy, promoting health and organising leisure activities, both at home and in institutions.",
       "recursos": [
-        { "titulo": "Simulador de llits: obert, tancat i ocupat", "enlace": "/simulador-llits/" },
-        { "titulo": "Simulador d'higiene del pacient (llit i dutxa)", "enlace": "https://luisfs.com/simulador-higiene/" }
+        { "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)", "titulo_ca": "Simulador de llits: obert, tancat i ocupat", "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)", "enlace": "/simulaciones/simulador-llits/" },
+        { "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)", "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)", "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)", "enlace": "https://luisfs.com/simulaciones/simulador-higiene/" }
       ]
     },
     {
       "titulo": "Anatomía Patológica y Citodiagnóstico",
+      "titulo_ca": "Anatomia Patològica i Citodiagnòstic",
+      "titulo_en": "Pathological Anatomy and Cytodiagnosis",
       "icono": "fa-solid fa-microscope",
-      "descripcion": "El Técnico Superior en Anatomía Patológica y Citodiagnóstico se dedica a obtener, procesar y estudiar muestras biológicas (tejidos y células) para la detección y el diagnóstico de enfermedades. Sus funciones incluyen la preparación de tejidos (histología) y extendidos (citología), la realización de necropsias y la asistencia técnica al médico patólogo en el diagnóstico."
+      "descripcion": "El Técnico Superior en Anatomía Patológica y Citodiagnóstico se dedica a obtener, procesar y estudiar muestras biológicas (tejidos y células) para la detección y el diagnóstico de enfermedades. Sus funciones incluyen la preparación de tejidos (histología) y extendidos (citología), la realización de necropsias y la asistencia técnica al médico patólogo en el diagnóstico.",
+      "descripcion_ca": "El Tècnic Superior en Anatomia Patològica i Citodiagnòstic es dedica a obtenir, processar i estudiar mostres biològiques (teixits i cèl·lules) per a la detecció i el diagnòstic de malalties. Les seves funcions inclouen la preparació de teixits (histologia) i extensions (citologia), la realització de necròpsies i l'assistència tècnica al metge patòleg en el diagnòstic.",
+      "descripcion_en": "The Higher Technician in Pathological Anatomy and Cytodiagnosis obtains, processes and studies biological samples (tissues and cells) for the detection and diagnosis of disease. Their duties include preparing tissues (histology) and smears (cytology), carrying out autopsies and providing technical assistance to the pathologist in diagnosis."
     }
   ],
   "formacionContinuada": [
     {
       "titulo": "Necropsias y medicina legal",
+      "titulo_ca": "Necròpsies i medicina legal",
+      "titulo_en": "Autopsies and forensic medicine",
       "icono": "fa-solid fa-scale-balanced",
-      "descripcion": "La necropsia médico-legal es un examen judicial del cadáver para determinar la causa, mecanismo y, crucialmente, la manera legal (homicidio, accidente, etc.) de una muerte sospechosa o violenta. Busca proporcionar evidencia forense rigurosa mediante el examen externo, la disección interna y la toma de muestras toxicológicas y de tejido."
+      "descripcion": "La necropsia médico-legal es un examen judicial del cadáver para determinar la causa, mecanismo y, crucialmente, la manera legal (homicidio, accidente, etc.) de una muerte sospechosa o violenta. Busca proporcionar evidencia forense rigurosa mediante el examen externo, la disección interna y la toma de muestras toxicológicas y de tejido.",
+      "descripcion_ca": "La necròpsia medicolegal és un examen judicial del cadàver per determinar la causa, el mecanisme i, de manera crucial, la manera legal (homicidi, accident, etc.) d'una mort sospitosa o violenta. Busca proporcionar evidència forense rigorosa mitjançant l'examen extern, la dissecció interna i la presa de mostres toxicològiques i de teixit.",
+      "descripcion_en": "A medico-legal autopsy is a judicial examination of a body to determine the cause, mechanism and, crucially, the legal manner (homicide, accident, etc.) of a suspicious or violent death. It aims to provide rigorous forensic evidence through external examination, internal dissection and the collection of toxicological and tissue samples."
     },
     {
       "titulo": "Primeros auxilios",
+      "titulo_ca": "Primers auxilis",
+      "titulo_en": "First aid",
       "icono": "fa-solid fa-kit-medical",
-      "descripcion": "Los primeros auxilios son las atenciones inmediatas y básicas dadas a una persona lesionada o enferma en una emergencia. Buscan mantener la vida y evitar el agravamiento de las lesiones hasta que llegue el personal sanitario especializado."
+      "descripcion": "Los primeros auxilios son las atenciones inmediatas y básicas dadas a una persona lesionada o enferma en una emergencia. Buscan mantener la vida y evitar el agravamiento de las lesiones hasta que llegue el personal sanitario especializado.",
+      "descripcion_ca": "Els primers auxilis són les atencions immediates i bàsiques donades a una persona lesionada o malalta en una emergència. Busquen mantenir la vida i evitar l'agreujament de les lesions fins que arribi el personal sanitari especialitzat.",
+      "descripcion_en": "First aid is the immediate, basic care given to an injured or ill person in an emergency. Its aim is to preserve life and prevent injuries from getting worse until specialised healthcare personnel arrive."
     },
     {
       "titulo": "Prevención de infecciones nosocomiales",
+      "titulo_ca": "Prevenció d'infeccions nosocomials",
+      "titulo_en": "Prevention of hospital-acquired infections",
       "icono": "fa-solid fa-hands-bubbles",
-      "descripcion": "Prevenir las infecciones hospitalarias es la máxima expresión de cuidado y respeto hacia la vulnerabilidad del paciente, protegiéndolo de complicaciones graves o de la muerte por causas ajenas a su dolencia original. Cada gesto de asepsia es un acto directo que salva vidas, especialmente cuando recordamos que algo tan simple como una correcta higiene de manos puede prevenir hasta el 50% de estas infecciones."
+      "descripcion": "Prevenir las infecciones hospitalarias es la máxima expresión de cuidado y respeto hacia la vulnerabilidad del paciente, protegiéndolo de complicaciones graves o de la muerte por causas ajenas a su dolencia original. Cada gesto de asepsia es un acto directo que salva vidas, especialmente cuando recordamos que algo tan simple como una correcta higiene de manos puede prevenir hasta el 50% de estas infecciones.",
+      "descripcion_ca": "Prevenir les infeccions hospitalàries és la màxima expressió de cura i respecte cap a la vulnerabilitat del pacient, protegint-lo de complicacions greus o de la mort per causes alienes a la seva malaltia original. Cada gest d'asèpsia és un acte directe que salva vides, especialment quan recordem que una cosa tan simple com una correcta higiene de mans pot prevenir fins al 50% d'aquestes infeccions.",
+      "descripcion_en": "Preventing hospital infections is the highest expression of care and respect for patients' vulnerability, protecting them from serious complications or death from causes unrelated to their original illness. Every aseptic gesture is a direct, life-saving act, especially when we remember that something as simple as proper hand hygiene can prevent up to 50% of these infections."
     }
   ]
 }

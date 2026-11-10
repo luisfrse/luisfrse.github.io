@@ -1,6 +1,10 @@
 {
   "subtitulo": "Investigación | Docencia | Solidaridad | Naturaleza",
+  "subtitulo_ca": "Recerca | Docència | Solidaritat | Natura",
+  "subtitulo_en": "Research | Teaching | Solidarity | Nature",
   "titulo": "Entre la ciencia, la educación y el compromiso social",
+  "titulo_ca": "Entre la ciència, l'educació i el compromís social",
+  "titulo_en": "Between science, education and social commitment",
   "parrafos": [
     "Soy Luis Franco, y mi vida transcurre entre la ciencia, la educación y el compromiso social.",
     "Como Doctor en Inmunología por la UAB, mi pasión es la investigación. Me sumerjo en el mundo de la proteómica y la genómica para entender mejor sus aplicaciones en la microbiología y la inmunología, una labor que desarrollo desde hace más de 8 años y que actualmente continúo en la UOC.",
@@ -8,22 +12,44 @@
     "Mi compromiso va más allá del laboratorio y el aula. Soy presidente y socio fundador de la ONG de cooperación internacional Bhai Nepal, un proyecto que me conecta con el mundo de una forma diferente.",
     "Y cuando necesito recargar energía, la encuentro en la naturaleza. Soy un apasionado de los deportes de montaña: el senderismo, el alpinismo y la escalada son mi refugio."
   ],
+  "parrafos_ca": [
+    "Sóc en Luis Franco, i la meva vida transcorre entre la ciència, l'educació i el compromís social.",
+    "Com a Doctor en Immunologia per la UAB, la meva passió és la recerca. M'endinso en el món de la proteòmica i la genòmica per entendre millor les seves aplicacions en la microbiologia i la immunologia, una tasca que desenvolupo des de fa més de 8 anys i que actualment continuo a la UOC.",
+    "Però no crec en el coneixement si no es comparteix. Per això, l'altra gran vocació que tinc és la docència, a la qual he dedicat més de 14 anys. Actualment, tinc el privilegi de formar futurs professionals com a professor als estudis de Ciències de la Salut de la Universitat Oberta de Catalunya (UOC) i com a coordinador de formació professional a l'institut públic Josep Puig i Cadafalch.",
+    "El meu compromís va més enllà del laboratori i de l'aula. Sóc president i soci fundador de l'ONG de cooperació internacional Bhai Nepal, un projecte que em connecta amb el món d'una manera diferent.",
+    "I quan necessito recarregar energia, la trobo a la natura. Sóc un apassionat dels esports de muntanya: l'excursionisme, l'alpinisme i l'escalada són el meu refugi."
+  ],
+  "parrafos_en": [
+    "I'm Luis Franco, and my life moves between science, education and social commitment.",
+    "As a PhD in Immunology from the UAB, my passion is research. I immerse myself in the world of proteomics and genomics to better understand their applications in microbiology and immunology, work I have been doing for more than 8 years and which I currently continue at the UOC.",
+    "But I don't believe in knowledge unless it is shared. That is why my other great calling is teaching, to which I have devoted more than 14 years. I currently have the privilege of training future professionals as a lecturer in Health Sciences at the Universitat Oberta de Catalunya (UOC) and as vocational training coordinator at the public school Josep Puig i Cadafalch.",
+    "My commitment goes beyond the lab and the classroom. I am the president and a founding member of the international cooperation NGO Bhai Nepal, a project that connects me with the world in a different way.",
+    "And when I need to recharge, I find the energy in nature. I am passionate about mountain sports: hiking, mountaineering and climbing are my refuge."
+  ],
   "cifras": [
     {
       "valor": "8+",
-      "texto": "años de investigación en bioinformática y proteómica"
+      "texto": "años de investigación en bioinformática y proteómica",
+      "texto_ca": "anys de recerca en bioinformàtica i proteòmica",
+      "texto_en": "years of research in bioinformatics and proteomics"
     },
     {
       "valor": "15+",
-      "texto": "años dedicados a la docencia"
+      "texto": "años dedicados a la docencia",
+      "texto_ca": "anys dedicats a la docència",
+      "texto_en": "years devoted to teaching"
     },
     {
       "valor": "UAB",
-      "texto": "Doctor en Inmunología"
+      "texto": "Doctor en Inmunología",
+      "texto_ca": "Doctor en Immunologia",
+      "texto_en": "PhD in Immunology"
     },
     {
       "valor": "UOC",
-      "texto": "Profesor en los estudios de Ciencias de la Salud"
+      "texto": "Profesor en los estudios de Ciencias de la Salud",
+      "texto_ca": "Professor als estudis de Ciències de la Salut",
+      "texto_en": "Lecturer in Health Sciences"
     }
   ]
 }

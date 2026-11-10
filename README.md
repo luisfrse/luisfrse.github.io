@@ -21,6 +21,18 @@ solo editas un archivo pequeño; no hay que tocar ni volver a subir el resto de 
 
 Lo más nuevo va **arriba** de cada lista.
 
+## Idiomas (castellano · català · English)
+El selector **ES | CA | EN** está arriba a la derecha. La primera vez se usa el idioma del navegador y después se
+recuerda la elección.
+- **Textos de la interfaz** (menús, botones, títulos fijos, formulario): `js/i18n.js`, un bloque por idioma.
+- **Contenidos de `data/`:** cada campo se puede traducir añadiendo el mismo nombre con `_ca` o `_en`
+  (p. ej. `"titulo": "Fisiología", "titulo_ca": "Fisiologia", "titulo_en": "Physiology"`). Si falta la traducción,
+  se muestra el texto en castellano, así que nada se rompe por no traducirlo.
+- **Artículos de divulgación y publicaciones:** se dejan en su idioma original (no llevan `_ca`/`_en`).
+- Con Google Sheets, las columnas se llaman igual, en minúsculas: `titulo_ca`, `resumen_en`…
+- Limitaciones: el `<title>` y la descripción que ven Google y las redes sociales son siempre los del castellano
+  (la web es una sola página). Las simulaciones (`simulaciones/`) están en catalán y el sonómetro en castellano.
+
 **Imágenes de divulgación:** no hace falta poner `imagen`. Al guardar un cambio en `data/divulgacion.json`,
 GitHub ejecuta solo `herramientas/obtener-imagenes.py`, que busca la imagen de portada del enlace y la añade
 (en 1-2 minutos aparece un commit automático; haz «pull» si trabajas en local). Cada lunes repasa las imágenes

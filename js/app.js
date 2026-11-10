@@ -13,13 +13,31 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const url = u => (/^\s*(javascript|data|vbscript):/i.test(u || '') ? '#' : esc(u || '#'));
   const ext = u => /^https?:\/\//i.test(u || '') ? ' target="_blank" rel="noopener"' : '';
-  const TIPOS = { articulo: 'Artículo', radio: 'Radio', prensa: 'Prensa', entrevista: 'Entrevista', audio: 'Audio', podcast: 'Podcast', video: 'Vídeo' };
-  const tipoLabel = t => TIPOS[(t || '').toLowerCase()] || (t ? t.charAt(0).toUpperCase() + t.slice(1) : '');
+
+  /* ---------- idioma (es / ca) ---------- */
+  const TX = window.I18N || { es: {} };
+  const IDIOMAS = ['es', 'ca', 'en'];
+  const LOCALES = { es: 'es-ES', ca: 'ca-ES', en: 'en-GB' };
+  const delNavegador = () => { const n = (navigator.language || '').toLowerCase().slice(0, 2); return IDIOMAS.includes(n) ? n : 'es'; };
+  let lang = delNavegador();
+  try {
+    const guardado = localStorage.getItem('lang');
+    if (IDIOMAS.includes(guardado)) lang = guardado;
+  } catch (_) { /* sin almacenamiento: se usa el idioma del navegador */ }
+  // Texto de la interfaz: t('clave'). Si falta en el idioma activo, se usa el castellano.
+  const t = k => (k in TX[lang] ? TX[lang][k] : TX.es[k]);
+  // Campo de los datos: L(obj, 'titulo') devuelve obj.titulo_ca / obj.titulo_en según el idioma, o obj.titulo si no existe la traducción.
+  const L = (o, k) => {
+    if (!o) return undefined;
+    if (lang !== 'es') { const v = o[`${k}_${lang}`]; if (v !== undefined && v !== '' && !(Array.isArray(v) && !v.length)) return v; }
+    return o[k];
+  };
+  const tipoLabel = x => t('types')[(x || '').toLowerCase()] || (x ? x.charAt(0).toUpperCase() + x.slice(1) : '');
   function fecha(f) {
     if (!f) return '';
     if (/^\d{4}-\d{2}(-\d{2})?$/.test(f)) {
       const d = new Date(f.length === 7 ? f + '-01T00:00:00' : f + 'T00:00:00');
-      return d.toLocaleDateString('es-ES', f.length === 7 ? { year: 'numeric', month: 'long' } : { year: 'numeric', month: 'long', day: 'numeric' });
+      return d.toLocaleDateString(LOCALES[lang],f.length === 7 ? { year: 'numeric', month: 'long' } : { year: 'numeric', month: 'long', day: 'numeric' });
     }
     return f;
   }
@@ -65,15 +83,15 @@
     if (Array.isArray(out) && C.invertir && C.invertir[name]) out = out.slice().reverse();
     return (cache[name] = out);
   }
-  const errorBox = () => `<div class="empty error">No se han podido cargar los datos. Si estás abriendo el archivo index.html directamente desde el disco, el navegador lo bloquea: publica la web (ver README) o ábrela con un servidor local.</div>`;
+  const errorBox = () => `<div class="empty error">${esc(t('dataError'))}</div>`;
 
   /* ---------- piezas comunes ---------- */
   const socials = () => (C.redes || []).map(r =>
     `<a class="soc" href="${url(r.url)}" target="_blank" rel="me noopener" aria-label="${esc(r.nombre)}" title="${esc(r.nombre)}"><i class="${esc(r.icono)}" aria-hidden="true"></i></a>`).join('');
-  const pageHead = (t, lead) => `<section class="page-head"><div class="wrap"><h1>${t}</h1>${lead ? `<p>${lead}</p>` : ''}</div></section>`;
+  const pageHead = (title, lead) => `<section class="page-head"><div class="wrap"><h1>${title}</h1>${lead ? `<p>${lead}</p>` : ''}</div></section>`;
   const card = c => {
     const inner = `${c.icono ? `<div class="ico"><i class="${esc(c.icono)}" aria-hidden="true"></i></div>` : ''}
-      <h3>${esc(c.titulo)}</h3>${c.descripcion ? `<p>${esc(c.descripcion)}</p>` : ''}${c.enlace ? '<span class="more">Ver más →</span>' : ''}`;
+      <h3>${esc(L(c, 'titulo'))}</h3>${L(c, 'descripcion') ? `<p>${esc(L(c, 'descripcion'))}</p>` : ''}${c.enlace ? `<span class="more">${esc(t('seeMore'))}</span>` : ''}`;
     return c.enlace ? `<a class="card reveal" href="${url(c.enlace)}"${ext(c.enlace)}>${inner}</a>` : `<div class="card reveal">${inner}</div>`;
   };
   const IMG_DEFECTO = 'assets/divulgacion-defecto.svg'; // se usa si una entrada no tiene imagen o falla al cargar
@@ -81,11 +99,11 @@
     <article class="card entry reveal" data-tipo="${esc((e.tipo || '').toLowerCase())}">
       <img class="thumb" loading="lazy" referrerpolicy="no-referrer" src="${e.imagen ? url(e.imagen) : IMG_DEFECTO}" alt="" onerror="this.onerror=null;this.src='${IMG_DEFECTO}'">
       <div class="meta">${e.tipo ? `<span class="badge">${esc(tipoLabel(e.tipo))}</span>` : ''}
-        ${e.medio ? `<span class="src">${esc(e.medio)}</span>` : ''}${e.fecha ? `<span class="src">· ${esc(fecha(e.fecha))}</span>` : ''}</div>
-      <h3>${esc(e.titulo)}</h3>
-      ${e.resumen ? `<p>${esc(e.resumen)}</p>` : ''}
+        ${(e.medio || e.fecha) ? `<span class="src">${esc([e.medio, fecha(e.fecha)].filter(Boolean).join(' · '))}</span>` : ''}</div>
+      <h3>${esc(L(e, 'titulo'))}</h3>
+      ${L(e, 'resumen') ? `<p>${esc(L(e, 'resumen'))}</p>` : ''}
       ${e.audio ? `<audio controls preload="none" src="${url(e.audio)}"></audio>` : ''}
-      ${e.enlace ? `<a class="more" href="${url(e.enlace)}"${ext(e.enlace)}>Leer / escuchar →</a>` : ''}
+      ${e.enlace ? `<a class="more" href="${url(e.enlace)}"${ext(e.enlace)}>${esc(t('readListen'))}</a>` : ''}
     </article>`;
 
   /* ---------- páginas ---------- */
@@ -94,13 +112,26 @@
   pages.inicio = async () => {
     const [div] = await Promise.all([data('divulgacion')]);
     const ultimas = Array.isArray(div) ? div.slice(0, 3) : [];
+    // Tarjeta de acceso con banner: foto si existe (si no carga, queda el degradado de debajo)
+    const tile = (icono, clave, enlace, g1, g2, foto) => `
+      <a class="card tile reveal" href="${url(enlace)}"${ext(enlace)}>
+        <div class="tile-img" style="--g1:${g1};--g2:${g2}">
+          <i class="big ${esc(icono)}" aria-hidden="true"></i>
+          ${foto ? `<img loading="lazy" referrerpolicy="no-referrer" src="${url(foto)}" alt="" onerror="this.remove()">` : ''}
+          <div class="ico"><i class="${esc(icono)}" aria-hidden="true"></i></div>
+        </div>
+        <div class="tile-body">
+          <h3>${esc(t(`nav.${clave}`))}</h3><p>${esc(t('access')[clave])}</p>
+          <span class="more">${esc(t('seeMore'))}</span>
+        </div>
+      </a>`;
     const accesos = [
-      { icono: 'fa-solid fa-chalkboard-user', titulo: 'Docencia', descripcion: 'Campus: materiales, notas y seguimiento para el alumnado matriculado (Universidad, FP y Formación Continuada).', enlace: 'https://campus.luisfs.com' },
-      { icono: 'fa-solid fa-laptop-code', titulo: 'Aplicaciones', descripcion: 'Herramientas y aplicaciones propias.', enlace: '#/aplicaciones' },
-      { icono: 'fa-solid fa-dna', titulo: 'Investigación', descripcion: 'Líneas actuales y producción científica.', enlace: '#/investigacion' },
-      { icono: 'fa-solid fa-microphone-lines', titulo: 'Divulgación', descripcion: 'Artículos, entrevistas y participaciones en medios.', enlace: '#/divulgacion' },
-      { icono: 'fa-solid fa-camera-retro', titulo: 'Fotografía', descripcion: 'Imágenes de aficionado, una a una.', enlace: '#/fotografia' },
-      { icono: 'fa-solid fa-hand-holding-heart', titulo: 'Solidaridad', descripcion: 'Bhai Nepal, cooperación internacional.', enlace: '#/solidaridad' }
+      tile('fa-solid fa-chalkboard-user', 'docencia', 'https://campus.luisfs.com', '#1c3a5c', '#3b6ea5'),
+      tile('fa-solid fa-laptop-code', 'aplicaciones', '#/aplicaciones', '#36005a', '#8f63c9'),
+      tile('fa-solid fa-dna', 'investigacion', '#/investigacion', '#0d1a2a', '#3b6ea5', 'assets/investigacion.jpg'),
+      tile('fa-solid fa-microphone-lines', 'divulgacion', '#/divulgacion', '#36005a', '#3b6ea5', ultimas[0] && ultimas[0].imagen),
+      tile('fa-solid fa-camera-retro', 'fotografia', '#/fotografia', '#0d1a2a', '#5a2d86'),
+      tile('fa-solid fa-hand-holding-heart', 'solidaridad', '#/solidaridad', '#1c3a5c', '#b08be0', 'assets/solidaridad.jpg')
     ];
     return `
     <section class="hero" id="hero">
@@ -108,42 +139,42 @@
       <canvas id="net" aria-hidden="true"></canvas>
       <div class="hero-content">
         <span class="eyebrow">${esc(C.nombre || 'Luis Franco Serrano')}</span>
-        <h1>Bienvenida/o a mi <em>espacio personal</em></h1>
-        <p class="lead">Un lugar para compartir docencia, investigación científica y solidaridad</p>
-        <div class="pills"><span>Investigación</span><span>Docencia</span><span>Solidaridad</span><span>Naturaleza</span></div>
-        <div class="cta"><a class="btn btn-primary" href="#/sobre-mi">Conóceme</a><a class="btn btn-ghost" href="#/investigacion">Ver investigación</a></div>
+        <h1>${t('heroTitle')}</h1>
+        <p class="lead">${esc(t('heroLead'))}</p>
+        <div class="pills">${t('pills').map(p => `<span>${esc(p)}</span>`).join('')}</div>
+        <div class="cta"><a class="btn btn-primary" href="#/sobre-mi">${esc(t('meet'))}</a><a class="btn btn-ghost" href="#/investigacion">${esc(t('seeResearch'))}</a></div>
       </div>
       <div class="hero-social"><div class="socials">${socials()}</div></div>
     </section>
 
     <section class="section"><div class="wrap">
-      <span class="kicker">Explora</span><h2>¿Qué encontrarás aquí?</h2>
-      <div class="grid" style="margin-top:24px">${accesos.map(card).join('')}</div>
+      <span class="kicker">${esc(t('explore'))}</span><h2>${esc(t('whatHere'))}</h2>
+      <div class="grid" style="margin-top:24px">${accesos.join('')}</div>
     </div></section>
 
     ${ultimas.length ? `<section class="section alt"><div class="wrap">
-      <span class="kicker">Novedades</span><h2>Lo último en divulgación</h2>
+      <span class="kicker">${esc(t('news'))}</span><h2>${esc(t('latest'))}</h2>
       <div class="grid" style="margin-top:24px">${ultimas.map(entryCard).join('')}</div>
-      <p style="margin-top:28px"><a class="btn btn-dark" href="#/divulgacion">Ver toda la divulgación</a></p>
+      <p style="margin-top:28px"><a class="btn btn-dark" href="#/divulgacion">${esc(t('seeAllDiv'))}</a></p>
     </div></section>` : ''}`;
   };
 
   pages['sobre-mi'] = async () => {
     const a = await data('sobre-mi');
-    if (!a || Array.isArray(a)) return pageHead('Sobre mí') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
-    const parrafos = Array.isArray(a.parrafos) ? a.parrafos : [];
+    if (!a || Array.isArray(a)) return pageHead(esc(t('nav.sobre-mi'))) + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
+    const parrafos = [].concat(L(a, 'parrafos') || []);
     const cifras = Array.isArray(a.cifras) ? a.cifras : [];
     return `
-    ${pageHead('Sobre mí', esc(a.subtitulo || ''))}
+    ${pageHead(esc(t('nav.sobre-mi')), esc(L(a, 'subtitulo') || ''))}
     <section class="section"><div class="wrap">
       <div class="about-grid">
         <div class="portrait-wrap reveal"><img class="portrait" src="assets/foto-perfil.jpg?v=5" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
         <div class="about-text reveal">
-          ${a.titulo ? `<h2>${esc(a.titulo)}</h2>` : ''}
+          ${L(a, 'titulo') ? `<h2>${esc(L(a, 'titulo'))}</h2>` : ''}
           ${parrafos.map(p => `<p>${esc(p)}</p>`).join('')}
         </div>
       </div>
-      ${cifras.length ? `<div class="stats reveal">${cifras.map(c => `<div class="stat"><b>${esc(c.valor)}</b><span>${esc(c.texto)}</span></div>`).join('')}</div>` : ''}
+      ${cifras.length ? `<div class="stats reveal">${cifras.map(c => `<div class="stat"><b>${esc(c.valor)}</b><span>${esc(L(c, 'texto'))}</span></div>`).join('')}</div>` : ''}
     </div></section>`;
   };
 
@@ -152,32 +183,33 @@
   const slug = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const idDe = a => a.id || slug(a.titulo);
   const BLOQUES = [
-    { id: 'universitaria', clave: 'universitaria', titulo: 'Universitaria', lead: 'Profesor en la escuela de Salud de la Universitat Oberta de Catalunya (UOC).' },
-    { id: 'formacion-profesional', clave: 'formacionProfesional', titulo: 'Formación Profesional', lead: 'Coordinador de formación profesional en el instituto público Josep Puig i Cadafalch.' },
-    { id: 'formacion-continuada', clave: 'formacionContinuada', titulo: 'Formación Continuada', lead: '' }
+    { id: 'universitaria', clave: 'universitaria' },
+    { id: 'formacion-profesional', clave: 'formacionProfesional' },
+    { id: 'formacion-continuada', clave: 'formacionContinuada' }
   ];
+  const bloqueTx = b => t('blocks')[b.id];
   let extraTitle = '';
 
   const asignatura = (b, a) => {
-    extraTitle = a.titulo;
-    const parrafos = a.texto ? (Array.isArray(a.texto) ? a.texto : [a.texto]) : [];
-    const temas = Array.isArray(a.temas) ? a.temas : [];
+    extraTitle = L(a, 'titulo');
+    const parrafos = [].concat(L(a, 'texto') || []);
+    const temas = [].concat(L(a, 'temas') || []);
     const recursos = Array.isArray(a.recursos) ? a.recursos : [];
-    const vacio = !a.descripcion && !parrafos.length && !temas.length && !recursos.length;
-    return `${pageHead(esc(a.titulo), `Docencia · ${esc(b.titulo)}`)}
+    const vacio = !L(a, 'descripcion') && !parrafos.length && !temas.length && !recursos.length;
+    return `${pageHead(esc(L(a, 'titulo')), `${esc(t('teaching'))} · ${esc(bloqueTx(b).titulo)}`)}
       <section class="section"><div class="wrap subject">
-        <a class="back" href="#/docencia/${b.id}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver a ${esc(b.titulo)}</a>
-        ${a.descripcion ? `<p class="lead-text reveal">${esc(a.descripcion)}</p>` : ''}
+        <a class="back" href="#/docencia/${b.id}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ${esc(t('backTo')(bloqueTx(b).titulo))}</a>
+        ${L(a, 'descripcion') ? `<p class="lead-text reveal">${esc(L(a, 'descripcion'))}</p>` : ''}
         ${parrafos.map(p => `<p class="reveal">${esc(p)}</p>`).join('')}
-        ${temas.length ? `<h2 class="reveal">Temario</h2><ul class="topics reveal">${temas.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
-        ${recursos.length ? `<h2 class="reveal">Recursos</h2><ul class="resources">${recursos.map(r => `<li class="reveal"><a href="${url(r.enlace)}"${ext(r.enlace)}><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> ${esc(r.titulo || r.enlace)}</a></li>`).join('')}</ul>` : ''}
-        ${vacio ? '<div class="empty">Contenido próximamente.</div>' : ''}
+        ${temas.length ? `<h2 class="reveal">${esc(t('syllabus'))}</h2><ul class="topics reveal">${temas.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+        ${recursos.length ? `<h2 class="reveal">${esc(t('resources'))}</h2><ul class="resources">${recursos.map(r => `<li class="reveal"><a href="${url(r.enlace)}"${ext(r.enlace)}><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> ${esc(L(r, 'titulo') || r.enlace)}</a></li>`).join('')}</ul>` : ''}
+        ${vacio ? `<div class="empty">${esc(t('soonContent'))}</div>` : ''}
       </div></section>`;
   };
 
   pages.docencia = async (sub, sub2) => {
     const d = await data('docencia');
-    if (!d || Array.isArray(d)) return pageHead('Docencia') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
+    if (!d || Array.isArray(d)) return pageHead(esc(t('teaching'))) + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
     if (sub2) {
       const b = BLOQUES.find(x => x.id === sub);
       const a = b && (d[b.clave] || []).find(x => idDe(x) === sub2);
@@ -185,14 +217,15 @@
     }
     const bloque = b => {
       const lista = (d[b.clave] || []).map(a => ({ ...a, enlace: a.enlace || `#/docencia/${b.id}/${idDe(a)}` }));
+      const tx = bloqueTx(b);
       return `
       <div class="teach-block" id="${b.id}">
-        <span class="kicker">Docencia</span><h2>${b.titulo}</h2>
-        ${b.lead ? `<p class="lead-text">${b.lead}</p>` : ''}
-        ${lista.length ? `<div class="grid">${lista.map(card).join('')}</div>` : '<div class="empty" style="margin-top:24px">Próximamente.</div>'}
+        <span class="kicker">${esc(t('teaching'))}</span><h2>${esc(tx.titulo)}</h2>
+        ${tx.lead ? `<p class="lead-text">${esc(tx.lead)}</p>` : ''}
+        ${lista.length ? `<div class="grid">${lista.map(card).join('')}</div>` : `<div class="empty" style="margin-top:24px">${esc(t('soon'))}</div>`}
       </div>`;
     };
-    return `${pageHead('Docencia', 'Formar a futuros profesionales de la salud y del cuidado.')}
+    return `${pageHead(esc(t('teaching')), esc(t('teachingLead')))}
       <section class="section"><div class="wrap">
         ${BLOQUES.map(bloque).join('')}
       </div></section>`;
@@ -200,44 +233,44 @@
 
   pages.aplicaciones = async () => {
     const list = await data('aplicaciones');
-    return `${pageHead('Aplicaciones')}
+    return `${pageHead(esc(t('nav.aplicaciones')))}
       <section class="section"><div class="wrap">
-        ${list === null ? errorBox() : list.length ? `<div class="grid">${list.map(card).join('')}</div>` : '<div class="empty">Próximamente.</div>'}
+        ${list === null ? errorBox() : list.length ? `<div class="grid">${list.map(card).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
       </div></section>`;
   };
 
   pages.investigacion = async () => {
     const [inv, pubs] = await Promise.all([data('investigacion'), data('publicaciones')]);
     const lineas = inv && inv.lineas ? inv.lineas : [];
-    return `${pageHead('Investigación', 'Líneas actuales de investigación y producción científica.')}
+    return `${pageHead(esc(t('nav.investigacion')), esc(t('researchLead')))}
       <section class="section"><div class="wrap">
         <div class="res-intro">
           <div>
-            <span class="kicker">Líneas actuales</span><h2>En qué estoy trabajando</h2>
-            ${inv ? `<p class="lead-text reveal">${esc(inv.intro)}</p>` : errorBox()}
+            <span class="kicker">${esc(t('currentLines'))}</span><h2>${esc(t('workingOn'))}</h2>
+            ${inv ? `<p class="lead-text reveal">${esc(L(inv, 'intro'))}</p>` : errorBox()}
           </div>
-          <figure class="side-photo reveal"><img src="assets/investigacion.jpg" alt="Micrografía en falso color de microorganismos" onerror="this.closest('.side-photo').remove()"></figure>
+          <figure class="side-photo reveal"><img src="assets/investigacion.jpg" alt="${esc(t('researchImgAlt'))}" onerror="this.closest('.side-photo').remove()"></figure>
         </div>
-        ${lineas.length ? `<h2 style="margin-top:48px">${esc(inv.tituloLineas || 'Líneas de trabajo')}</h2><div class="grid">${lineas.map(l => card({ titulo: l.titulo, descripcion: l.texto })).join('')}</div>` : ''}
+        ${lineas.length ? `<h2 style="margin-top:48px">${esc(L(inv, 'tituloLineas') || t('linesDefault'))}</h2><div class="grid">${lineas.map(l => card({ titulo: L(l, 'titulo'), descripcion: L(l, 'texto') })).join('')}</div>` : ''}
       </div></section>
       <section class="section alt"><div class="wrap">
-        <span class="kicker">Publicaciones</span><h2>Producción científica</h2>
+        <span class="kicker">${esc(t('publications'))}</span><h2>${esc(t('production'))}</h2>
         ${pubs === null ? errorBox() : pubs.length ? `<ul class="pubs">${pubs.map(p => `
           <li class="reveal"><a class="pub" href="${url(p.enlace)}"${ext(p.enlace)}>
             <span class="year">${esc(p.anio || '')}</span>
             <span class="t">${esc(p.titulo)}${(p.revista || p.autores) ? `<span class="m">${esc([p.revista, p.autores].filter(Boolean).join(' · '))}</span>` : ''}</span>
-            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>`).join('')}</ul>` : '<div class="empty">Próximamente.</div>'}
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>`).join('')}</ul>` : `<div class="empty">${esc(t('soon'))}</div>`}
       </div></section>`;
   };
 
   pages.divulgacion = async () => {
     const list = await data('divulgacion');
     const tipos = Array.isArray(list) ? [...new Set(list.map(e => (e.tipo || '').toLowerCase()).filter(Boolean))] : [];
-    return `${pageHead('Divulgación', 'Artículos de divulgación, entrevistas y participaciones en radio, prensa y medios.')}
+    return `${pageHead(esc(t('nav.divulgacion')), esc(t('outreachLead')))}
       <section class="section"><div class="wrap">
-        ${list === null ? errorBox() : !list.length ? '<div class="empty">Próximamente.</div>' : `
-          ${tipos.length > 1 ? `<div class="chips" role="group" aria-label="Filtrar por tipo">
-            <button class="chip" aria-pressed="true" data-f="">Todo</button>
+        ${list === null ? errorBox() : !list.length ? `<div class="empty">${esc(t('soon'))}</div>` : `
+          ${tipos.length > 1 ? `<div class="chips" role="group" aria-label="${esc(t('filterAria'))}">
+            <button class="chip" aria-pressed="true" data-f="">${esc(t('all'))}</button>
             ${tipos.map(t => `<button class="chip" aria-pressed="false" data-f="${esc(t)}">${esc(tipoLabel(t))}</button>`).join('')}</div>` : ''}
           <div class="grid" id="entries">${list.map(entryCard).join('')}</div>`}
       </div></section>`;
@@ -245,50 +278,51 @@
 
   pages.fotografia = async () => {
     const list = await data('fotos');
-    return `${pageHead('Fotografía', 'Imágenes de aficionado.')}
+    return `${pageHead(esc(t('nav.fotografia')), esc(t('photoLead')))}
       <section class="section"><div class="wrap">
-        ${list === null ? errorBox() : !list.length ? '<div class="empty">Próximamente.</div>' : `<div class="photos">${list.map(f => `
+        ${list === null ? errorBox() : !list.length ? `<div class="empty">${esc(t('soon'))}</div>` : `<div class="photos">${list.map(f => `
           <figure class="photo reveal">
-            <img loading="lazy" src="${url(f.src)}" alt="${esc(f.alt || f.titulo || f.frase || 'Fotografía')}">
-            <figcaption>${f.titulo ? `<h3>${esc(f.titulo)}</h3>` : ''}${f.frase ? `<p>${esc(f.frase)}</p>` : ''}${(f.lugar || f.fecha) ? `<small>${esc([f.lugar, fecha(f.fecha)].filter(Boolean).join(' · '))}</small>` : ''}</figcaption>
+            <img loading="lazy" src="${url(f.src)}" alt="${esc(L(f, 'alt') || L(f, 'titulo') || L(f, 'frase') || t('photoAlt'))}">
+            <figcaption>${L(f, 'titulo') ? `<h3>${esc(L(f, 'titulo'))}</h3>` : ''}${L(f, 'frase') ? `<p>${esc(L(f, 'frase'))}</p>` : ''}${(f.lugar || f.fecha) ? `<small>${esc([L(f, 'lugar'), fecha(f.fecha)].filter(Boolean).join(' · '))}</small>` : ''}</figcaption>
           </figure>`).join('')}</div>`}
       </div></section>`;
   };
 
   pages.solidaridad = async () => {
     const o = C.ong || {};
-    return `${pageHead('Solidaridad', `ONG ${esc(o.nombre || 'Bhai Nepal')}`)}
+    const nom = o.nombre || 'Bhai Nepal';
+    return `${pageHead(esc(t('nav.solidaridad')), esc(t('ngo')(nom)))}
       <section class="section"><div class="wrap">
         <div class="split">
           <div class="reveal">
-            <span class="kicker">Cooperación internacional</span>
-            <h2>${esc(o.nombre || 'Bhai Nepal')}</h2>
-            <p class="lead-text">Soy presidente y socio fundador de la ONG de cooperación internacional ${esc(o.nombre || 'Bhai Nepal')}, un proyecto que me conecta con el mundo de una forma diferente.</p>
-            <p><a class="btn btn-primary" href="${url(o.url)}"${ext(o.url)}>Visitar la web de la ONG <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></p>
+            <span class="kicker">${esc(t('solidarityKicker'))}</span>
+            <h2>${esc(nom)}</h2>
+            <p class="lead-text">${esc(t('solidarityText')(nom))}</p>
+            <p><a class="btn btn-primary" href="${url(o.url)}"${ext(o.url)}>${esc(t('visitNgo'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></p>
           </div>
           <div class="card reveal"><div class="ico"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></div>
-            <h3>Toda la información, en su web</h3><p>Proyectos, cómo colaborar y novedades de la ONG están en su página oficial.</p></div>
+            <h3>${esc(t('allInfo'))}</h3><p>${esc(t('allInfoText'))}</p></div>
         </div>
-        <figure class="wide-photo reveal"><img loading="lazy" src="assets/solidaridad.jpg" alt="Un grupo de niños y niñas sonriendo y haciendo el signo de la victoria" onerror="this.closest('.wide-photo').remove()"></figure>
+        <figure class="wide-photo reveal"><img loading="lazy" src="assets/solidaridad.jpg" alt="${esc(t('solidarityImgAlt'))}" onerror="this.closest('.wide-photo').remove()"></figure>
       </div></section>`;
   };
 
   pages.contacto = async () => `
-    ${pageHead('Contacto', 'Escríbeme y te responderé lo antes posible.')}
+    ${pageHead(esc(t('nav.contacto')), esc(t('contactLead')))}
     <section class="section"><div class="wrap"><div class="split">
       <div class="reveal">
-        <h2>Redes sociales</h2>
-        <p class="lead-text">Para cualquier consulta, usa el formulario o escríbeme por mis redes.</p>
+        <h2>${esc(t('social'))}</h2>
+        <p class="lead-text">${esc(t('contactText'))}</p>
         <div class="socials">${socials()}</div>
       </div>
       <form class="form reveal" id="contact" novalidate>
-        <h2>Formulario de contacto</h2>
-        <label>Nombre<input name="nombre" required autocomplete="name"></label>
-        <label>Correo electrónico<input name="email" type="email" required autocomplete="email"></label>
-        <label>Mensaje<textarea name="mensaje" required></textarea></label>
+        <h2>${esc(t('formTitle'))}</h2>
+        <label>${esc(t('fName'))}<input name="nombre" required autocomplete="name"></label>
+        <label>${esc(t('fEmail'))}<input name="email" type="email" required autocomplete="email"></label>
+        <label>${esc(t('fMsg'))}<textarea name="mensaje" required></textarea></label>
         <input class="hp" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">
-        ${C.web3formsKey ? '<div class="h-captcha" data-captcha="true"></div>' : ''}
-        <button class="btn btn-primary" type="submit">Enviar mensaje</button>
+        ${C.web3formsKey ? `<div class="h-captcha" data-captcha="true"></div>` : ''}
+        <button class="btn btn-primary" type="submit">${esc(t('send'))}</button>
         <p class="form-msg" id="form-msg" role="status"></p>
       </form>
     </div></div></section>`;
@@ -369,10 +403,10 @@
       ev.preventDefault();
       const d = Object.fromEntries(new FormData(f));
       if (d.web) return; // anti-spam
-      if (!d.nombre || !d.email || !d.mensaje || !/^\S+@\S+\.\S+$/.test(d.email)) { msg.textContent = 'Revisa el nombre, el correo y el mensaje.'; return; }
+      if (!d.nombre || !d.email || !d.mensaje || !/^\S+@\S+\.\S+$/.test(d.email)) { msg.textContent = t('fCheck'); return; }
       if (C.web3formsKey) {
-        if (!d['h-captcha-response']) { msg.textContent = 'Marca la casilla «No soy un robot» antes de enviar.'; return; }
-        msg.textContent = 'Enviando…';
+        if (!d['h-captcha-response']) { msg.textContent = t('fCaptcha'); return; }
+        msg.textContent = t('fSending');
         try {
           const fd = new FormData();
           fd.append('access_key', C.web3formsKey);
@@ -386,28 +420,46 @@
           const j = await r.json().catch(() => ({}));
           if (!r.ok || j.success === false) throw new Error(j.message || r.status);
           f.reset(); if (window.hcaptcha) try { window.hcaptcha.reset(); } catch (_) {}
-          msg.textContent = 'Mensaje enviado. ¡Gracias!';
-        } catch (e) { console.error(e); msg.textContent = 'No se pudo enviar el mensaje. Inténtalo de nuevo más tarde o escríbeme por mis redes.'; }
+          msg.textContent = t('fOk');
+        } catch (e) { console.error(e); msg.textContent = t('fFail'); }
       } else if (C.formEndpoint) {
-        msg.textContent = 'Enviando…';
+        msg.textContent = t('fSending');
         try {
           const r = await fetch(C.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ nombre: d.nombre, email: d.email, mensaje: d.mensaje }) });
           if (!r.ok) throw new Error(r.status);
-          f.reset(); msg.textContent = 'Mensaje enviado. ¡Gracias!';
-        } catch (e) { msg.textContent = 'No se pudo enviar el mensaje. Inténtalo de nuevo más tarde o escríbeme por mis redes.'; }
+          f.reset(); msg.textContent = t('fOk');
+        } catch (e) { msg.textContent = t('fFail'); }
       } else if (!C.email) {
-        msg.textContent = 'El formulario no está disponible por ahora. Escríbeme por mis redes.';
+        msg.textContent = t('fOff');
       } else {
         const body = `${d.mensaje}\n\n— ${d.nombre} (${d.email})`;
-        location.href = `mailto:${C.email}?subject=${encodeURIComponent('Contacto desde la web')}&body=${encodeURIComponent(body)}`;
-        msg.textContent = 'Se abrirá tu programa de correo para enviar el mensaje.';
+        location.href = `mailto:${C.email}?subject=${encodeURIComponent(t('mailSubject'))}&body=${encodeURIComponent(body)}`;
+        msg.textContent = t('fMail');
       }
     });
   }
 
   /* ---------- router ---------- */
-  const TITLES = { inicio: 'Inicio', 'sobre-mi': 'Sobre mí', docencia: 'Docencia', aplicaciones: 'Aplicaciones', investigacion: 'Investigación', divulgacion: 'Divulgación', fotografia: 'Fotografía', solidaridad: 'Solidaridad', contacto: 'Contacto' };
   const nav = $('#nav'), menu = $('#menu'), burger = $('#burger');
+
+  // Pinta en el idioma activo los textos fijos de index.html (menú, pie, selector) y las etiquetas <meta>
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+    $$('#lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    const meta = (sel, v) => { const m = $(sel); if (m) m.setAttribute('content', v); };
+    meta('meta[name="description"]', t('siteDesc')); meta('meta[property="og:description"]', t('ogDesc'));
+  }
+  function setLang(l) {
+    if (!IDIOMAS.includes(l) || l === lang) return;
+    lang = l;
+    try { localStorage.setItem('lang', l); } catch (_) { /* sin almacenamiento */ }
+    applyStatic();
+    $('#footer-social').innerHTML = socials();
+    render(true);
+  }
+  $$('#lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   let route = 'inicio';
   const setNav = () => nav.classList.toggle('solid', route !== 'inicio' || scrollY > 40);
   addEventListener('scroll', setNav, { passive: true });
@@ -416,7 +468,7 @@
   });
 
   let token = 0;
-  async function render() {
+  async function render(mantenerScroll) {
     const [p, sub, sub2] = location.hash.replace(/^#\/?/, '').split('/');
     extraTitle = '';
     route = pages[p] ? p : 'inicio';
@@ -424,11 +476,11 @@
     if (cleanup) { cleanup(); cleanup = null; }
     menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); document.body.style.overflow = '';
     $$('#menu a[data-r]').forEach(a => a.classList.toggle('active', a.dataset.r === route));
-    document.title = route === 'inicio' ? 'Luis Franco Serrano · Investigación, docencia y solidaridad' : `${TITLES[route]} · Luis Franco Serrano`;
+    document.title = route === 'inicio' ? t('siteTitle') : `${t('nav.' + route)} · Luis Franco Serrano`;
     let html;
-    try { html = await pages[route](sub, sub2); } catch (e) { console.error(e); html = pageHead('Error') + `<section class="section"><div class="wrap">${errorBox()}</div></section>`; }
+    try { html = await pages[route](sub, sub2); } catch (e) { console.error(e); html = pageHead(esc(t('error'))) + `<section class="section"><div class="wrap">${errorBox()}</div></section>`; }
     if (my !== token) return;
-    if (extraTitle) document.title = `${extraTitle} · Docencia · Luis Franco Serrano`;
+    if (extraTitle) document.title = `${extraTitle} · ${t('nav.docencia')} · Luis Franco Serrano`;
     app.innerHTML = html;
     setNav();
     observeReveals();
@@ -436,10 +488,12 @@
     if (route === 'divulgacion') initDivulgacion();
     if (route === 'contacto') initContact();
     const target = route === 'docencia' && sub ? document.getElementById(sub) : null;
+    if (mantenerScroll === true) return; // cambio de idioma: se queda donde estaba
     if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
     else window.scrollTo(0, 0);
   }
 
+  applyStatic();
   $('#footer-social').innerHTML = socials();
   $('#year').textContent = new Date().getFullYear();
   addEventListener('hashchange', render);
