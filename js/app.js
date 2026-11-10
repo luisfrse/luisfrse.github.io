@@ -237,7 +237,7 @@
     const list = await data('aplicaciones');
     const tonos = [['#0d1a2a', '#3b6ea5'], ['#1c3a5c', '#5a2d86'], ['#36005a', '#8f63c9'], ['#0d1a2a', '#5a2d86'], ['#0b1020', '#2a2060']];
     const appTile = (a, i) => `
-          <a class="card tile app" href="${url(a.enlace)}"${ext(a.enlace)}>
+          <a class="card tile app" data-cat="${esc(a.categoria || '')}" href="${url(a.enlace)}"${ext(a.enlace)}>
             <div class="tile-img" style="--g1:${tonos[i % tonos.length][0]};--g2:${tonos[i % tonos.length][1]}">
               <i class="big ${esc(a.icono || 'fa-solid fa-laptop-code')}" aria-hidden="true"></i>
               ${a.imagen ? `<img loading="lazy" src="${url(a.imagen)}" alt="" onerror="this.remove()">` : ''}
@@ -249,10 +249,15 @@
               <span class="more">${esc(t('openApp'))}</span>
             </div>
           </a>`;
+    const cats = Array.isArray(list) ? [...new Set(list.map(a => a.categoria).filter(Boolean))] : [];
+    const filtros = cats.length > 1 ? `<div class="chips" role="group" aria-label="${esc(t('filterAria'))}" id="app-filters">
+          <button class="chip" aria-pressed="true" data-f="">${esc(t('appCats').todas)}</button>
+          ${cats.map(k => `<button class="chip" aria-pressed="false" data-f="${esc(k)}">${esc(t('appCats')[k] || k)}</button>`).join('')}</div>` : '';
     const nota = Array.isArray(list) && list.some(a => a.acceso) ? `<p class="apps-note">${t('appsNote')(`<a href="#/contacto">${esc(t('nav.contacto'))}</a>`)}</p>` : '';
     return `${pageHead(esc(t('nav.aplicaciones')), esc(t('appsLead')))}
       <section class="section"><div class="wrap">
         ${nota}
+        ${filtros}
         ${list === null ? errorBox() : list.length ? `<div class="grid apps-grid">${list.map(appTile).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
       </div></section>`;
   };
@@ -482,6 +487,14 @@
     }));
   }
 
+  function initApps() {
+    const box = $('.apps-grid'); if (!box) return;
+    $$('#app-filters .chip').forEach(ch => ch.addEventListener('click', () => {
+      $$('#app-filters .chip').forEach(c => c.setAttribute('aria-pressed', String(c === ch)));
+      $$('.tile', box).forEach(e => { e.style.display = (!ch.dataset.f || e.dataset.cat === ch.dataset.f) ? '' : 'none'; });
+    }));
+  }
+
   function initContact() {
     const f = $('#contact'); if (!f) return;
     const msg = $('#form-msg');
@@ -579,6 +592,7 @@
     observeReveals();
     if (route === 'inicio') initHero();
     if (route === 'divulgacion') initDivulgacion();
+    if (route === 'aplicaciones') initApps();
     if (route === 'contacto') initContact();
     const target = route === 'docencia' && sub ? document.getElementById(sub) : null;
     if (mantenerScroll === true) return; // cambio de idioma: se queda donde estaba

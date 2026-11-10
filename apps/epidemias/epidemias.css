@@ -1,0 +1,99 @@
+/* Simulador de epidemias: estilos propios (sobre ../shared/app.css) */
+:root{
+  --c-s:#7fb2ea; --c-e:#f5b82e; --c-i:#ff5d73; --c-r:#4ade80; --c-v:#b08be0; --c-d:#7d8ca2;
+}
+.kit-main{max-width:1320px}
+
+/* ---------- Escenarios ---------- */
+.intro{display:grid;gap:14px}
+.intro-text h2{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.3em}
+.intro-text p{max-width:70ch;margin:0}
+.scen-chips{display:flex;flex-wrap:wrap;gap:8px}
+.scen-chips button{border:1px solid var(--line);background:var(--panel);color:#fff;font:600 .95rem var(--font-body);padding:8px 16px;border-radius:99px;cursor:pointer;transition:background .2s,border-color .2s}
+.scen-chips button:hover{background:var(--panel-2)}
+.scen-chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--night)}
+.scen-chips .r0{opacity:.75;font-weight:500;margin-left:6px;font-size:.85rem}
+.scen-card{display:grid;gap:14px 28px;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);padding:16px 18px;border-radius:var(--radius);background:rgba(8,17,29,.45);border:1px solid var(--line)}
+.scen-card h3{font-size:1.25rem;margin-bottom:.3em}
+.scen-card p{margin:0 0 .6em;color:#dbe5f1}
+.scen-card .src{font-size:.8rem;color:var(--faint);margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;align-content:start}
+.facts div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.facts b{display:block;font:700 1.25rem/1.1 var(--font-head);font-variant-numeric:tabular-nums}
+.facts span{font-size:.78rem;color:var(--muted)}
+.facts .wide{grid-column:1/-1}
+@media (max-width:760px){.scen-card{grid-template-columns:1fr}}
+.banner{padding:10px 14px;border-radius:12px;background:rgba(245,184,46,.12);border:1px solid rgba(245,184,46,.45);color:#ffe7a8;font-weight:500}
+.banner.win{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.5);color:#c9f7d9}
+.banner.lose{background:rgba(255,93,115,.12);border-color:rgba(255,93,115,.5);color:#ffd0d6}
+.banner b{color:#fff}
+.banner .row{margin-top:6px;gap:8px}
+
+/* ---------- Simulación ---------- */
+.sim-grid{display:grid;gap:clamp(16px,2.5vw,26px);grid-template-columns:minmax(0,1fr)}
+@media (min-width:1000px){.sim-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);align-items:start}}
+.world-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.world-head h2{margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+.legend .chip{gap:7px;padding:3px 10px 3px 8px;font-variant-numeric:tabular-nums}
+.legend .chip i{display:inline-block;width:11px;height:11px;border-radius:50%}
+.legend .chip em{font-style:normal;font-weight:700;margin-left:2px}
+.world-wrap{position:relative;border-radius:22px;overflow:hidden;border:1px solid rgba(176,139,224,.35);box-shadow:0 0 0 6px rgba(8,17,29,.5),var(--shadow);background:#06101c}
+#world{display:block;width:100%;aspect-ratio:1/1;cursor:crosshair;touch-action:manipulation}
+.world-msg{position:absolute;inset:auto 12px 12px 12px;padding:10px 14px;border-radius:12px;background:rgba(6,16,28,.88);border:1px solid var(--line);backdrop-filter:blur(6px);text-align:center;font-weight:600}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.toolbar .btn{flex:1 1 auto;min-width:92px}
+#btn-play{flex:2 1 140px}
+.opts{margin-top:12px;gap:10px 18px}
+.small{font-size:.88rem}
+
+/* ---------- Gráficos y estadísticas ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:18px}
+.stats .stat{padding:10px 12px}
+.stats .stat b{font-size:1.45rem}
+.stats .stat span{display:block;line-height:1.25}
+.stats .stat.hl{border-color:rgba(176,139,224,.55);background:rgba(176,139,224,.1)}
+.stats .stat.ok b{color:var(--green)}.stats .stat.bad b{color:var(--c-i)}
+.chart-block{margin-bottom:14px}
+.chart-block h3{margin:0 0 6px;font-size:1rem}
+.chart-block canvas{display:block;width:100%;border-radius:12px;background:rgba(6,16,28,.6);border:1px solid var(--line)}
+#cv-stack{height:clamp(200px,28vw,300px)}
+#cv-inc{height:clamp(150px,20vw,210px)}
+.readout{min-height:1.5em;margin:6px 2px 0;font-size:.88rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.key{margin-top:8px;font-size:.85rem;color:var(--muted)}
+.key .chip{background:none;border:0;padding:0 8px 0 0;font-weight:500}
+.key .chip i{width:18px;height:0;border-radius:0;border-top:3px solid currentColor;background:none}
+.key .chip.dash i{border-top-style:dashed}
+.chart-actions{gap:8px;margin-top:4px}
+
+/* ---------- Controles ---------- */
+.ctl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:22px 28px;margin-top:6px}
+.ctl-group{display:flex;flex-direction:column;gap:14px}
+.ctl-group h3{margin:0;font-size:1.05rem;color:var(--accent);padding-bottom:8px;border-bottom:1px solid var(--line)}
+.ctl{display:flex;flex-direction:column;gap:2px}
+.ctl .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-weight:600;font-size:.95rem}
+.ctl output{font:700 1rem var(--font-head);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctl small{color:var(--faint);font-size:.8rem;line-height:1.3}
+.ctl .track{position:relative}
+.ctl .thr{position:absolute;top:2px;width:3px;height:24px;margin-left:-1.5px;background:var(--c-i);border-radius:2px;pointer-events:none;box-shadow:0 0 0 2px rgba(255,93,115,.25)}
+.ctl .need{color:var(--c-e);font-size:.82rem;font-weight:600}
+.seed-row{display:flex;gap:8px}
+.seed-row input{flex:1;min-width:0}
+
+/* ---------- Retos ---------- */
+.chal{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:var(--radius);border:1px solid var(--line);background:rgba(8,17,29,.4)}
+.chal h3{margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chal p{margin:0;color:#dbe5f1}
+.chal .hint{color:var(--c-e);font-size:.9rem}
+.chal .row{margin-top:auto;gap:8px}
+.chal.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(176,139,224,.25)}
+.chal .done{color:var(--green);font-size:.85rem;font-weight:700}
+
+/* ---------- Explicación ---------- */
+.explain h2{margin-bottom:.4em}
+.explain details{border-top:1px solid var(--line);padding:10px 0}
+.explain details:first-of-type{border-top:0}
+.explain summary{cursor:pointer;font:700 1.02rem var(--font-head);padding:4px 0}
+.explain p,.explain ul{margin:.5em 0 .3em;color:#dbe5f1;max-width:80ch}
+.explain li{margin:.25em 0}
+.explain .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:baseline}

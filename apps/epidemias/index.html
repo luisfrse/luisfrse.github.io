@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de epidemias · Luis Franco Serrano</title>
+<meta name="description" content="Simulador interactivo de epidemias e inmunidad de grupo: vacunas, R0, distanciamiento, mascarillas y aislamiento. Funciona en el navegador.">
+<meta name="theme-color" content="#0d1a2a">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/app.css">
+<link rel="stylesheet" href="epidemias.css">
+</head>
+<body>
+<main class="kit-main" id="app">
+
+  <!-- Escenarios -->
+  <section class="panel intro">
+    <div class="intro-text">
+      <h2 data-i18n="intro_h"></h2>
+      <p class="muted" data-i18n="intro_p"></p>
+    </div>
+    <div class="scen-chips" id="scen-chips" role="group" data-i18n-aria="scen_h"></div>
+    <article class="scen-card" id="scen-card" aria-live="polite"></article>
+    <div class="banner challenge-banner" id="challenge-banner" hidden></div>
+  </section>
+
+  <!-- Simulación y gráficos -->
+  <section class="sim-grid">
+    <div class="panel world-panel">
+      <div class="world-head">
+        <h2 data-i18n="world_h"></h2>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="world-wrap">
+        <canvas id="world" role="img" tabindex="0"></canvas>
+        <div class="world-msg" id="world-msg" hidden></div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="btn-play" type="button"></button>
+        <button class="btn ghost" id="btn-step" type="button" data-i18n="btn_step"></button>
+        <button class="btn ghost" id="btn-week" type="button" data-i18n="btn_week"></button>
+        <button class="btn ghost" id="btn-reset" type="button" data-i18n="btn_reset"></button>
+      </div>
+      <div class="row opts">
+        <div class="seg" id="speed" role="group" data-i18n-aria="speed_l"></div>
+        <label class="check"><input type="checkbox" id="opt-radius"><span data-i18n="opt_radius"></span></label>
+      </div>
+      <p class="muted small" data-i18n="click_hint"></p>
+    </div>
+
+    <div class="panel charts-panel">
+      <div class="stats" id="stats"></div>
+      <div class="chart-block">
+        <h3 id="t-stack"></h3>
+        <canvas id="cv-stack" role="img" tabindex="0"></canvas>
+        <p class="readout" id="readout"></p>
+      </div>
+      <div class="chart-block">
+        <h3 id="t-inc"></h3>
+        <canvas id="cv-inc" role="img"></canvas>
+        <div class="row opts">
+          <label class="check"><input type="checkbox" id="opt-seir"><span data-i18n="opt_seir"></span></label>
+        </div>
+        <div class="legend key" id="inc-key"></div>
+      </div>
+      <div class="row chart-actions">
+        <button class="btn ghost small" id="btn-ref" type="button"></button>
+        <button class="btn ghost small" id="btn-csv" type="button" data-i18n="btn_csv"></button>
+        <button class="btn ghost small" id="btn-png" type="button" data-i18n="btn_png"></button>
+      </div>
+      <p class="sr-only" id="live" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Controles -->
+  <section class="panel" id="controls-panel">
+    <div class="row spread">
+      <h2 data-i18n="ctl_h"></h2>
+      <button class="btn small" id="btn-apply" type="button" hidden data-i18n="apply"></button>
+    </div>
+    <div class="banner" id="dirty" hidden data-i18n="dirty"></div>
+    <div class="ctl-grid" id="controls"></div>
+  </section>
+
+  <!-- Retos -->
+  <section class="panel" id="challenges-panel">
+    <h2 data-i18n="chal_h"></h2>
+    <p class="muted" data-i18n="chal_p"></p>
+    <div class="grid cols-2" id="challenges"></div>
+  </section>
+
+  <!-- Qué estás viendo -->
+  <section class="panel explain" id="explain"></section>
+</main>
+
+<script src="../shared/app.js"></script>
+<script src="sim.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metrónomo de RCP · Luis Franco Serrano</title>
+<meta name="description" content="Metrónomo de RCP con ciclos 30:2, entrenamiento de ritmo y guía paso a paso de soporte vital básico y DEA. Herramienta didáctica.">
+<meta name="theme-color" content="#0d1a2a">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/app.css">
+<link rel="stylesheet" href="rcp.css">
+</head>
+<body>
+<main class="kit-main">
+
+  <div class="tabs" role="tablist" id="tabs">
+    <button type="button" role="tab" data-tab="metro" aria-selected="true" aria-controls="tab-metro" data-i18n="tabMetro">Metrónomo</button>
+    <button type="button" role="tab" data-tab="train" aria-selected="false" aria-controls="tab-train" data-i18n="tabTrain">Entrena tu ritmo</button>
+    <button type="button" role="tab" data-tab="guide" aria-selected="false" aria-controls="tab-guide" data-i18n="tabGuide">Guía paso a paso</button>
+    <button type="button" role="tab" data-tab="quality" aria-selected="false" aria-controls="tab-quality" data-i18n="tabQuality">Calidad y edades</button>
+  </div>
+
+  <!-- ===================== METRÓNOMO ===================== -->
+  <section id="tab-metro" class="tabpanel" role="tabpanel">
+    <div class="metro-grid">
+      <div class="panel stage">
+        <div class="stage-top row spread">
+          <div class="seg" id="ageSeg" role="group" data-i18n-aria="age">
+            <button type="button" data-age="adult" aria-pressed="true" data-i18n="adult">Adulto</button>
+            <button type="button" data-age="child" aria-pressed="false" data-i18n="child">Niño</button>
+            <button type="button" data-age="infant" aria-pressed="false" data-i18n="infant">Lactante</button>
+          </div>
+          <small id="ageHint" class="muted"></small>
+        </div>
+
+        <div class="dial" id="dial" data-phase="idle">
+          <svg id="ticks" viewBox="-130 -130 260 260" aria-hidden="true"></svg>
+          <div class="pulse" id="pulse" aria-hidden="true"></div>
+          <div class="dial-center">
+            <div class="count" id="count">0</div>
+            <div class="count-label" id="countLabel"></div>
+          </div>
+        </div>
+        <div class="dots" id="breathDots" hidden aria-hidden="true"><i></i><i></i></div>
+        <p class="status" id="status" role="status"></p>
+
+        <div class="swap-alert" id="swapAlert" hidden role="alert">
+          <div class="grow"><strong data-i18n="swapNow">Cambio de reanimador</strong><span data-i18n="swapText"></span></div>
+          <button type="button" class="btn small" id="swapDone" data-i18n="swapDone">Hecho</button>
+        </div>
+
+        <div class="row actions">
+          <button type="button" class="btn big" id="startBtn" data-i18n="start">Empezar</button>
+          <button type="button" class="btn ghost" id="resetBtn" data-i18n="reset">Reiniciar</button>
+        </div>
+
+        <div class="stats" aria-live="off">
+          <div class="stat"><b id="stCycle">1</b><span data-i18n="cycleLbl">Ciclo</span></div>
+          <div class="stat"><b id="stTotal">0</b><span data-i18n="totalLbl">Compresiones</span></div>
+          <div class="stat"><b id="stTime">0:00</b><span data-i18n="elapsed">Tiempo</span></div>
+          <div class="stat"><b id="stSwap">2:00</b><span data-i18n="swapIn">Cambio en</span></div>
+        </div>
+
+        <div class="bpm-row">
+          <button type="button" class="icon-btn" id="bpmDown" data-i18n-aria="lower" aria-label="Bajar el ritmo">−</button>
+          <div class="bpm-val"><b id="bpmVal">110</b><span data-i18n="bpm">por minuto</span></div>
+          <button type="button" class="icon-btn" id="bpmUp" data-i18n-aria="raise" aria-label="Subir el ritmo">+</button>
+        </div>
+        <div class="range-wrap">
+          <input type="range" id="bpm" min="100" max="120" step="1" value="110" data-i18n-aria="rateLabel" aria-label="Ritmo de compresiones">
+          <div class="range-marks" aria-hidden="true"><span>100</span><b>110</b><span>120</span></div>
+        </div>
+
+        <p class="keys" data-i18n="keys"></p>
+      </div>
+
+      <div class="stack">
+        <div class="panel settings">
+          <h2 data-i18n="settings">Ajustes</h2>
+          <div class="field-row" id="rowRatio">
+            <div><b data-i18n="ratio">Relación</b><small id="ratioNote"></small></div>
+            <div class="seg" id="ratioSeg" role="group"><button type="button" data-ratio="15" aria-pressed="false">15:2</button><button type="button" data-ratio="30" aria-pressed="true">30:2</button></div>
+          </div>
+          <div class="field-row">
+            <div><b data-i18n="handsOnly">Solo compresiones</b><small data-i18n="handsOnlyHint"></small></div>
+            <label class="check"><input type="checkbox" id="optHands"><span class="sr-only" data-i18n="handsOnly"></span></label>
+          </div>
+          <div class="field-row" id="rowInit">
+            <div><b data-i18n="initBreaths">Empezar con 5 insuflaciones</b><small data-i18n="initBreathsHint"></small></div>
+            <label class="check"><input type="checkbox" id="optInit"><span class="sr-only" data-i18n="initBreaths"></span></label>
+          </div>
+          <div class="field-row" id="rowPause">
+            <div><b data-i18n="pauseLen">Pausa para las 2 insuflaciones</b><small data-i18n="pauseHint"></small></div>
+            <div class="row"><input type="range" id="optPause" min="4" max="10" step="1" data-i18n-aria="pauseLen"><span class="val" id="pauseVal"></span></div>
+          </div>
+          <div class="field-row">
+            <div><b data-i18n="sound">Sonido</b></div>
+            <div class="row"><input type="range" id="optVol" min="0" max="1" step="0.05" data-i18n-aria="volume"><label class="check"><input type="checkbox" id="optSound"><span class="sr-only" data-i18n="sound"></span></label></div>
+          </div>
+          <div class="field-row">
+            <div><b data-i18n="vibrate">Vibración</b></div>
+            <label class="check"><input type="checkbox" id="optVib"><span class="sr-only" data-i18n="vibrate"></span></label>
+          </div>
+          <div class="field-row">
+            <div><b data-i18n="swapAlert">Aviso de cambio cada 2 minutos</b></div>
+            <label class="check"><input type="checkbox" id="optSwap"><span class="sr-only" data-i18n="swapAlert"></span></label>
+          </div>
+          <div class="field-row">
+            <div><b data-i18n="awake">Mantener la pantalla encendida</b></div>
+            <label class="check"><input type="checkbox" id="optAwake"><span class="sr-only" data-i18n="awake"></span></label>
+          </div>
+          <p class="noaudio" id="noAudio" hidden data-i18n="noAudio"></p>
+        </div>
+
+        <div class="panel params" id="params"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ENTRENAMIENTO ===================== -->
+  <section id="tab-train" class="tabpanel" role="tabpanel" hidden>
+    <div class="train-grid">
+      <div class="stack">
+        <div class="panel">
+          <h2 data-i18n="trainTitle">Entrena tu ritmo</h2>
+          <p class="muted" data-i18n="trainIntro"></p>
+          <button type="button" class="pad" id="pad"><span class="hint" id="padHint"></span></button>
+        </div>
+        <div class="panel">
+          <div class="row spread" style="flex-wrap:nowrap">
+            <div class="grow"><b data-i18n="guide">Con guía sonora</b><small class="muted" id="guideHint" style="display:block"></small></div>
+            <label class="check"><input type="checkbox" id="optGuide"><span class="sr-only" data-i18n="guide"></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="panel" id="liveBox">
+          <svg class="gauge" id="gauge" viewBox="-14 0 288 150" aria-hidden="true"></svg>
+          <div class="readout">
+            <div><div class="big" id="liveBpm">—</div><small data-i18n="tapNow">Frecuencia</small></div>
+            <div><div class="big" id="liveTaps">0</div><small data-i18n="taps">Toques</small></div>
+            <div><div class="big" id="liveReg">—</div><small data-i18n="regularity">Regularidad</small></div>
+          </div>
+          <div class="row" style="justify-content:center;margin-top:12px"><span class="verdict" id="verdict"></span></div>
+          <svg class="chart" id="chart" viewBox="0 0 300 120" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <small class="muted" data-i18n="bandNote"></small>
+        </div>
+        <div class="panel last-attempt" id="lastBox" hidden></div>
+        <div class="panel" id="histBox"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GUÍA ===================== -->
+  <section id="tab-guide" class="tabpanel" role="tabpanel" hidden>
+    <div class="stack" id="guideRoot"></div>
+  </section>
+
+  <!-- ===================== CALIDAD ===================== -->
+  <section id="tab-quality" class="tabpanel" role="tabpanel" hidden>
+    <div class="stack" id="qualityRoot"></div>
+  </section>
+
+  <p class="disclaimer" data-i18n="disclaimer"></p>
+</main>
+
+<script src="../shared/app.js"></script>
+<script src="i18n.js"></script>
+<script src="engine.js"></script>
+<script src="illustrations.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

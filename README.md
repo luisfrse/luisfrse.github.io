@@ -21,6 +21,25 @@ solo editas un archivo pequeño; no hay que tocar ni volver a subir el resto de 
 
 Lo más nuevo va **arriba** de cada lista.
 
+## Aplicaciones propias (carpeta `apps/`)
+Cada aplicación es una página estática en su carpeta (`apps/<nombre>/index.html`), sin servidor: todo se calcula
+y se guarda en el navegador de quien la usa. Comparten estilos y utilidades en `apps/shared/` (`app.css`, `app.js`),
+y el idioma (ES/CA/EN) se comparte con la web.
+
+| Carpeta | Qué es |
+|---|---|
+| `apps/tarjetas/` | Tarjetas de estudio con repetición espaciada |
+| `apps/corrector/` | Corrector de tests (penalización, versiones, análisis de preguntas, hojas imprimibles) |
+| `apps/pasos/` | Orden de pasos: lavado de manos, EPI y 5 momentos (secuencias editables en `data/secuencias.json`) |
+| `apps/rcp/` | Metrónomo de RCP y guía de soporte vital |
+| `apps/goteo/` | Calculadora de goteo y dosis |
+| `apps/epidemias/` | Simulador de epidemias e inmunidad de grupo |
+| `apps/ruta/` | Calculadora de tiempos de ruta (GPX, luz del día) |
+
+- **Añadir una aplicación nueva a la lista:** una entrada más en `data/aplicaciones.json` (con `categoria`: `clase`, `estudio`, `salud` o `montana`, y su imagen de banner en `assets/apps/`).
+- **Aplicación nueva desde cero:** copia `apps/_plantilla/` (la carpeta con guion bajo no se publica) y usa `AppKit` (`apps/shared/app.js`) para el idioma, el almacenamiento y los avisos.
+- Las aplicaciones sanitarias (RCP, goteo, EPI) son **herramientas didácticas**: contrasta siempre su contenido con las guías y protocolos vigentes.
+
 ## Idiomas (castellano · català · English)
 El selector **ES | CA | EN** está arriba a la derecha. La primera vez se usa el idioma del navegador y después se
 recuerda la elección.

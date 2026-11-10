@@ -1,13 +1,127 @@
 {
   "universitaria": [
-    { "titulo": "Biología Celular", "titulo_ca": "Biologia Cel·lular", "titulo_en": "Cell Biology" },
-    { "titulo": "Biología Molecular y Genética", "titulo_ca": "Biologia Molecular i Genètica", "titulo_en": "Molecular Biology and Genetics" },
-    { "titulo": "Microbiología", "titulo_ca": "Microbiologia", "titulo_en": "Microbiology" },
-    { "titulo": "Farmacología", "titulo_ca": "Farmacologia", "titulo_en": "Pharmacology" },
-    { "titulo": "Bioquímica y Metabolismo", "titulo_ca": "Bioquímica i Metabolisme", "titulo_en": "Biochemistry and Metabolism" },
-    { "titulo": "Fisiología", "titulo_ca": "Fisiologia", "titulo_en": "Physiology" },
-    { "titulo": "Fisiopatología", "titulo_ca": "Fisiopatologia", "titulo_en": "Pathophysiology" },
-    { "titulo": "Anatomía", "titulo_ca": "Anatomia", "titulo_en": "Anatomy" }
+    {
+      "titulo": "Biología Celular",
+      "titulo_ca": "Biologia Cel·lular",
+      "titulo_en": "Cell Biology",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Biología Molecular y Genética",
+      "titulo_ca": "Biologia Molecular i Genètica",
+      "titulo_en": "Molecular Biology and Genetics",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Microbiología",
+      "titulo_ca": "Microbiologia",
+      "titulo_en": "Microbiology",
+      "recursos": [
+        {
+          "titulo": "Simulador de epidemias e inmunidad de grupo",
+          "titulo_ca": "Simulador d'epidèmies i immunitat de grup",
+          "titulo_en": "Epidemic and herd immunity simulator",
+          "enlace": "/apps/epidemias/"
+        },
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Farmacología",
+      "titulo_ca": "Farmacologia",
+      "titulo_en": "Pharmacology",
+      "recursos": [
+        {
+          "titulo": "Calculadora de goteo y dosis",
+          "titulo_ca": "Calculadora de degoteig i dosi",
+          "titulo_en": "Drip and dose calculator",
+          "enlace": "/apps/goteo/"
+        },
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Bioquímica y Metabolismo",
+      "titulo_ca": "Bioquímica i Metabolisme",
+      "titulo_en": "Biochemistry and Metabolism",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Fisiología",
+      "titulo_ca": "Fisiologia",
+      "titulo_en": "Physiology",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    },
+    {
+      "titulo": "Fisiopatología",
+      "titulo_ca": "Fisiopatologia",
+      "titulo_en": "Pathophysiology",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        },
+        {
+          "titulo": "Simulador de epidemias e inmunidad de grupo",
+          "titulo_ca": "Simulador d'epidèmies i immunitat de grup",
+          "titulo_en": "Epidemic and herd immunity simulator",
+          "enlace": "/apps/epidemias/"
+        }
+      ]
+    },
+    {
+      "titulo": "Anatomía",
+      "titulo_ca": "Anatomia",
+      "titulo_en": "Anatomy",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
+    }
   ],
   "formacionProfesional": [
     {
@@ -19,10 +133,48 @@
       "descripcion_ca": "El Tècnic en Cures Auxiliars d'Infermeria (TCAI) proporciona cures bàsiques d'infermeria als pacients, sota la supervisió de personal d'infermeria. Les seves funcions principals inclouen la higiene, l'alimentació, la mobilització i el suport en l'administració de tractaments en centres sanitaris o sociosanitaris.",
       "descripcion_en": "The Nursing Care Assistant Technician provides basic nursing care to patients under the supervision of nursing staff. Their main duties include hygiene, feeding, mobilisation and support with the administration of treatments in healthcare and social care settings.",
       "recursos": [
-        { "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)", "titulo_ca": "Simulador de llits: obert, tancat i ocupat", "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)", "enlace": "/simulaciones/simulador-llits/" },
-        { "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)", "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)", "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)", "enlace": "https://luisfs.com/simulaciones/simulador-higiene/" },
-        { "titulo": "Escape room de infecciones (en catalán)", "titulo_ca": "Escape room infeccions", "titulo_en": "Infections escape room (in Catalan)", "enlace": "https://luisfs.com/simulaciones/escape-infeccions/?temps=40" },
-        { "titulo": "Escape room de instrumental (en catalán)", "titulo_ca": "Escape room instrumental", "titulo_en": "Instruments escape room (in Catalan)", "enlace": "https://luisfs.com/simulaciones/escape-instrumental/?temps=45" }
+        {
+          "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)",
+          "titulo_ca": "Simulador de llits: obert, tancat i ocupat",
+          "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)",
+          "enlace": "/simulaciones/simulador-llits/"
+        },
+        {
+          "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)",
+          "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)",
+          "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)",
+          "enlace": "https://luisfs.com/simulaciones/simulador-higiene/"
+        },
+        {
+          "titulo": "Escape room de infecciones (en catalán)",
+          "titulo_ca": "Escape room infeccions",
+          "titulo_en": "Infections escape room (in Catalan)",
+          "enlace": "https://luisfs.com/simulaciones/escape-infeccions/?temps=40"
+        },
+        {
+          "titulo": "Escape room de instrumental (en catalán)",
+          "titulo_ca": "Escape room instrumental",
+          "titulo_en": "Instruments escape room (in Catalan)",
+          "enlace": "https://luisfs.com/simulaciones/escape-instrumental/?temps=45"
+        },
+        {
+          "titulo": "Orden de pasos: lavado de manos y EPI",
+          "titulo_ca": "Ordre de passos: rentat de mans i EPI",
+          "titulo_en": "Step order: hand hygiene and PPE",
+          "enlace": "/apps/pasos/"
+        },
+        {
+          "titulo": "Metrónomo de RCP y guía de soporte vital",
+          "titulo_ca": "Metrònom de RCP i guia de suport vital",
+          "titulo_en": "CPR metronome and life support guide",
+          "enlace": "/apps/rcp/"
+        },
+        {
+          "titulo": "Calculadora de goteo y dosis",
+          "titulo_ca": "Calculadora de degoteig i dosi",
+          "titulo_en": "Drip and dose calculator",
+          "enlace": "/apps/goteo/"
+        }
       ]
     },
     {
@@ -34,8 +186,30 @@
       "descripcion_ca": "El Tècnic en Atenció a Persones en Situació de Dependència intervé de forma directa per cobrir les necessitats físiques, socials i psicològiques de les persones dependents. La seva tasca se centra en l'assistència a l'autonomia personal, la promoció de la salut i l'organització d'activitats d'oci, tant al domicili com en institucions.",
       "descripcion_en": "The Care Technician for Dependent Persons works directly to meet the physical, social and psychological needs of dependent people. Their work focuses on supporting personal autonomy, promoting health and organising leisure activities, both at home and in institutions.",
       "recursos": [
-        { "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)", "titulo_ca": "Simulador de llits: obert, tancat i ocupat", "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)", "enlace": "/simulaciones/simulador-llits/" },
-        { "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)", "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)", "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)", "enlace": "https://luisfs.com/simulaciones/simulador-higiene/" }
+        {
+          "titulo": "Simulador de camas: abierta, cerrada y ocupada (en catalán)",
+          "titulo_ca": "Simulador de llits: obert, tancat i ocupat",
+          "titulo_en": "Bed simulator: open, closed and occupied (in Catalan)",
+          "enlace": "/simulaciones/simulador-llits/"
+        },
+        {
+          "titulo": "Simulador de higiene del paciente: cama y ducha (en catalán)",
+          "titulo_ca": "Simulador d'higiene del pacient (llit i dutxa)",
+          "titulo_en": "Patient hygiene simulator: bed and shower (in Catalan)",
+          "enlace": "https://luisfs.com/simulaciones/simulador-higiene/"
+        },
+        {
+          "titulo": "Orden de pasos: lavado de manos y EPI",
+          "titulo_ca": "Ordre de passos: rentat de mans i EPI",
+          "titulo_en": "Step order: hand hygiene and PPE",
+          "enlace": "/apps/pasos/"
+        },
+        {
+          "titulo": "Metrónomo de RCP y guía de soporte vital",
+          "titulo_ca": "Metrònom de RCP i guia de suport vital",
+          "titulo_en": "CPR metronome and life support guide",
+          "enlace": "/apps/rcp/"
+        }
       ]
     },
     {
@@ -45,7 +219,15 @@
       "icono": "fa-solid fa-microscope",
       "descripcion": "El Técnico Superior en Anatomía Patológica y Citodiagnóstico se dedica a obtener, procesar y estudiar muestras biológicas (tejidos y células) para la detección y el diagnóstico de enfermedades. Sus funciones incluyen la preparación de tejidos (histología) y extendidos (citología), la realización de necropsias y la asistencia técnica al médico patólogo en el diagnóstico.",
       "descripcion_ca": "El Tècnic Superior en Anatomia Patològica i Citodiagnòstic es dedica a obtenir, processar i estudiar mostres biològiques (teixits i cèl·lules) per a la detecció i el diagnòstic de malalties. Les seves funcions inclouen la preparació de teixits (histologia) i extensions (citologia), la realització de necròpsies i l'assistència tècnica al metge patòleg en el diagnòstic.",
-      "descripcion_en": "The Higher Technician in Pathological Anatomy and Cytodiagnosis obtains, processes and studies biological samples (tissues and cells) for the detection and diagnosis of disease. Their duties include preparing tissues (histology) and smears (cytology), carrying out autopsies and providing technical assistance to the pathologist in diagnosis."
+      "descripcion_en": "The Higher Technician in Pathological Anatomy and Cytodiagnosis obtains, processes and studies biological samples (tissues and cells) for the detection and diagnosis of disease. Their duties include preparing tissues (histology) and smears (cytology), carrying out autopsies and providing technical assistance to the pathologist in diagnosis.",
+      "recursos": [
+        {
+          "titulo": "Tarjetas de estudio (repetición espaciada)",
+          "titulo_ca": "Targetes d'estudi (repetició espaiada)",
+          "titulo_en": "Study flashcards (spaced repetition)",
+          "enlace": "/apps/tarjetas/"
+        }
+      ]
     }
   ],
   "formacionContinuada": [
@@ -65,7 +247,15 @@
       "icono": "fa-solid fa-kit-medical",
       "descripcion": "Los primeros auxilios son las atenciones inmediatas y básicas dadas a una persona lesionada o enferma en una emergencia. Buscan mantener la vida y evitar el agravamiento de las lesiones hasta que llegue el personal sanitario especializado.",
       "descripcion_ca": "Els primers auxilis són les atencions immediates i bàsiques donades a una persona lesionada o malalta en una emergència. Busquen mantenir la vida i evitar l'agreujament de les lesions fins que arribi el personal sanitari especialitzat.",
-      "descripcion_en": "First aid is the immediate, basic care given to an injured or ill person in an emergency. Its aim is to preserve life and prevent injuries from getting worse until specialised healthcare personnel arrive."
+      "descripcion_en": "First aid is the immediate, basic care given to an injured or ill person in an emergency. Its aim is to preserve life and prevent injuries from getting worse until specialised healthcare personnel arrive.",
+      "recursos": [
+        {
+          "titulo": "Metrónomo de RCP y guía de soporte vital",
+          "titulo_ca": "Metrònom de RCP i guia de suport vital",
+          "titulo_en": "CPR metronome and life support guide",
+          "enlace": "/apps/rcp/"
+        }
+      ]
     },
     {
       "titulo": "Prevención de infecciones nosocomiales",
@@ -74,7 +264,21 @@
       "icono": "fa-solid fa-hands-bubbles",
       "descripcion": "Prevenir las infecciones hospitalarias es la máxima expresión de cuidado y respeto hacia la vulnerabilidad del paciente, protegiéndolo de complicaciones graves o de la muerte por causas ajenas a su dolencia original. Cada gesto de asepsia es un acto directo que salva vidas, especialmente cuando recordamos que algo tan simple como una correcta higiene de manos puede prevenir hasta el 50% de estas infecciones.",
       "descripcion_ca": "Prevenir les infeccions hospitalàries és la màxima expressió de cura i respecte cap a la vulnerabilitat del pacient, protegint-lo de complicacions greus o de la mort per causes alienes a la seva malaltia original. Cada gest d'asèpsia és un acte directe que salva vides, especialment quan recordem que una cosa tan simple com una correcta higiene de mans pot prevenir fins al 50% d'aquestes infeccions.",
-      "descripcion_en": "Preventing hospital infections is the highest expression of care and respect for patients' vulnerability, protecting them from serious complications or death from causes unrelated to their original illness. Every aseptic gesture is a direct, life-saving act, especially when we remember that something as simple as proper hand hygiene can prevent up to 50% of these infections."
+      "descripcion_en": "Preventing hospital infections is the highest expression of care and respect for patients' vulnerability, protecting them from serious complications or death from causes unrelated to their original illness. Every aseptic gesture is a direct, life-saving act, especially when we remember that something as simple as proper hand hygiene can prevent up to 50% of these infections.",
+      "recursos": [
+        {
+          "titulo": "Orden de pasos: lavado de manos y EPI",
+          "titulo_ca": "Ordre de passos: rentat de mans i EPI",
+          "titulo_en": "Step order: hand hygiene and PPE",
+          "enlace": "/apps/pasos/"
+        },
+        {
+          "titulo": "Simulador de epidemias e inmunidad de grupo",
+          "titulo_ca": "Simulador d'epidèmies i immunitat de grup",
+          "titulo_en": "Epidemic and herd immunity simulator",
+          "enlace": "/apps/epidemias/"
+        }
+      ]
     }
   ]
 }

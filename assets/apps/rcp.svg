@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#36005a"/><stop offset="1" stop-color="#0d1a2a"/></linearGradient><radialGradient id="h"><stop offset="0" stop-color="#f87171" stop-opacity=".45"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient></defs>
+<rect width="640" height="256" fill="url(#g)"/>
+<circle cx="190" cy="128" r="210" fill="url(#h)"/>
+<circle cx="190" cy="128" r="112" fill="none" stroke="#f87171" stroke-opacity="0.12" stroke-width="3"/>
+<circle cx="190" cy="128" r="86" fill="none" stroke="#f87171" stroke-opacity="0.2" stroke-width="3"/>
+<circle cx="190" cy="128" r="60" fill="none" stroke="#f87171" stroke-opacity="0.34" stroke-width="3"/>
+<path d="M190 172 C146 142 138 112 154 98 C168 86 184 92 190 106 C196 92 212 86 226 98 C242 112 234 142 190 172z" fill="#f87171"/><path d="M158 106 q6 -10 16 -8" stroke="#fff" stroke-opacity=".45" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M330 150 H392 L408 150 L422 104 L444 206 L462 124 L474 150 H640" fill="none" stroke="#f87171" stroke-opacity=".25" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/><path d="M330 150 H392 L408 150 L422 104 L444 206 L462 124 L474 150 H640" fill="none" stroke="#ffe4e4" stroke-width="3.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="330" y="70" font-family="Verdana,sans-serif" font-weight="700" font-size="44" fill="#fff">110</text><text x="418" y="70" font-family="Verdana,sans-serif" font-weight="700" font-size="16" fill="#fff" fill-opacity=".7">/min</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a2a"/><stop offset="1" stop-color="#1c6a86"/></linearGradient><radialGradient id="h"><stop offset="0" stop-color="#7fe0e8" stop-opacity=".45"/><stop offset="1" stop-color="#7fe0e8" stop-opacity="0"/></radialGradient></defs>
+<rect width="640" height="256" fill="url(#g)"/>
+<circle cx="200" cy="128" r="210" fill="url(#h)"/>
+<path d="M150 28 h80 q10 0 10 10 v70 q0 34 -50 34 q-50 0 -50 -34 v-70 q0 -10 10 -10z" fill="#fff" fill-opacity=".14" stroke="#9fe0f0" stroke-width="3"/>
+<path d="M118 90 q0 40 52 40 q52 0 52 -40z" fill="#4dd0e8" fill-opacity=".55"/><path d="M190 40 v-14 M184 22 h12" stroke="#9fe0f0" stroke-width="4" stroke-linecap="round"/>
+<path d="M140 56 h14" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>
+<path d="M162 56 h14" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>
+<path d="M184 56 h14" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>
+<path d="M206 56 h14" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>
+<path d="M190 138 V168" stroke="#9fe0f0" stroke-width="6" stroke-linecap="round"/><rect x="170" y="168" width="40" height="64" rx="12" fill="#fff" fill-opacity=".18" stroke="#9fe0f0" stroke-width="3"/>
+<path d="M190 196 C180 208 182 220 190 224 C198 220 200 208 190 196z" fill="#4dd0e8"/><path d="M190 178 C186 184 187 188 190 190 C193 188 194 184 190 178z" fill="#4dd0e8" fill-opacity=".8"/>
+<path d="M210 212 H300 q30 0 30 -30 V120 q0 -22 22 -22 H470" fill="none" stroke="#9fe0f0" stroke-opacity=".7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="470" y="150" font-family="Verdana,sans-serif" font-weight="700" font-size="50" fill="#fff">21</text><text x="470" y="176" font-family="Verdana,sans-serif" font-weight="700" font-size="17" fill="#9fe0f0">gotas/min</text><text x="470" y="206" font-family="Verdana,sans-serif" font-weight="700" font-size="14" fill="#fff" fill-opacity=".55">= 63 mL/h</text>
+</svg>
