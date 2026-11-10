@@ -90,13 +90,17 @@
     `<a class="soc" href="${url(r.url)}" target="_blank" rel="me noopener" aria-label="${esc(r.nombre)}" title="${esc(r.nombre)}"><i class="${esc(r.icono)}" aria-hidden="true"></i></a>`).join('');
   const pageHead = (title, lead) => `<section class="page-head"><div class="wrap"><h1>${title}</h1>${lead ? `<p>${lead}</p>` : ''}</div></section>`;
   const card = c => {
+    const desc = L(c, 'descripcion');
+    if (c.enlace && !c.icono && !desc) { // asignatura sin contenido propio: fila compacta
+      return `<a class="card row" href="${url(c.enlace)}"${ext(c.enlace)}><h3>${esc(L(c, 'titulo'))}</h3><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>`;
+    }
     const inner = `${c.icono ? `<div class="ico"><i class="${esc(c.icono)}" aria-hidden="true"></i></div>` : ''}
-      <h3>${esc(L(c, 'titulo'))}</h3>${L(c, 'descripcion') ? `<p>${esc(L(c, 'descripcion'))}</p>` : ''}${c.enlace ? `<span class="more">${esc(t('seeMore'))}</span>` : ''}`;
-    return c.enlace ? `<a class="card reveal" href="${url(c.enlace)}"${ext(c.enlace)}>${inner}</a>` : `<div class="card reveal">${inner}</div>`;
+      <h3>${esc(L(c, 'titulo'))}</h3>${desc ? `<p>${esc(desc)}</p>` : ''}${c.enlace ? `<span class="more">${esc(c.cta || t('seeMore'))}</span>` : ''}`;
+    return c.enlace ? `<a class="card" href="${url(c.enlace)}"${ext(c.enlace)}>${inner}</a>` : `<div class="card">${inner}</div>`;
   };
   const IMG_DEFECTO = 'assets/divulgacion-defecto.svg'; // se usa si una entrada no tiene imagen o falla al cargar
   const entryCard = e => `
-    <article class="card entry reveal" data-tipo="${esc((e.tipo || '').toLowerCase())}">
+    <article class="card entry" data-tipo="${esc((e.tipo || '').toLowerCase())}">
       <img class="thumb" loading="lazy" referrerpolicy="no-referrer" src="${e.imagen ? url(e.imagen) : IMG_DEFECTO}" alt="" onerror="this.onerror=null;this.src='${IMG_DEFECTO}'">
       <div class="meta">${e.tipo ? `<span class="badge">${esc(tipoLabel(e.tipo))}</span>` : ''}
         ${(e.medio || e.fecha) ? `<span class="src">${esc([e.medio, fecha(e.fecha)].filter(Boolean).join(' · '))}</span>` : ''}</div>
@@ -114,7 +118,7 @@
     const ultimas = Array.isArray(div) ? div.slice(0, 3) : [];
     // Tarjeta de acceso con banner: foto si existe (si no carga, queda el degradado de debajo)
     const tile = (icono, clave, enlace, g1, g2, foto) => `
-      <a class="card tile reveal" href="${url(enlace)}"${ext(enlace)}>
+      <a class="card tile" href="${url(enlace)}"${ext(enlace)}>
         <div class="tile-img" style="--g1:${g1};--g2:${g2}">
           <i class="big ${esc(icono)}" aria-hidden="true"></i>
           ${foto ? `<img loading="lazy" referrerpolicy="no-referrer" src="${url(foto)}" alt="" onerror="this.remove()">` : ''}
@@ -138,22 +142,20 @@
       <div class="hero-photo" aria-hidden="true"></div>
       <canvas id="net" aria-hidden="true"></canvas>
       <div class="hero-content">
-        <span class="eyebrow">${esc(C.nombre || 'Luis Franco Serrano')}</span>
-        <h1>${t('heroTitle')}</h1>
+        <h1>${esc(t('heroTitle'))}</h1>
         <p class="lead">${esc(t('heroLead'))}</p>
-        <div class="pills">${t('pills').map(p => `<span>${esc(p)}</span>`).join('')}</div>
         <div class="cta"><a class="btn btn-primary" href="#/sobre-mi">${esc(t('meet'))}</a><a class="btn btn-ghost" href="#/investigacion">${esc(t('seeResearch'))}</a></div>
       </div>
       <div class="hero-social"><div class="socials">${socials()}</div></div>
     </section>
 
     <section class="section"><div class="wrap">
-      <span class="kicker">${esc(t('explore'))}</span><h2>${esc(t('whatHere'))}</h2>
+      <h2>${esc(t('whatHere'))}</h2>
       <div class="grid" style="margin-top:24px">${accesos.join('')}</div>
     </div></section>
 
     ${ultimas.length ? `<section class="section alt"><div class="wrap">
-      <span class="kicker">${esc(t('news'))}</span><h2>${esc(t('latest'))}</h2>
+      <h2>${esc(t('latest'))}</h2>
       <div class="grid" style="margin-top:24px">${ultimas.map(entryCard).join('')}</div>
       <p style="margin-top:28px"><a class="btn btn-dark" href="#/divulgacion">${esc(t('seeAllDiv'))}</a></p>
     </div></section>` : ''}`;
@@ -168,13 +170,13 @@
     ${pageHead(esc(t('nav.sobre-mi')), esc(L(a, 'subtitulo') || ''))}
     <section class="section"><div class="wrap">
       <div class="about-grid">
-        <div class="portrait-wrap reveal"><img class="portrait" src="assets/foto-perfil.jpg?v=5" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
-        <div class="about-text reveal">
+        <div class="portrait-wrap"><img class="portrait" src="assets/foto-perfil.jpg?v=5" alt="${esc(C.nombre)}" onerror="this.closest('.portrait-wrap').remove()"></div>
+        <div class="about-text">
           ${L(a, 'titulo') ? `<h2>${esc(L(a, 'titulo'))}</h2>` : ''}
           ${parrafos.map(p => `<p>${esc(p)}</p>`).join('')}
         </div>
       </div>
-      ${cifras.length ? `<div class="stats reveal">${cifras.map(c => `<div class="stat"><b>${esc(c.valor)}</b><span>${esc(L(c, 'texto'))}</span></div>`).join('')}</div>` : ''}
+      ${cifras.length ? `<div class="stats">${cifras.map(c => `<div class="stat"><b>${esc(c.valor)}</b><span>${esc(L(c, 'texto'))}</span></div>`).join('')}</div>` : ''}
     </div></section>`;
   };
 
@@ -199,10 +201,10 @@
     return `${pageHead(esc(L(a, 'titulo')), `${esc(t('teaching'))} · ${esc(bloqueTx(b).titulo)}`)}
       <section class="section"><div class="wrap subject">
         <a class="back" href="#/docencia/${b.id}"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> ${esc(t('backTo')(bloqueTx(b).titulo))}</a>
-        ${L(a, 'descripcion') ? `<p class="lead-text reveal">${esc(L(a, 'descripcion'))}</p>` : ''}
-        ${parrafos.map(p => `<p class="reveal">${esc(p)}</p>`).join('')}
-        ${temas.length ? `<h2 class="reveal">${esc(t('syllabus'))}</h2><ul class="topics reveal">${temas.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-        ${recursos.length ? `<h2 class="reveal">${esc(t('resources'))}</h2><ul class="resources">${recursos.map(r => `<li class="reveal"><a href="${url(r.enlace)}"${ext(r.enlace)}><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> ${esc(L(r, 'titulo') || r.enlace)}</a></li>`).join('')}</ul>` : ''}
+        ${L(a, 'descripcion') ? `<p class="lead-text">${esc(L(a, 'descripcion'))}</p>` : ''}
+        ${parrafos.map(p => `<p>${esc(p)}</p>`).join('')}
+        ${temas.length ? `<h2>${esc(t('syllabus'))}</h2><ul class="topics">${temas.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+        ${recursos.length ? `<h2>${esc(t('resources'))}</h2><ul class="resources">${recursos.map(r => `<li><a href="${url(r.enlace)}"${ext(r.enlace)}><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> ${esc(L(r, 'titulo') || r.enlace)}</a></li>`).join('')}</ul>` : ''}
         ${vacio ? `<div class="empty">${esc(t('soonContent'))}</div>` : ''}
       </div></section>`;
   };
@@ -220,7 +222,7 @@
       const tx = bloqueTx(b);
       return `
       <div class="teach-block" id="${b.id}">
-        <span class="kicker">${esc(t('teaching'))}</span><h2>${esc(tx.titulo)}</h2>
+        <h2>${esc(tx.titulo)}</h2>
         ${tx.lead ? `<p class="lead-text">${esc(tx.lead)}</p>` : ''}
         ${lista.length ? `<div class="grid">${lista.map(card).join('')}</div>` : `<div class="empty" style="margin-top:24px">${esc(t('soon'))}</div>`}
       </div>`;
@@ -235,7 +237,7 @@
     const list = await data('aplicaciones');
     return `${pageHead(esc(t('nav.aplicaciones')))}
       <section class="section"><div class="wrap">
-        ${list === null ? errorBox() : list.length ? `<div class="grid">${list.map(card).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
+        ${list === null ? errorBox() : list.length ? `<div class="grid">${list.map(a => card({ ...a, cta: t('openApp') })).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
       </div></section>`;
   };
 
@@ -255,7 +257,6 @@
       <section class="res-hero">
         <div class="res-hero-img" aria-hidden="true"></div>
         <div class="wrap res-hero-in">
-          <span class="eyebrow">${esc(t('nav.investigacion'))}</span>
           <h1>${esc(t('resTitle'))}</h1>
           <p class="lead">${esc(L(inv, 'intro'))}</p>
           ${palabras.length ? `<div class="res-kw">${palabras.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : ''}
@@ -266,7 +267,7 @@
     const actual = a ? `
       <section class="section"><div class="wrap">
         <span class="kicker">${esc(t('currentProject'))}</span>
-        <article class="feature reveal">
+        <article class="feature">
           <div class="feature-body">
             <h2>${esc(L(a, 'titulo'))}</h2>
             ${[].concat(L(a, 'texto') || []).map(p => `<p>${esc(p)}</p>`).join('')}
@@ -280,41 +281,60 @@
       const rel = lista.filter(p => p.proyecto && p.proyecto === l.id).sort((x, y) => (parseInt(y.anio, 10) || 0) - (parseInt(x.anio, 10) || 0));
       const periodo = rango(rel.map(p => parseInt(p.anio, 10)).filter(Boolean));
       return `
-        <article class="proj card reveal">
-          <div class="proj-top">
-            <div class="ico"><i class="${esc(l.icono || 'fa-solid fa-flask')}" aria-hidden="true"></i></div>
+        <article class="proj card">
+          <div class="proj-img">
+            <i class="big ${esc(l.icono || 'fa-solid fa-flask')}" aria-hidden="true"></i>
+            ${l.imagen ? `<img loading="lazy" src="${url(l.imagen)}" alt="" onerror="this.remove()">` : ''}
             ${periodo ? `<span class="period">${esc(periodo)}</span>` : ''}
           </div>
-          <h3>${esc(L(l, 'titulo'))}</h3>
-          <p>${esc(L(l, 'texto'))}</p>
-          ${rel.length ? `<div class="proj-pubs"><small>${esc(t('relatedPubs'))}</small>
-            ${rel.map(p => `<a class="pill" href="${url(p.enlace)}"${ext(p.enlace)} title="${esc(p.titulo)}">${esc(p.anio)} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`).join('')}</div>` : ''}
+          <div class="proj-body">
+            <h3>${esc(L(l, 'titulo'))}</h3>
+            <p>${esc(L(l, 'texto'))}</p>
+            ${rel.length ? `<div class="proj-pubs"><small>${esc(t('relatedPubs'))}</small>
+              ${rel.map(p => `<a class="pill" href="${url(p.enlace)}"${ext(p.enlace)} title="${esc(p.titulo)}">${esc(p.anio)} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`).join('')}</div>` : ''}
+          </div>
         </article>`;
     };
     const proyectos = lineas.length ? `
       <section class="section alt"><div class="wrap">
-        <span class="kicker">${esc(t('projectsKicker'))}</span><h2>${esc(L(inv, 'tituloLineas') || t('linesDefault'))}</h2>
+        <h2>${esc(L(inv, 'tituloLineas') || t('linesDefault'))}</h2>
         <div class="grid proj-grid">${lineas.map(proyecto).join('')}</div>
       </div></section>` : '';
 
+    const grupos = centros.filter(x => x.tipo === 'grupo');
+    const colabs = centros.filter(x => x.tipo !== 'grupo');
+    const grupoCard = g => `
+          <a class="card group" href="${url(g.enlace)}"${ext(g.enlace)}>
+            <div class="logo-box group-mark">${g.logo ? `<img src="${url(g.logo)}" alt="${esc(L(g, 'nombre'))}" loading="lazy" onerror="this.remove();this.parentNode.classList.add('nologo')">` : ''}<b>${esc(g.marca || g.siglas || L(g, 'nombre'))}</b></div>
+            <div class="group-body">
+              <span class="tag on">${esc(t('myGroup'))}</span>
+              <h3>${esc(L(g, 'nombre'))}</h3>
+              <p>${esc(L(g, 'descripcion'))}</p>
+              <span class="more">${esc(t('visitWeb'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+            </div>
+          </a>`;
+    const colabCard = (c, i) => `
+          <a class="card center" href="${url(c.enlace)}"${ext(c.enlace)}>
+            <div class="logo-box m${(i % 3) + 1}">${c.logo ? `<img src="${url(c.logo)}" alt="${esc(L(c, 'nombre'))}" loading="lazy" onerror="this.remove();this.parentNode.classList.add('nologo')">` : ''}<b>${esc(c.siglas || L(c, 'nombre'))}</b></div>
+            <div class="center-body">
+              <span class="tag">${esc(t('collab'))}</span>
+              <h3>${esc(L(c, 'nombre'))}</h3>
+              <p>${esc(L(c, 'descripcion'))}</p>
+              <span class="more">${esc(t('visitWeb'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+            </div>
+          </a>`;
     const centrosHtml = centros.length ? `
       <section class="section"><div class="wrap">
-        <span class="kicker">${esc(t('centersKicker'))}</span><h2>${esc(L(inv, 'tituloCentros') || '')}</h2>
-        <div class="grid centers">${centros.map(c => `
-          <a class="card center reveal" href="${url(c.enlace)}"${ext(c.enlace)}>
-            <div class="ico"><i class="${esc(c.icono || 'fa-solid fa-building-columns')}" aria-hidden="true"></i></div>
-            <span class="tag${c.tipo === 'grupo' ? ' on' : ''}">${esc(t(c.tipo === 'grupo' ? 'myGroup' : 'collab'))}</span>
-            <h3>${esc(L(c, 'nombre'))}</h3>
-            <p>${esc(L(c, 'descripcion'))}</p>
-            <span class="more">${esc(t('visitWeb'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
-          </a>`).join('')}</div>
+        <h2>${esc(L(inv, 'tituloCentros') || '')}</h2>
+        ${grupos.map(grupoCard).join('')}
+        ${colabs.length ? `<h3 class="sub-title">${esc(t('collabsTitle'))}</h3><div class="grid centers">${colabs.map(colabCard).join('')}</div>` : ''}
       </div></section>` : '';
 
     return `${hero}${actual}${proyectos}${centrosHtml}
       <section class="section alt"><div class="wrap">
-        <span class="kicker">${esc(t('publications'))}</span><h2>${esc(t('production'))}</h2>
+        <h2>${esc(t('production'))}</h2>
         ${pubs === null ? errorBox() : pubs.length ? `<ul class="pubs">${pubs.map(p => `
-          <li class="reveal"><a class="pub" href="${url(p.enlace)}"${ext(p.enlace)}>
+          <li><a class="pub" href="${url(p.enlace)}"${ext(p.enlace)}>
             <span class="year">${esc(p.anio || '')}</span>
             <span class="t">${esc(p.titulo)}${(p.revista || p.autores) ? `<span class="m">${esc([p.revista, p.autores].filter(Boolean).join(' · '))}</span>` : ''}</span>
             <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></li>`).join('')}</ul>` : `<div class="empty">${esc(t('soon'))}</div>`}
@@ -339,7 +359,7 @@
     return `${pageHead(esc(t('nav.fotografia')), esc(t('photoLead')))}
       <section class="section"><div class="wrap">
         ${list === null ? errorBox() : !list.length ? `<div class="empty">${esc(t('soon'))}</div>` : `<div class="photos">${list.map(f => `
-          <figure class="photo reveal">
+          <figure class="photo">
             <img loading="lazy" src="${url(f.src)}" alt="${esc(L(f, 'alt') || L(f, 'titulo') || L(f, 'frase') || t('photoAlt'))}">
             <figcaption>${L(f, 'titulo') ? `<h3>${esc(L(f, 'titulo'))}</h3>` : ''}${L(f, 'frase') ? `<p>${esc(L(f, 'frase'))}</p>` : ''}${(f.lugar || f.fecha) ? `<small>${esc([L(f, 'lugar'), fecha(f.fecha)].filter(Boolean).join(' · '))}</small>` : ''}</figcaption>
           </figure>`).join('')}</div>`}
@@ -352,28 +372,27 @@
     return `${pageHead(esc(t('nav.solidaridad')), esc(t('ngo')(nom)))}
       <section class="section"><div class="wrap">
         <div class="split">
-          <div class="reveal">
-            <span class="kicker">${esc(t('solidarityKicker'))}</span>
+          <div>
             <h2>${esc(nom)}</h2>
             <p class="lead-text">${esc(t('solidarityText')(nom))}</p>
             <p><a class="btn btn-primary" href="${url(o.url)}"${ext(o.url)}>${esc(t('visitNgo'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></p>
           </div>
-          <div class="card reveal"><div class="ico"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></div>
+          <div class="card"><div class="ico"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></div>
             <h3>${esc(t('allInfo'))}</h3><p>${esc(t('allInfoText'))}</p></div>
         </div>
-        <figure class="wide-photo reveal"><img loading="lazy" src="assets/solidaridad.jpg" alt="${esc(t('solidarityImgAlt'))}" onerror="this.closest('.wide-photo').remove()"></figure>
+        <figure class="wide-photo"><img loading="lazy" src="assets/solidaridad.jpg" alt="${esc(t('solidarityImgAlt'))}" onerror="this.closest('.wide-photo').remove()"></figure>
       </div></section>`;
   };
 
   pages.contacto = async () => `
     ${pageHead(esc(t('nav.contacto')), esc(t('contactLead')))}
     <section class="section"><div class="wrap"><div class="split">
-      <div class="reveal">
+      <div>
         <h2>${esc(t('social'))}</h2>
         <p class="lead-text">${esc(t('contactText'))}</p>
         <div class="socials">${socials()}</div>
       </div>
-      <form class="form reveal" id="contact" novalidate>
+      <form class="form" id="contact" novalidate>
         <h2>${esc(t('formTitle'))}</h2>
         <label>${esc(t('fName'))}<input name="nombre" required autocomplete="name"></label>
         <label>${esc(t('fEmail'))}<input name="email" type="email" required autocomplete="email"></label>
