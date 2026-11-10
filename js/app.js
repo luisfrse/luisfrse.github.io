@@ -241,18 +241,76 @@
 
   pages.investigacion = async () => {
     const [inv, pubs] = await Promise.all([data('investigacion'), data('publicaciones')]);
-    const lineas = inv && inv.lineas ? inv.lineas : [];
-    return `${pageHead(esc(t('nav.investigacion')), esc(t('researchLead')))}
-      <section class="section"><div class="wrap">
-        <div class="res-intro">
-          <div>
-            <span class="kicker">${esc(t('currentLines'))}</span><h2>${esc(t('workingOn'))}</h2>
-            ${inv ? `<p class="lead-text reveal">${esc(L(inv, 'intro'))}</p>` : errorBox()}
-          </div>
-          <figure class="side-photo reveal"><img src="assets/investigacion.jpg" alt="${esc(t('researchImgAlt'))}" onerror="this.closest('.side-photo').remove()"></figure>
+    if (!inv || Array.isArray(inv)) return pageHead(esc(t('nav.investigacion'))) + `<section class="section"><div class="wrap">${errorBox()}</div></section>`;
+    const lista = Array.isArray(pubs) ? pubs : [];
+    const lineas = Array.isArray(inv.lineas) ? inv.lineas : [];
+    const centros = Array.isArray(inv.centros) ? inv.centros : [];
+    const rango = ys => (ys.length ? (Math.min(...ys) === Math.max(...ys) ? String(ys[0]) : `${Math.min(...ys)}–${Math.max(...ys)}`) : '');
+    const anios = lista.map(p => parseInt(p.anio, 10)).filter(Boolean);
+    const stats = [[lista.length, 'statPubs'], [rango(anios), 'statSpan'], [centros.length, 'statCenters']].filter(s => s[0]);
+    const palabras = [].concat(L(inv, 'palabras') || []);
+    const a = inv.actual;
+
+    const hero = `
+      <section class="res-hero">
+        <div class="res-hero-img" aria-hidden="true"></div>
+        <div class="wrap res-hero-in">
+          <span class="eyebrow">${esc(t('nav.investigacion'))}</span>
+          <h1>${esc(t('resTitle'))}</h1>
+          <p class="lead">${esc(L(inv, 'intro'))}</p>
+          ${palabras.length ? `<div class="res-kw">${palabras.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : ''}
+          ${stats.length ? `<div class="res-stats">${stats.map(([v, k]) => `<div><b>${esc(v)}</b><span>${esc(t(k))}</span></div>`).join('')}</div>` : ''}
         </div>
-        ${lineas.length ? `<h2 style="margin-top:48px">${esc(L(inv, 'tituloLineas') || t('linesDefault'))}</h2><div class="grid">${lineas.map(l => card({ titulo: L(l, 'titulo'), descripcion: L(l, 'texto') })).join('')}</div>` : ''}
-      </div></section>
+      </section>`;
+
+    const actual = a ? `
+      <section class="section"><div class="wrap">
+        <span class="kicker">${esc(t('currentProject'))}</span>
+        <article class="feature reveal">
+          <div class="feature-body">
+            <h2>${esc(L(a, 'titulo'))}</h2>
+            ${[].concat(L(a, 'texto') || []).map(p => `<p>${esc(p)}</p>`).join('')}
+            ${[].concat(L(a, 'temas') || []).length ? `<div class="feature-tags">${[].concat(L(a, 'temas')).map(x => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
+          </div>
+          ${a.imagen ? `<figure class="feature-media"><img src="${url(a.imagen)}" alt="${esc(t('researchImgAlt'))}" onerror="this.closest('.feature-media').remove()"></figure>` : ''}
+        </article>
+      </div></section>` : '';
+
+    const proyecto = (l, i) => {
+      const rel = lista.filter(p => p.proyecto && p.proyecto === l.id).sort((x, y) => (parseInt(y.anio, 10) || 0) - (parseInt(x.anio, 10) || 0));
+      const periodo = rango(rel.map(p => parseInt(p.anio, 10)).filter(Boolean));
+      return `
+        <article class="proj card reveal">
+          <div class="proj-top">
+            <div class="ico"><i class="${esc(l.icono || 'fa-solid fa-flask')}" aria-hidden="true"></i></div>
+            ${periodo ? `<span class="period">${esc(periodo)}</span>` : ''}
+          </div>
+          <h3>${esc(L(l, 'titulo'))}</h3>
+          <p>${esc(L(l, 'texto'))}</p>
+          ${rel.length ? `<div class="proj-pubs"><small>${esc(t('relatedPubs'))}</small>
+            ${rel.map(p => `<a class="pill" href="${url(p.enlace)}"${ext(p.enlace)} title="${esc(p.titulo)}">${esc(p.anio)} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>`).join('')}</div>` : ''}
+        </article>`;
+    };
+    const proyectos = lineas.length ? `
+      <section class="section alt"><div class="wrap">
+        <span class="kicker">${esc(t('projectsKicker'))}</span><h2>${esc(L(inv, 'tituloLineas') || t('linesDefault'))}</h2>
+        <div class="grid proj-grid">${lineas.map(proyecto).join('')}</div>
+      </div></section>` : '';
+
+    const centrosHtml = centros.length ? `
+      <section class="section"><div class="wrap">
+        <span class="kicker">${esc(t('centersKicker'))}</span><h2>${esc(L(inv, 'tituloCentros') || '')}</h2>
+        <div class="grid centers">${centros.map(c => `
+          <a class="card center reveal" href="${url(c.enlace)}"${ext(c.enlace)}>
+            <div class="ico"><i class="${esc(c.icono || 'fa-solid fa-building-columns')}" aria-hidden="true"></i></div>
+            <span class="tag${c.tipo === 'grupo' ? ' on' : ''}">${esc(t(c.tipo === 'grupo' ? 'myGroup' : 'collab'))}</span>
+            <h3>${esc(L(c, 'nombre'))}</h3>
+            <p>${esc(L(c, 'descripcion'))}</p>
+            <span class="more">${esc(t('visitWeb'))} <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>`).join('')}</div>
+      </div></section>` : '';
+
+    return `${hero}${actual}${proyectos}${centrosHtml}
       <section class="section alt"><div class="wrap">
         <span class="kicker">${esc(t('publications'))}</span><h2>${esc(t('production'))}</h2>
         ${pubs === null ? errorBox() : pubs.length ? `<ul class="pubs">${pubs.map(p => `

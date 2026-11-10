@@ -1,30 +1,80 @@
 {
-  "intro": "Mi línea de investigación se centra en la relación entre la microbiota, el sistema inmunitario y las enfermedades metabólicas: cómo las comunidades microbianas del intestino influyen en el desarrollo de patologías y, a la inversa, cómo las enfermedades modifican ese ecosistema. Me apoyo en la proteómica y la bioinformática para identificar posibles vías de diagnóstico y nuevas estrategias terapéuticas. Colaboro con el consorci PKU.cat en el estudio de la microbiota intestinal y el metabolismo de la fenilalanina en pacientes con fenilcetonuria.",
-  "intro_ca": "La meva línia de recerca se centra en la relació entre la microbiota, el sistema immunitari i les malalties metabòliques: com les comunitats microbianes de l'intestí influeixen en el desenvolupament de patologies i, a l'inrevés, com les malalties modifiquen aquest ecosistema. Em recolzo en la proteòmica i la bioinformàtica per identificar possibles vies de diagnòstic i noves estratègies terapèutiques. Col·laboro amb el consorci PKU.cat en l'estudi de la microbiota intestinal i el metabolisme de la fenilalanina en pacients amb fenilcetonúria.",
-  "intro_en": "My research focuses on the relationship between the microbiota, the immune system and metabolic diseases: how the microbial communities of the gut influence the development of disease and, conversely, how diseases alter that ecosystem. I rely on proteomics and bioinformatics to identify possible diagnostic routes and new therapeutic strategies. I collaborate with the PKU.cat consortium on the study of the gut microbiota and phenylalanine metabolism in patients with phenylketonuria.",
-  "tituloLineas": "Líneas de investigación",
-  "tituloLineas_ca": "Línies de recerca",
-  "tituloLineas_en": "Lines of research",
+  "intro": "Investigo cómo se relacionan los microorganismos y el sistema inmunitario: de qué manera la microbiota intestinal influye en la salud y en las enfermedades metabólicas, y cómo los patógenos aprovechan sus proteínas para escapar de nuestras defensas. Me apoyo en la proteómica y la bioinformática para identificar posibles vías de diagnóstico y nuevas estrategias terapéuticas.",
+  "intro_ca": "Investigo com es relacionen els microorganismes i el sistema immunitari: de quina manera la microbiota intestinal influeix en la salut i en les malalties metabòliques, i com els patògens aprofiten les seves proteïnes per escapar de les nostres defenses. Em recolzo en la proteòmica i la bioinformàtica per identificar possibles vies de diagnòstic i noves estratègies terapèutiques.",
+  "intro_en": "I study how microorganisms and the immune system relate to each other: how the gut microbiota influences health and metabolic disease, and how pathogens use their proteins to escape our defences. I rely on proteomics and bioinformatics to identify possible diagnostic routes and new therapeutic strategies.",
+
+  "palabras": ["Inmunología", "Microorganismos", "Microbiota intestinal", "Proteómica", "Bioinformática"],
+  "palabras_ca": ["Immunologia", "Microorganismes", "Microbiota intestinal", "Proteòmica", "Bioinformàtica"],
+  "palabras_en": ["Immunology", "Microorganisms", "Gut microbiota", "Proteomics", "Bioinformatics"],
+
+  "actual": {
+    "titulo": "Microbiota intestinal y enfermedades metabólicas",
+    "titulo_ca": "Microbiota intestinal i malalties metabòliques",
+    "titulo_en": "Gut microbiota and metabolic diseases",
+    "texto": [
+      "Estudio la relación entre la microbiota intestinal, el sistema inmunitario y las enfermedades metabólicas, con especial interés en la fenilcetonuria y en el metabolismo de la fenilalanina. Trabajo en ello junto al consorcio PKU.cat y mis colaboradores de la UOC y de los centros de investigación con los que colaboro."
+    ],
+    "texto_ca": [
+      "Estudio la relació entre la microbiota intestinal, el sistema immunitari i les malalties metabòliques, amb especial interès en la fenilcetonúria i en el metabolisme de la fenilalanina. Hi treballo juntament amb el consorci PKU.cat i els meus col·laboradors de la UOC i dels centres de recerca amb què col·laboro."
+    ],
+    "texto_en": [
+      "I study the relationship between the gut microbiota, the immune system and metabolic diseases, with a special interest in phenylketonuria and phenylalanine metabolism. I work on this together with the PKU.cat consortium and my colleagues at the UOC and the research centres I collaborate with."
+    ],
+    "temas": ["Microbiota intestinal", "Sistema inmunitario", "Fenilcetonuria", "Metabolismo de la fenilalanina", "Enfermedades metabólicas"],
+    "temas_ca": ["Microbiota intestinal", "Sistema immunitari", "Fenilcetonúria", "Metabolisme de la fenilalanina", "Malalties metabòliques"],
+    "temas_en": ["Gut microbiota", "Immune system", "Phenylketonuria", "Phenylalanine metabolism", "Metabolic diseases"],
+    "imagen": "assets/investigacion.jpg"
+  },
+
+  "tituloLineas": "Proyectos realizados",
+  "tituloLineas_ca": "Projectes realitzats",
+  "tituloLineas_en": "Completed projects",
   "lineas": [
-    { "titulo": "Microbiota y enfermedades metabólicas", "titulo_ca": "Microbiota i malalties metabòliques", "titulo_en": "Microbiota and metabolic diseases",
-      "texto": "Estudio la relación entre la microbiota intestinal y las enfermedades metabólicas, con especial énfasis en la fenilcetonuria.",
-      "texto_ca": "Estudio la relació entre la microbiota intestinal i les malalties metabòliques, amb especial èmfasi en la fenilcetonúria.",
-      "texto_en": "I study the relationship between the gut microbiota and metabolic diseases, with a special focus on phenylketonuria." },
-    { "titulo": "Base de datos de proteínas multifuncionales", "titulo_ca": "Base de dades de proteïnes multifuncionals", "titulo_en": "Database of multifunctional proteins",
+    { "id": "base-datos", "titulo": "Base de datos de proteínas multifuncionales", "titulo_ca": "Base de dades de proteïnes multifuncionals", "titulo_en": "Database of multifunctional proteins",
       "texto": "Durante mi tesis doctoral, conjuntamente con mi grupo de investigación, construimos la primera base de datos de proteínas multifuncionales.",
       "texto_ca": "Durant la meva tesi doctoral, conjuntament amb el meu grup de recerca, vam construir la primera base de dades de proteïnes multifuncionals.",
-      "texto_en": "During my doctoral thesis, together with my research group, we built the first database of multifunctional proteins." },
-    { "titulo": "Relación entre proteínas multifuncionales y patologías humanas", "titulo_ca": "Relació entre proteïnes multifuncionals i patologies humanes", "titulo_en": "Multifunctional proteins and human diseases",
+      "texto_en": "During my doctoral thesis, together with my research group, we built the first database of multifunctional proteins.",
+      "icono": "fa-solid fa-database" },
+    { "id": "enfermedad", "titulo": "Proteínas multifuncionales y patologías humanas", "titulo_ca": "Proteïnes multifuncionals i patologies humanes", "titulo_en": "Multifunctional proteins and human diseases",
       "texto": "Analizamos la relación que tiene la multifuncionalidad de las proteínas con las enfermedades humanas.",
       "texto_ca": "Analitzem la relació que té la multifuncionalitat de les proteïnes amb les malalties humanes.",
-      "texto_en": "We analyse how the multifunctionality of proteins relates to human diseases." },
-    { "titulo": "Evolución de las proteínas", "titulo_ca": "Evolució de les proteïnes", "titulo_en": "Protein evolution",
+      "texto_en": "We analyse how the multifunctionality of proteins relates to human diseases.",
+      "icono": "fa-solid fa-heart-pulse" },
+    { "id": "evolucion", "titulo": "Evolución de las proteínas", "titulo_ca": "Evolució de les proteïnes", "titulo_en": "Protein evolution",
       "texto": "Aplicamos nuestros conocimientos sobre las proteínas multifuncionales para entender cómo han evolucionado en el tiempo y entre los diferentes organismos.",
       "texto_ca": "Apliquem els nostres coneixements sobre les proteïnes multifuncionals per entendre com han evolucionat en el temps i entre els diferents organismes.",
-      "texto_en": "We apply our knowledge of multifunctional proteins to understand how they have evolved over time and across different organisms." },
-    { "titulo": "Proteínas multifuncionales y patógenos", "titulo_ca": "Proteïnes multifuncionals i patògens", "titulo_en": "Multifunctional proteins and pathogens",
+      "texto_en": "We apply our knowledge of multifunctional proteins to understand how they have evolved over time and across different organisms.",
+      "icono": "fa-solid fa-dna" },
+    { "id": "patogenos", "titulo": "Proteínas multifuncionales y patógenos", "titulo_ca": "Proteïnes multifuncionals i patògens", "titulo_en": "Multifunctional proteins and pathogens",
       "texto": "Investigamos cómo los microorganismos patógenos utilizan el mimetismo que les proporcionan las proteínas multifuncionales altamente conservadas, para escapar de nuestro sistema inmunológico.",
       "texto_ca": "Investiguem com els microorganismes patògens utilitzen el mimetisme que els proporcionen les proteïnes multifuncionals altament conservades, per escapar del nostre sistema immunològic.",
-      "texto_en": "We investigate how pathogenic microorganisms use the mimicry provided by highly conserved multifunctional proteins to escape our immune system." }
+      "texto_en": "We investigate how pathogenic microorganisms use the mimicry provided by highly conserved multifunctional proteins to escape our immune system.",
+      "icono": "fa-solid fa-virus" }
+  ],
+
+  "tituloCentros": "Grupo y colaboraciones",
+  "tituloCentros_ca": "Grup i col·laboracions",
+  "tituloCentros_en": "Group and collaborations",
+  "centros": [
+    { "nombre": "NUTRALiSS · UOC", "tipo": "grupo", "icono": "fa-solid fa-seedling",
+      "descripcion": "Grupo de investigación de la Universitat Oberta de Catalunya sobre nutrición, alimentación, salud y sostenibilidad.",
+      "descripcion_ca": "Grup de recerca de la Universitat Oberta de Catalunya sobre nutrició, alimentació, salut i sostenibilitat.",
+      "descripcion_en": "Research group at the Universitat Oberta de Catalunya on nutrition, food, health and sustainability.",
+      "enlace": "https://nutraliss.research.uoc.edu/" },
+    { "nombre": "Consorcio PKU.cat", "nombre_ca": "Consorci PKU.cat", "nombre_en": "PKU.cat consortium", "tipo": "colaboracion", "icono": "fa-solid fa-people-group",
+      "descripcion": "Consorcio catalán de investigación sobre la fenilcetonuria, con equipos clínicos y básicos de hospitales y universidades.",
+      "descripcion_ca": "Consorci català de recerca sobre la fenilcetonúria, amb equips clínics i bàsics d'hospitals i universitats.",
+      "descripcion_en": "Catalan research consortium on phenylketonuria, bringing together clinical and basic research teams from hospitals and universities.",
+      "enlace": "https://www.pku.cat" },
+    { "nombre": "Fundació de Recerca Clínic Barcelona · IDIBAPS", "tipo": "colaboracion", "icono": "fa-solid fa-hospital",
+      "descripcion": "Instituto de investigación biomédica vinculado al Hospital Clínic de Barcelona y a la Universitat de Barcelona.",
+      "descripcion_ca": "Institut de recerca biomèdica vinculat a l'Hospital Clínic de Barcelona i a la Universitat de Barcelona.",
+      "descripcion_en": "Biomedical research institute linked to Hospital Clínic de Barcelona and the University of Barcelona.",
+      "enlace": "https://www.clinicbarcelona.org/idibaps" },
+    { "nombre": "IBB · UAB", "tipo": "colaboracion", "icono": "fa-solid fa-flask",
+      "descripcion": "Institut de Biotecnologia i de Biomedicina de la Universitat Autònoma de Barcelona.",
+      "descripcion_ca": "Institut de Biotecnologia i de Biomedicina de la Universitat Autònoma de Barcelona.",
+      "descripcion_en": "Institute of Biotechnology and Biomedicine of the Universitat Autònoma de Barcelona.",
+      "enlace": "https://ibb.uab.cat" }
   ]
 }

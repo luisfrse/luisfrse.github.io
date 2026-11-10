@@ -1,10 +1,10 @@
 [
-  { "titulo": "Role of Moonlighting Proteins in Disease: Analyzing the Contribution of Canonical and Moonlighting Functions in Disease Progression", "anio": "2023", "enlace": "https://www.mdpi.com/2073-4409/12/2/235" },
-  { "titulo": "Pathogen Moonlighting Proteins: From Ancestral Key Metabolic Enzymes to Virulence Factors", "anio": "2021", "enlace": "https://www.mdpi.com/2076-2607/9/6/1300" },
-  { "titulo": "A hypothesis explaining why so many pathogen virulence proteins are moonlighting proteins", "anio": "2018", "enlace": "https://academic.oup.com/femspd/article/76/5/fty046/4990536" },
-  { "titulo": "Multifunctional Proteins: Involvement in Human Diseases and Targets of Current Drugs", "anio": "2018", "enlace": "https://link.springer.com/article/10.1007/s10930-018-9790-x" },
-  { "titulo": "MultitaskProtDB-II: an update of a database of multitasking/moonlighting proteins", "anio": "2017", "enlace": "https://academic.oup.com/nar/article/46/D1/D645/4607801" },
-  { "titulo": "Moonlighting proteins: a bioinformatics analysis of their biochemical characteristics", "anio": "2016", "enlace": "https://www.sciencedirect.com/science/article/abs/pii/S1871678415002216" },
-  { "titulo": "Bioinformatics and moonlighting proteins", "anio": "2015", "enlace": "https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2015.00090/full" },
-  { "titulo": "Can bioinformatics help in the identification of moonlighting proteins?", "anio": "2014", "enlace": "https://portlandpress.com/biochemsoctrans/article/42/6/1692/65097/Can-bioinformatics-help-in-the-identification-of" }
+  { "titulo": "Role of Moonlighting Proteins in Disease: Analyzing the Contribution of Canonical and Moonlighting Functions in Disease Progression", "anio": "2023", "enlace": "https://www.mdpi.com/2073-4409/12/2/235", "proyecto": "enfermedad" },
+  { "titulo": "Pathogen Moonlighting Proteins: From Ancestral Key Metabolic Enzymes to Virulence Factors", "anio": "2021", "enlace": "https://www.mdpi.com/2076-2607/9/6/1300", "proyecto": "patogenos" },
+  { "titulo": "A hypothesis explaining why so many pathogen virulence proteins are moonlighting proteins", "anio": "2018", "enlace": "https://academic.oup.com/femspd/article/76/5/fty046/4990536", "proyecto": "patogenos" },
+  { "titulo": "Multifunctional Proteins: Involvement in Human Diseases and Targets of Current Drugs", "anio": "2018", "enlace": "https://link.springer.com/article/10.1007/s10930-018-9790-x", "proyecto": "enfermedad" },
+  { "titulo": "MultitaskProtDB-II: an update of a database of multitasking/moonlighting proteins", "anio": "2017", "enlace": "https://academic.oup.com/nar/article/46/D1/D645/4607801", "proyecto": "base-datos" },
+  { "titulo": "Moonlighting proteins: a bioinformatics analysis of their biochemical characteristics", "anio": "2016", "enlace": "https://www.sciencedirect.com/science/article/abs/pii/S1871678415002216", "proyecto": "base-datos" },
+  { "titulo": "Bioinformatics and moonlighting proteins", "anio": "2015", "enlace": "https://www.frontiersin.org/journals/bioengineering-and-biotechnology/articles/10.3389/fbioe.2015.00090/full", "proyecto": "base-datos" },
+  { "titulo": "Can bioinformatics help in the identification of moonlighting proteins?", "anio": "2014", "enlace": "https://portlandpress.com/biochemsoctrans/article/42/6/1692/65097/Can-bioinformatics-help-in-the-identification-of", "proyecto": "base-datos" }
 ]
