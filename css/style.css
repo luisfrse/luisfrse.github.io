@@ -211,7 +211,7 @@ a.card{text-decoration:none;color:inherit}
 
 /* Sobre mí */
 .about-grid{display:grid;gap:48px;align-items:start}
-.about-grid:has(.portrait-wrap){grid-template-columns:minmax(0,320px) 1fr}
+.about-grid:has(.portrait-wrap){grid-template-columns:minmax(0,320px) 1fr;align-items:center}
 .portrait{width:100%;border-radius:var(--radius);aspect-ratio:4/5;object-fit:cover;box-shadow:0 24px 50px rgba(8,24,42,.25)}
 .about-text h2{color:var(--deep)}
 .about-text p{font-size:1.08rem}
@@ -219,7 +219,7 @@ a.card{text-decoration:none;color:inherit}
 .stat{padding:16px 0 0;border-top:2px solid var(--accent)}
 .stat b{display:block;font-family:var(--font-head);font-size:2.6rem;color:var(--deep);line-height:1;margin-bottom:6px}
 .stat span{font-size:.9rem;color:var(--ink-soft)}
-@media (max-width:820px){.about-grid:has(.portrait-wrap){grid-template-columns:1fr}.portrait-wrap{max-width:300px}}
+@media (max-width:820px){.about-grid:has(.portrait-wrap){grid-template-columns:1fr}.portrait-wrap{max-width:300px;margin-inline:auto}}
 
 /* Docencia */
 .teach-block{scroll-margin-top:calc(var(--nav-h) + 16px)}
