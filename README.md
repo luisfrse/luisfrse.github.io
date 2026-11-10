@@ -21,6 +21,13 @@ solo editas un archivo pequeño; no hay que tocar ni volver a subir el resto de 
 
 Lo más nuevo va **arriba** de cada lista.
 
+**Imágenes de divulgación:** no hace falta poner `imagen`. Al guardar un cambio en `data/divulgacion.json`,
+GitHub ejecuta solo `herramientas/obtener-imagenes.py`, que busca la imagen de portada del enlace y la añade
+(en 1-2 minutos aparece un commit automático; haz «pull» si trabajas en local). Cada lunes repasa las imágenes
+y repara las que ya no cargan. También se puede lanzar a mano en «Actions → Imágenes de divulgación → Run workflow»
+o en local con `python herramientas/obtener-imagenes.py` (`--todo` para rehacer todas). Si no hay imagen, se
+muestra `assets/divulgacion-defecto.svg`; puedes poner la tuya en el campo `imagen`.
+
 ### Ejemplos (copiar y pegar, separando con comas)
 
 Publicación:

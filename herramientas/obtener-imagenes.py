@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Rellena el campo "imagen" de data/divulgacion.json con la imagen de portada (og:image)
-de cada enlace. Solo toca las entradas que tienen "enlace" y todavía no tienen "imagen".
+"""Mantiene el campo "imagen" de data/divulgacion.json con la imagen de portada (og:image) de cada enlace.
 
-Uso (desde la carpeta de la web):   python herramientas/obtener-imagenes.py
-Las entradas donde no se encuentra imagen se dejan igual (la web muestra una imagen por defecto).
+  python herramientas/obtener-imagenes.py          -> rellena las entradas sin imagen y
+                                                      repara las que tienen una imagen que ya no carga
+  python herramientas/obtener-imagenes.py --todo   -> vuelve a buscar la imagen de TODAS las entradas
+                                                      (sobrescribe también las que pusiste a mano)
+
+Si no se encuentra imagen, la entrada se deja como está (la web muestra una imagen por defecto).
+En GitHub se ejecuta solo (ver .github/workflows/imagenes-divulgacion.yml).
 """
 import html
 import json
@@ -24,10 +28,27 @@ PROP = re.compile(r'(?:property|name)\s*=\s*["\'](og:image(?::secure_url)?|twitt
 CONT = re.compile(r'content\s*=\s*["\']([^"\']+)["\']', re.I)
 
 
+def abrir(url, agente):
+    return urllib.request.urlopen(
+        urllib.request.Request(url, headers={"User-Agent": agente, "Accept-Language": "es,ca;q=0.8,en;q=0.5"}),
+        timeout=20,
+    )
+
+
 def descargar(url, agente):
-    req = urllib.request.Request(url, headers={"User-Agent": agente, "Accept-Language": "es,ca;q=0.8,en;q=0.5"})
-    with urllib.request.urlopen(req, timeout=20) as r:
+    with abrir(url, agente) as r:
         return r.read(600_000).decode(r.headers.get_content_charset() or "utf-8", "replace"), r.geturl()
+
+
+def imagen_carga(url):
+    """True si la dirección existe y devuelve una imagen."""
+    if not url.startswith(("http://", "https://")):
+        return True  # imagen local (p. ej. fotos/...): no se comprueba aquí
+    try:
+        with abrir(url, AGENTES[0]) as r:
+            return r.status == 200 and r.headers.get_content_type().startswith("image/")
+    except Exception:
+        return False
 
 
 def buscar_imagen(url):
@@ -52,28 +73,38 @@ def buscar_imagen(url):
 
 
 def main():
+    todo = "--todo" in sys.argv
     texto = FICHERO.read_text(encoding="utf-8")
     json.loads(texto)  # valida antes de tocar nada
     lineas = texto.split("\n")
-    nuevas = faltan = 0
+    nuevas = reparadas = sin = 0
     for i, linea in enumerate(lineas):
         m = re.search(r'"enlace":\s*"([^"]+)"', linea)
-        if not m or '"imagen"' in linea or '"enlace": ""' in linea:
+        if not m:
             continue
+        actual = re.search(r'"imagen":\s*"([^"]*)"', linea)
+        if actual and actual.group(1) and not todo and imagen_carga(actual.group(1)):
+            continue  # ya tiene imagen y funciona
         img = buscar_imagen(m.group(1))
-        if not img:
-            faltan += 1
-            print("  sin imagen:", m.group(1)[:90])
+        if not img or (actual and actual.group(1) == img):
+            if not actual or not actual.group(1):
+                sin += 1
+                print("  sin imagen:", m.group(1)[:90])
             continue
-        # inserta el campo al final del objeto, respetando el formato de una línea por entrada
-        lineas[i] = re.sub(r'\s*\}(\s*,?\s*)$', ', "imagen": %s }\\1' % json.dumps(img), linea, count=1)
-        nuevas += 1
+        if actual:
+            lineas[i] = linea[:actual.start()] + '"imagen": %s' % json.dumps(img) + linea[actual.end():]
+            reparadas += 1
+        else:
+            # inserta el campo al final del objeto, respetando el formato de una línea por entrada
+            lineas[i] = re.sub(r'\s*\}(\s*,?\s*)$', ', "imagen": %s }\\1' % json.dumps(img), linea, count=1)
+            nuevas += 1
         print("  ok:", m.group(1)[:60], "->", img[:60])
     resultado = "\n".join(lineas)
     json.loads(resultado)  # comprueba que el JSON sigue siendo válido
-    FICHERO.write_text(resultado, encoding="utf-8")
-    print(f"\nImágenes añadidas: {nuevas} · sin imagen: {faltan}")
+    if resultado != texto:
+        FICHERO.write_text(resultado, encoding="utf-8")
+    print(f"\nAñadidas: {nuevas} · actualizadas: {reparadas} · sin imagen: {sin}")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
