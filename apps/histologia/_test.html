@@ -1,0 +1,85 @@
+<!doctype html><meta charset="utf-8"><pre id="out"></pre>
+<script>
+const w=ms=>new Promise(r=>setTimeout(r,ms)); const out=[]; const errs=[];
+const log=(...a)=>out.push(a.join(' '));
+async function mk(W,lang){
+  const f=document.createElement('iframe'); f.style.cssText=`width:${W}px;height:900px;border:0`; f.src='index.html'; document.body.appendChild(f);
+  await w(600); f.contentWindow.localStorage.setItem('lang',lang);
+  ['stats','errors','best','bestStreak','settings'].forEach(k=>f.contentWindow.localStorage.removeItem('histologia:'+k));
+  f.contentWindow.location.reload(); await w(1800);
+  const W_=f.contentWindow; W_.addEventListener('error',e=>errs.push(lang+': '+e.message)); const ce=W_.console.error; W_.console.error=(...a)=>{errs.push(lang+' console: '+a.join(' '));ce.apply(W_.console,a)};
+  return f;
+}
+(async()=>{
+ try{
+ let f=await mk(1200,'es'); const D=()=>f.contentDocument, Wn=()=>f.contentWindow, $=s=>D().querySelector(s), $$=s=>[...D().querySelectorAll(s)];
+ const confirmOk=async(doc)=>{ const d=doc.querySelector('dialog.kit-dialog[open]'); d.querySelector('[data-r="1"]').click(); await w(100); d.dispatchEvent(new Event('close')); await w(300); };
+ const quit=async()=>{ $('#q-quit').click(); await w(200); await confirmOk(D()); };
+ log('home: modos='+$$('.mode').length,'cats='+$$('#pk-cats button').length,'h2='+$('.hero h2').textContent.slice(0,40),'collage='+$$('.fov-collage img').length);
+ $$('#sg-n button').find(b=>b.dataset.n==='5').click(); await w(100);
+ $('.mode[data-mode="quiz"]').click(); await w(900);
+ let answered=0, wrong=0, types=new Set();
+ for(let i=0;i<5;i++){
+   const opts=$$('.opt'); if(opts.length<2){log('FALLO opciones',opts.length);break;}
+   types.add($('.q-prompt').textContent);
+   opts[(i%2===0)?0:opts.length-1].click(); await w(150);
+   if(!$('.fb')){log('FALLO sin feedback q'+i);break;}
+   if($('.fb').classList.contains('bad')) wrong++; answered++;
+   if(!$('.fb .credit')) log('FALLO sin atribución q'+i);
+   $('#q-next').click(); await w(500);
+ }
+ log('quiz: respondidas='+answered,'falladas='+wrong,'tipos='+[...types].join(' | ').slice(0,220));
+ log('resultados: ring='+!!$('#ring-fg'),'barras='+$$('.bar-row').length,'stats='+$$('.stat').length,'mistakes='+$$('.mist').length,'botones='+$$('.row .btn').map(b=>b.textContent).join(','));
+ const rv=$('#r-review'); if(rv){rv.click(); await w(700); log('repaso: pregunta visible='+!!$('.q-prompt'),'q='+$('.q-meta span').textContent); await quit();} else { $('#r-home').click(); await w(300); }
+ log('tras salir: vista inicio='+!!$('.hero'));
+ $('.mode[data-mode="typed"]').click(); await w(900);
+ log('escrita: input='+!!$('#ans'));
+ const data=await (await Wn().fetch('data/imagenes.json')).json();
+ const src=$('#q-view .v-img').getAttribute('src'); const im=data.imagenes.find(x=>src.includes(x.archivo)); log('imagen de la pregunta='+im.id);
+ const inp=$('#ans'); inp.value=im.nombre.es.slice(0,3); inp.dispatchEvent(new Event('input',{bubbles:true})); await w(100);
+ log('autocompletado='+$$('#sug button').length);
+ const nm=im.nombre.es; const typo=nm.slice(0,3)+nm.slice(4);
+ inp.value=typo; $('#ans-ok').click(); await w(200);
+ log('escrita con errata "'+typo+'" ('+nm+'): '+($('.fb')?($('.fb').classList.contains('ok')?'ACEPTADA':'RECHAZADA'):'sin feedback'));
+ $('#q-next').click(); await w(500);
+ const inp2=$('#ans'); inp2.value='zzzz respuesta absurda'; $('#ans-ok').click(); await w(200); log('respuesta absurda: '+($('.fb').classList.contains('bad')?'rechazada (bien)':'ACEPTADA (mal)'));
+ await quit();
+ $('.mode[data-mode="study"]').click(); await w(800);
+ const cards=$$('.gcard'); log('estudio: tarjetas='+cards.length);
+ cards[0].click(); await w(500); const dd=D().querySelector('dialog.wide[open]'); log('detalle abierto='+!!dd,'nombre='+(dd&&dd.querySelector('h2').textContent.slice(0,30)),'atribución='+(dd&&dd.querySelector('.credit')?'sí':'NO'));
+ const vw=dd.querySelector('.viewer'); const before=vw.querySelector('.v-zoom').textContent; vw.querySelector('[data-a="in"]').click(); vw.querySelector('[data-a="in"]').click(); await w(100); log('zoom botones: '+before+' → '+vw.querySelector('.v-zoom').textContent);
+ vw.dispatchEvent(new WheelEvent('wheel',{deltaY:-300,clientX:300,clientY:200,bubbles:true,cancelable:true})); await w(60); log('rueda: '+vw.querySelector('.v-zoom').textContent);
+ vw.dispatchEvent(new KeyboardEvent('keydown',{key:'0',bubbles:true})); await w(60); log('tecla 0 (encajar): '+vw.querySelector('.v-zoom').textContent);
+ vw.dispatchEvent(new MouseEvent('dblclick',{bubbles:true,clientX:300,clientY:200})); await w(60); log('doble clic: '+vw.querySelector('.v-zoom').textContent);
+ vw.querySelector('[data-a="micro"]').click(); log('modo microscopio='+vw.classList.contains('micro'));
+ dd.querySelector('#d-next').click(); await w(300); log('siguiente: '+dd.querySelector('h2').textContent.slice(0,30)); dd.close(); await w(100);
+ $('#s-self').click(); await w(400); log('autoevaluación: nombres borrosos='+$$('.gcard .nm.blur').length);
+ $('#s-q').value='tend'; $('#s-q').dispatchEvent(new Event('input',{bubbles:true})); await w(700); log('búsqueda "tend": '+$$('.gcard').length+' tarjeta(s)');
+ $('#s-home').click(); await w(300);
+ $('#open-credits').click(); await w(500); log('créditos: filas='+$$('.credit-row').length,'con enlace commons='+$$('.credit-row a[href^="https://commons"]').length);
+ for(const l of ['ca','en','es']){ D().querySelector('.kit-lang [data-lang='+l+']').click(); await w(500); log('idioma '+l+': h2="'+$('h2').textContent.slice(0,40)+'" lang='+D().documentElement.lang); }
+ $('#c-home').click(); await w(300);
+ for(const l of ['ca','en']){
+   D().querySelector('.kit-lang [data-lang='+l+']').click(); await w(500);
+   $$('#sg-n button').find(b=>b.dataset.n==='5').click(); $('.mode[data-mode="quiz"]').click(); await w(800);
+   const p=$('.q-prompt').textContent; $$('.opt')[0].click(); await w(150); const t=$('.fb h3').textContent;
+   log(l+': pregunta="'+p+'" feedback="'+t+'" opciones='+$$('.opt').map(o=>o.textContent.slice(1,24)).join(' / '));
+   await quit();
+ }
+ $('.mode[data-mode="quiz"]').click(); await w(700); $$('.opt')[0].click(); await w(150);
+ D().querySelector('.kit-lang [data-lang=es]').click(); await w(500); log('idioma a media pregunta: feedback conservado='+!!$('.fb')+' botón siguiente='+!!$('#q-next'));
+ f.remove();
+ for(const [W,l] of [[390,'es'],[320,'ca']]){
+   const g=await mk(W,l); const GD=g.contentDocument; const ov=()=>GD.documentElement.scrollWidth>W+1;
+   let res='inicio overflow='+ov();
+   GD.querySelector('.mode[data-mode="quiz"]').click(); await w(900); res+=' | quiz overflow='+ov(); GD.querySelectorAll('.opt')[0].click(); await w(200); res+=' | feedback overflow='+ov();
+   GD.querySelector('#q-quit').click(); await w(200); { const d=GD.querySelector('dialog.kit-dialog[open]'); d.querySelector('[data-r="1"]').click(); await w(100); d.dispatchEvent(new Event('close')); await w(300); }
+   GD.querySelector('.mode[data-mode="study"]').click(); await w(800); res+=' | estudio overflow='+ov()+' cols='+getComputedStyle(GD.querySelector('.gallery')).gridTemplateColumns.split(' ').length;
+   GD.querySelector('.gcard').click(); await w(400); const dl=GD.querySelector('dialog.wide[open]'); const r=dl.getBoundingClientRect(); res+=' | detalle ancho='+Math.round(r.width)+' dentro='+(r.right<=W+1);
+   log(W+' '+l+': '+res); g.remove();
+ }
+ }catch(e){ log('EXCEPCIÓN: '+e.message+' '+(e.stack||'').split('\n')[1]); }
+ log('ERRORES DE CONSOLA: '+(errs.length?errs.join(' || '):'ninguno'));
+ document.getElementById('out').textContent=out.join('\n'); document.title='DONE';
+})();
+</script>

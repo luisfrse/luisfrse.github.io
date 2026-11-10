@@ -1,0 +1,2212 @@
+{
+ "version": 1,
+ "categorias": [
+  {
+   "id": "epitelios",
+   "color": "#7fb2ea",
+   "nombre": {
+    "es": "Epitelios",
+    "ca": "Epitelis",
+    "en": "Epithelia"
+   }
+  },
+  {
+   "id": "conectivo",
+   "color": "#f0a6d8",
+   "nombre": {
+    "es": "Conectivo, cartílago y hueso",
+    "ca": "Conjuntiu, cartílag i os",
+    "en": "Connective, cartilage and bone"
+   }
+  },
+  {
+   "id": "muscular-nervioso",
+   "color": "#f5b82e",
+   "nombre": {
+    "es": "Músculo y sistema nervioso",
+    "ca": "Múscul i sistema nerviós",
+    "en": "Muscle and nervous system"
+   }
+  },
+  {
+   "id": "organos",
+   "color": "#4ade80",
+   "nombre": {
+    "es": "Órganos",
+    "ca": "Òrgans",
+    "en": "Organs"
+   }
+  },
+  {
+   "id": "linfoide",
+   "color": "#b08be0",
+   "nombre": {
+    "es": "Órganos linfoides",
+    "ca": "Òrgans limfoides",
+    "en": "Lymphoid organs"
+   }
+  },
+  {
+   "id": "tinciones",
+   "color": "#2dd4bf",
+   "nombre": {
+    "es": "Tinciones especiales",
+    "ca": "Tincions especials",
+    "en": "Special stains"
+   }
+  },
+  {
+   "id": "hematologia",
+   "color": "#f87171",
+   "nombre": {
+    "es": "Hematología",
+    "ca": "Hematologia",
+    "en": "Haematology"
+   }
+  },
+  {
+   "id": "citologia",
+   "color": "#fb923c",
+   "nombre": {
+    "es": "Citología",
+    "ca": "Citologia",
+    "en": "Cytology"
+   }
+  },
+  {
+   "id": "patologia",
+   "color": "#e879f9",
+   "nombre": {
+    "es": "Anatomía patológica",
+    "ca": "Anatomia patològica",
+    "en": "Anatomical pathology"
+   }
+  },
+  {
+   "id": "microbiologia",
+   "color": "#a3e635",
+   "nombre": {
+    "es": "Microbiología",
+    "ca": "Microbiologia",
+    "en": "Microbiology"
+   }
+  }
+ ],
+ "tinciones": {
+  "he": {
+   "es": "Hematoxilina-eosina (H&E)",
+   "ca": "Hematoxil·lina-eosina (H&E)",
+   "en": "Haematoxylin and eosin (H&E)"
+  },
+  "pas": {
+   "es": "PAS (ácido peryódico de Schiff)",
+   "ca": "PAS (àcid periòdic de Schiff)",
+   "en": "PAS (periodic acid–Schiff)"
+  },
+  "masson": {
+   "es": "Tricrómico de Masson",
+   "ca": "Tricròmic de Masson",
+   "en": "Masson's trichrome"
+  },
+  "perls": {
+   "es": "Azul de Prusia (Perls)",
+   "ca": "Blau de Prússia (Perls)",
+   "en": "Prussian blue (Perls)"
+  },
+  "reticulina": {
+   "es": "Reticulina (impregnación argéntica)",
+   "ca": "Reticulina (impregnació argèntica)",
+   "en": "Reticulin (silver impregnation)"
+  },
+  "elastica": {
+   "es": "Fibras elásticas (Verhoeff / orceína)",
+   "ca": "Fibres elàstiques (Verhoeff / orceïna)",
+   "en": "Elastic fibres (Verhoeff / orcein)"
+  },
+  "giemsa": {
+   "es": "May-Grünwald / Giemsa",
+   "ca": "May-Grünwald / Giemsa",
+   "en": "May-Grünwald / Giemsa"
+  },
+  "wright": {
+   "es": "Wright",
+   "ca": "Wright",
+   "en": "Wright"
+  },
+  "pap": {
+   "es": "Papanicolaou",
+   "ca": "Papanicolau",
+   "en": "Papanicolaou"
+  },
+  "gram": {
+   "es": "Gram",
+   "ca": "Gram",
+   "en": "Gram"
+  },
+  "ziehl": {
+   "es": "Ziehl-Neelsen",
+   "ca": "Ziehl-Neelsen",
+   "en": "Ziehl-Neelsen"
+  },
+  "congo": {
+   "es": "Rojo Congo",
+   "ca": "Vermell Congo",
+   "en": "Congo red"
+  },
+  "ihq": {
+   "es": "Inmunohistoquímica",
+   "ca": "Immunohistoquímica",
+   "en": "Immunohistochemistry"
+  },
+  "azan": {
+   "es": "Azán / tricrómico",
+   "ca": "Azan / tricròmic",
+   "en": "Azan / trichrome"
+  },
+  "toluidina": {
+   "es": "Azul de toluidina",
+   "ca": "Blau de toluïdina",
+   "en": "Toluidine blue"
+  },
+  "plata": {
+   "es": "Impregnación argéntica",
+   "ca": "Impregnació argèntica",
+   "en": "Silver stain"
+  },
+  "field": {
+   "es": "Tinción de Field (Romanowsky rápida)",
+   "ca": "Tinció de Field (Romanowsky ràpida)",
+   "en": "Field stain (rapid Romanowsky)"
+  }
+ },
+ "imagenes": [
+  {
+   "id": "epi-escamoso-simple",
+   "archivo": "img/epi-escamoso-simple.jpg",
+   "miniatura": "img/min/epi-escamoso-simple.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "aumento": "100×",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Epitelio plano simple",
+    "ca": "Epiteli pla simple",
+    "en": "Simple squamous epithelium"
+   },
+   "alias": {
+    "es": [
+     "Epitelio escamoso simple",
+     "Epitelio pavimentoso simple",
+     "Mesotelio"
+    ],
+    "ca": [
+     "Epiteli escamós simple",
+     "Mesoteli"
+    ],
+    "en": [
+     "Mesothelium",
+     "Simple pavement epithelium"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Una sola capa de células planas y poligonales, como un empedrado",
+     "Los bordes celulares dibujan una red y cada célula tiene un núcleo central",
+     "Preparación vista desde la superficie (montaje completo), no en corte transversal"
+    ],
+    "ca": [
+     "Una sola capa de cèl·lules planes i poligonals, com un empedrat",
+     "Els límits cel·lulars dibuixen una xarxa i cada cèl·lula té un nucli central",
+     "Preparació vista des de la superfície (muntatge complet), no en tall transversal"
+    ],
+    "en": [
+     "A single layer of flat, polygonal cells, like paving stones",
+     "Cell borders draw a network and each cell has a central nucleus",
+     "Seen from the surface (whole mount), not in cross-section"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epithelial_Tissues_Simple_Squamous_Epithelium_(40823230315).jpg"
+  },
+  {
+   "id": "epi-cubico-simple",
+   "archivo": "img/epi-cubico-simple.jpg",
+   "miniatura": "img/min/epi-cubico-simple.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "aumento": "400×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Epitelio cúbico simple (túbulos renales)",
+    "ca": "Epiteli cúbic simple (túbuls renals)",
+    "en": "Simple cuboidal epithelium (kidney tubules)"
+   },
+   "alias": {
+    "es": [
+     "Epitelio cúbico simple",
+     "Túbulo renal"
+    ],
+    "ca": [
+     "Epiteli cúbic simple",
+     "Túbul renal"
+    ],
+    "en": [
+     "Simple cuboidal epithelium",
+     "Kidney tubule"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Una sola capa de células tan altas como anchas",
+     "Núcleos redondos y centrales",
+     "Forma la pared de los túbulos renales, con la luz bien abierta"
+    ],
+    "ca": [
+     "Una sola capa de cèl·lules tan altes com amples",
+     "Nuclis rodons i centrals",
+     "Forma la paret dels túbuls renals, amb la llum ben oberta"
+    ],
+    "en": [
+     "A single layer of cells as tall as they are wide",
+     "Round, central nuclei",
+     "Lines the kidney tubules, with a clearly open lumen"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epithelial_Tissues_Simple_Cuboidal_Epithelium_(41681552782).jpg"
+  },
+  {
+   "id": "epi-cilindrico-simple",
+   "archivo": "img/epi-cilindrico-simple.jpg",
+   "miniatura": "img/min/epi-cilindrico-simple.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "aumento": "200×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Epitelio cilíndrico simple (intestino)",
+    "ca": "Epiteli cilíndric simple (intestí)",
+    "en": "Simple columnar epithelium (gut)"
+   },
+   "alias": {
+    "es": [
+     "Epitelio cilíndrico simple",
+     "Epitelio columnar simple"
+    ],
+    "ca": [
+     "Epiteli cilíndric simple",
+     "Epiteli columnar simple"
+    ],
+    "en": [
+     "Simple columnar epithelium"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Una sola capa de células más altas que anchas",
+     "Núcleos alargados situados hacia la base de la célula",
+     "Reviste la mucosa del tubo digestivo"
+    ],
+    "ca": [
+     "Una sola capa de cèl·lules més altes que amples",
+     "Nuclis allargats situats cap a la base de la cèl·lula",
+     "Reveste la mucosa del tub digestiu"
+    ],
+    "en": [
+     "A single layer of cells taller than they are wide",
+     "Elongated nuclei near the base of the cell",
+     "Lines the mucosa of the digestive tract"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epithelial_Tissues_Simple_Columnar_Epithelium_(41723124791).jpg"
+  },
+  {
+   "id": "epi-escamoso-estratificado",
+   "archivo": "img/epi-escamoso-estratificado.jpg",
+   "miniatura": "img/min/epi-escamoso-estratificado.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "aumento": "200×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Epitelio plano estratificado",
+    "ca": "Epiteli pla estratificat",
+    "en": "Stratified squamous epithelium"
+   },
+   "alias": {
+    "es": [
+     "Epitelio escamoso estratificado",
+     "Epitelio pavimentoso estratificado"
+    ],
+    "ca": [
+     "Epiteli escamós estratificat"
+    ],
+    "en": [
+     "Non-keratinised stratified squamous epithelium"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Varias capas de células",
+     "Las capas superficiales son aplanadas; las basales, más cúbicas",
+     "Típico de superficies sometidas a rozamiento (esófago, boca, vagina)"
+    ],
+    "ca": [
+     "Diverses capes de cèl·lules",
+     "Les capes superficials són aplanades; les basals, més cúbiques",
+     "Típic de superfícies sotmeses a fregament (esòfag, boca, vagina)"
+    ],
+    "en": [
+     "Several layers of cells",
+     "Surface layers are flattened; basal layers are more cuboidal",
+     "Typical of surfaces exposed to friction (oesophagus, mouth, vagina)"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epithelial_Tissues_Stratified_Squamous_Epithelium_(40230842160).jpg"
+  },
+  {
+   "id": "epi-queratinizado",
+   "archivo": "img/epi-queratinizado.jpg",
+   "miniatura": "img/min/epi-queratinizado.jpg",
+   "categoria": "epitelios",
+   "grupo": "piel",
+   "tincion": "he",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Epidermis (epitelio plano estratificado queratinizado)",
+    "ca": "Epidermis (epiteli pla estratificat queratinitzat)",
+    "en": "Epidermis (keratinised stratified squamous epithelium)"
+   },
+   "alias": {
+    "es": [
+     "Epidermis",
+     "Epitelio queratinizado"
+    ],
+    "ca": [
+     "Epidermis",
+     "Epiteli queratinitzat"
+    ],
+    "en": [
+     "Epidermis",
+     "Keratinised epithelium"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Capa córnea superficial de células muertas, sin núcleo y muy eosinófila",
+     "Epitelio estratificado con crestas epidérmicas que encajan en la dermis papilar",
+     "Las capas espinosa y granulosa quedan entre la base y la capa córnea"
+    ],
+    "ca": [
+     "Capa còrnia superficial de cèl·lules mortes, sense nucli i molt eosinòfila",
+     "Epiteli estratificat amb crestes epidèrmiques que encaixen amb la dermis papil·lar",
+     "Les capes espinosa i granulosa queden entre la base i la capa còrnia"
+    ],
+    "en": [
+     "Superficial horny layer of dead, anucleate, strongly eosinophilic cells",
+     "Stratified epithelium with epidermal ridges interlocking with the papillary dermis",
+     "The spinous and granular layers lie between the base and the horny layer"
+    ]
+   },
+   "autor": "Original by Kilbad. Derivative by Mikael Häggström, M.D.",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epidermis,_papillary_dermis_and_reticular_dermis.png"
+  },
+  {
+   "id": "urotelio",
+   "archivo": "img/urotelio.jpg",
+   "miniatura": "img/min/urotelio.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "tincion": "he",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Urotelio (epitelio de transición)",
+    "ca": "Urotel (epiteli de transició)",
+    "en": "Urothelium (transitional epithelium)"
+   },
+   "alias": {
+    "es": [
+     "Epitelio de transición",
+     "Epitelio transicional",
+     "Urotelio"
+    ],
+    "ca": [
+     "Epiteli de transició",
+     "Urotel"
+    ],
+    "en": [
+     "Transitional epithelium",
+     "Urothelium"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Epitelio estratificado con células superficiales grandes, a veces binucleadas («en paraguas»)",
+     "Células basales e intermedias de núcleos ovalados",
+     "Reviste las vías urinarias (vejiga, uréteres)"
+    ],
+    "ca": [
+     "Epiteli estratificat amb cèl·lules superficials grans, de vegades binucleades («en paraigua»)",
+     "Cèl·lules basals i intermèdies de nuclis ovalats",
+     "Reveste les vies urinàries (bufeta, urèters)"
+    ],
+    "en": [
+     "Stratified epithelium with large surface cells, sometimes binucleate («umbrella cells»)",
+     "Basal and intermediate cells with oval nuclei",
+     "Lines the urinary tract (bladder, ureters)"
+    ]
+   },
+   "autor": "Nephron",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Benign_urothelium_with_large_superficial_cells_--_high_mag.jpg"
+  },
+  {
+   "id": "epi-respiratorio",
+   "archivo": "img/epi-respiratorio.jpg",
+   "miniatura": "img/min/epi-respiratorio.jpg",
+   "categoria": "epitelios",
+   "grupo": "epitelio",
+   "aumento": "200×",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Epitelio respiratorio (cilíndrico seudoestratificado ciliado)",
+    "ca": "Epiteli respiratori (cilíndric pseudoestratificat ciliat)",
+    "en": "Respiratory epithelium (ciliated pseudostratified columnar)"
+   },
+   "alias": {
+    "es": [
+     "Epitelio seudoestratificado",
+     "Epitelio pseudoestratificado",
+     "Epitelio traqueal",
+     "Tráquea"
+    ],
+    "ca": [
+     "Epiteli pseudoestratificat",
+     "Epiteli traqueal",
+     "Tràquea"
+    ],
+    "en": [
+     "Pseudostratified epithelium",
+     "Tracheal epithelium",
+     "Trachea"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Núcleos a distintas alturas que parecen formar varias capas, aunque todas las células tocan la membrana basal",
+     "Cilios en la superficie apical",
+     "Bajo el epitelio, cartílago hialino y glándulas de la pared traqueal"
+    ],
+    "ca": [
+     "Nuclis a diferents altures que semblen formar diverses capes, tot i que totes les cèl·lules toquen la membrana basal",
+     "Cilis a la superfície apical",
+     "Sota l'epiteli, cartílag hialí i glàndules de la paret traqueal"
+    ],
+    "en": [
+     "Nuclei at different heights that look like several layers, yet every cell touches the basement membrane",
+     "Cilia on the apical surface",
+     "Beneath the epithelium: hyaline cartilage and glands of the tracheal wall"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Epithelial_Tissues_Pseudostratified_Columnar_Epithelium_(41783111911).jpg"
+  },
+  {
+   "id": "conectivo-laxo",
+   "archivo": "img/conectivo-laxo.jpg",
+   "miniatura": "img/min/conectivo-laxo.jpg",
+   "categoria": "conectivo",
+   "grupo": "conectivo",
+   "aumento": "400×",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Tejido conectivo laxo (areolar)",
+    "ca": "Teixit conjuntiu laxe (areolar)",
+    "en": "Loose (areolar) connective tissue"
+   },
+   "alias": {
+    "es": [
+     "Tejido conectivo laxo",
+     "Conectivo areolar",
+     "Tejido areolar"
+    ],
+    "ca": [
+     "Teixit conjuntiu laxe",
+     "Conjuntiu areolar"
+    ],
+    "en": [
+     "Areolar tissue",
+     "Loose connective tissue"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Fibras de colágeno (rosadas) entrecruzadas con fibras finas y oscuras (elásticas)",
+     "Células dispersas (fibroblastos y otras) en abundante sustancia fundamental",
+     "Preparación extendida (montaje completo) del tejido"
+    ],
+    "ca": [
+     "Fibres de col·lagen (rosades) entrecreuades amb fibres fines i fosques (elàstiques)",
+     "Cèl·lules disperses (fibroblasts i altres) en abundant substància fonamental",
+     "Preparació estesa (muntatge complet) del teixit"
+    ],
+    "en": [
+     "Pink collagen fibres criss-crossed by thin dark (elastic) fibres",
+     "Scattered cells (fibroblasts and others) in plentiful ground substance",
+     "A spread preparation (whole mount) of the tissue"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Connective_Tissue_Loose_Aerolar_(41743649782).jpg"
+  },
+  {
+   "id": "tendon",
+   "archivo": "img/tendon.jpg",
+   "miniatura": "img/min/tendon.jpg",
+   "categoria": "conectivo",
+   "grupo": "conectivo",
+   "tincion": "he",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Tendón (tejido conectivo denso regular)",
+    "ca": "Tendó (teixit conjuntiu dens regular)",
+    "en": "Tendon (dense regular connective tissue)"
+   },
+   "alias": {
+    "es": [
+     "Tendón",
+     "Conectivo denso regular"
+    ],
+    "ca": [
+     "Tendó",
+     "Conjuntiu dens regular"
+    ],
+    "en": [
+     "Tendon",
+     "Dense regular connective tissue"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Haces de colágeno paralelos y muy eosinófilos",
+     "Núcleos aplanados de los tendinocitos alineados entre los haces",
+     "Pocas células y muy poca sustancia fundamental"
+    ],
+    "ca": [
+     "Feixos de col·lagen paral·lels i molt eosinòfils",
+     "Nuclis aplanats dels tendinòcits alineats entre els feixos",
+     "Poques cèl·lules i molt poca substància fonamental"
+    ],
+    "en": [
+     "Parallel, strongly eosinophilic collagen bundles",
+     "Flattened tenocyte nuclei lined up between the bundles",
+     "Few cells and very little ground substance"
+    ]
+   },
+   "autor": "Nephron",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Tendon_-_high_mag.jpg"
+  },
+  {
+   "id": "adiposo",
+   "archivo": "img/adiposo.jpg",
+   "miniatura": "img/min/adiposo.jpg",
+   "categoria": "conectivo",
+   "grupo": "conectivo",
+   "aumento": "400×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Tejido adiposo (unilocular)",
+    "ca": "Teixit adipós (uniloculat)",
+    "en": "Adipose tissue (white, unilocular)"
+   },
+   "alias": {
+    "es": [
+     "Tejido adiposo",
+     "Grasa",
+     "Tejido adiposo blanco"
+    ],
+    "ca": [
+     "Teixit adipós",
+     "Greix"
+    ],
+    "en": [
+     "Adipose tissue",
+     "Fat",
+     "White fat"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Adipocitos grandes de aspecto vacío (la grasa se disuelve al procesar la muestra)",
+     "Núcleo aplanado empujado a la periferia («en anillo de sello»)",
+     "Finos tabiques de conectivo con capilares entre las células"
+    ],
+    "ca": [
+     "Adipòcits grans d'aspecte buit (el greix es dissol en processar la mostra)",
+     "Nucli aplanat empès a la perifèria («en anell de segell»)",
+     "Fins envans de conjuntiu amb capil·lars entre les cèl·lules"
+    ],
+    "en": [
+     "Large, empty-looking adipocytes (fat dissolves during processing)",
+     "Flattened nucleus pushed to the periphery («signet ring»)",
+     "Thin connective septa with capillaries between the cells"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Connective_Tissue_Adipose_(41066513194).jpg"
+  },
+  {
+   "id": "cartilago-hialino",
+   "archivo": "img/cartilago-hialino.jpg",
+   "miniatura": "img/min/cartilago-hialino.jpg",
+   "categoria": "conectivo",
+   "grupo": "cartilago",
+   "aumento": "100×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Cartílago hialino",
+    "ca": "Cartílag hialí",
+    "en": "Hyaline cartilage"
+   },
+   "alias": {
+    "es": [
+     "Cartílago hialino"
+    ],
+    "ca": [
+     "Cartílag hialí"
+    ],
+    "en": [
+     "Hyaline cartilage"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Matriz homogénea y vítrea, con fibras de colágeno invisibles",
+     "Condrocitos en lagunas, aislados o en pequeños grupos",
+     "Rodeado de pericondrio (conectivo denso)"
+    ],
+    "ca": [
+     "Matriu homogènia i vítria, amb fibres de col·lagen invisibles",
+     "Condròcits en llacunes, aïllats o en petits grups",
+     "Envoltat de pericondri (conjuntiu dens)"
+    ],
+    "en": [
+     "Homogeneous, glassy matrix with invisible collagen fibres",
+     "Chondrocytes in lacunae, single or in small groups",
+     "Surrounded by perichondrium (dense connective tissue)"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Connective_Tissue_Hyaline_Cartilage_(40958872915).jpg"
+  },
+  {
+   "id": "cartilago-elastico",
+   "archivo": "img/cartilago-elastico.jpg",
+   "miniatura": "img/min/cartilago-elastico.jpg",
+   "categoria": "conectivo",
+   "grupo": "cartilago",
+   "aumento": "400×",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Cartílago elástico",
+    "ca": "Cartílag elàstic",
+    "en": "Elastic cartilage"
+   },
+   "alias": {
+    "es": [
+     "Cartílago elástico"
+    ],
+    "ca": [
+     "Cartílag elàstic"
+    ],
+    "en": [
+     "Elastic cartilage"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Red densa de fibras elásticas oscuras en la matriz",
+     "Condrocitos en lagunas, más apretados que en el hialino",
+     "Se encuentra en la oreja y en la epiglotis"
+    ],
+    "ca": [
+     "Xarxa densa de fibres elàstiques fosques a la matriu",
+     "Condròcits en llacunes, més atapeïts que al hialí",
+     "Es troba a l'orella i a l'epiglotis"
+    ],
+    "en": [
+     "Dense network of dark elastic fibres in the matrix",
+     "Chondrocytes in lacunae, more crowded than in hyaline cartilage",
+     "Found in the ear and in the epiglottis"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Connective_Tissue_Elastic_Cartilage_(41855666711).jpg"
+  },
+  {
+   "id": "hueso-compacto",
+   "archivo": "img/hueso-compacto.jpg",
+   "miniatura": "img/min/hueso-compacto.jpg",
+   "categoria": "conectivo",
+   "grupo": "hueso",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Hueso compacto (sistemas de Havers)",
+    "ca": "Os compacte (sistemes de Havers)",
+    "en": "Compact bone (Haversian systems)"
+   },
+   "alias": {
+    "es": [
+     "Hueso compacto",
+     "Osteona",
+     "Sistema de Havers",
+     "Hueso cortical"
+    ],
+    "ca": [
+     "Os compacte",
+     "Osteó",
+     "Sistema de Havers"
+    ],
+    "en": [
+     "Compact bone",
+     "Osteon",
+     "Haversian system",
+     "Cortical bone"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Osteonas: láminas concéntricas alrededor de un conducto de Havers",
+     "Lagunas de osteocitos conectadas por finos canalículos",
+     "Preparación de hueso desgastado: no se conservan las células"
+    ],
+    "ca": [
+     "Osteons: làmines concèntriques al voltant d'un conducte de Havers",
+     "Llacunes d'osteòcits connectades per fins canalicles",
+     "Preparació d'os desgastat: no es conserven les cèl·lules"
+    ],
+    "en": [
+     "Osteons: concentric lamellae around a Haversian canal",
+     "Osteocyte lacunae joined by fine canaliculi",
+     "Ground-bone preparation: cells are not preserved"
+    ]
+   },
+   "autor": "Athikhun.suw",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Compact_bone_histology_2014.jpg"
+  },
+  {
+   "id": "musculo-esqueletico",
+   "archivo": "img/musculo-esqueletico.jpg",
+   "miniatura": "img/min/musculo-esqueletico.jpg",
+   "categoria": "muscular-nervioso",
+   "grupo": "musculo",
+   "aumento": "200×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Músculo esquelético (fibras aisladas)",
+    "ca": "Múscul esquelètic (fibres aïllades)",
+    "en": "Skeletal muscle (teased fibres)"
+   },
+   "alias": {
+    "es": [
+     "Músculo esquelético",
+     "Músculo estriado"
+    ],
+    "ca": [
+     "Múscul esquelètic",
+     "Múscul estriat"
+    ],
+    "en": [
+     "Skeletal muscle",
+     "Striated muscle"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Fibras largas y cilíndricas, con estriación transversal",
+     "Muchos núcleos situados en la periferia, bajo el sarcolema",
+     "Fibras paralelas y sin ramificaciones"
+    ],
+    "ca": [
+     "Fibres llargues i cilíndriques, amb estriació transversal",
+     "Molts nuclis situats a la perifèria, sota el sarcolemma",
+     "Fibres paral·leles i sense ramificacions"
+    ],
+    "en": [
+     "Long, cylindrical fibres with cross-striations",
+     "Many nuclei at the periphery, under the sarcolemma",
+     "Parallel fibres without branching"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Muscle_Tissue_Skeletal_Muscle_Fibers_(41241952644).jpg"
+  },
+  {
+   "id": "musculo-cardiaco",
+   "archivo": "img/musculo-cardiaco.jpg",
+   "miniatura": "img/min/musculo-cardiaco.jpg",
+   "categoria": "muscular-nervioso",
+   "grupo": "musculo",
+   "aumento": "400×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Músculo cardíaco",
+    "ca": "Múscul cardíac",
+    "en": "Cardiac muscle"
+   },
+   "alias": {
+    "es": [
+     "Miocardio",
+     "Músculo cardiaco"
+    ],
+    "ca": [
+     "Miocardi",
+     "Múscul cardíac"
+    ],
+    "en": [
+     "Myocardium",
+     "Cardiac muscle"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células estriadas que se ramifican y se unen entre sí",
+     "Un núcleo central por célula",
+     "Discos intercalares entre células contiguas"
+    ],
+    "ca": [
+     "Cèl·lules estriades que es ramifiquen i s'uneixen entre elles",
+     "Un nucli central per cèl·lula",
+     "Discos intercalars entre cèl·lules contigües"
+    ],
+    "en": [
+     "Striated cells that branch and join one another",
+     "One central nucleus per cell",
+     "Intercalated discs between neighbouring cells"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Muscle_Tissue_Cardiac_Muscle_(28184529378).jpg"
+  },
+  {
+   "id": "musculo-liso",
+   "archivo": "img/musculo-liso.jpg",
+   "miniatura": "img/min/musculo-liso.jpg",
+   "categoria": "muscular-nervioso",
+   "grupo": "musculo",
+   "aumento": "200×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Músculo liso",
+    "ca": "Múscul llis",
+    "en": "Smooth muscle"
+   },
+   "alias": {
+    "es": [
+     "Músculo liso"
+    ],
+    "ca": [
+     "Múscul llis"
+    ],
+    "en": [
+     "Smooth muscle"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células fusiformes sin estriación transversal",
+     "Un solo núcleo central y alargado (en forma de cigarro)",
+     "Dispuestas en haces que se cortan en distintos planos"
+    ],
+    "ca": [
+     "Cèl·lules fusiformes sense estriació transversal",
+     "Un sol nucli central i allargat (en forma de cigar)",
+     "Disposades en feixos que es tallen en diferents plans"
+    ],
+    "en": [
+     "Spindle-shaped cells without cross-striations",
+     "A single elongated central nucleus (cigar-shaped)",
+     "Arranged in bundles cut in different planes"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Muscle_Tissue_Smooth_(41894249131).jpg"
+  },
+  {
+   "id": "neurona",
+   "archivo": "img/neurona.jpg",
+   "miniatura": "img/min/neurona.jpg",
+   "categoria": "muscular-nervioso",
+   "grupo": "nervioso",
+   "aumento": "400×",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Neurona multipolar (motoneurona de la médula espinal)",
+    "ca": "Neurona multipolar (motoneurona de la medul·la espinal)",
+    "en": "Multipolar neuron (spinal cord motor neuron)"
+   },
+   "alias": {
+    "es": [
+     "Neurona",
+     "Motoneurona",
+     "Neurona motora",
+     "Neurona multipolar"
+    ],
+    "ca": [
+     "Neurona",
+     "Motoneurona",
+     "Neurona motora"
+    ],
+    "en": [
+     "Neuron",
+     "Motor neuron",
+     "Multipolar neuron"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Cuerpo celular grande con varias prolongaciones (dendritas)",
+     "Núcleo grande y claro con un nucléolo evidente",
+     "Rodeada por pequeños núcleos de células gliales"
+    ],
+    "ca": [
+     "Cos cel·lular gran amb diverses prolongacions (dendrites)",
+     "Nucli gran i clar amb un nuclèol evident",
+     "Envoltada de petits nuclis de cèl·lules glials"
+    ],
+    "en": [
+     "Large cell body with several processes (dendrites)",
+     "Large, pale nucleus with a prominent nucleolus",
+     "Surrounded by small glial cell nuclei"
+    ]
+   },
+   "autor": "Berkshire Community College Bioscience Image Library",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Nervous_Tissue_Spinal_Cord_Motor_Neuron_(41850850692).jpg"
+  },
+  {
+   "id": "cerebelo",
+   "archivo": "img/cerebelo.jpg",
+   "miniatura": "img/min/cerebelo.jpg",
+   "categoria": "muscular-nervioso",
+   "grupo": "nervioso",
+   "tincion": "plata",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Cerebelo: células de Purkinje (impregnación argéntica)",
+    "ca": "Cerebel: cèl·lules de Purkinje (impregnació argèntica)",
+    "en": "Cerebellum: Purkinje cells (silver stain)"
+   },
+   "alias": {
+    "es": [
+     "Cerebelo",
+     "Células de Purkinje"
+    ],
+    "ca": [
+     "Cerebel",
+     "Cèl·lules de Purkinje"
+    ],
+    "en": [
+     "Cerebellum",
+     "Purkinje cells"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células de Purkinje grandes, en hilera entre la capa molecular y la granulosa",
+     "Dendritas muy ramificadas que ascienden hacia la capa molecular",
+     "La impregnación argéntica tiñe de negro/pardo las prolongaciones neuronales"
+    ],
+    "ca": [
+     "Cèl·lules de Purkinje grans, en filera entre la capa molecular i la granulosa",
+     "Dendrites molt ramificades que pugen cap a la capa molecular",
+     "La impregnació argèntica tenyeix de negre/marró les prolongacions neuronals"
+    ],
+    "en": [
+     "Large Purkinje cells in a row between the molecular and granular layers",
+     "Highly branched dendrites rising into the molecular layer",
+     "Silver impregnation stains neuronal processes black/brown"
+    ]
+   },
+   "autor": "Lazar.zenit",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Cerebellum_silver_stain.jpg"
+  },
+  {
+   "id": "pulmon",
+   "archivo": "img/pulmon.jpg",
+   "miniatura": "img/min/pulmon.jpg",
+   "categoria": "organos",
+   "grupo": "organo",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Pulmón (alvéolos y bronquiolo terminal)",
+    "ca": "Pulmó (alvèols i bronquíol terminal)",
+    "en": "Lung (alveoli and terminal bronchiole)"
+   },
+   "alias": {
+    "es": [
+     "Pulmón",
+     "Alvéolos"
+    ],
+    "ca": [
+     "Pulmó",
+     "Alvèols"
+    ],
+    "en": [
+     "Lung",
+     "Alveoli"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Tabiques interalveolares finísimos con mucho espacio aéreo, como una esponja",
+     "Alvéolos agrupados alrededor de un bronquiolo terminal",
+     "El bronquiolo terminal tiene epitelio bajo y no tiene cartílago"
+    ],
+    "ca": [
+     "Envans interalveolars finíssims amb molt espai aeri, com una esponja",
+     "Alvèols agrupats al voltant d'un bronquíol terminal",
+     "El bronquíol terminal té epiteli baix i no té cartílag"
+    ],
+    "en": [
+     "Very thin interalveolar septa with lots of air space, like a sponge",
+     "Alveoli clustered around a terminal bronchiole",
+     "The terminal bronchiole has low epithelium and no cartilage"
+    ]
+   },
+   "autor": "Yale Rosen from USA",
+   "licencia": "CC BY-SA 2.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/2.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Normal_lung_(3660695207).jpg"
+  },
+  {
+   "id": "piel",
+   "archivo": "img/piel.jpg",
+   "miniatura": "img/min/piel.jpg",
+   "categoria": "organos",
+   "grupo": "piel",
+   "tincion": "he",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Piel gruesa (palmas y plantas)",
+    "ca": "Pell gruixuda (palmells i plantes)",
+    "en": "Thick skin (palms and soles)"
+   },
+   "alias": {
+    "es": [
+     "Piel gruesa",
+     "Piel",
+     "Piel palmoplantar"
+    ],
+    "ca": [
+     "Pell gruixuda",
+     "Pell",
+     "Pell palmoplantar"
+    ],
+    "en": [
+     "Thick skin",
+     "Skin",
+     "Palmoplantar skin"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Epidermis muy gruesa con una capa córnea queratinizada ancha",
+     "Conducto espiral de una glándula sudorípara atravesando la epidermis",
+     "Dermis papilar con crestas bajo la epidermis"
+    ],
+    "ca": [
+     "Epidermis molt gruixuda amb una capa còrnia queratinitzada ampla",
+     "Conducte espiral d'una glàndula sudorípara que travessa l'epidermis",
+     "Dermis papil·lar amb crestes sota l'epidermis"
+    ],
+    "en": [
+     "Very thick epidermis with a wide keratinised horny layer",
+     "Spiral duct of a sweat gland crossing the epidermis",
+     "Papillary dermis with ridges beneath the epidermis"
+    ]
+   },
+   "autor": "Bhavya akula",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Histology_of_thick_skin.jpg"
+  },
+  {
+   "id": "intestino-delgado",
+   "archivo": "img/intestino-delgado.jpg",
+   "miniatura": "img/min/intestino-delgado.jpg",
+   "categoria": "organos",
+   "grupo": "digestivo",
+   "tincion": "he",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Íleon: vellosidades intestinales en corte transversal",
+    "ca": "Ili: vellositats intestinals en tall transversal",
+    "en": "Ileum: intestinal villi in cross-section"
+   },
+   "alias": {
+    "es": [
+     "Íleon",
+     "Intestino delgado",
+     "Vellosidades intestinales"
+    ],
+    "ca": [
+     "Ili",
+     "Intestí prim",
+     "Vellositats intestinals"
+    ],
+    "en": [
+     "Ileum",
+     "Small intestine",
+     "Intestinal villi"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Cortes transversales de vellosidades, como islotes redondeados",
+     "Enterocitos con borde en cepillo y células caliciformes",
+     "Eje de lámina propia con capilares en cada vellosidad"
+    ],
+    "ca": [
+     "Talls transversals de vellositats, com illots arrodonits",
+     "Enteròcits amb vora en raspall i cèl·lules caliciformes",
+     "Eix de làmina pròpia amb capil·lars a cada vellositat"
+    ],
+    "en": [
+     "Cross-cut villi, like rounded islands",
+     "Enterocytes with a brush border and goblet cells",
+     "Lamina propria core with capillaries in each villus"
+    ]
+   },
+   "autor": "Mikael Häggström, M.D.",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Cross-section_histology_of_small_intestinal_villi_of_the_terminal_ileum.jpg"
+  },
+  {
+   "id": "estomago",
+   "archivo": "img/estomago.jpg",
+   "miniatura": "img/min/estomago.jpg",
+   "categoria": "organos",
+   "grupo": "digestivo",
+   "tincion": "he",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Estómago: mucosa del fondo (glándulas fúndicas)",
+    "ca": "Estómac: mucosa del fons (glàndules fúndiques)",
+    "en": "Stomach: fundic mucosa (fundic glands)"
+   },
+   "alias": {
+    "es": [
+     "Estómago",
+     "Mucosa gástrica",
+     "Glándulas gástricas"
+    ],
+    "ca": [
+     "Estómac",
+     "Mucosa gàstrica",
+     "Glàndules gàstriques"
+    ],
+    "en": [
+     "Stomach",
+     "Gastric mucosa",
+     "Gastric glands"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Fositas gástricas cortas y glándulas tubulares rectas",
+     "Células parietales grandes, redondeadas y eosinófilas",
+     "Células principales basófilas hacia el fondo de las glándulas"
+    ],
+    "ca": [
+     "Fosses gàstriques curtes i glàndules tubulars rectes",
+     "Cèl·lules parietals grans, arrodonides i eosinòfiles",
+     "Cèl·lules principals basòfiles cap al fons de les glàndules"
+    ],
+    "en": [
+     "Short gastric pits and straight tubular glands",
+     "Large, round, eosinophilic parietal cells",
+     "Basophilic chief cells towards the base of the glands"
+    ]
+   },
+   "autor": "Carrasco G, Corvalan AH",
+   "licencia": "CC BY 3.0",
+   "licurl": "https://creativecommons.org/licenses/by/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Histology_of_normal_fundic_mucosa.png"
+  },
+  {
+   "id": "glomerulo-pas",
+   "archivo": "img/glomerulo-pas.jpg",
+   "miniatura": "img/min/glomerulo-pas.jpg",
+   "categoria": "tinciones",
+   "grupo": "histoquimica",
+   "tincion": "pas",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Glomérulo renal (corpúsculo renal)",
+    "ca": "Glomèrul renal (corpuscle renal)",
+    "en": "Renal glomerulus (renal corpuscle)"
+   },
+   "alias": {
+    "es": [
+     "Glomérulo",
+     "Corpúsculo renal",
+     "Corpúsculo de Malpighi"
+    ],
+    "ca": [
+     "Glomèrul",
+     "Corpuscle renal"
+    ],
+    "en": [
+     "Glomerulus",
+     "Renal corpuscle"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "El PAS tiñe de magenta las membranas basales",
+     "Ovillo de capilares glomerulares rodeado por la cápsula de Bowman",
+     "Las membranas basales de los túbulos se ven como líneas finas magenta"
+    ],
+    "ca": [
+     "El PAS tenyeix de magenta les membranes basals",
+     "Cabdell de capil·lars glomerulars envoltat per la càpsula de Bowman",
+     "Les membranes basals dels túbuls es veuen com línies fines magenta"
+    ],
+    "en": [
+     "PAS stains basement membranes magenta",
+     "A tuft of glomerular capillaries inside Bowman's capsule",
+     "Tubular basement membranes show as thin magenta lines"
+    ]
+   },
+   "autor": "Ed Uthman (Pathologist), website: [2]",
+   "licencia": "CC BY-SA 2.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/2.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Renal_corpuscle.jpg"
+  },
+  {
+   "id": "masson-via-aerea",
+   "archivo": "img/masson-via-aerea.jpg",
+   "miniatura": "img/min/masson-via-aerea.jpg",
+   "categoria": "tinciones",
+   "grupo": "histoquimica",
+   "tincion": "masson",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Vía aérea (bronquio de rata)",
+    "ca": "Via aèria (bronqui de rata)",
+    "en": "Airway (rat bronchus)"
+   },
+   "alias": {
+    "es": [
+     "Bronquio",
+     "Vía aérea",
+     "Bronquiolo"
+    ],
+    "ca": [
+     "Bronqui",
+     "Via aèria",
+     "Bronquíol"
+    ],
+    "en": [
+     "Bronchus",
+     "Airway",
+     "Bronchiole"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "El colágeno se tiñe de azul",
+     "Núcleos oscuros y citoplasma o músculo en rojo-rosado",
+     "Epitelio de la vía aérea rodeado de tejido conectivo y pulmón alrededor"
+    ],
+    "ca": [
+     "El col·lagen es tenyeix de blau",
+     "Nuclis foscos i citoplasma o múscul en vermell-rosat",
+     "Epiteli de la via aèria envoltat de teixit conjuntiu i pulmó al voltant"
+    ],
+    "en": [
+     "Collagen stains blue",
+     "Dark nuclei and cytoplasm or muscle in red-pink",
+     "Airway epithelium surrounded by connective tissue, with lung around it"
+    ]
+   },
+   "autor": "Pierre Camateros",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Masson%27s_Trichrome_Stain_(Rat_Airway_Section).jpg"
+  },
+  {
+   "id": "perls-higado",
+   "archivo": "img/perls-higado.jpg",
+   "miniatura": "img/min/perls-higado.jpg",
+   "categoria": "tinciones",
+   "grupo": "histoquimica",
+   "tincion": "perls",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Hígado con sobrecarga de hierro (hemocromatosis)",
+    "ca": "Fetge amb sobrecàrrega de ferro (hemocromatosi)",
+    "en": "Liver with iron overload (haemochromatosis)"
+   },
+   "alias": {
+    "es": [
+     "Hemocromatosis",
+     "Hígado con hierro",
+     "Hemosiderosis"
+    ],
+    "ca": [
+     "Hemocromatosi",
+     "Fetge amb ferro"
+    ],
+    "en": [
+     "Haemochromatosis",
+     "Iron overload",
+     "Hemochromatosis"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Gránulos azules de hemosiderina dentro de los hepatocitos",
+     "El azul de Prusia detecta hierro férrico (Fe³⁺)",
+     "Acúmulo con distribución acinar, compatible con hemocromatosis hereditaria"
+    ],
+    "ca": [
+     "Grànuls blaus d'hemosiderina dins dels hepatòcits",
+     "El blau de Prússia detecta ferro fèrric (Fe³⁺)",
+     "Acumulació amb distribució acinar, compatible amb hemocromatosi hereditària"
+    ],
+    "en": [
+     "Blue haemosiderin granules inside hepatocytes",
+     "Prussian blue detects ferric iron (Fe³⁺)",
+     "Acinar-pattern accumulation, consistent with hereditary haemochromatosis"
+    ]
+   },
+   "autor": "Joseph Mathew, May Y Leong, Nick Morley and Alastair D Burt",
+   "licencia": "CC BY 2.0",
+   "licurl": "https://creativecommons.org/licenses/by/2.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Hemochromatosis_liver_iron_prussian_blue.jpg"
+  },
+  {
+   "id": "reticulina-higado",
+   "archivo": "img/reticulina-higado.jpg",
+   "miniatura": "img/min/reticulina-higado.jpg",
+   "categoria": "tinciones",
+   "grupo": "histoquimica",
+   "tincion": "reticulina",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Hígado: red de reticulina",
+    "ca": "Fetge: xarxa de reticulina",
+    "en": "Liver: reticulin network"
+   },
+   "alias": {
+    "es": [
+     "Hígado",
+     "Reticulina"
+    ],
+    "ca": [
+     "Fetge",
+     "Reticulina"
+    ],
+    "en": [
+     "Liver",
+     "Reticulin"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Fibras de reticulina teñidas de negro por impregnación argéntica",
+     "Las fibras delimitan las placas de hepatocitos y los sinusoides",
+     "Se ve un espacio porta y una vénula hepática cercana"
+    ],
+    "ca": [
+     "Fibres de reticulina tenyides de negre per impregnació argèntica",
+     "Les fibres delimiten les plaques d'hepatòcits i els sinusoides",
+     "Es veu un espai porta i una vènula hepàtica propera"
+    ],
+    "en": [
+     "Reticulin fibres stained black by silver impregnation",
+     "The fibres outline the hepatocyte plates and sinusoids",
+     "A portal tract and a nearby hepatic venule are visible"
+    ]
+   },
+   "autor": "Nephron",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Liver_reticulin.jpg"
+  },
+  {
+   "id": "gram",
+   "archivo": "img/gram.jpg",
+   "miniatura": "img/min/gram.jpg",
+   "categoria": "microbiologia",
+   "grupo": "microbio",
+   "tincion": "gram",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Cocos grampositivos y bacilos gramnegativos",
+    "ca": "Cocs grampositius i bacils gramnegatius",
+    "en": "Gram-positive cocci and Gram-negative bacilli"
+   },
+   "alias": {
+    "es": [
+     "Cocos y bacilos",
+     "Staphylococcus y Escherichia coli"
+    ],
+    "ca": [
+     "Cocs i bacils"
+    ],
+    "en": [
+     "Cocci and bacilli",
+     "Staphylococcus and E. coli"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Las bacterias grampositivas retienen el cristal violeta y se ven moradas",
+     "Las gramnegativas pierden el violeta y se ven rosa-rojas por la safranina",
+     "Aquí: cocos en racimos (S. aureus) junto a bacilos cortos (E. coli)"
+    ],
+    "ca": [
+     "Els bacteris grampositius retenen el cristall violeta i es veuen morats",
+     "Els gramnegatius perden el violeta i es veuen rosa-vermells per la safranina",
+     "Aquí: cocs en raïms (S. aureus) al costat de bacils curts (E. coli)"
+    ],
+    "en": [
+     "Gram-positive bacteria keep the crystal violet and look purple",
+     "Gram-negative bacteria lose the violet and look pink-red from safranin",
+     "Here: cocci in clusters (S. aureus) next to short rods (E. coli)"
+    ]
+   },
+   "autor": "Y tambe",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Gram_stain_01.jpg"
+  },
+  {
+   "id": "ziehl",
+   "archivo": "img/ziehl.jpg",
+   "miniatura": "img/min/ziehl.jpg",
+   "categoria": "microbiologia",
+   "grupo": "microbio",
+   "tincion": "ziehl",
+   "aumento": "1000×",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Mycobacterium tuberculosis",
+    "ca": "Mycobacterium tuberculosis",
+    "en": "Mycobacterium tuberculosis"
+   },
+   "alias": {
+    "es": [
+     "Bacilo de la tuberculosis",
+     "Tuberculosis",
+     "Bacilos ácido-alcohol resistentes"
+    ],
+    "ca": [
+     "Bacil de la tuberculosi",
+     "Tuberculosi"
+    ],
+    "en": [
+     "TB bacilli",
+     "Tuberculosis",
+     "Acid-fast bacilli"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Bacilos ácido-alcohol resistentes teñidos de rojo-fucsia",
+     "Fondo azul de contraste (azul de metileno)",
+     "Bacilos finos, ligeramente curvados, aislados o en pequeños grupos"
+    ],
+    "ca": [
+     "Bacils àcid-alcohol resistents tenyits de vermell-fúcsia",
+     "Fons blau de contrast (blau de metilè)",
+     "Bacils fins, lleugerament corbats, aïllats o en petits grups"
+    ],
+    "en": [
+     "Acid-fast bacilli stained red-fuchsia",
+     "Blue counterstain background (methylene blue)",
+     "Thin, slightly curved rods, single or in small groups"
+    ]
+   },
+   "autor": "CDC/Dr. George P. Kubica",
+   "licencia": "Public domain",
+   "origen": "https://commons.wikimedia.org/wiki/File:Mycobacterium_tuberculosis_Ziehl-Neelsen_stain_02.jpg"
+  },
+  {
+   "id": "candida-pas",
+   "archivo": "img/candida-pas.jpg",
+   "miniatura": "img/min/candida-pas.jpg",
+   "categoria": "microbiologia",
+   "grupo": "microbio",
+   "tincion": "pas",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Candida en la mucosa esofágica",
+    "ca": "Candida a la mucosa esofàgica",
+    "en": "Candida in the oesophageal mucosa"
+   },
+   "alias": {
+    "es": [
+     "Candidiasis esofágica",
+     "Candida",
+     "Hongos"
+    ],
+    "ca": [
+     "Candidiasi esofàgica",
+     "Candida",
+     "Fongs"
+    ],
+    "en": [
+     "Oesophageal candidiasis",
+     "Candida",
+     "Fungi",
+     "Esophageal candidiasis"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Hifas y pseudohifas de color magenta con el PAS",
+     "Filamentos ramificados entre células epiteliales descamadas",
+     "El PAS tiñe la pared fúngica, rica en polisacáridos"
+    ],
+    "ca": [
+     "Hifes i pseudohifes de color magenta amb el PAS",
+     "Filaments ramificats entre cèl·lules epitelials descamades",
+     "El PAS tenyeix la paret fúngica, rica en polisacàrids"
+    ],
+    "en": [
+     "Magenta hyphae and pseudohyphae with PAS",
+     "Branching filaments among desquamated epithelial cells",
+     "PAS stains the polysaccharide-rich fungal wall"
+    ]
+   },
+   "autor": "KGH",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "origen": "https://commons.wikimedia.org/wiki/File:Esophageal_candidiasis_(1)_PAS_stain.jpg"
+  },
+  {
+   "id": "frotis-sangre",
+   "archivo": "img/frotis-sangre.jpg",
+   "miniatura": "img/min/frotis-sangre.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "tincion": "giemsa",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Frotis de sangre periférica",
+    "ca": "Frotis de sang perifèrica",
+    "en": "Peripheral blood smear"
+   },
+   "alias": {
+    "es": [
+     "Frotis de sangre",
+     "Extensión de sangre",
+     "Sangre"
+    ],
+    "ca": [
+     "Frotis de sang",
+     "Extensió de sang",
+     "Sang"
+    ],
+    "en": [
+     "Blood smear",
+     "Blood film",
+     "Peripheral blood film"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Los hematíes, discos rosados sin núcleo, son las células más abundantes",
+     "Los leucocitos tienen núcleo y son mucho menos numerosos",
+     "Con May-Grünwald los núcleos se ven púrpura y el citoplasma rosado-ocre"
+    ],
+    "ca": [
+     "Els hematies, discos rosats sense nucli, són les cèl·lules més abundants",
+     "Els leucòcits tenen nucli i són molt menys nombrosos",
+     "Amb May-Grünwald els nuclis es veuen porpra i el citoplasma rosat-ocre"
+    ],
+    "en": [
+     "Red cells, pink anucleate discs, are the most abundant cells",
+     "White cells have a nucleus and are far fewer",
+     "With May-Grünwald, nuclei look purple and cytoplasm pink-ochre"
+    ]
+   },
+   "autor": "Bondarev.gal",
+   "licencia": "CC BY 4.0",
+   "licurl": "https://creativecommons.org/licenses/by/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Human_peripheral_blood_smear,_May-Gr%C3%BCnwald_stain.jpg"
+  },
+  {
+   "id": "neutrofilo",
+   "archivo": "img/neutrofilo.jpg",
+   "miniatura": "img/min/neutrofilo.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Neutrófilo",
+    "ca": "Neutròfil",
+    "en": "Neutrophil"
+   },
+   "alias": {
+    "es": [
+     "Neutrófilo segmentado",
+     "Polimorfonuclear",
+     "Granulocito neutrófilo"
+    ],
+    "ca": [
+     "Neutròfil segmentat",
+     "Polimorfonuclear"
+    ],
+    "en": [
+     "Segmented neutrophil",
+     "Polymorphonuclear"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Núcleo segmentado en 3–5 lóbulos",
+     "Citoplasma pálido con gránulos finos poco visibles",
+     "Es el leucocito más abundante de la sangre"
+    ],
+    "ca": [
+     "Nucli segmentat en 3–5 lòbuls",
+     "Citoplasma pàl·lid amb grànuls fins poc visibles",
+     "És el leucòcit més abundant de la sang"
+    ],
+    "en": [
+     "Nucleus segmented into 3–5 lobes",
+     "Pale cytoplasm with fine, barely visible granules",
+     "The most abundant white cell in blood"
+    ]
+   },
+   "autor": "Ajay Kumar Chaurasiya",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:WBC_(neutrophil)_at_centre,_numerous_erythrocytes_and_platelets_(dot_like_bodies)_in_Wright%27s_stained_peripheral_blood_smear_(PBS)_microscopy.jpg"
+  },
+  {
+   "id": "linfocito",
+   "archivo": "img/linfocito.jpg",
+   "miniatura": "img/min/linfocito.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "tincion": "wright",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Linfocito",
+    "ca": "Limfòcit",
+    "en": "Lymphocyte"
+   },
+   "alias": {
+    "es": [
+     "Linfocito pequeño"
+    ],
+    "ca": [
+     "Limfòcit petit"
+    ],
+    "en": [
+     "Small lymphocyte"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Célula pequeña, algo mayor que un hematíe",
+     "Núcleo redondo, grande y muy oscuro (basófilo)",
+     "Muy poco citoplasma, a veces un fino borde azul claro"
+    ],
+    "ca": [
+     "Cèl·lula petita, una mica més gran que un hematia",
+     "Nucli rodó, gran i molt fosc (basòfil)",
+     "Molt poc citoplasma, de vegades una fina vora blau clar"
+    ],
+    "en": [
+     "Small cell, slightly larger than a red cell",
+     "Round, large, very dark (basophilic) nucleus",
+     "Very little cytoplasm, sometimes a thin pale-blue rim"
+    ]
+   },
+   "autor": "Echinaceapallida",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Blood-lymphocytes3.jpg"
+  },
+  {
+   "id": "eosinofilo",
+   "archivo": "img/eosinofilo.jpg",
+   "miniatura": "img/min/eosinofilo.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Eosinófilo",
+    "ca": "Eosinòfil",
+    "en": "Eosinophil"
+   },
+   "alias": {
+    "es": [
+     "Granulocito eosinófilo"
+    ],
+    "ca": [
+     "Granulòcit eosinòfil"
+    ],
+    "en": [
+     "Eosinophil granulocyte"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Núcleo bilobulado",
+     "Gránulos citoplasmáticos grandes, eosinófilos (rosa-anaranjados)",
+     "Participa en las reacciones alérgicas y en las parasitosis"
+    ],
+    "ca": [
+     "Nucli bilobulat",
+     "Grànuls citoplasmàtics grans, eosinòfils (rosa-taronja)",
+     "Participa en les reaccions al·lèrgiques i en les parasitosis"
+    ],
+    "en": [
+     "Bilobed nucleus",
+     "Large eosinophilic (pink-orange) cytoplasmic granules",
+     "Takes part in allergic reactions and parasitic infections"
+    ]
+   },
+   "autor": "Echinaceapallida",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Blood-eosinophil2.jpg"
+  },
+  {
+   "id": "monocito",
+   "archivo": "img/monocito.jpg",
+   "miniatura": "img/min/monocito.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "tincion": "wright",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Monocito",
+    "ca": "Monòcit",
+    "en": "Monocyte"
+   },
+   "alias": {
+    "es": [
+     "Monocito"
+    ],
+    "ca": [
+     "Monòcit"
+    ],
+    "en": [
+     "Monocyte"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Es el leucocito más grande de la sangre",
+     "Núcleo en forma de riñón o herradura, con cromatina laxa",
+     "Citoplasma gris-azulado, a veces con vacuolas"
+    ],
+    "ca": [
+     "És el leucòcit més gran de la sang",
+     "Nucli en forma de ronyó o ferradura, amb cromatina laxa",
+     "Citoplasma gris-blavós, de vegades amb vacúols"
+    ],
+    "en": [
+     "The largest white cell in blood",
+     "Kidney- or horseshoe-shaped nucleus with loose chromatin",
+     "Grey-blue cytoplasm, sometimes vacuolated"
+    ]
+   },
+   "autor": "Echinaceapallida",
+   "licencia": "CC BY-SA 4.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Blood-monocyte.jpg"
+  },
+  {
+   "id": "basofilo",
+   "archivo": "img/basofilo.jpg",
+   "miniatura": "img/min/basofilo.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Basófilo",
+    "ca": "Basòfil",
+    "en": "Basophil"
+   },
+   "alias": {
+    "es": [
+     "Basófilos",
+     "Granulocito basófilo"
+    ],
+    "ca": [
+     "Basòfils",
+     "Granulòcit basòfil"
+    ],
+    "en": [
+     "Basophils",
+     "Basophil granulocyte"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Gránulos grandes y oscuros (azul-violeta) que tapan el núcleo",
+     "Núcleo lobulado difícil de distinguir",
+     "Es el leucocito menos frecuente de la sangre"
+    ],
+    "ca": [
+     "Grànuls grans i foscos (blau-violeta) que tapen el nucli",
+     "Nucli lobulat difícil de distingir",
+     "És el leucòcit menys freqüent de la sang"
+    ],
+    "en": [
+     "Large dark (blue-violet) granules that hide the nucleus",
+     "Lobed nucleus that is hard to make out",
+     "The least frequent white cell in blood"
+    ]
+   },
+   "autor": "Makysm",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:%D0%91%D0%B0%D0%B7%D0%BE%D1%84%D1%96%D0%BB%D0%B8.jpg"
+  },
+  {
+   "id": "falciformes",
+   "archivo": "img/falciformes.jpg",
+   "miniatura": "img/min/falciformes.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Hematíes falciformes (anemia drepanocítica)",
+    "ca": "Hematies falciformes (anèmia drepanocítica)",
+    "en": "Sickle cells (sickle cell anaemia)"
+   },
+   "alias": {
+    "es": [
+     "Drepanocitos",
+     "Anemia falciforme",
+     "Células falciformes",
+     "Anemia drepanocítica"
+    ],
+    "ca": [
+     "Drepanòcits",
+     "Anèmia falciforme"
+    ],
+    "en": [
+     "Sickle cell anemia",
+     "Drepanocytes",
+     "Sickle cells"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Hematíes alargados, en forma de hoz o media luna",
+     "Pierden el aspecto de disco con palidez central",
+     "Se deben a la hemoglobina S, que polimeriza con poco oxígeno"
+    ],
+    "ca": [
+     "Hematies allargats, en forma de falç o mitja lluna",
+     "Perden l'aspecte de disc amb pal·lidesa central",
+     "Es deuen a l'hemoglobina S, que polimeritza amb poc oxigen"
+    ],
+    "en": [
+     "Elongated red cells shaped like sickles or crescents",
+     "They lose the biconcave disc look with central pallor",
+     "Caused by haemoglobin S, which polymerises when oxygen is low"
+    ]
+   },
+   "autor": "Ed Uthman from Houston, TX, USA",
+   "licencia": "CC BY 2.0",
+   "licurl": "https://creativecommons.org/licenses/by/2.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Sickle_Cell_Anemia_(5610746554).jpg"
+  },
+  {
+   "id": "leucemia",
+   "archivo": "img/leucemia.jpg",
+   "miniatura": "img/min/leucemia.jpg",
+   "categoria": "hematologia",
+   "grupo": "sangre",
+   "tincion": "wright",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Leucemia promielocítica aguda (frotis)",
+    "ca": "Leucèmia promielocítica aguda (frotis)",
+    "en": "Acute promyelocytic leukaemia (smear)"
+   },
+   "alias": {
+    "es": [
+     "Leucemia promielocítica",
+     "LPA",
+     "Leucemia aguda"
+    ],
+    "ca": [
+     "Leucèmia promielocítica",
+     "LPA",
+     "Leucèmia aguda"
+    ],
+    "en": [
+     "Acute promyelocytic leukemia",
+     "APL",
+     "Acute leukaemia",
+     "Leukemia"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células inmaduras (promielocitos) de gran tamaño en sangre periférica",
+     "Núcleos irregulares, a veces bilobulados, y relación núcleo-citoplasma alta",
+     "Variante hipogranular: faltan los gránulos típicos"
+    ],
+    "ca": [
+     "Cèl·lules immadures (promielòcits) de gran mida en sang perifèrica",
+     "Nuclis irregulars, de vegades bilobulats, i relació nucli-citoplasma alta",
+     "Variant hipogranular: falten els grànuls típics"
+    ],
+    "en": [
+     "Large immature cells (promyelocytes) in peripheral blood",
+     "Irregular, sometimes bilobed nuclei and a high nucleus-to-cytoplasm ratio",
+     "Hypogranular variant: the typical granules are missing"
+    ]
+   },
+   "autor": "Mikael Häggström, M.D.",
+   "licencia": "CC0",
+   "licurl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "origen": "https://commons.wikimedia.org/wiki/File:Peripheral_blood_smear_of_acute_promyelocytic_leukemia,_hypogranular_variant,_source_image_(5).jpg"
+  },
+  {
+   "id": "pap-normal",
+   "archivo": "img/pap-normal.jpg",
+   "miniatura": "img/min/pap-normal.jpg",
+   "categoria": "citologia",
+   "grupo": "cervix",
+   "tincion": "pap",
+   "dificultad": 1,
+   "nombre": {
+    "es": "Citología cervicovaginal normal",
+    "ca": "Citologia cervicovaginal normal",
+    "en": "Normal cervicovaginal cytology"
+   },
+   "alias": {
+    "es": [
+     "Papanicolaou normal",
+     "Citología normal",
+     "Pap normal"
+    ],
+    "ca": [
+     "Papanicolau normal",
+     "Citologia normal"
+    ],
+    "en": [
+     "Normal Pap smear",
+     "Normal Pap test"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células escamosas superficiales e intermedias, grandes y planas",
+     "Núcleos pequeños, regulares y de cromatina fina",
+     "Citoplasma azul-verdoso (basófilo) o rosado (eosinófilo)"
+    ],
+    "ca": [
+     "Cèl·lules escamoses superficials i intermèdies, grans i planes",
+     "Nuclis petits, regulars i de cromatina fina",
+     "Citoplasma blau-verdós (basòfil) o rosat (eosinòfil)"
+    ],
+    "en": [
+     "Large, flat superficial and intermediate squamous cells",
+     "Small, regular nuclei with fine chromatin",
+     "Blue-green (basophilic) or pink (eosinophilic) cytoplasm"
+    ]
+   },
+   "autor": "No machine-readable author provided. Cagliostro~commonswiki assumed (based on co",
+   "licencia": "Public domain",
+   "origen": "https://commons.wikimedia.org/wiki/File:Pap_test_wnl.jpg"
+  },
+  {
+   "id": "lsil",
+   "archivo": "img/lsil.jpg",
+   "miniatura": "img/min/lsil.jpg",
+   "categoria": "citologia",
+   "grupo": "cervix",
+   "tincion": "pap",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Lesión intraepitelial escamosa de bajo grado (LSIL)",
+    "ca": "Lesió intraepitelial escamosa de baix grau (LSIL)",
+    "en": "Low-grade squamous intraepithelial lesion (LSIL)"
+   },
+   "alias": {
+    "es": [
+     "LSIL",
+     "Lesión de bajo grado"
+    ],
+    "ca": [
+     "LSIL",
+     "Lesió de baix grau"
+    ],
+    "en": [
+     "LSIL",
+     "Low-grade lesion"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Núcleos agrandados y más oscuros que los de una célula intermedia normal",
+     "Cromatina gruesa y contorno nuclear irregular",
+     "Los koilocitos (halo perinuclear) sugieren infección por VPH"
+    ],
+    "ca": [
+     "Nuclis engrandits i més foscos que els d'una cèl·lula intermèdia normal",
+     "Cromatina gruixuda i contorn nuclear irregular",
+     "Els coilòcits (halo perinuclear) suggereixen infecció per VPH"
+    ],
+    "en": [
+     "Nuclei enlarged and darker than those of a normal intermediate cell",
+     "Coarse chromatin and irregular nuclear contour",
+     "Koilocytes (perinuclear halo) suggest HPV infection"
+    ]
+   },
+   "autor": "Nephron",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Low_grade_squamous_intraepithelial_lesion.jpg"
+  },
+  {
+   "id": "hsil",
+   "archivo": "img/hsil.jpg",
+   "miniatura": "img/min/hsil.jpg",
+   "categoria": "citologia",
+   "grupo": "cervix",
+   "tincion": "pap",
+   "dificultad": 3,
+   "nombre": {
+    "es": "Lesión intraepitelial escamosa de alto grado (HSIL)",
+    "ca": "Lesió intraepitelial escamosa d'alt grau (HSIL)",
+    "en": "High-grade squamous intraepithelial lesion (HSIL)"
+   },
+   "alias": {
+    "es": [
+     "HSIL",
+     "Lesión de alto grado"
+    ],
+    "ca": [
+     "HSIL",
+     "Lesió d'alt grau"
+    ],
+    "en": [
+     "HSIL",
+     "High-grade lesion"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Células pequeñas e inmaduras con relación núcleo-citoplasma muy alta",
+     "Núcleos hipercromáticos de contorno irregular",
+     "Se ven en grupos o aisladas entre células escamosas normales"
+    ],
+    "ca": [
+     "Cèl·lules petites i immadures amb relació nucli-citoplasma molt alta",
+     "Nuclis hipercromàtics de contorn irregular",
+     "Es veuen en grups o aïllades entre cèl·lules escamoses normals"
+    ],
+    "en": [
+     "Small immature cells with a very high nucleus-to-cytoplasm ratio",
+     "Hyperchromatic nuclei with irregular outlines",
+     "Seen in groups or singly among normal squamous cells"
+    ]
+   },
+   "autor": "Nephron",
+   "licencia": "CC BY-SA 3.0",
+   "licurl": "https://creativecommons.org/licenses/by-sa/3.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:High-grade_squamous_intraepithelial_lesion_-_4_--_high_mag.jpg"
+  },
+  {
+   "id": "cirrosis",
+   "archivo": "img/cirrosis.jpg",
+   "miniatura": "img/min/cirrosis.jpg",
+   "categoria": "patologia",
+   "grupo": "higado",
+   "tincion": "masson",
+   "dificultad": 2,
+   "nombre": {
+    "es": "Cirrosis hepática",
+    "ca": "Cirrosi hepàtica",
+    "en": "Liver cirrhosis"
+   },
+   "alias": {
+    "es": [
+     "Cirrosis"
+    ],
+    "ca": [
+     "Cirrosi"
+    ],
+    "en": [
+     "Cirrhosis"
+    ]
+   },
+   "rasgos": {
+    "es": [
+     "Nódulos de hepatocitos (rojo) rodeados por bandas de fibrosis (azul)",
+     "El tricrómico tiñe el colágeno de azul, de ahí que la fibrosis destaque",
+     "La arquitectura normal del lobulillo hepático se pierde"
+    ],
+    "ca": [
+     "Nòduls d'hepatòcits (vermell) envoltats per bandes de fibrosi (blau)",
+     "El tricròmic tenyeix el col·lagen de blau, per això la fibrosi destaca",
+     "L'arquitectura normal del lobulet hepàtic es perd"
+    ],
+    "en": [
+     "Nodules of hepatocytes (red) surrounded by bands of fibrosis (blue)",
+     "The trichrome stains collagen blue, so the fibrosis stands out",
+     "The normal architecture of the liver lobule is lost"
+    ]
+   },
+   "autor": "Ed Uthman from Houston, TX, USA",
+   "licencia": "CC BY 2.0",
+   "licurl": "https://creativecommons.org/licenses/by/2.0",
+   "origen": "https://commons.wikimedia.org/wiki/File:Cirrhosis_of_the_liver_(trichrome_stain)_(5690946257).jpg"
+  }
+ ]
+}

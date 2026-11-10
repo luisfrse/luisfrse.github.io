@@ -6,6 +6,12 @@
       "titulo_en": "Cell Biology",
       "recursos": [
         {
+          "titulo": "Quiz de histología y citología",
+          "titulo_ca": "Quiz d'histologia i citologia",
+          "titulo_en": "Histology and cytology quiz",
+          "enlace": "/apps/histologia/"
+        },
+        {
           "titulo": "Tarjetas de estudio (repetición espaciada)",
           "titulo_ca": "Targetes d'estudi (repetició espaiada)",
           "titulo_en": "Study flashcards (spaced repetition)",
@@ -119,6 +125,12 @@
           "titulo_ca": "Targetes d'estudi (repetició espaiada)",
           "titulo_en": "Study flashcards (spaced repetition)",
           "enlace": "/apps/tarjetas/"
+        },
+        {
+          "titulo": "Quiz de histología y citología",
+          "titulo_ca": "Quiz d'histologia i citologia",
+          "titulo_en": "Histology and cytology quiz",
+          "enlace": "/apps/histologia/"
         }
       ]
     }
@@ -221,6 +233,12 @@
       "descripcion_ca": "El Tècnic Superior en Anatomia Patològica i Citodiagnòstic es dedica a obtenir, processar i estudiar mostres biològiques (teixits i cèl·lules) per a la detecció i el diagnòstic de malalties. Les seves funcions inclouen la preparació de teixits (histologia) i extensions (citologia), la realització de necròpsies i l'assistència tècnica al metge patòleg en el diagnòstic.",
       "descripcion_en": "The Higher Technician in Pathological Anatomy and Cytodiagnosis obtains, processes and studies biological samples (tissues and cells) for the detection and diagnosis of disease. Their duties include preparing tissues (histology) and smears (cytology), carrying out autopsies and providing technical assistance to the pathologist in diagnosis.",
       "recursos": [
+        {
+          "titulo": "Quiz de histología y citología",
+          "titulo_ca": "Quiz d'histologia i citologia",
+          "titulo_en": "Histology and cytology quiz",
+          "enlace": "/apps/histologia/"
+        },
         {
           "titulo": "Tarjetas de estudio (repetición espaciada)",
           "titulo_ca": "Targetes d'estudi (repetició espaiada)",

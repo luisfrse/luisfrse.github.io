@@ -1,1286 +1,1386 @@
 {
- "version": 1,
- "sequences": [
-  {
-   "id": "lavado",
-   "type": "order",
-   "cover": "cover-lavado",
-   "icon": "droplet",
-   "durationSec": [
-    40,
-    60
-   ],
-   "baseSec": 50,
-   "title": {
-    "es": "Lavado de manos con agua y jabón",
-    "ca": "Rentat de mans amb aigua i sabó",
-    "en": "Handwashing with soap and water"
-   },
-   "subtitle": {
-    "es": "Cuando las manos están visiblemente sucias o contaminadas con fluidos corporales.",
-    "ca": "Quan les mans estan visiblement brutes o contaminades amb fluids corporals.",
-    "en": "When hands are visibly dirty or soiled with body fluids."
-   },
-   "source": {
-    "es": "Adaptado de «Cómo lavarse las manos» (OMS, Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009).",
-    "ca": "Adaptat de «Com rentar-se les mans» (OMS, Directrius de l'OMS sobre higiene de mans en l'atenció sanitària, 2009).",
-    "en": "Adapted from \"How to Handwash?\" (WHO Guidelines on Hand Hygiene in Health Care, 2009)."
-   },
-   "note": {
-    "es": "Antes de empezar: retira reloj, pulseras y anillos, mantén las uñas cortas y sin uñas artificiales, y comprueba que hay jabón y toallas de un solo uso.",
-    "ca": "Abans de començar: retira rellotge, polseres i anells, mantén les ungles curtes i sense ungles artificials, i comprova que hi ha sabó i tovalloles d'un sol ús.",
-    "en": "Before you start: remove your watch, bracelets and rings, keep nails short and free of artificial nails, and check that soap and single-use towels are available."
-   },
-   "finish": {
-    "es": "Tus manos son seguras.",
-    "ca": "Les teves mans són segures.",
-    "en": "Your hands are safe."
-   },
-   "steps": [
+  "version": 1,
+  "sequences": [
     {
-     "id": "mojar",
-     "img": "lavado-1-mojar",
-     "seconds": 3,
-     "title": {
-      "es": "Mójate las manos con agua",
-      "ca": "Mulla't les mans amb aigua",
-      "en": "Wet your hands with water"
-     },
-     "text": {
-      "es": "Abre el grifo y mójate las manos y las muñecas con agua.",
-      "ca": "Obre l'aixeta i mulla't les mans i els canells amb aigua.",
-      "en": "Turn on the tap and wet your hands and wrists with water."
-     },
-     "why": {
-      "es": "Con la piel mojada el jabón se reparte mejor y forma espuma, que arrastra la suciedad y los microorganismos.",
-      "ca": "Amb la pell mullada el sabó es reparteix millor i fa escuma, que arrossega la brutícia i els microorganismes.",
-      "en": "On wet skin the soap spreads better and lathers, which carries away dirt and microorganisms."
-     },
-     "mistake": {
-      "es": "Usar agua muy caliente: reseca e irrita la piel y no elimina más gérmenes.",
-      "ca": "Fer servir aigua molt calenta: resseca i irrita la pell i no elimina més gèrmens.",
-      "en": "Using very hot water: it dries and irritates the skin and does not remove more germs."
-     }
-    },
-    {
-     "id": "jabon",
-     "img": "lavado-2-jabon",
-     "seconds": 3,
-     "title": {
-      "es": "Aplica jabón en toda la superficie de las manos",
-      "ca": "Aplica sabó a tota la superfície de les mans",
-      "en": "Apply enough soap to cover all hand surfaces"
-     },
-     "text": {
-      "es": "Aplica jabón suficiente para cubrir toda la superficie de las manos.",
-      "ca": "Aplica prou sabó per cobrir tota la superfície de les mans.",
-      "en": "Apply enough soap to cover all the surfaces of your hands."
-     },
-     "why": {
-      "es": "El jabón despega la suciedad y los microorganismos de la piel; hace falta cantidad suficiente para llegar a todas las zonas.",
-      "ca": "El sabó despenja la brutícia i els microorganismes de la pell; cal prou quantitat per arribar a totes les zones.",
-      "en": "Soap lifts dirt and microorganisms off the skin; you need enough to reach every area."
-     },
-     "mistake": {
-      "es": "Poner poco jabón y dejar zonas sin cubrir.",
-      "ca": "Posar poc sabó i deixar zones sense cobrir.",
-      "en": "Using too little soap and leaving areas uncovered."
-     }
-    },
-    {
-     "id": "palmas",
-     "img": "lavado-3-palmas",
-     "seconds": 5,
-     "title": {
-      "es": "Frota las palmas entre sí",
-      "ca": "Frega els palmells l'un contra l'altre",
-      "en": "Rub your palms together"
-     },
-     "text": {
-      "es": "Frota las palmas de las manos entre sí.",
-      "ca": "Frega els palmells de les mans l'un contra l'altre.",
-      "en": "Rub your palms together."
-     },
-     "why": {
-      "es": "La fricción mecánica es la que, junto con el jabón, arrastra la suciedad de la piel.",
-      "ca": "La fricció mecànica és la que, juntament amb el sabó, arrossega la brutícia de la pell.",
-      "en": "The mechanical friction, together with the soap, is what removes dirt from the skin."
-     },
-     "mistake": {
-      "es": "Hacerlo demasiado rápido y sin fricción real.",
-      "ca": "Fer-ho massa de pressa i sense fricció real.",
-      "en": "Doing it too quickly, without real friction."
-     }
-    },
-    {
-     "id": "dorso",
-     "img": "lavado-4-dorso",
-     "seconds": 6,
-     "title": {
-      "es": "Palma derecha sobre el dorso izquierdo, dedos entrelazados, y viceversa",
-      "ca": "Palmell dret sobre el dors de l'esquerra, dits entrellaçats, i viceversa",
-      "en": "Right palm over left back of hand, fingers interlaced, and vice versa"
-     },
-     "text": {
-      "es": "Frota la palma de la mano derecha sobre el dorso de la izquierda con los dedos entrelazados, y después al revés.",
-      "ca": "Frega el palmell de la mà dreta sobre el dors de l'esquerra amb els dits entrellaçats, i després al revés.",
-      "en": "Rub the right palm over the back of the left hand with the fingers interlaced, then swap hands."
-     },
-     "why": {
-      "es": "El dorso de la mano y los espacios entre los dedos son zonas que se olvidan con facilidad.",
-      "ca": "El dors de la mà i els espais entre els dits són zones que s'obliden fàcilment.",
-      "en": "The back of the hand and the spaces between the fingers are easily forgotten."
-     },
-     "mistake": {
-      "es": "Limpiar solo una mano o no repetir con la otra.",
-      "ca": "Netejar només una mà o no repetir amb l'altra.",
-      "en": "Cleaning only one hand or not repeating with the other."
-     }
-    },
-    {
-     "id": "entrelazadas",
-     "img": "lavado-5-entrelazadas",
-     "seconds": 5,
-     "title": {
-      "es": "Palma contra palma con los dedos entrelazados",
-      "ca": "Palmell contra palmell amb els dits entrellaçats",
-      "en": "Palm to palm with fingers interlaced"
-     },
-     "text": {
-      "es": "Frota las palmas entre sí con los dedos entrelazados.",
-      "ca": "Frega els palmells l'un contra l'altre amb els dits entrellaçats.",
-      "en": "Rub your palms together with the fingers interlaced."
-     },
-     "why": {
-      "es": "Limpia los espacios entre los dedos (zona interdigital).",
-      "ca": "Neteja els espais entre els dits (zona interdigital).",
-      "en": "It cleans the spaces between the fingers (interdigital area)."
-     },
-     "mistake": {
-      "es": "No separar bien los dedos y dejar los pliegues sin frotar.",
-      "ca": "No separar bé els dits i deixar els plecs sense fregar.",
-      "en": "Not spreading the fingers enough and leaving the folds unrubbed."
-     }
-    },
-    {
-     "id": "dedos",
-     "img": "lavado-6-dedos",
-     "seconds": 5,
-     "title": {
-      "es": "Dorso de los dedos contra la palma contraria",
-      "ca": "Dors dels dits contra el palmell oposat",
-      "en": "Backs of fingers against the opposite palm"
-     },
-     "text": {
-      "es": "Frota el dorso de los dedos de una mano con la palma de la mano contraria, agarrándote los dedos.",
-      "ca": "Frega el dors dels dits d'una mà amb el palmell de la mà contrària, agafant-te els dits.",
-      "en": "Rub the backs of the fingers of one hand against the palm of the other, with the fingers clasped."
-     },
-     "why": {
-      "es": "Alcanza la zona de los nudillos y las uñas, donde se acumulan microorganismos.",
-      "ca": "Arriba a la zona dels artells i les ungles, on s'acumulen microorganismes.",
-      "en": "It reaches the knuckles and nails, where microorganisms build up."
-     },
-     "mistake": {
-      "es": "Olvidar esta zona o frotar solo con las yemas.",
-      "ca": "Oblidar aquesta zona o fregar només amb les puntes.",
-      "en": "Skipping this area or rubbing only with the fingertips."
-     }
-    },
-    {
-     "id": "pulgar",
-     "img": "lavado-7-pulgar",
-     "seconds": 6,
-     "title": {
-      "es": "Frota cada pulgar con un movimiento de rotación",
-      "ca": "Frega cada polze amb un moviment de rotació",
-      "en": "Rub each thumb with a rotating movement"
-     },
-     "text": {
-      "es": "Rodea el pulgar izquierdo con la palma de la mano derecha y frótalo con un movimiento de rotación; repite con el otro pulgar.",
-      "ca": "Envolta el polze esquerre amb el palmell de la mà dreta i frega'l amb un moviment de rotació; repeteix amb l'altre polze.",
-      "en": "Clasp the left thumb in your right palm and rub it with a rotating movement; repeat with the other thumb."
-     },
-     "why": {
-      "es": "El pulgar es una de las zonas que más se omiten al lavarse las manos.",
-      "ca": "El polze és una de les zones que més s'ometen en rentar-se les mans.",
-      "en": "The thumb is one of the areas most often missed when washing hands."
-     },
-     "mistake": {
-      "es": "No lavar los pulgares.",
-      "ca": "No rentar els polzes.",
-      "en": "Not washing the thumbs."
-     }
-    },
-    {
-     "id": "yemas",
-     "img": "lavado-8-yemas",
-     "seconds": 6,
-     "title": {
-      "es": "Yemas de los dedos contra la palma, con rotación",
-      "ca": "Puntes dels dits contra el palmell, amb rotació",
-      "en": "Fingertips against the opposite palm, rotating"
-     },
-     "text": {
-      "es": "Frota las yemas de los dedos de la mano derecha contra la palma de la izquierda con un movimiento de rotación, y viceversa.",
-      "ca": "Frega les puntes dels dits de la mà dreta contra el palmell de l'esquerra amb un moviment de rotació, i viceversa.",
-      "en": "Rub the fingertips of the right hand against the left palm with a rotating movement, and vice versa."
-     },
-     "why": {
-      "es": "Las yemas y el borde de las uñas acumulan microorganismos y también se olvidan a menudo.",
-      "ca": "Les puntes i la vora de les ungles acumulen microorganismes i també s'obliden sovint.",
-      "en": "Fingertips and nail edges collect microorganisms and are also often missed."
-     },
-     "mistake": {
-      "es": "Llevar uñas largas o artificiales, que dificultan la limpieza.",
-      "ca": "Portar ungles llargues o artificials, que dificulten la neteja.",
-      "en": "Wearing long or artificial nails, which make cleaning harder."
-     }
-    },
-    {
-     "id": "aclarar",
-     "img": "lavado-9-aclarar",
-     "seconds": 4,
-     "title": {
-      "es": "Enjuágate las manos con agua",
-      "ca": "Esbandeix-te les mans amb aigua",
-      "en": "Rinse your hands with water"
-     },
-     "text": {
-      "es": "Enjuaga las manos con agua abundante hasta eliminar todo el jabón.",
-      "ca": "Esbandeix les mans amb aigua abundant fins eliminar tot el sabó.",
-      "en": "Rinse your hands with plenty of water until all the soap is gone."
-     },
-     "why": {
-      "es": "Elimina el jabón y la suciedad arrastrada; los restos de jabón pueden irritar la piel.",
-      "ca": "Elimina el sabó i la brutícia arrossegada; les restes de sabó poden irritar la pell.",
-      "en": "It removes the soap and the dirt it lifted; soap residue can irritate the skin."
-     },
-     "mistake": {
-      "es": "Dejar restos de jabón.",
-      "ca": "Deixar restes de sabó.",
-      "en": "Leaving soap residue."
-     }
-    },
-    {
-     "id": "secar",
-     "img": "lavado-10-secar",
-     "seconds": 5,
-     "title": {
-      "es": "Sécate con una toalla de un solo uso",
-      "ca": "Eixuga't amb una tovallola d'un sol ús",
-      "en": "Dry with a single-use towel"
-     },
-     "text": {
-      "es": "Sécate las manos por completo con una toalla de un solo uso.",
-      "ca": "Eixuga't les mans completament amb una tovallola d'un sol ús.",
-      "en": "Dry your hands thoroughly with a single-use towel."
-     },
-     "why": {
-      "es": "Las manos húmedas transmiten y recogen más microorganismos, y secarlas bien previene las grietas.",
-      "ca": "Les mans humides transmeten i recullen més microorganismes, i eixugar-les bé prevé les esquerdes.",
-      "en": "Wet hands pass on and pick up more microorganisms, and drying them well prevents cracking."
-     },
-     "mistake": {
-      "es": "Compartir una toalla de tela o secarse con la ropa.",
-      "ca": "Compartir una tovallola de tela o eixugar-se amb la roba.",
-      "en": "Sharing a cloth towel or drying hands on clothes."
-     }
-    },
-    {
-     "id": "grifo",
-     "img": "lavado-11-grifo",
-     "seconds": 2,
-     "title": {
-      "es": "Cierra el grifo con la toalla",
-      "ca": "Tanca l'aixeta amb la tovallola",
-      "en": "Turn off the tap using the towel"
-     },
-     "text": {
-      "es": "Usa la misma toalla para cerrar el grifo y deséchala.",
-      "ca": "Fes servir la mateixa tovallola per tancar l'aixeta i llença-la.",
-      "en": "Use the same towel to turn off the tap and then throw it away."
-     },
-     "why": {
-      "es": "Evita volver a contaminar las manos limpias al tocar el grifo.",
-      "ca": "Evita tornar a contaminar les mans netes en tocar l'aixeta.",
-      "en": "It stops you re-contaminating clean hands by touching the tap."
-     },
-     "mistake": {
-      "es": "Cerrar el grifo con la mano ya limpia.",
-      "ca": "Tancar l'aixeta amb la mà ja neta.",
-      "en": "Closing the tap with your clean hand."
-     }
-    }
-   ]
-  },
-  {
-   "id": "friccion",
-   "type": "order",
-   "cover": "cover-friccion",
-   "icon": "hand",
-   "durationSec": [
-    20,
-    30
-   ],
-   "baseSec": 25,
-   "title": {
-    "es": "Higiene de manos con solución hidroalcohólica",
-    "ca": "Higiene de mans amb solució hidroalcohòlica",
-    "en": "Hand rub with an alcohol-based solution"
-   },
-   "subtitle": {
-    "es": "Cuando las manos no están visiblemente sucias: es la opción preferente en la atención sanitaria.",
-    "ca": "Quan les mans no estan visiblement brutes: és l'opció preferent en l'atenció sanitària.",
-    "en": "When hands are not visibly dirty: the preferred option in health care."
-   },
-   "source": {
-    "es": "Adaptado de «Cómo desinfectarse las manos» (OMS, Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009).",
-    "ca": "Adaptat de «Com desinfectar-se les mans» (OMS, Directrius de l'OMS sobre higiene de mans en l'atenció sanitària, 2009).",
-    "en": "Adapted from \"How to Handrub?\" (WHO Guidelines on Hand Hygiene in Health Care, 2009)."
-   },
-   "note": {
-    "es": "Si las manos están visiblemente sucias o manchadas de sangre o fluidos, lávalas con agua y jabón. No enjuagues ni seques con toalla: el producto debe secarse al aire.",
-    "ca": "Si les mans estan visiblement brutes o amb taques de sang o fluids, renta-les amb aigua i sabó. No esbandeixis ni eixuguis amb tovallola: el producte s'ha de deixar assecar a l'aire.",
-    "en": "If hands are visibly dirty or soiled with blood or fluids, wash them with soap and water. Do not rinse or dry with a towel: let the product air-dry."
-   },
-   "finish": {
-    "es": "Una vez secas, tus manos son seguras.",
-    "ca": "Un cop seques, les teves mans són segures.",
-    "en": "Once dry, your hands are safe."
-   },
-   "steps": [
-    {
-     "id": "dosis",
-     "img": "friccion-1-dosis",
-     "seconds": 2,
-     "title": {
-      "es": "Deposita una dosis de producto en la palma",
-      "ca": "Posa una dosi de producte al palmell",
-      "en": "Put a dose of product in your palm"
-     },
-     "text": {
-      "es": "Deposita en la palma de la mano una dosis de solución suficiente para cubrir toda la superficie de ambas manos (sigue la dosis del fabricante).",
-      "ca": "Posa al palmell de la mà una dosi de solució suficient per cobrir tota la superfície de les dues mans (segueix la dosi del fabricant).",
-      "en": "Put into the palm of your hand enough solution to cover all surfaces of both hands (follow the manufacturer's dose)."
-     },
-     "why": {
-      "es": "Con poca cantidad no se cubren todas las zonas ni se mantiene húmeda la piel el tiempo necesario.",
-      "ca": "Amb poca quantitat no es cobreixen totes les zones ni es manté humida la pell el temps necessari.",
-      "en": "With too little product not every area is covered and the skin does not stay wet long enough."
-     },
-     "mistake": {
-      "es": "Usar muy poca cantidad y que se seque antes de tiempo.",
-      "ca": "Fer servir molt poca quantitat i que s'assequi abans d'hora.",
-      "en": "Using too little, so it dries too soon."
-     }
-    },
-    {
-     "id": "palmas",
-     "img": "lavado-3-palmas",
-     "seconds": 3,
-     "title": {
-      "es": "Frota las palmas entre sí",
-      "ca": "Frega els palmells l'un contra l'altre",
-      "en": "Rub your palms together"
-     },
-     "text": {
-      "es": "Frota las palmas de las manos entre sí.",
-      "ca": "Frega els palmells de les mans l'un contra l'altre.",
-      "en": "Rub your palms together."
-     },
-     "why": {
-      "es": "Reparte el producto y empieza la fricción.",
-      "ca": "Reparteix el producte i comença la fricció.",
-      "en": "It spreads the product and starts the friction."
-     },
-     "mistake": {
-      "es": "Frotar sin repartir el producto por toda la mano.",
-      "ca": "Fregar sense repartir el producte per tota la mà.",
-      "en": "Rubbing without spreading the product over the whole hand."
-     }
-    },
-    {
-     "id": "dorso",
-     "img": "lavado-4-dorso",
-     "seconds": 4,
-     "title": {
-      "es": "Palma derecha sobre el dorso izquierdo, dedos entrelazados, y viceversa",
-      "ca": "Palmell dret sobre el dors de l'esquerra, dits entrellaçats, i viceversa",
-      "en": "Right palm over left back of hand, fingers interlaced, and vice versa"
-     },
-     "text": {
-      "es": "Frota la palma de la mano derecha sobre el dorso de la izquierda con los dedos entrelazados, y después al revés.",
-      "ca": "Frega el palmell de la mà dreta sobre el dors de l'esquerra amb els dits entrellaçats, i després al revés.",
-      "en": "Rub the right palm over the back of the left hand with the fingers interlaced, then swap hands."
-     },
-     "why": {
-      "es": "El dorso de la mano y los espacios entre los dedos se olvidan con facilidad.",
-      "ca": "El dors de la mà i els espais entre els dits s'obliden fàcilment.",
-      "en": "The back of the hand and the spaces between the fingers are easily forgotten."
-     },
-     "mistake": {
-      "es": "Tratar solo una mano.",
-      "ca": "Tractar només una mà.",
-      "en": "Treating only one hand."
-     }
-    },
-    {
-     "id": "entrelazadas",
-     "img": "lavado-5-entrelazadas",
-     "seconds": 3,
-     "title": {
-      "es": "Palma contra palma con los dedos entrelazados",
-      "ca": "Palmell contra palmell amb els dits entrellaçats",
-      "en": "Palm to palm with fingers interlaced"
-     },
-     "text": {
-      "es": "Frota las palmas entre sí con los dedos entrelazados.",
-      "ca": "Frega els palmells l'un contra l'altre amb els dits entrellaçats.",
-      "en": "Rub your palms together with the fingers interlaced."
-     },
-     "why": {
-      "es": "Lleva el producto a los espacios interdigitales.",
-      "ca": "Porta el producte als espais interdigitals.",
-      "en": "It takes the product into the interdigital spaces."
-     },
-     "mistake": {
-      "es": "Dejar los pliegues entre los dedos sin cubrir.",
-      "ca": "Deixar els plecs entre els dits sense cobrir.",
-      "en": "Leaving the folds between the fingers uncovered."
-     }
-    },
-    {
-     "id": "dedos",
-     "img": "lavado-6-dedos",
-     "seconds": 3,
-     "title": {
-      "es": "Dorso de los dedos contra la palma contraria",
-      "ca": "Dors dels dits contra el palmell oposat",
-      "en": "Backs of fingers against the opposite palm"
-     },
-     "text": {
-      "es": "Frota el dorso de los dedos de una mano con la palma de la mano contraria, agarrándote los dedos.",
-      "ca": "Frega el dors dels dits d'una mà amb el palmell de la mà contrària, agafant-te els dits.",
-      "en": "Rub the backs of the fingers of one hand against the palm of the other, with the fingers clasped."
-     },
-     "why": {
-      "es": "Cubre los nudillos y el dorso de los dedos.",
-      "ca": "Cobreix els artells i el dors dels dits.",
-      "en": "It covers the knuckles and the backs of the fingers."
-     },
-     "mistake": {
-      "es": "Olvidar los nudillos.",
-      "ca": "Oblidar els artells.",
-      "en": "Skipping the knuckles."
-     }
-    },
-    {
-     "id": "pulgar",
-     "img": "lavado-7-pulgar",
-     "seconds": 4,
-     "title": {
-      "es": "Frota cada pulgar con un movimiento de rotación",
-      "ca": "Frega cada polze amb un moviment de rotació",
-      "en": "Rub each thumb with a rotating movement"
-     },
-     "text": {
-      "es": "Rodea el pulgar izquierdo con la palma de la mano derecha y frótalo con un movimiento de rotación; repite con el otro pulgar.",
-      "ca": "Envolta el polze esquerre amb el palmell de la mà dreta i frega'l amb un moviment de rotació; repeteix amb l'altre polze.",
-      "en": "Clasp the left thumb in your right palm and rub it with a rotating movement; repeat with the other thumb."
-     },
-     "why": {
-      "es": "Los pulgares son una de las zonas que más se omiten.",
-      "ca": "Els polzes són una de les zones que més s'ometen.",
-      "en": "Thumbs are one of the most commonly missed areas."
-     },
-     "mistake": {
-      "es": "No frotar los pulgares.",
-      "ca": "No fregar els polzes.",
-      "en": "Not rubbing the thumbs."
-     }
-    },
-    {
-     "id": "yemas",
-     "img": "lavado-8-yemas",
-     "seconds": 4,
-     "title": {
-      "es": "Yemas de los dedos contra la palma, con rotación",
-      "ca": "Puntes dels dits contra el palmell, amb rotació",
-      "en": "Fingertips against the opposite palm, rotating"
-     },
-     "text": {
-      "es": "Frota las yemas de los dedos de la mano derecha contra la palma de la izquierda con un movimiento de rotación, y viceversa.",
-      "ca": "Frega les puntes dels dits de la mà dreta contra el palmell de l'esquerra amb un moviment de rotació, i viceversa.",
-      "en": "Rub the fingertips of the right hand against the left palm with a rotating movement, and vice versa."
-     },
-     "why": {
-      "es": "Las yemas y el borde de las uñas también deben quedar cubiertos.",
-      "ca": "Les puntes i la vora de les ungles també han de quedar cobertes.",
-      "en": "Fingertips and nail edges must also be covered."
-     },
-     "mistake": {
-      "es": "Olvidar las yemas.",
-      "ca": "Oblidar les puntes dels dits.",
-      "en": "Forgetting the fingertips."
-     }
-    },
-    {
-     "id": "secas",
-     "img": "friccion-8-secas",
-     "seconds": 2,
-     "title": {
-      "es": "Espera a que se sequen: tus manos son seguras",
-      "ca": "Espera que s'assequin: les teves mans són segures",
-      "en": "Wait until they are dry: your hands are safe"
-     },
-     "text": {
-      "es": "Deja que las manos se sequen al aire; una vez secas, tus manos son seguras.",
-      "ca": "Deixa que les mans s'assequin a l'aire; un cop seques, les teves mans són segures.",
-      "en": "Let your hands air-dry; once dry, your hands are safe."
-     },
-     "why": {
-      "es": "El producto necesita tiempo de contacto para actuar: por eso la fricción dura 20–30 segundos.",
-      "ca": "El producte necessita temps de contacte per actuar: per això la fricció dura 20–30 segons.",
-      "en": "The product needs contact time to work, which is why the rub lasts 20–30 seconds."
-     },
-     "mistake": {
-      "es": "Secarse con una toalla o con la ropa, o tocar algo antes de que se seque.",
-      "ca": "Eixugar-se amb una tovallola o amb la roba, o tocar alguna cosa abans que s'assequi.",
-      "en": "Drying with a towel or clothes, or touching something before it is dry."
-     }
-    }
-   ]
-  },
-  {
-   "id": "colocacion",
-   "type": "order",
-   "cover": "cover-colocacion",
-   "icon": "shield",
-   "durationSec": null,
-   "baseSec": 0,
-   "title": {
-    "es": "Colocación del EPI",
-    "ca": "Col·locació de l'EPI",
-    "en": "Putting on PPE (donning)"
-   },
-   "subtitle": {
-    "es": "Bata, mascarilla o respirador, protección ocular y guantes, en este orden.",
-    "ca": "Bata, mascareta o respirador, protecció ocular i guants, en aquest ordre.",
-    "en": "Gown, mask or respirator, eye protection and gloves, in this order."
-   },
-   "source": {
-    "es": "Secuencia basada en la de los CDC (EE. UU.) para la colocación del equipo de protección individual y coherente con las recomendaciones de la OMS.",
-    "ca": "Seqüència basada en la dels CDC (EUA) per a la col·locació de l'equip de protecció individual i coherent amb les recomanacions de l'OMS.",
-    "en": "Sequence based on the US CDC sequence for putting on personal protective equipment and consistent with WHO recommendations."
-   },
-   "note": {
-    "es": "Los protocolos varían según el nivel de riesgo y el centro: adapta esta secuencia al protocolo de tu centro.",
-    "ca": "Els protocols varien segons el nivell de risc i el centre: adapta aquesta seqüència al protocol del teu centre.",
-    "en": "Protocols vary with the level of risk and the centre: adapt this sequence to your own centre's protocol."
-   },
-   "finish": {
-    "es": "EPI colocado: comprueba que no queda piel al descubierto.",
-    "ca": "EPI col·locat: comprova que no queda pell al descobert.",
-    "en": "PPE on: check that no skin is left exposed."
-   },
-   "steps": [
-    {
-     "id": "preparar",
-     "img": "epi-1-preparar",
-     "seconds": 0,
-     "title": {
-      "es": "Prepárate: retira objetos personales y recoge el pelo",
-      "ca": "Prepara't: retira objectes personals i recull-te els cabells",
-      "en": "Get ready: remove personal items and tie your hair back"
-     },
-     "text": {
-      "es": "Retira anillos, reloj, pulseras y otros objetos personales, recógete el pelo y comprueba que tienes todo el EPI a mano, de tu talla y en buen estado.",
-      "ca": "Retira anells, rellotge, polseres i altres objectes personals, recull-te els cabells i comprova que tens tot l'EPI a mà, de la teva talla i en bon estat.",
-      "en": "Remove rings, watch, bracelets and other personal items, tie your hair back and check that all the PPE is at hand, in your size and in good condition."
-     },
-     "why": {
-      "es": "Los objetos personales dificultan la higiene de manos y pueden romper los guantes; el pelo suelto se contamina y obliga a tocarte la cara.",
-      "ca": "Els objectes personals dificulten la higiene de mans i poden trencar els guants; els cabells solts es contaminen i obliguen a tocar-se la cara.",
-      "en": "Personal items hamper hand hygiene and can tear gloves; loose hair gets contaminated and makes you touch your face."
-     },
-     "mistake": {
-      "es": "Empezar sin comprobar el material y tener que salir a buscar algo con el EPI ya puesto.",
-      "ca": "Començar sense comprovar el material i haver de sortir a buscar alguna cosa amb l'EPI ja posat.",
-      "en": "Starting without checking the equipment and having to fetch something with PPE already on."
-     }
-    },
-    {
-     "id": "manos",
-     "img": "friccion-1-dosis",
-     "seconds": 0,
-     "title": {
-      "es": "Higiene de manos",
-      "ca": "Higiene de mans",
-      "en": "Hand hygiene"
-     },
-     "text": {
-      "es": "Realiza higiene de manos con solución hidroalcohólica (o con agua y jabón si están sucias).",
-      "ca": "Fes higiene de mans amb solució hidroalcohòlica (o amb aigua i sabó si estan brutes).",
-      "en": "Perform hand hygiene with an alcohol-based rub (or with soap and water if they are dirty)."
-     },
-     "why": {
-      "es": "Hay que partir de manos limpias: te las vas a tocar varias veces mientras te colocas el EPI.",
-      "ca": "Cal partir de mans netes: te les tocaràs diverses vegades mentre et poses l'EPI.",
-      "en": "Start with clean hands: you will touch them several times while putting the PPE on."
-     },
-     "mistake": {
-      "es": "Saltarse este paso porque «luego llevaré guantes».",
-      "ca": "Saltar-se aquest pas perquè «després duré guants».",
-      "en": "Skipping it because \"I will wear gloves anyway\"."
-     }
-    },
-    {
-     "id": "bata",
-     "img": "epi-3-bata",
-     "seconds": 0,
-     "title": {
-      "es": "Bata",
-      "ca": "Bata",
-      "en": "Gown"
-     },
-     "text": {
-      "es": "Ponte la bata cubriendo desde el cuello hasta las rodillas y los brazos hasta las muñecas; átala por detrás a la altura del cuello y de la cintura.",
-      "ca": "Posa't la bata cobrint des del coll fins als genolls i els braços fins als canells; lliga-la per darrere a l'alçada del coll i de la cintura.",
-      "en": "Put on the gown covering from neck to knees and arms to the wrists; tie it at the back at neck and waist level."
-     },
-     "why": {
-      "es": "Protege la ropa y la piel del torso y de los brazos de salpicaduras y contacto con el paciente.",
-      "ca": "Protegeix la roba i la pell del tors i dels braços de esquitxades i contacte amb el pacient.",
-      "en": "It protects clothing and the skin of the torso and arms from splashes and contact with the patient."
-     },
-     "mistake": {
-      "es": "Dejar la espalda abierta o atar la bata demasiado floja.",
-      "ca": "Deixar l'esquena oberta o lligar la bata massa fluixa.",
-      "en": "Leaving the back open or tying the gown too loosely."
-     }
-    },
-    {
-     "id": "mascarilla",
-     "img": "epi-4-mascarilla",
-     "seconds": 0,
-     "title": {
-      "es": "Mascarilla o respirador",
-      "ca": "Mascareta o respirador",
-      "en": "Mask or respirator"
-     },
-     "text": {
-      "es": "Colócala cubriendo nariz, boca y barbilla; ajusta la pinza nasal y las cintas o gomas. Si es un respirador, comprueba que sella bien sobre la cara.",
-      "ca": "Col·loca-la cobrint nas, boca i barbeta; ajusta la pinça nasal i les cintes o gomes. Si és un respirador, comprova que segella bé sobre la cara.",
-      "en": "Place it covering nose, mouth and chin; adjust the nose clip and the ties or straps. If it is a respirator, check that it seals well on your face."
-     },
-     "why": {
-      "es": "Solo si sella sobre la cara el aire pasa por el filtro y no por los lados.",
-      "ca": "Només si segella sobre la cara l'aire passa pel filtre i no pels costats.",
-      "en": "Only if it seals on the face does air go through the filter rather than around the edges."
-     },
-     "mistake": {
-      "es": "No ajustar la pinza nasal, llevarla por debajo de la nariz o con vello facial que impide el sellado.",
-      "ca": "No ajustar la pinça nasal, portar-la per sota del nas o amb pèl facial que impedeix el segellat.",
-      "en": "Not shaping the nose clip, wearing it below the nose, or with facial hair that breaks the seal."
-     }
-    },
-    {
-     "id": "gafas",
-     "img": "epi-5-gafas",
-     "seconds": 0,
-     "title": {
-      "es": "Gafas o pantalla facial",
-      "ca": "Ulleres o pantalla facial",
-      "en": "Goggles or face shield"
-     },
-     "text": {
-      "es": "Colócate gafas de montura integral o una pantalla facial sobre los ojos y la cara y ajústalas.",
-      "ca": "Posa't ulleres de muntura integral o una pantalla facial sobre els ulls i la cara i ajusta-les.",
-      "en": "Put on goggles or a face shield over your eyes and face and adjust them."
-     },
-     "why": {
-      "es": "Protegen las mucosas de los ojos de las salpicaduras; se colocan después de la mascarilla para no desajustarla.",
-      "ca": "Protegeixen les mucoses dels ulls de les esquitxades; es posen després de la mascareta per no desajustar-la.",
-      "en": "They protect the mucous membranes of the eyes from splashes; they go on after the mask so as not to displace it."
-     },
-     "mistake": {
-      "es": "Ponerlas antes que la mascarilla o dejarlas flojas y que se empañen o resbalen.",
-      "ca": "Posar-les abans que la mascareta o deixar-les fluixes i que s'entelin o rellisquin.",
-      "en": "Putting them on before the mask or leaving them loose so they fog or slip."
-     }
-    },
-    {
-     "id": "guantes",
-     "img": "epi-6-guantes",
-     "seconds": 0,
-     "title": {
-      "es": "Guantes",
-      "ca": "Guants",
-      "en": "Gloves"
-     },
-     "text": {
-      "es": "Ponte los guantes y estira el puño de cada guante por encima de la manga de la bata.",
-      "ca": "Posa't els guants i estira el puny de cada guant per sobre de la màniga de la bata.",
-      "en": "Put on the gloves and pull the cuff of each glove over the sleeve of the gown."
-     },
-     "why": {
-      "es": "Al cubrir el puño de la bata no queda piel de la muñeca al descubierto.",
-      "ca": "En cobrir el puny de la bata no queda pell del canell al descobert.",
-      "en": "Covering the gown cuff leaves no bare skin at the wrist."
-     },
-     "mistake": {
-      "es": "Dejar la muñeca descubierta o ponerse los guantes antes que la bata.",
-      "ca": "Deixar el canell al descobert o posar-se els guants abans que la bata.",
-      "en": "Leaving the wrist exposed or putting gloves on before the gown."
-     }
-    }
-   ]
-  },
-  {
-   "id": "retirada",
-   "type": "order",
-   "cover": "cover-retirada",
-   "icon": "shield-off",
-   "durationSec": null,
-   "baseSec": 0,
-   "title": {
-    "es": "Retirada del EPI",
-    "ca": "Retirada de l'EPI",
-    "en": "Taking off PPE (doffing)"
-   },
-   "subtitle": {
-    "es": "Lo más contaminado se retira primero y sin tocarlo con las manos desnudas.",
-    "ca": "El més contaminat es retira primer i sense tocar-lo amb les mans nues.",
-    "en": "The most contaminated items come off first, without touching them with bare hands."
-   },
-   "source": {
-    "es": "Secuencia basada en la de los CDC (EE. UU.) para la retirada del equipo de protección individual; la mascarilla o el respirador se retira al final.",
-    "ca": "Seqüència basada en la dels CDC (EUA) per a la retirada de l'equip de protecció individual; la mascareta o el respirador es retira al final.",
-    "en": "Sequence based on the US CDC sequence for removing personal protective equipment; the mask or respirator comes off last."
-   },
-   "note": {
-    "es": "Hay variantes válidas: algunos protocolos añaden higiene de manos tras retirar cada pieza o retiran bata y guantes juntos. Sigue siempre el protocolo de tu centro.",
-    "ca": "Hi ha variants vàlides: alguns protocols afegeixen higiene de mans després de retirar cada peça o retiren bata i guants junts. Segueix sempre el protocol del teu centre.",
-    "en": "There are valid variants: some protocols add hand hygiene after removing each item or remove gown and gloves together. Always follow your centre's protocol."
-   },
-   "finish": {
-    "es": "EPI retirado y manos higienizadas.",
-    "ca": "EPI retirat i mans higienitzades.",
-    "en": "PPE removed and hands cleaned."
-   },
-   "steps": [
-    {
-     "id": "guantes",
-     "img": "epi-r1-guantes",
-     "seconds": 0,
-     "title": {
-      "es": "Guantes",
-      "ca": "Guants",
-      "en": "Gloves"
-     },
-     "text": {
-      "es": "El exterior está contaminado. Con una mano enguantada agarra el exterior del otro guante cerca de la muñeca y quítalo dándole la vuelta. Sostenlo en la mano enguantada; mete los dedos de la mano libre bajo el otro guante por la muñeca y quítalo envolviendo el primero. Deséchalos.",
-      "ca": "L'exterior està contaminat. Amb una mà enguantada agafa l'exterior de l'altre guant a prop del canell i treu-lo girant-lo del revés. Sosté'l a la mà enguantada; fica els dits de la mà lliure sota l'altre guant pel canell i treu-lo embolcallant el primer. Llença'ls.",
-      "en": "The outside is contaminated. With your gloved hand, grasp the outside of the other glove near the wrist and peel it off inside out. Hold it in the gloved hand; slide the fingers of your bare hand under the remaining glove at the wrist and peel it off over the first one. Discard both."
-     },
-     "why": {
-      "es": "Los guantes son lo más contaminado: se quitan primero y sin que su exterior toque la piel.",
-      "ca": "Els guants són el més contaminat: es treuen primer i sense que el seu exterior toqui la pell.",
-      "en": "Gloves are the most contaminated item: they come off first, without their outside touching your skin."
-     },
-     "mistake": {
-      "es": "Tocar el exterior con la mano desnuda o tirarlos de golpe y salpicar.",
-      "ca": "Tocar l'exterior amb la mà nua o estirar-los de cop i esquitxar.",
-      "en": "Touching the outside with a bare hand or snapping them off and spattering."
-     }
-    },
-    {
-     "id": "gafas",
-     "img": "epi-r2-gafas",
-     "seconds": 0,
-     "title": {
-      "es": "Gafas o pantalla facial",
-      "ca": "Ulleres o pantalla facial",
-      "en": "Goggles or face shield"
-     },
-     "text": {
-      "es": "El exterior está contaminado. Sujeta la banda de la cabeza o las patillas y retíralas desde atrás, sin tocar la parte delantera. Deposítalas en el contenedor de reprocesado o de residuos.",
-      "ca": "L'exterior està contaminat. Subjecta la banda del cap o les potes i retira-les des de darrere, sense tocar la part davantera. Posa-les al contenidor de reprocessament o de residus.",
-      "en": "The outside is contaminated. Hold the headband or the arms and lift them off from behind, without touching the front. Place them in the reprocessing or waste container."
-     },
-     "why": {
-      "es": "Su parte delantera ha recibido las salpicaduras; retirarlas desde atrás evita tocarla.",
-      "ca": "La part davantera ha rebut les esquitxades; retirar-les des de darrere evita tocar-la.",
-      "en": "The front has taken the splashes; lifting them from behind avoids touching it."
-     },
-     "mistake": {
-      "es": "Cogerlas por delante o tocarse la cara después.",
-      "ca": "Agafar-les per davant o tocar-se la cara després.",
-      "en": "Holding them by the front or touching your face afterwards."
-     }
-    },
-    {
-     "id": "bata",
-     "img": "epi-r3-bata",
-     "seconds": 0,
-     "title": {
-      "es": "Bata",
-      "ca": "Bata",
-      "en": "Gown"
-     },
-     "text": {
-      "es": "La parte delantera y las mangas están contaminadas. Desata las cintas y aleja la bata del cuello y de los hombros tocando solo el interior; dale la vuelta, dóblala o enróllala hacia dentro formando un paquete y deséchala.",
-      "ca": "La part davantera i les mànigues estan contaminades. Deslliga les cintes i allunya la bata del coll i de les espatlles tocant només l'interior; gira-la del revés, plega-la o enrotlla-la cap a dins formant un paquet i llença-la.",
-      "en": "The front and the sleeves are contaminated. Untie the ties and pull the gown away from the neck and shoulders touching only the inside; turn it inside out, fold or roll it into a bundle and discard it."
-     },
-     "why": {
-      "es": "Al darle la vuelta, el exterior contaminado queda dentro del paquete.",
-      "ca": "En girar-la del revés, l'exterior contaminat queda dins del paquet.",
-      "en": "Turning it inside out keeps the contaminated outside wrapped inside the bundle."
-     },
-     "mistake": {
-      "es": "Sacudir la bata o dejar que roce el uniforme.",
-      "ca": "Sacsejar la bata o deixar que freguï l'uniforme.",
-      "en": "Shaking the gown or letting it brush your uniform."
-     }
-    },
-    {
-     "id": "mascarilla",
-     "img": "epi-r4-mascarilla",
-     "seconds": 0,
-     "title": {
-      "es": "Mascarilla o respirador",
-      "ca": "Mascareta o respirador",
-      "en": "Mask or respirator"
-     },
-     "text": {
-      "es": "La parte delantera está contaminada: no la toques. Agarra primero las cintas o gomas inferiores y luego las superiores y retírala sin tocar el frente; deséchala. En los protocolos habituales se hace fuera de la zona de aislamiento.",
-      "ca": "La part davantera està contaminada: no la toquis. Agafa primer les cintes o gomes inferiors i després les superiors i retira-la sense tocar el frontal; llença-la. En els protocols habituals es fa fora de la zona d'aïllament.",
-      "en": "The front is contaminated: do not touch it. Grasp the bottom ties or straps first, then the top ones, and remove it without touching the front; discard it. In usual protocols this is done outside the isolation area."
-     },
-     "why": {
-      "es": "Se retira la última porque protege tus vías respiratorias mientras te quitas lo demás.",
-      "ca": "Es retira l'última perquè protegeix les teves vies respiratòries mentre et treus la resta.",
-      "en": "It comes off last because it protects your airway while you remove everything else."
-     },
-     "mistake": {
-      "es": "Bajarla al cuello «para descansar» o tocar el frente.",
-      "ca": "Baixar-la al coll «per descansar» o tocar el frontal.",
-      "en": "Pulling it down to the neck \"for a break\" or touching the front."
-     }
-    },
-    {
-     "id": "manos",
-     "img": "friccion-1-dosis",
-     "seconds": 0,
-     "title": {
-      "es": "Higiene de manos",
-      "ca": "Higiene de mans",
-      "en": "Hand hygiene"
-     },
-     "text": {
-      "es": "Realiza higiene de manos inmediatamente después de retirar todo el EPI.",
-      "ca": "Fes higiene de mans immediatament després de retirar tot l'EPI.",
-      "en": "Perform hand hygiene immediately after removing all the PPE."
-     },
-     "why": {
-      "es": "Las manos pueden haberse contaminado durante la retirada, aunque hayas llevado guantes.",
-      "ca": "Les mans poden haver-se contaminat durant la retirada, encara que hagis portat guants.",
-      "en": "Your hands may have been contaminated during removal, even if you wore gloves."
-     },
-     "mistake": {
-      "es": "Salir sin hacerla, o hacerla antes de retirar la mascarilla.",
-      "ca": "Sortir sense fer-la, o fer-la abans de retirar la mascareta.",
-      "en": "Leaving without doing it, or doing it before removing the mask."
-     }
-    }
-   ]
-  },
-  {
-   "id": "momentos",
-   "type": "match",
-   "cover": "cover-momentos",
-   "icon": "check",
-   "durationSec": null,
-   "baseSec": 0,
-   "title": {
-    "es": "Los 5 momentos de la higiene de manos",
-    "ca": "Els 5 moments de la higiene de mans",
-    "en": "The 5 moments for hand hygiene"
-   },
-   "subtitle": {
-    "es": "¿Cuándo hay que hacer higiene de manos? Empareja cada situación con su momento.",
-    "ca": "Quan cal fer higiene de mans? Relaciona cada situació amb el seu moment.",
-    "en": "When must you clean your hands? Match each situation with its moment."
-   },
-   "source": {
-    "es": "Adaptado de «Sus 5 momentos para la higiene de las manos» (OMS, 2009).",
-    "ca": "Adaptat de «Els vostres 5 moments per a la higiene de les mans» (OMS, 2009).",
-    "en": "Adapted from \"Your 5 Moments for Hand Hygiene\" (WHO, 2009)."
-   },
-   "note": {
-    "es": "Los 5 momentos se refieren a la zona del paciente (el paciente y su entorno inmediato) y a la zona de atención sanitaria.",
-    "ca": "Els 5 moments fan referència a la zona del pacient (el pacient i el seu entorn immediat) i a la zona d'atenció sanitària.",
-    "en": "The 5 moments refer to the patient zone (the patient and their immediate surroundings) and the health-care area."
-   },
-   "finish": {
-    "es": "",
-    "ca": "",
-    "en": ""
-   },
-   "moments": [
-    {
-     "id": 1,
-     "img": "momento-1",
-     "title": {
-      "es": "Antes del contacto con el paciente",
-      "ca": "Abans del contacte amb el pacient",
-      "en": "Before touching a patient"
-     },
-     "short": {
-      "es": "Antes del contacto",
-      "ca": "Abans del contacte",
-      "en": "Before contact"
-     },
-     "text": {
-      "es": "Al acercarte al paciente, antes de tocarlo.",
-      "ca": "En apropar-te al pacient, abans de tocar-lo.",
-      "en": "When approaching the patient, before touching them."
-     },
-     "why": {
-      "es": "Protege al paciente de los gérmenes que llevas en las manos.",
-      "ca": "Protegeix el pacient dels gèrmens que portes a les mans.",
-      "en": "It protects the patient from the germs on your hands."
-     },
-     "examples": {
-      "es": [
-       "Estrechar la mano",
-       "Ayudar a moverse o levantarse",
-       "Tomar el pulso o la tensión",
-       "Auscultar el tórax"
+      "id": "lavado",
+      "type": "order",
+      "cover": "cover-lavado",
+      "icon": "droplet",
+      "durationSec": [
+        40,
+        60
       ],
-      "ca": [
-       "Encaixar la mà",
-       "Ajudar a moure's o aixecar-se",
-       "Prendre el pols o la tensió",
-       "Auscultar el tòrax"
-      ],
-      "en": [
-       "Shaking hands",
-       "Helping the patient move or stand",
-       "Taking the pulse or blood pressure",
-       "Chest auscultation"
+      "baseSec": 50,
+      "title": {
+        "es": "Lavado de manos con agua y jabón",
+        "ca": "Rentat de mans amb aigua i sabó",
+        "en": "Handwashing with soap and water"
+      },
+      "subtitle": {
+        "es": "Cuando las manos están visiblemente sucias o contaminadas con fluidos corporales.",
+        "ca": "Quan les mans estan visiblement brutes o contaminades amb fluids corporals.",
+        "en": "When hands are visibly dirty or soiled with body fluids."
+      },
+      "source": {
+        "es": "Adaptado de «Cómo lavarse las manos» (OMS, Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009).",
+        "ca": "Adaptat de «Com rentar-se les mans» (OMS, Directrius de l'OMS sobre higiene de mans en l'atenció sanitària, 2009).",
+        "en": "Adapted from \"How to Handwash?\" (WHO Guidelines on Hand Hygiene in Health Care, 2009)."
+      },
+      "note": {
+        "es": "Antes de empezar: retira reloj, pulseras y anillos, mantén las uñas cortas y sin uñas artificiales, y comprueba que hay jabón y toallas de un solo uso.",
+        "ca": "Abans de començar: retira rellotge, polseres i anells, mantén les ungles curtes i sense ungles artificials, i comprova que hi ha sabó i tovalloles d'un sol ús.",
+        "en": "Before you start: remove your watch, bracelets and rings, keep nails short and free of artificial nails, and check that soap and single-use towels are available."
+      },
+      "finish": {
+        "es": "Tus manos son seguras.",
+        "ca": "Les teves mans són segures.",
+        "en": "Your hands are safe."
+      },
+      "steps": [
+        {
+          "id": "mojar",
+          "img": "lavado-1-mojar",
+          "seconds": 3,
+          "title": {
+            "es": "Mójate las manos con agua",
+            "ca": "Mulla't les mans amb aigua",
+            "en": "Wet your hands with water"
+          },
+          "text": {
+            "es": "Abre el grifo y mójate las manos y las muñecas con agua.",
+            "ca": "Obre l'aixeta i mulla't les mans i els canells amb aigua.",
+            "en": "Turn on the tap and wet your hands and wrists with water."
+          },
+          "why": {
+            "es": "Con la piel mojada el jabón se reparte mejor y forma espuma, que arrastra la suciedad y los microorganismos.",
+            "ca": "Amb la pell mullada el sabó es reparteix millor i fa escuma, que arrossega la brutícia i els microorganismes.",
+            "en": "On wet skin the soap spreads better and lathers, which carries away dirt and microorganisms."
+          },
+          "mistake": {
+            "es": "Usar agua muy caliente: reseca e irrita la piel y no elimina más gérmenes.",
+            "ca": "Fer servir aigua molt calenta: resseca i irrita la pell i no elimina més gèrmens.",
+            "en": "Using very hot water: it dries and irritates the skin and does not remove more germs."
+          }
+        },
+        {
+          "id": "jabon",
+          "img": "lavado-2-jabon",
+          "seconds": 3,
+          "title": {
+            "es": "Aplica jabón en toda la superficie de las manos",
+            "ca": "Aplica sabó a tota la superfície de les mans",
+            "en": "Apply enough soap to cover all hand surfaces"
+          },
+          "text": {
+            "es": "Aplica jabón suficiente para cubrir toda la superficie de las manos.",
+            "ca": "Aplica prou sabó per cobrir tota la superfície de les mans.",
+            "en": "Apply enough soap to cover all the surfaces of your hands."
+          },
+          "why": {
+            "es": "El jabón despega la suciedad y los microorganismos de la piel; hace falta cantidad suficiente para llegar a todas las zonas.",
+            "ca": "El sabó despenja la brutícia i els microorganismes de la pell; cal prou quantitat per arribar a totes les zones.",
+            "en": "Soap lifts dirt and microorganisms off the skin; you need enough to reach every area."
+          },
+          "mistake": {
+            "es": "Poner poco jabón y dejar zonas sin cubrir.",
+            "ca": "Posar poc sabó i deixar zones sense cobrir.",
+            "en": "Using too little soap and leaving areas uncovered."
+          }
+        },
+        {
+          "id": "palmas",
+          "img": "lavado-3-palmas",
+          "seconds": 5,
+          "title": {
+            "es": "Frota las palmas entre sí",
+            "ca": "Frega els palmells l'un contra l'altre",
+            "en": "Rub your palms together"
+          },
+          "text": {
+            "es": "Frota las palmas de las manos entre sí.",
+            "ca": "Frega els palmells de les mans l'un contra l'altre.",
+            "en": "Rub your palms together."
+          },
+          "why": {
+            "es": "La fricción mecánica es la que, junto con el jabón, arrastra la suciedad de la piel.",
+            "ca": "La fricció mecànica és la que, juntament amb el sabó, arrossega la brutícia de la pell.",
+            "en": "The mechanical friction, together with the soap, is what removes dirt from the skin."
+          },
+          "mistake": {
+            "es": "Hacerlo demasiado rápido y sin fricción real.",
+            "ca": "Fer-ho massa de pressa i sense fricció real.",
+            "en": "Doing it too quickly, without real friction."
+          }
+        },
+        {
+          "id": "dorso",
+          "img": "lavado-4-dorso",
+          "seconds": 6,
+          "title": {
+            "es": "Palma derecha sobre el dorso izquierdo, dedos entrelazados, y viceversa",
+            "ca": "Palmell dret sobre el dors de l'esquerra, dits entrellaçats, i viceversa",
+            "en": "Right palm over left back of hand, fingers interlaced, and vice versa"
+          },
+          "text": {
+            "es": "Frota la palma de la mano derecha sobre el dorso de la izquierda con los dedos entrelazados, y después al revés.",
+            "ca": "Frega el palmell de la mà dreta sobre el dors de l'esquerra amb els dits entrellaçats, i després al revés.",
+            "en": "Rub the right palm over the back of the left hand with the fingers interlaced, then swap hands."
+          },
+          "why": {
+            "es": "El dorso de la mano y los espacios entre los dedos son zonas que se olvidan con facilidad.",
+            "ca": "El dors de la mà i els espais entre els dits són zones que s'obliden fàcilment.",
+            "en": "The back of the hand and the spaces between the fingers are easily forgotten."
+          },
+          "mistake": {
+            "es": "Limpiar solo una mano o no repetir con la otra.",
+            "ca": "Netejar només una mà o no repetir amb l'altra.",
+            "en": "Cleaning only one hand or not repeating with the other."
+          }
+        },
+        {
+          "id": "entrelazadas",
+          "img": "lavado-5-entrelazadas",
+          "seconds": 5,
+          "title": {
+            "es": "Palma contra palma con los dedos entrelazados",
+            "ca": "Palmell contra palmell amb els dits entrellaçats",
+            "en": "Palm to palm with fingers interlaced"
+          },
+          "text": {
+            "es": "Frota las palmas entre sí con los dedos entrelazados.",
+            "ca": "Frega els palmells l'un contra l'altre amb els dits entrellaçats.",
+            "en": "Rub your palms together with the fingers interlaced."
+          },
+          "why": {
+            "es": "Limpia los espacios entre los dedos (zona interdigital).",
+            "ca": "Neteja els espais entre els dits (zona interdigital).",
+            "en": "It cleans the spaces between the fingers (interdigital area)."
+          },
+          "mistake": {
+            "es": "No separar bien los dedos y dejar los pliegues sin frotar.",
+            "ca": "No separar bé els dits i deixar els plecs sense fregar.",
+            "en": "Not spreading the fingers enough and leaving the folds unrubbed."
+          }
+        },
+        {
+          "id": "dedos",
+          "img": "lavado-6-dedos",
+          "seconds": 5,
+          "title": {
+            "es": "Dorso de los dedos contra la palma contraria",
+            "ca": "Dors dels dits contra el palmell oposat",
+            "en": "Backs of fingers against the opposite palm"
+          },
+          "text": {
+            "es": "Frota el dorso de los dedos de una mano con la palma de la mano contraria, agarrándote los dedos.",
+            "ca": "Frega el dors dels dits d'una mà amb el palmell de la mà contrària, agafant-te els dits.",
+            "en": "Rub the backs of the fingers of one hand against the palm of the other, with the fingers clasped."
+          },
+          "why": {
+            "es": "Alcanza la zona de los nudillos y las uñas, donde se acumulan microorganismos.",
+            "ca": "Arriba a la zona dels artells i les ungles, on s'acumulen microorganismes.",
+            "en": "It reaches the knuckles and nails, where microorganisms build up."
+          },
+          "mistake": {
+            "es": "Olvidar esta zona o frotar solo con las yemas.",
+            "ca": "Oblidar aquesta zona o fregar només amb les puntes.",
+            "en": "Skipping this area or rubbing only with the fingertips."
+          }
+        },
+        {
+          "id": "pulgar",
+          "img": "lavado-7-pulgar",
+          "seconds": 6,
+          "title": {
+            "es": "Frota cada pulgar con un movimiento de rotación",
+            "ca": "Frega cada polze amb un moviment de rotació",
+            "en": "Rub each thumb with a rotating movement"
+          },
+          "text": {
+            "es": "Rodea el pulgar izquierdo con la palma de la mano derecha y frótalo con un movimiento de rotación; repite con el otro pulgar.",
+            "ca": "Envolta el polze esquerre amb el palmell de la mà dreta i frega'l amb un moviment de rotació; repeteix amb l'altre polze.",
+            "en": "Clasp the left thumb in your right palm and rub it with a rotating movement; repeat with the other thumb."
+          },
+          "why": {
+            "es": "El pulgar es una de las zonas que más se omiten al lavarse las manos.",
+            "ca": "El polze és una de les zones que més s'ometen en rentar-se les mans.",
+            "en": "The thumb is one of the areas most often missed when washing hands."
+          },
+          "mistake": {
+            "es": "No lavar los pulgares.",
+            "ca": "No rentar els polzes.",
+            "en": "Not washing the thumbs."
+          }
+        },
+        {
+          "id": "yemas",
+          "img": "lavado-8-yemas",
+          "seconds": 6,
+          "title": {
+            "es": "Yemas de los dedos contra la palma, con rotación",
+            "ca": "Puntes dels dits contra el palmell, amb rotació",
+            "en": "Fingertips against the opposite palm, rotating"
+          },
+          "text": {
+            "es": "Frota las yemas de los dedos de la mano derecha contra la palma de la izquierda con un movimiento de rotación, y viceversa.",
+            "ca": "Frega les puntes dels dits de la mà dreta contra el palmell de l'esquerra amb un moviment de rotació, i viceversa.",
+            "en": "Rub the fingertips of the right hand against the left palm with a rotating movement, and vice versa."
+          },
+          "why": {
+            "es": "Las yemas y el borde de las uñas acumulan microorganismos y también se olvidan a menudo.",
+            "ca": "Les puntes i la vora de les ungles acumulen microorganismes i també s'obliden sovint.",
+            "en": "Fingertips and nail edges collect microorganisms and are also often missed."
+          },
+          "mistake": {
+            "es": "Llevar uñas largas o artificiales, que dificultan la limpieza.",
+            "ca": "Portar ungles llargues o artificials, que dificulten la neteja.",
+            "en": "Wearing long or artificial nails, which make cleaning harder."
+          }
+        },
+        {
+          "id": "aclarar",
+          "img": "lavado-9-aclarar",
+          "seconds": 4,
+          "title": {
+            "es": "Enjuágate las manos con agua",
+            "ca": "Esbandeix-te les mans amb aigua",
+            "en": "Rinse your hands with water"
+          },
+          "text": {
+            "es": "Enjuaga las manos con agua abundante hasta eliminar todo el jabón.",
+            "ca": "Esbandeix les mans amb aigua abundant fins eliminar tot el sabó.",
+            "en": "Rinse your hands with plenty of water until all the soap is gone."
+          },
+          "why": {
+            "es": "Elimina el jabón y la suciedad arrastrada; los restos de jabón pueden irritar la piel.",
+            "ca": "Elimina el sabó i la brutícia arrossegada; les restes de sabó poden irritar la pell.",
+            "en": "It removes the soap and the dirt it lifted; soap residue can irritate the skin."
+          },
+          "mistake": {
+            "es": "Dejar restos de jabón.",
+            "ca": "Deixar restes de sabó.",
+            "en": "Leaving soap residue."
+          }
+        },
+        {
+          "id": "secar",
+          "img": "lavado-10-secar",
+          "seconds": 5,
+          "title": {
+            "es": "Sécate con una toalla de un solo uso",
+            "ca": "Eixuga't amb una tovallola d'un sol ús",
+            "en": "Dry with a single-use towel"
+          },
+          "text": {
+            "es": "Sécate las manos por completo con una toalla de un solo uso.",
+            "ca": "Eixuga't les mans completament amb una tovallola d'un sol ús.",
+            "en": "Dry your hands thoroughly with a single-use towel."
+          },
+          "why": {
+            "es": "Las manos húmedas transmiten y recogen más microorganismos, y secarlas bien previene las grietas.",
+            "ca": "Les mans humides transmeten i recullen més microorganismes, i eixugar-les bé prevé les esquerdes.",
+            "en": "Wet hands pass on and pick up more microorganisms, and drying them well prevents cracking."
+          },
+          "mistake": {
+            "es": "Compartir una toalla de tela o secarse con la ropa.",
+            "ca": "Compartir una tovallola de tela o eixugar-se amb la roba.",
+            "en": "Sharing a cloth towel or drying hands on clothes."
+          }
+        },
+        {
+          "id": "grifo",
+          "img": "lavado-11-grifo",
+          "seconds": 2,
+          "title": {
+            "es": "Cierra el grifo con la toalla",
+            "ca": "Tanca l'aixeta amb la tovallola",
+            "en": "Turn off the tap using the towel"
+          },
+          "text": {
+            "es": "Usa la misma toalla para cerrar el grifo y deséchala.",
+            "ca": "Fes servir la mateixa tovallola per tancar l'aixeta i llença-la.",
+            "en": "Use the same towel to turn off the tap and then throw it away."
+          },
+          "why": {
+            "es": "Evita volver a contaminar las manos limpias al tocar el grifo.",
+            "ca": "Evita tornar a contaminar les mans netes en tocar l'aixeta.",
+            "en": "It stops you re-contaminating clean hands by touching the tap."
+          },
+          "mistake": {
+            "es": "Cerrar el grifo con la mano ya limpia.",
+            "ca": "Tancar l'aixeta amb la mà ja neta.",
+            "en": "Closing the tap with your clean hand."
+          }
+        }
       ]
-     }
     },
     {
-     "id": 2,
-     "img": "momento-2",
-     "title": {
-      "es": "Antes de una tarea limpia o aséptica",
-      "ca": "Abans d'una tasca neta o asèptica",
-      "en": "Before a clean or aseptic procedure"
-     },
-     "short": {
-      "es": "Antes de tarea aséptica",
-      "ca": "Abans de tasca asèptica",
-      "en": "Before aseptic task"
-     },
-     "text": {
-      "es": "Justo antes de una técnica que puede introducir gérmenes en el cuerpo del paciente.",
-      "ca": "Just abans d'una tècnica que pot introduir gèrmens al cos del pacient.",
-      "en": "Immediately before a procedure that could carry germs into the patient's body."
-     },
-     "why": {
-      "es": "Evita que los gérmenes entren por una herida, una mucosa o un dispositivo y causen una infección.",
-      "ca": "Evita que els gèrmens entrin per una ferida, una mucosa o un dispositiu i causin una infecció.",
-      "en": "It prevents germs from entering through a wound, mucosa or device and causing infection."
-     },
-     "examples": {
-      "es": [
-       "Curar una herida",
-       "Aspirar secreciones",
-       "Colocar una sonda o un catéter",
-       "Preparar una inyección o medicación"
+      "id": "friccion",
+      "type": "order",
+      "cover": "cover-friccion",
+      "icon": "hand",
+      "durationSec": [
+        20,
+        30
       ],
-      "ca": [
-       "Curar una ferida",
-       "Aspirar secrecions",
-       "Col·locar una sonda o un catèter",
-       "Preparar una injecció o medicació"
-      ],
-      "en": [
-       "Dressing a wound",
-       "Suctioning secretions",
-       "Inserting a tube or catheter",
-       "Preparing an injection or medication"
+      "baseSec": 25,
+      "title": {
+        "es": "Higiene de manos con solución hidroalcohólica",
+        "ca": "Higiene de mans amb solució hidroalcohòlica",
+        "en": "Hand rub with an alcohol-based solution"
+      },
+      "subtitle": {
+        "es": "Cuando las manos no están visiblemente sucias: es la opción preferente en la atención sanitaria.",
+        "ca": "Quan les mans no estan visiblement brutes: és l'opció preferent en l'atenció sanitària.",
+        "en": "When hands are not visibly dirty: the preferred option in health care."
+      },
+      "source": {
+        "es": "Adaptado de «Cómo desinfectarse las manos» (OMS, Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009).",
+        "ca": "Adaptat de «Com desinfectar-se les mans» (OMS, Directrius de l'OMS sobre higiene de mans en l'atenció sanitària, 2009).",
+        "en": "Adapted from \"How to Handrub?\" (WHO Guidelines on Hand Hygiene in Health Care, 2009)."
+      },
+      "note": {
+        "es": "Si las manos están visiblemente sucias o manchadas de sangre o fluidos, lávalas con agua y jabón. No enjuagues ni seques con toalla: el producto debe secarse al aire.",
+        "ca": "Si les mans estan visiblement brutes o amb taques de sang o fluids, renta-les amb aigua i sabó. No esbandeixis ni eixuguis amb tovallola: el producte s'ha de deixar assecar a l'aire.",
+        "en": "If hands are visibly dirty or soiled with blood or fluids, wash them with soap and water. Do not rinse or dry with a towel: let the product air-dry."
+      },
+      "finish": {
+        "es": "Una vez secas, tus manos son seguras.",
+        "ca": "Un cop seques, les teves mans són segures.",
+        "en": "Once dry, your hands are safe."
+      },
+      "steps": [
+        {
+          "id": "dosis",
+          "img": "friccion-1-dosis",
+          "seconds": 2,
+          "title": {
+            "es": "Deposita una dosis de producto en la palma",
+            "ca": "Posa una dosi de producte al palmell",
+            "en": "Put a dose of product in your palm"
+          },
+          "text": {
+            "es": "Deposita en la palma de la mano una dosis de solución suficiente para cubrir toda la superficie de ambas manos (sigue la dosis del fabricante).",
+            "ca": "Posa al palmell de la mà una dosi de solució suficient per cobrir tota la superfície de les dues mans (segueix la dosi del fabricant).",
+            "en": "Put into the palm of your hand enough solution to cover all surfaces of both hands (follow the manufacturer's dose)."
+          },
+          "why": {
+            "es": "Con poca cantidad no se cubren todas las zonas ni se mantiene húmeda la piel el tiempo necesario.",
+            "ca": "Amb poca quantitat no es cobreixen totes les zones ni es manté humida la pell el temps necessari.",
+            "en": "With too little product not every area is covered and the skin does not stay wet long enough."
+          },
+          "mistake": {
+            "es": "Usar muy poca cantidad y que se seque antes de tiempo.",
+            "ca": "Fer servir molt poca quantitat i que s'assequi abans d'hora.",
+            "en": "Using too little, so it dries too soon."
+          }
+        },
+        {
+          "id": "palmas",
+          "img": "lavado-3-palmas",
+          "seconds": 3,
+          "title": {
+            "es": "Frota las palmas entre sí",
+            "ca": "Frega els palmells l'un contra l'altre",
+            "en": "Rub your palms together"
+          },
+          "text": {
+            "es": "Frota las palmas de las manos entre sí.",
+            "ca": "Frega els palmells de les mans l'un contra l'altre.",
+            "en": "Rub your palms together."
+          },
+          "why": {
+            "es": "Reparte el producto y empieza la fricción.",
+            "ca": "Reparteix el producte i comença la fricció.",
+            "en": "It spreads the product and starts the friction."
+          },
+          "mistake": {
+            "es": "Frotar sin repartir el producto por toda la mano.",
+            "ca": "Fregar sense repartir el producte per tota la mà.",
+            "en": "Rubbing without spreading the product over the whole hand."
+          }
+        },
+        {
+          "id": "dorso",
+          "img": "lavado-4-dorso",
+          "seconds": 4,
+          "title": {
+            "es": "Palma derecha sobre el dorso izquierdo, dedos entrelazados, y viceversa",
+            "ca": "Palmell dret sobre el dors de l'esquerra, dits entrellaçats, i viceversa",
+            "en": "Right palm over left back of hand, fingers interlaced, and vice versa"
+          },
+          "text": {
+            "es": "Frota la palma de la mano derecha sobre el dorso de la izquierda con los dedos entrelazados, y después al revés.",
+            "ca": "Frega el palmell de la mà dreta sobre el dors de l'esquerra amb els dits entrellaçats, i després al revés.",
+            "en": "Rub the right palm over the back of the left hand with the fingers interlaced, then swap hands."
+          },
+          "why": {
+            "es": "El dorso de la mano y los espacios entre los dedos se olvidan con facilidad.",
+            "ca": "El dors de la mà i els espais entre els dits s'obliden fàcilment.",
+            "en": "The back of the hand and the spaces between the fingers are easily forgotten."
+          },
+          "mistake": {
+            "es": "Tratar solo una mano.",
+            "ca": "Tractar només una mà.",
+            "en": "Treating only one hand."
+          }
+        },
+        {
+          "id": "entrelazadas",
+          "img": "lavado-5-entrelazadas",
+          "seconds": 3,
+          "title": {
+            "es": "Palma contra palma con los dedos entrelazados",
+            "ca": "Palmell contra palmell amb els dits entrellaçats",
+            "en": "Palm to palm with fingers interlaced"
+          },
+          "text": {
+            "es": "Frota las palmas entre sí con los dedos entrelazados.",
+            "ca": "Frega els palmells l'un contra l'altre amb els dits entrellaçats.",
+            "en": "Rub your palms together with the fingers interlaced."
+          },
+          "why": {
+            "es": "Lleva el producto a los espacios interdigitales.",
+            "ca": "Porta el producte als espais interdigitals.",
+            "en": "It takes the product into the interdigital spaces."
+          },
+          "mistake": {
+            "es": "Dejar los pliegues entre los dedos sin cubrir.",
+            "ca": "Deixar els plecs entre els dits sense cobrir.",
+            "en": "Leaving the folds between the fingers uncovered."
+          }
+        },
+        {
+          "id": "dedos",
+          "img": "lavado-6-dedos",
+          "seconds": 3,
+          "title": {
+            "es": "Dorso de los dedos contra la palma contraria",
+            "ca": "Dors dels dits contra el palmell oposat",
+            "en": "Backs of fingers against the opposite palm"
+          },
+          "text": {
+            "es": "Frota el dorso de los dedos de una mano con la palma de la mano contraria, agarrándote los dedos.",
+            "ca": "Frega el dors dels dits d'una mà amb el palmell de la mà contrària, agafant-te els dits.",
+            "en": "Rub the backs of the fingers of one hand against the palm of the other, with the fingers clasped."
+          },
+          "why": {
+            "es": "Cubre los nudillos y el dorso de los dedos.",
+            "ca": "Cobreix els artells i el dors dels dits.",
+            "en": "It covers the knuckles and the backs of the fingers."
+          },
+          "mistake": {
+            "es": "Olvidar los nudillos.",
+            "ca": "Oblidar els artells.",
+            "en": "Skipping the knuckles."
+          }
+        },
+        {
+          "id": "pulgar",
+          "img": "lavado-7-pulgar",
+          "seconds": 4,
+          "title": {
+            "es": "Frota cada pulgar con un movimiento de rotación",
+            "ca": "Frega cada polze amb un moviment de rotació",
+            "en": "Rub each thumb with a rotating movement"
+          },
+          "text": {
+            "es": "Rodea el pulgar izquierdo con la palma de la mano derecha y frótalo con un movimiento de rotación; repite con el otro pulgar.",
+            "ca": "Envolta el polze esquerre amb el palmell de la mà dreta i frega'l amb un moviment de rotació; repeteix amb l'altre polze.",
+            "en": "Clasp the left thumb in your right palm and rub it with a rotating movement; repeat with the other thumb."
+          },
+          "why": {
+            "es": "Los pulgares son una de las zonas que más se omiten.",
+            "ca": "Els polzes són una de les zones que més s'ometen.",
+            "en": "Thumbs are one of the most commonly missed areas."
+          },
+          "mistake": {
+            "es": "No frotar los pulgares.",
+            "ca": "No fregar els polzes.",
+            "en": "Not rubbing the thumbs."
+          }
+        },
+        {
+          "id": "yemas",
+          "img": "lavado-8-yemas",
+          "seconds": 4,
+          "title": {
+            "es": "Yemas de los dedos contra la palma, con rotación",
+            "ca": "Puntes dels dits contra el palmell, amb rotació",
+            "en": "Fingertips against the opposite palm, rotating"
+          },
+          "text": {
+            "es": "Frota las yemas de los dedos de la mano derecha contra la palma de la izquierda con un movimiento de rotación, y viceversa.",
+            "ca": "Frega les puntes dels dits de la mà dreta contra el palmell de l'esquerra amb un moviment de rotació, i viceversa.",
+            "en": "Rub the fingertips of the right hand against the left palm with a rotating movement, and vice versa."
+          },
+          "why": {
+            "es": "Las yemas y el borde de las uñas también deben quedar cubiertos.",
+            "ca": "Les puntes i la vora de les ungles també han de quedar cobertes.",
+            "en": "Fingertips and nail edges must also be covered."
+          },
+          "mistake": {
+            "es": "Olvidar las yemas.",
+            "ca": "Oblidar les puntes dels dits.",
+            "en": "Forgetting the fingertips."
+          }
+        },
+        {
+          "id": "secas",
+          "img": "friccion-8-secas",
+          "seconds": 2,
+          "title": {
+            "es": "Espera a que se sequen: tus manos son seguras",
+            "ca": "Espera que s'assequin: les teves mans són segures",
+            "en": "Wait until they are dry: your hands are safe"
+          },
+          "text": {
+            "es": "Deja que las manos se sequen al aire; una vez secas, tus manos son seguras.",
+            "ca": "Deixa que les mans s'assequin a l'aire; un cop seques, les teves mans són segures.",
+            "en": "Let your hands air-dry; once dry, your hands are safe."
+          },
+          "why": {
+            "es": "El producto necesita tiempo de contacto para actuar: por eso la fricción dura 20–30 segundos.",
+            "ca": "El producte necessita temps de contacte per actuar: per això la fricció dura 20–30 segons.",
+            "en": "The product needs contact time to work, which is why the rub lasts 20–30 seconds."
+          },
+          "mistake": {
+            "es": "Secarse con una toalla o con la ropa, o tocar algo antes de que se seque.",
+            "ca": "Eixugar-se amb una tovallola o amb la roba, o tocar alguna cosa abans que s'assequi.",
+            "en": "Drying with a towel or clothes, or touching something before it is dry."
+          }
+        }
       ]
-     }
     },
     {
-     "id": 3,
-     "img": "momento-3",
-     "title": {
-      "es": "Después del riesgo de exposición a fluidos corporales",
-      "ca": "Després del risc d'exposició a fluids corporals",
-      "en": "After body fluid exposure risk"
-     },
-     "short": {
-      "es": "Después de fluidos",
-      "ca": "Després de fluids",
-      "en": "After body fluids"
-     },
-     "text": {
-      "es": "Después de haber tocado, o tener riesgo de haber tocado, sangre, secreciones o excreciones; también tras quitarte los guantes.",
-      "ca": "Després d'haver tocat, o tenir risc d'haver tocat, sang, secrecions o excrecions; també en treure't els guants.",
-      "en": "After touching, or risking contact with, blood, secretions or excretions; also after removing gloves."
-     },
-     "why": {
-      "es": "Te protege a ti y protege el entorno sanitario de los gérmenes del paciente.",
-      "ca": "Et protegeix a tu i protegeix l'entorn sanitari dels gèrmens del pacient.",
-      "en": "It protects you and the health-care environment from the patient's germs."
-     },
-     "examples": {
-      "es": [
-       "Extraer una muestra de sangre",
-       "Vaciar una bolsa de orina o de ostomía",
-       "Retirar una cuña o limpiar un vómito",
-       "Aspirar secreciones"
-      ],
-      "ca": [
-       "Extreure una mostra de sang",
-       "Buidar una bossa d'orina o d'ostomia",
-       "Retirar una botzina o netejar un vòmit",
-       "Aspirar secrecions"
-      ],
-      "en": [
-       "Drawing a blood sample",
-       "Emptying a urine or ostomy bag",
-       "Removing a bedpan or cleaning up vomit",
-       "Suctioning secretions"
+      "id": "colocacion",
+      "type": "order",
+      "cover": "cover-colocacion",
+      "icon": "shield",
+      "durationSec": null,
+      "baseSec": 0,
+      "title": {
+        "es": "Colocación del EPI",
+        "ca": "Col·locació de l'EPI",
+        "en": "Putting on PPE (donning)"
+      },
+      "subtitle": {
+        "es": "Calzas, bata, gorro, mascarilla o respirador, protección ocular y guantes, en este orden.",
+        "ca": "Cobrecalçat, bata, gorra, mascareta o respirador, protecció ocular i guants, en aquest ordre.",
+        "en": "Shoe covers, gown, cap, mask or respirator, eye protection and gloves, in this order."
+      },
+      "source": {
+        "es": "Secuencia basada en la de los CDC (EE. UU.) para la colocación del equipo de protección individual y coherente con las recomendaciones de la OMS.",
+        "ca": "Seqüència basada en la dels CDC (EUA) per a la col·locació de l'equip de protecció individual i coherent amb les recomanacions de l'OMS.",
+        "en": "Sequence based on the US CDC sequence for putting on personal protective equipment and consistent with WHO recommendations."
+      },
+      "note": {
+        "es": "Los protocolos varían según el nivel de riesgo y el centro: adapta esta secuencia al protocolo de tu centro. El gorro y las calzas solo forman parte de algunos protocolos (aislamiento reforzado, quirófano…) y su posición exacta varía entre centros.",
+        "ca": "Els protocols varien segons el nivell de risc i el centre: adapta aquesta seqüència al protocol del teu centre. La gorra i el cobrecalçat només formen part d'alguns protocols (aïllament reforçat, quiròfan…) i la seva posició exacta varia entre centres.",
+        "en": "Protocols vary with the level of risk and the centre: adapt this sequence to your own centre's protocol. The cap and shoe covers are only part of some protocols (enhanced isolation, operating theatre…) and their exact position varies between centres."
+      },
+      "finish": {
+        "es": "EPI colocado: comprueba que no queda piel al descubierto.",
+        "ca": "EPI col·locat: comprova que no queda pell al descobert.",
+        "en": "PPE on: check that no skin is left exposed."
+      },
+      "steps": [
+        {
+          "id": "preparar",
+          "img": "epi-1-preparar",
+          "seconds": 0,
+          "title": {
+            "es": "Prepárate: retira objetos personales y recoge el pelo",
+            "ca": "Prepara't: retira objectes personals i recull-te els cabells",
+            "en": "Get ready: remove personal items and tie your hair back"
+          },
+          "text": {
+            "es": "Retira anillos, reloj, pulseras y otros objetos personales, recógete el pelo y comprueba que tienes todo el EPI a mano, de tu talla y en buen estado.",
+            "ca": "Retira anells, rellotge, polseres i altres objectes personals, recull-te els cabells i comprova que tens tot l'EPI a mà, de la teva talla i en bon estat.",
+            "en": "Remove rings, watch, bracelets and other personal items, tie your hair back and check that all the PPE is at hand, in your size and in good condition."
+          },
+          "why": {
+            "es": "Los objetos personales dificultan la higiene de manos y pueden romper los guantes; el pelo suelto se contamina y obliga a tocarte la cara.",
+            "ca": "Els objectes personals dificulten la higiene de mans i poden trencar els guants; els cabells solts es contaminen i obliguen a tocar-se la cara.",
+            "en": "Personal items hamper hand hygiene and can tear gloves; loose hair gets contaminated and makes you touch your face."
+          },
+          "mistake": {
+            "es": "Empezar sin comprobar el material y tener que salir a buscar algo con el EPI ya puesto.",
+            "ca": "Començar sense comprovar el material i haver de sortir a buscar alguna cosa amb l'EPI ja posat.",
+            "en": "Starting without checking the equipment and having to fetch something with PPE already on."
+          }
+        },
+        {
+          "id": "calzas",
+          "img": "epi-2-calzas",
+          "seconds": 0,
+          "title": {
+            "es": "Calzas (cubrecalzado)",
+            "ca": "Cobrecalçat (calces)",
+            "en": "Shoe covers"
+          },
+          "text": {
+            "es": "Si tu protocolo las incluye, siéntate o apóyate y colócate las calzas cubriendo todo el calzado, hasta el tobillo y sin dejar suela ni talón al descubierto. Ponlas las primeras, antes de la higiene de manos.",
+            "ca": "Si el teu protocol les inclou, seu o fes un suport i col·loca't el cobrecalçat cobrint tot el calçat, fins al turmell i sense deixar sola ni taló al descobert. Posa-te'l el primer, abans de la higiene de mans.",
+            "en": "If your protocol includes them, sit down or steady yourself and put on the shoe covers so that they cover all of your footwear up to the ankle, leaving no sole or heel exposed. Put them on first, before hand hygiene."
+          },
+          "why": {
+            "es": "El calzado y el suelo arrastran microorganismos hacia otras zonas; ponerlas primero evita tocar el calzado con las manos ya limpias o con los guantes puestos.",
+            "ca": "El calçat i el terra arrosseguen microorganismes cap a altres zones; posar-se'l primer evita tocar el calçat amb les mans ja netes o amb els guants posats.",
+            "en": "Footwear and floors carry microorganisms to other areas; putting them on first avoids touching your shoes with clean hands or with gloves on."
+          },
+          "mistake": {
+            "es": "Dejar la suela o el talón sin cubrir, o ponérselas después de los guantes.",
+            "ca": "Deixar la sola o el taló sense cobrir, o posar-se'l després dels guants.",
+            "en": "Leaving the sole or heel uncovered, or putting them on after the gloves."
+          }
+        },
+        {
+          "id": "manos",
+          "img": "friccion-1-dosis",
+          "seconds": 0,
+          "title": {
+            "es": "Higiene de manos",
+            "ca": "Higiene de mans",
+            "en": "Hand hygiene"
+          },
+          "text": {
+            "es": "Realiza higiene de manos con solución hidroalcohólica (o con agua y jabón si están sucias).",
+            "ca": "Fes higiene de mans amb solució hidroalcohòlica (o amb aigua i sabó si estan brutes).",
+            "en": "Perform hand hygiene with an alcohol-based rub (or with soap and water if they are dirty)."
+          },
+          "why": {
+            "es": "Hay que partir de manos limpias: te las vas a tocar varias veces mientras te colocas el EPI.",
+            "ca": "Cal partir de mans netes: te les tocaràs diverses vegades mentre et poses l'EPI.",
+            "en": "Start with clean hands: you will touch them several times while putting the PPE on."
+          },
+          "mistake": {
+            "es": "Saltarse este paso porque «luego llevaré guantes».",
+            "ca": "Saltar-se aquest pas perquè «després duré guants».",
+            "en": "Skipping it because \"I will wear gloves anyway\"."
+          }
+        },
+        {
+          "id": "bata",
+          "img": "epi-3-bata",
+          "seconds": 0,
+          "title": {
+            "es": "Bata",
+            "ca": "Bata",
+            "en": "Gown"
+          },
+          "text": {
+            "es": "Ponte la bata cubriendo desde el cuello hasta las rodillas y los brazos hasta las muñecas; átala por detrás a la altura del cuello y de la cintura.",
+            "ca": "Posa't la bata cobrint des del coll fins als genolls i els braços fins als canells; lliga-la per darrere a l'alçada del coll i de la cintura.",
+            "en": "Put on the gown covering from neck to knees and arms to the wrists; tie it at the back at neck and waist level."
+          },
+          "why": {
+            "es": "Protege la ropa y la piel del torso y de los brazos de salpicaduras y contacto con el paciente.",
+            "ca": "Protegeix la roba i la pell del tors i dels braços de esquitxades i contacte amb el pacient.",
+            "en": "It protects clothing and the skin of the torso and arms from splashes and contact with the patient."
+          },
+          "mistake": {
+            "es": "Dejar la espalda abierta o atar la bata demasiado floja.",
+            "ca": "Deixar l'esquena oberta o lligar la bata massa fluixa.",
+            "en": "Leaving the back open or tying the gown too loosely."
+          }
+        },
+        {
+          "id": "gorro",
+          "img": "epi-gorro",
+          "seconds": 0,
+          "title": {
+            "es": "Gorro",
+            "ca": "Gorra",
+            "en": "Cap"
+          },
+          "text": {
+            "es": "Recoge todo el cabello y colócate el gorro cubriéndolo por completo, bien ajustado a la frente y sin dejar mechones fuera. Ponlo antes de la mascarilla y de las gafas para que sus cintas y su montura queden por encima.",
+            "ca": "Recull tot el cabell i col·loca't la gorra cobrint-lo del tot, ben ajustada al front i sense deixar cap manyoc fora. Posa-te-la abans de la mascareta i de les ulleres perquè les seves cintes i la seva muntura quedin per sobre.",
+            "en": "Gather all your hair and put the cap on so that it covers it completely, snug at the forehead with no loose strands. Put it on before the mask and the eyewear so that their straps and frame sit over it."
+          },
+          "why": {
+            "es": "Evita que el cabello se contamine, caiga sobre el campo de trabajo o te lo toques durante la atención.",
+            "ca": "Evita que el cabell es contamini, caigui sobre el camp de treball o te'l toquis durant l'atenció.",
+            "en": "It stops your hair from becoming contaminated, falling onto the work area or being touched during care."
+          },
+          "mistake": {
+            "es": "Dejar mechones fuera del gorro o recolocárselo después con los guantes puestos.",
+            "ca": "Deixar manyocs fora de la gorra o recol·locar-se-la després amb els guants posats.",
+            "en": "Leaving strands outside the cap or readjusting it later with gloves on."
+          }
+        },
+        {
+          "id": "mascarilla",
+          "img": "epi-4-mascarilla",
+          "seconds": 0,
+          "title": {
+            "es": "Mascarilla o respirador",
+            "ca": "Mascareta o respirador",
+            "en": "Mask or respirator"
+          },
+          "text": {
+            "es": "Colócala cubriendo nariz, boca y barbilla; ajusta la pinza nasal y las cintas o gomas. Si es un respirador, comprueba que sella bien sobre la cara.",
+            "ca": "Col·loca-la cobrint nas, boca i barbeta; ajusta la pinça nasal i les cintes o gomes. Si és un respirador, comprova que segella bé sobre la cara.",
+            "en": "Place it covering nose, mouth and chin; adjust the nose clip and the ties or straps. If it is a respirator, check that it seals well on your face."
+          },
+          "why": {
+            "es": "Solo si sella sobre la cara el aire pasa por el filtro y no por los lados.",
+            "ca": "Només si segella sobre la cara l'aire passa pel filtre i no pels costats.",
+            "en": "Only if it seals on the face does air go through the filter rather than around the edges."
+          },
+          "mistake": {
+            "es": "No ajustar la pinza nasal, llevarla por debajo de la nariz o con vello facial que impide el sellado.",
+            "ca": "No ajustar la pinça nasal, portar-la per sota del nas o amb pèl facial que impedeix el segellat.",
+            "en": "Not shaping the nose clip, wearing it below the nose, or with facial hair that breaks the seal."
+          }
+        },
+        {
+          "id": "gafas",
+          "img": "epi-5-gafas",
+          "seconds": 0,
+          "title": {
+            "es": "Gafas o pantalla facial",
+            "ca": "Ulleres o pantalla facial",
+            "en": "Goggles or face shield"
+          },
+          "text": {
+            "es": "Colócate gafas de montura integral o una pantalla facial sobre los ojos y la cara y ajústalas.",
+            "ca": "Posa't ulleres de muntura integral o una pantalla facial sobre els ulls i la cara i ajusta-les.",
+            "en": "Put on goggles or a face shield over your eyes and face and adjust them."
+          },
+          "why": {
+            "es": "Protegen las mucosas de los ojos de las salpicaduras; se colocan después de la mascarilla para no desajustarla.",
+            "ca": "Protegeixen les mucoses dels ulls de les esquitxades; es posen després de la mascareta per no desajustar-la.",
+            "en": "They protect the mucous membranes of the eyes from splashes; they go on after the mask so as not to displace it."
+          },
+          "mistake": {
+            "es": "Ponerlas antes que la mascarilla o dejarlas flojas y que se empañen o resbalen.",
+            "ca": "Posar-les abans que la mascareta o deixar-les fluixes i que s'entelin o rellisquin.",
+            "en": "Putting them on before the mask or leaving them loose so they fog or slip."
+          }
+        },
+        {
+          "id": "guantes",
+          "img": "epi-6-guantes",
+          "seconds": 0,
+          "title": {
+            "es": "Guantes",
+            "ca": "Guants",
+            "en": "Gloves"
+          },
+          "text": {
+            "es": "Ponte los guantes y estira el puño de cada guante por encima de la manga de la bata.",
+            "ca": "Posa't els guants i estira el puny de cada guant per sobre de la màniga de la bata.",
+            "en": "Put on the gloves and pull the cuff of each glove over the sleeve of the gown."
+          },
+          "why": {
+            "es": "Al cubrir el puño de la bata no queda piel de la muñeca al descubierto.",
+            "ca": "En cobrir el puny de la bata no queda pell del canell al descobert.",
+            "en": "Covering the gown cuff leaves no bare skin at the wrist."
+          },
+          "mistake": {
+            "es": "Dejar la muñeca descubierta o ponerse los guantes antes que la bata.",
+            "ca": "Deixar el canell al descobert o posar-se els guants abans que la bata.",
+            "en": "Leaving the wrist exposed or putting gloves on before the gown."
+          }
+        }
       ]
-     }
     },
     {
-     "id": 4,
-     "img": "momento-4",
-     "title": {
-      "es": "Después del contacto con el paciente",
-      "ca": "Després del contacte amb el pacient",
-      "en": "After touching a patient"
-     },
-     "short": {
-      "es": "Después del contacto",
-      "ca": "Després del contacte",
-      "en": "After contact"
-     },
-     "text": {
-      "es": "Al terminar de tocar al paciente y antes de irte o de atender a otro.",
-      "ca": "En acabar de tocar el pacient i abans de marxar o d'atendre'n un altre.",
-      "en": "When you finish touching the patient and before leaving or attending another one."
-     },
-     "why": {
-      "es": "Te protege a ti y evita llevar los gérmenes del paciente a otros pacientes y al entorno.",
-      "ca": "Et protegeix a tu i evita portar els gèrmens del pacient a altres pacients i a l'entorn.",
-      "en": "It protects you and stops you carrying the patient's germs to other patients and the environment."
-     },
-     "examples": {
-      "es": [
-       "Estrechar la mano",
-       "Ayudar a moverse o levantarse",
-       "Tomar el pulso o la tensión",
-       "Realizar una exploración física"
-      ],
-      "ca": [
-       "Encaixar la mà",
-       "Ajudar a moure's o aixecar-se",
-       "Prendre el pols o la tensió",
-       "Fer una exploració física"
-      ],
-      "en": [
-       "Shaking hands",
-       "Helping the patient move or stand",
-       "Taking the pulse or blood pressure",
-       "Carrying out a physical examination"
+      "id": "retirada",
+      "type": "order",
+      "cover": "cover-retirada",
+      "icon": "shield-off",
+      "durationSec": null,
+      "baseSec": 0,
+      "title": {
+        "es": "Retirada del EPI",
+        "ca": "Retirada de l'EPI",
+        "en": "Taking off PPE (doffing)"
+      },
+      "subtitle": {
+        "es": "Lo más contaminado se retira primero y sin tocarlo con las manos desnudas.",
+        "ca": "El més contaminat es retira primer i sense tocar-lo amb les mans nues.",
+        "en": "The most contaminated items come off first, without touching them with bare hands."
+      },
+      "source": {
+        "es": "Secuencia basada en la de los CDC (EE. UU.) para la retirada del equipo de protección individual; la mascarilla o el respirador se retira al final.",
+        "ca": "Seqüència basada en la dels CDC (EUA) per a la retirada de l'equip de protecció individual; la mascareta o el respirador es retira al final.",
+        "en": "Sequence based on the US CDC sequence for removing personal protective equipment; the mask or respirator comes off last."
+      },
+      "note": {
+        "es": "Hay variantes válidas: algunos protocolos añaden higiene de manos tras retirar cada pieza o retiran bata y guantes juntos. Sigue siempre el protocolo de tu centro. Las calzas y el gorro solo se usan en algunos protocolos y su posición exacta varía entre centros.",
+        "ca": "Hi ha variants vàlides: alguns protocols afegeixen higiene de mans després de retirar cada peça o retiren bata i guants junts. Segueix sempre el protocol del teu centre. El cobrecalçat i la gorra només s'usen en alguns protocols i la seva posició exacta varia entre centres.",
+        "en": "There are valid variants: some protocols add hand hygiene after removing each item or remove gown and gloves together. Always follow your centre's protocol. Shoe covers and cap are only used in some protocols and their exact position varies between centres."
+      },
+      "finish": {
+        "es": "EPI retirado y manos higienizadas.",
+        "ca": "EPI retirat i mans higienitzades.",
+        "en": "PPE removed and hands cleaned."
+      },
+      "steps": [
+        {
+          "id": "calzas",
+          "img": "epi-r-calzas",
+          "seconds": 0,
+          "title": {
+            "es": "Calzas (cubrecalzado)",
+            "ca": "Cobrecalçat (calces)",
+            "en": "Shoe covers"
+          },
+          "text": {
+            "es": "Son lo más contaminado por el contacto con el suelo. Con los guantes aún puestos, sujeta una calza por el talón, deslízala hacia delante dándole la vuelta sin que la suela toque tu ropa ni tus manos, y repite con la otra. Deséchalas.",
+            "ca": "Són el més contaminat pel contacte amb el terra. Amb els guants encara posats, agafa una calça pel taló, llisca-la cap endavant girant-la del revés sense que la sola toqui la teva roba ni les teves mans, i repeteix amb l'altra. Llença-les.",
+            "en": "They are the most contaminated item through contact with the floor. With your gloves still on, hold one cover by the heel, slide it forward turning it inside out so that the sole touches neither your clothes nor your hands, and repeat with the other. Discard them."
+          },
+          "why": {
+            "es": "Es la pieza más sucia; retirarla la primera y con guantes evita pasar esa contaminación a tus manos desnudas y a la zona limpia.",
+            "ca": "És la peça més bruta; retirar-la la primera i amb guants evita passar aquesta contaminació a les teves mans nues i a la zona neta.",
+            "en": "It is the dirtiest item; taking it off first and with gloves on avoids passing that contamination to your bare hands and to the clean area."
+          },
+          "mistake": {
+            "es": "Quitárselas con las manos desnudas o arrastrarlas hacia la zona limpia.",
+            "ca": "Treure-se-les amb les mans nues o arrossegar-les cap a la zona neta.",
+            "en": "Removing them with bare hands or dragging them into the clean area."
+          }
+        },
+        {
+          "id": "guantes",
+          "img": "epi-r1-guantes",
+          "seconds": 0,
+          "title": {
+            "es": "Guantes",
+            "ca": "Guants",
+            "en": "Gloves"
+          },
+          "text": {
+            "es": "El exterior está contaminado. Con una mano enguantada agarra el exterior del otro guante cerca de la muñeca y quítalo dándole la vuelta. Sostenlo en la mano enguantada; mete los dedos de la mano libre bajo el otro guante por la muñeca y quítalo envolviendo el primero. Deséchalos.",
+            "ca": "L'exterior està contaminat. Amb una mà enguantada agafa l'exterior de l'altre guant a prop del canell i treu-lo girant-lo del revés. Sosté'l a la mà enguantada; fica els dits de la mà lliure sota l'altre guant pel canell i treu-lo embolcallant el primer. Llença'ls.",
+            "en": "The outside is contaminated. With your gloved hand, grasp the outside of the other glove near the wrist and peel it off inside out. Hold it in the gloved hand; slide the fingers of your bare hand under the remaining glove at the wrist and peel it off over the first one. Discard both."
+          },
+          "why": {
+            "es": "Los guantes son lo más contaminado: se quitan primero y sin que su exterior toque la piel.",
+            "ca": "Els guants són el més contaminat: es treuen primer i sense que el seu exterior toqui la pell.",
+            "en": "Gloves are the most contaminated item: they come off first, without their outside touching your skin."
+          },
+          "mistake": {
+            "es": "Tocar el exterior con la mano desnuda o tirarlos de golpe y salpicar.",
+            "ca": "Tocar l'exterior amb la mà nua o estirar-los de cop i esquitxar.",
+            "en": "Touching the outside with a bare hand or snapping them off and spattering."
+          }
+        },
+        {
+          "id": "gafas",
+          "img": "epi-r2-gafas",
+          "seconds": 0,
+          "title": {
+            "es": "Gafas o pantalla facial",
+            "ca": "Ulleres o pantalla facial",
+            "en": "Goggles or face shield"
+          },
+          "text": {
+            "es": "El exterior está contaminado. Sujeta la banda de la cabeza o las patillas y retíralas desde atrás, sin tocar la parte delantera. Deposítalas en el contenedor de reprocesado o de residuos.",
+            "ca": "L'exterior està contaminat. Subjecta la banda del cap o les potes i retira-les des de darrere, sense tocar la part davantera. Posa-les al contenidor de reprocessament o de residus.",
+            "en": "The outside is contaminated. Hold the headband or the arms and lift them off from behind, without touching the front. Place them in the reprocessing or waste container."
+          },
+          "why": {
+            "es": "Su parte delantera ha recibido las salpicaduras; retirarlas desde atrás evita tocarla.",
+            "ca": "La part davantera ha rebut les esquitxades; retirar-les des de darrere evita tocar-la.",
+            "en": "The front has taken the splashes; lifting them from behind avoids touching it."
+          },
+          "mistake": {
+            "es": "Cogerlas por delante o tocarse la cara después.",
+            "ca": "Agafar-les per davant o tocar-se la cara després.",
+            "en": "Holding them by the front or touching your face afterwards."
+          }
+        },
+        {
+          "id": "bata",
+          "img": "epi-r3-bata",
+          "seconds": 0,
+          "title": {
+            "es": "Bata",
+            "ca": "Bata",
+            "en": "Gown"
+          },
+          "text": {
+            "es": "La parte delantera y las mangas están contaminadas. Desata las cintas y aleja la bata del cuello y de los hombros tocando solo el interior; dale la vuelta, dóblala o enróllala hacia dentro formando un paquete y deséchala.",
+            "ca": "La part davantera i les mànigues estan contaminades. Deslliga les cintes i allunya la bata del coll i de les espatlles tocant només l'interior; gira-la del revés, plega-la o enrotlla-la cap a dins formant un paquet i llença-la.",
+            "en": "The front and the sleeves are contaminated. Untie the ties and pull the gown away from the neck and shoulders touching only the inside; turn it inside out, fold or roll it into a bundle and discard it."
+          },
+          "why": {
+            "es": "Al darle la vuelta, el exterior contaminado queda dentro del paquete.",
+            "ca": "En girar-la del revés, l'exterior contaminat queda dins del paquet.",
+            "en": "Turning it inside out keeps the contaminated outside wrapped inside the bundle."
+          },
+          "mistake": {
+            "es": "Sacudir la bata o dejar que roce el uniforme.",
+            "ca": "Sacsejar la bata o deixar que freguï l'uniforme.",
+            "en": "Shaking the gown or letting it brush your uniform."
+          }
+        },
+        {
+          "id": "gorro",
+          "img": "epi-r-gorro",
+          "seconds": 0,
+          "title": {
+            "es": "Gorro",
+            "ca": "Gorra",
+            "en": "Cap"
+          },
+          "text": {
+            "es": "Sujeta el gorro por la parte de atrás y levántalo hacia delante y hacia arriba dándole la vuelta, sin rozar la cara ni el cuello. Deséchalo.",
+            "ca": "Agafa la gorra per la part del darrere i aixeca-la cap endavant i cap amunt girant-la del revés, sense fregar la cara ni el coll. Llença-la.",
+            "en": "Hold the cap at the back and lift it forward and up, turning it inside out, without brushing your face or neck. Discard it."
+          },
+          "why": {
+            "es": "El exterior puede tener salpicaduras o partículas; al darle la vuelta quedan dentro.",
+            "ca": "L'exterior pot tenir esquitxades o partícules; en girar-la del revés queden a dins.",
+            "en": "The outside may carry splashes or particles; turning it inside out keeps them inside."
+          },
+          "mistake": {
+            "es": "Tocarse la cara o el pelo al quitárselo, o sacudir el gorro.",
+            "ca": "Tocar-se la cara o els cabells en treure-se-la, o sacsejar la gorra.",
+            "en": "Touching your face or hair while removing it, or shaking the cap."
+          }
+        },
+        {
+          "id": "mascarilla",
+          "img": "epi-r4-mascarilla",
+          "seconds": 0,
+          "title": {
+            "es": "Mascarilla o respirador",
+            "ca": "Mascareta o respirador",
+            "en": "Mask or respirator"
+          },
+          "text": {
+            "es": "La parte delantera está contaminada: no la toques. Agarra primero las cintas o gomas inferiores y luego las superiores y retírala sin tocar el frente; deséchala. En los protocolos habituales se hace fuera de la zona de aislamiento.",
+            "ca": "La part davantera està contaminada: no la toquis. Agafa primer les cintes o gomes inferiors i després les superiors i retira-la sense tocar el frontal; llença-la. En els protocols habituals es fa fora de la zona d'aïllament.",
+            "en": "The front is contaminated: do not touch it. Grasp the bottom ties or straps first, then the top ones, and remove it without touching the front; discard it. In usual protocols this is done outside the isolation area."
+          },
+          "why": {
+            "es": "Se retira la última porque protege tus vías respiratorias mientras te quitas lo demás.",
+            "ca": "Es retira l'última perquè protegeix les teves vies respiratòries mentre et treus la resta.",
+            "en": "It comes off last because it protects your airway while you remove everything else."
+          },
+          "mistake": {
+            "es": "Bajarla al cuello «para descansar» o tocar el frente.",
+            "ca": "Baixar-la al coll «per descansar» o tocar el frontal.",
+            "en": "Pulling it down to the neck \"for a break\" or touching the front."
+          }
+        },
+        {
+          "id": "manos",
+          "img": "friccion-1-dosis",
+          "seconds": 0,
+          "title": {
+            "es": "Higiene de manos",
+            "ca": "Higiene de mans",
+            "en": "Hand hygiene"
+          },
+          "text": {
+            "es": "Realiza higiene de manos inmediatamente después de retirar todo el EPI.",
+            "ca": "Fes higiene de mans immediatament després de retirar tot l'EPI.",
+            "en": "Perform hand hygiene immediately after removing all the PPE."
+          },
+          "why": {
+            "es": "Las manos pueden haberse contaminado durante la retirada, aunque hayas llevado guantes.",
+            "ca": "Les mans poden haver-se contaminat durant la retirada, encara que hagis portat guants.",
+            "en": "Your hands may have been contaminated during removal, even if you wore gloves."
+          },
+          "mistake": {
+            "es": "Salir sin hacerla, o hacerla antes de retirar la mascarilla.",
+            "ca": "Sortir sense fer-la, o fer-la abans de retirar la mascareta.",
+            "en": "Leaving without doing it, or doing it before removing the mask."
+          }
+        }
       ]
-     }
     },
     {
-     "id": 5,
-     "img": "momento-5",
-     "title": {
-      "es": "Después del contacto con el entorno del paciente",
-      "ca": "Després del contacte amb l'entorn del pacient",
-      "en": "After touching the patient's surroundings"
-     },
-     "short": {
-      "es": "Después del entorno",
-      "ca": "Després de l'entorn",
-      "en": "After surroundings"
-     },
-     "text": {
-      "es": "Al salir, tras tocar objetos o mobiliario del entorno inmediato del paciente, aunque no lo hayas tocado a él.",
-      "ca": "En sortir, després de tocar objectes o mobiliari de l'entorn immediat del pacient, encara que no l'hagis tocat a ell.",
-      "en": "When leaving, after touching objects or furniture in the patient's immediate surroundings, even if you did not touch the patient."
-     },
-     "why": {
-      "es": "Las superficies cercanas al paciente también están contaminadas: protege tu cuerpo y a los demás pacientes.",
-      "ca": "Les superfícies properes al pacient també estan contaminades: protegeix el teu cos i els altres pacients.",
-      "en": "Surfaces near the patient are also contaminated: protect yourself and the other patients."
-     },
-     "examples": {
-      "es": [
-       "Cambiar la ropa de cama",
-       "Ajustar la velocidad del gotero",
-       "Mover la barandilla o la mesilla",
-       "Silenciar la alarma de un monitor"
+      "id": "momentos",
+      "type": "match",
+      "cover": "cover-momentos",
+      "icon": "check",
+      "durationSec": null,
+      "baseSec": 0,
+      "title": {
+        "es": "Los 5 momentos de la higiene de manos",
+        "ca": "Els 5 moments de la higiene de mans",
+        "en": "The 5 moments for hand hygiene"
+      },
+      "subtitle": {
+        "es": "¿Cuándo hay que hacer higiene de manos? Empareja cada situación con su momento.",
+        "ca": "Quan cal fer higiene de mans? Relaciona cada situació amb el seu moment.",
+        "en": "When must you clean your hands? Match each situation with its moment."
+      },
+      "source": {
+        "es": "Adaptado de «Sus 5 momentos para la higiene de las manos» (OMS, 2009).",
+        "ca": "Adaptat de «Els vostres 5 moments per a la higiene de les mans» (OMS, 2009).",
+        "en": "Adapted from \"Your 5 Moments for Hand Hygiene\" (WHO, 2009)."
+      },
+      "note": {
+        "es": "Los 5 momentos se refieren a la zona del paciente (el paciente y su entorno inmediato) y a la zona de atención sanitaria.",
+        "ca": "Els 5 moments fan referència a la zona del pacient (el pacient i el seu entorn immediat) i a la zona d'atenció sanitària.",
+        "en": "The 5 moments refer to the patient zone (the patient and their immediate surroundings) and the health-care area."
+      },
+      "finish": {
+        "es": "",
+        "ca": "",
+        "en": ""
+      },
+      "moments": [
+        {
+          "id": 1,
+          "img": "momento-1",
+          "title": {
+            "es": "Antes del contacto con el paciente",
+            "ca": "Abans del contacte amb el pacient",
+            "en": "Before touching a patient"
+          },
+          "short": {
+            "es": "Antes del contacto",
+            "ca": "Abans del contacte",
+            "en": "Before contact"
+          },
+          "text": {
+            "es": "Al acercarte al paciente, antes de tocarlo.",
+            "ca": "En apropar-te al pacient, abans de tocar-lo.",
+            "en": "When approaching the patient, before touching them."
+          },
+          "why": {
+            "es": "Protege al paciente de los gérmenes que llevas en las manos.",
+            "ca": "Protegeix el pacient dels gèrmens que portes a les mans.",
+            "en": "It protects the patient from the germs on your hands."
+          },
+          "examples": {
+            "es": [
+              "Estrechar la mano",
+              "Ayudar a moverse o levantarse",
+              "Tomar el pulso o la tensión",
+              "Auscultar el tórax"
+            ],
+            "ca": [
+              "Encaixar la mà",
+              "Ajudar a moure's o aixecar-se",
+              "Prendre el pols o la tensió",
+              "Auscultar el tòrax"
+            ],
+            "en": [
+              "Shaking hands",
+              "Helping the patient move or stand",
+              "Taking the pulse or blood pressure",
+              "Chest auscultation"
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "img": "momento-2",
+          "title": {
+            "es": "Antes de una tarea limpia o aséptica",
+            "ca": "Abans d'una tasca neta o asèptica",
+            "en": "Before a clean or aseptic procedure"
+          },
+          "short": {
+            "es": "Antes de tarea aséptica",
+            "ca": "Abans de tasca asèptica",
+            "en": "Before aseptic task"
+          },
+          "text": {
+            "es": "Justo antes de una técnica que puede introducir gérmenes en el cuerpo del paciente.",
+            "ca": "Just abans d'una tècnica que pot introduir gèrmens al cos del pacient.",
+            "en": "Immediately before a procedure that could carry germs into the patient's body."
+          },
+          "why": {
+            "es": "Evita que los gérmenes entren por una herida, una mucosa o un dispositivo y causen una infección.",
+            "ca": "Evita que els gèrmens entrin per una ferida, una mucosa o un dispositiu i causin una infecció.",
+            "en": "It prevents germs from entering through a wound, mucosa or device and causing infection."
+          },
+          "examples": {
+            "es": [
+              "Curar una herida",
+              "Aspirar secreciones",
+              "Colocar una sonda o un catéter",
+              "Preparar una inyección o medicación"
+            ],
+            "ca": [
+              "Curar una ferida",
+              "Aspirar secrecions",
+              "Col·locar una sonda o un catèter",
+              "Preparar una injecció o medicació"
+            ],
+            "en": [
+              "Dressing a wound",
+              "Suctioning secretions",
+              "Inserting a tube or catheter",
+              "Preparing an injection or medication"
+            ]
+          }
+        },
+        {
+          "id": 3,
+          "img": "momento-3",
+          "title": {
+            "es": "Después del riesgo de exposición a fluidos corporales",
+            "ca": "Després del risc d'exposició a fluids corporals",
+            "en": "After body fluid exposure risk"
+          },
+          "short": {
+            "es": "Después de fluidos",
+            "ca": "Després de fluids",
+            "en": "After body fluids"
+          },
+          "text": {
+            "es": "Después de haber tocado, o tener riesgo de haber tocado, sangre, secreciones o excreciones; también tras quitarte los guantes.",
+            "ca": "Després d'haver tocat, o tenir risc d'haver tocat, sang, secrecions o excrecions; també en treure't els guants.",
+            "en": "After touching, or risking contact with, blood, secretions or excretions; also after removing gloves."
+          },
+          "why": {
+            "es": "Te protege a ti y protege el entorno sanitario de los gérmenes del paciente.",
+            "ca": "Et protegeix a tu i protegeix l'entorn sanitari dels gèrmens del pacient.",
+            "en": "It protects you and the health-care environment from the patient's germs."
+          },
+          "examples": {
+            "es": [
+              "Extraer una muestra de sangre",
+              "Vaciar una bolsa de orina o de ostomía",
+              "Retirar una cuña o limpiar un vómito",
+              "Aspirar secreciones"
+            ],
+            "ca": [
+              "Extreure una mostra de sang",
+              "Buidar una bossa d'orina o d'ostomia",
+              "Retirar una botzina o netejar un vòmit",
+              "Aspirar secrecions"
+            ],
+            "en": [
+              "Drawing a blood sample",
+              "Emptying a urine or ostomy bag",
+              "Removing a bedpan or cleaning up vomit",
+              "Suctioning secretions"
+            ]
+          }
+        },
+        {
+          "id": 4,
+          "img": "momento-4",
+          "title": {
+            "es": "Después del contacto con el paciente",
+            "ca": "Després del contacte amb el pacient",
+            "en": "After touching a patient"
+          },
+          "short": {
+            "es": "Después del contacto",
+            "ca": "Després del contacte",
+            "en": "After contact"
+          },
+          "text": {
+            "es": "Al terminar de tocar al paciente y antes de irte o de atender a otro.",
+            "ca": "En acabar de tocar el pacient i abans de marxar o d'atendre'n un altre.",
+            "en": "When you finish touching the patient and before leaving or attending another one."
+          },
+          "why": {
+            "es": "Te protege a ti y evita llevar los gérmenes del paciente a otros pacientes y al entorno.",
+            "ca": "Et protegeix a tu i evita portar els gèrmens del pacient a altres pacients i a l'entorn.",
+            "en": "It protects you and stops you carrying the patient's germs to other patients and the environment."
+          },
+          "examples": {
+            "es": [
+              "Estrechar la mano",
+              "Ayudar a moverse o levantarse",
+              "Tomar el pulso o la tensión",
+              "Realizar una exploración física"
+            ],
+            "ca": [
+              "Encaixar la mà",
+              "Ajudar a moure's o aixecar-se",
+              "Prendre el pols o la tensió",
+              "Fer una exploració física"
+            ],
+            "en": [
+              "Shaking hands",
+              "Helping the patient move or stand",
+              "Taking the pulse or blood pressure",
+              "Carrying out a physical examination"
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "img": "momento-5",
+          "title": {
+            "es": "Después del contacto con el entorno del paciente",
+            "ca": "Després del contacte amb l'entorn del pacient",
+            "en": "After touching the patient's surroundings"
+          },
+          "short": {
+            "es": "Después del entorno",
+            "ca": "Després de l'entorn",
+            "en": "After surroundings"
+          },
+          "text": {
+            "es": "Al salir, tras tocar objetos o mobiliario del entorno inmediato del paciente, aunque no lo hayas tocado a él.",
+            "ca": "En sortir, després de tocar objectes o mobiliari de l'entorn immediat del pacient, encara que no l'hagis tocat a ell.",
+            "en": "When leaving, after touching objects or furniture in the patient's immediate surroundings, even if you did not touch the patient."
+          },
+          "why": {
+            "es": "Las superficies cercanas al paciente también están contaminadas: protege tu cuerpo y a los demás pacientes.",
+            "ca": "Les superfícies properes al pacient també estan contaminades: protegeix el teu cos i els altres pacients.",
+            "en": "Surfaces near the patient are also contaminated: protect yourself and the other patients."
+          },
+          "examples": {
+            "es": [
+              "Cambiar la ropa de cama",
+              "Ajustar la velocidad del gotero",
+              "Mover la barandilla o la mesilla",
+              "Silenciar la alarma de un monitor"
+            ],
+            "ca": [
+              "Canviar la roba de llit",
+              "Ajustar la velocitat del degoteig",
+              "Moure la barana o la tauleta de nit",
+              "Silenciar l'alarma d'un monitor"
+            ],
+            "en": [
+              "Changing the bed linen",
+              "Adjusting the infusion rate",
+              "Moving the bed rail or bedside table",
+              "Silencing a monitor alarm"
+            ]
+          }
+        }
       ],
-      "ca": [
-       "Canviar la roba de llit",
-       "Ajustar la velocitat del degoteig",
-       "Moure la barana o la tauleta de nit",
-       "Silenciar l'alarma d'un monitor"
-      ],
-      "en": [
-       "Changing the bed linen",
-       "Adjusting the infusion rate",
-       "Moving the bed rail or bedside table",
-       "Silencing a monitor alarm"
+      "situations": [
+        {
+          "moment": 1,
+          "text": {
+            "es": "Vas a entrar en la habitación para ayudar a una paciente a incorporarse.",
+            "ca": "Aniràs a l'habitació per ajudar una pacient a incorporar-se.",
+            "en": "You are about to enter the room to help a patient sit up."
+          }
+        },
+        {
+          "moment": 1,
+          "text": {
+            "es": "Vas a tomarle la tensión arterial y el pulso a un paciente.",
+            "ca": "Aniràs a prendre la tensió arterial i el pols a un pacient.",
+            "en": "You are about to take a patient's blood pressure and pulse."
+          }
+        },
+        {
+          "moment": 1,
+          "text": {
+            "es": "Vas a acompañar a un residente desde la silla hasta la cama, sujetándolo del brazo.",
+            "ca": "Aniràs a acompanyar un resident des de la cadira fins al llit, subjectant-lo pel braç.",
+            "en": "You are about to walk a resident from the chair to the bed, holding their arm."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Vas a curar una herida quirúrgica.",
+            "ca": "Aniràs a curar una ferida quirúrgica.",
+            "en": "You are about to dress a surgical wound."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Vas a aspirar secreciones de un paciente traqueostomizado.",
+            "ca": "Aniràs a aspirar secrecions d'un pacient amb traqueostomia.",
+            "en": "You are about to suction secretions from a patient with a tracheostomy."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Vas a preparar y administrar una inyección subcutánea.",
+            "ca": "Aniràs a preparar i administrar una injecció subcutània.",
+            "en": "You are about to prepare and give a subcutaneous injection."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Vas a colocar una sonda vesical.",
+            "ca": "Aniràs a col·locar una sonda vesical.",
+            "en": "You are about to insert a urinary catheter."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "Acabas de vaciar una bolsa de diuresis.",
+            "ca": "Acabes de buidar una bossa de diüresi.",
+            "en": "You have just emptied a urine drainage bag."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "Acabas de extraer una muestra de sangre y te has quitado los guantes.",
+            "ca": "Acabes d'extreure una mostra de sang i t'has tret els guants.",
+            "en": "You have just drawn a blood sample and taken off your gloves."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "Acabas de retirar una cuña con heces y de limpiar un vómito.",
+            "ca": "Acabes de retirar una botzina amb femta i de netejar un vòmit.",
+            "en": "You have just removed a bedpan with faeces and cleaned up vomit."
+          }
+        },
+        {
+          "moment": 4,
+          "text": {
+            "es": "Has terminado de ayudar a una paciente a incorporarse y vas a salir de la habitación.",
+            "ca": "Has acabat d'ajudar una pacient a incorporar-se i aniràs a sortir de l'habitació.",
+            "en": "You have finished helping a patient sit up and are about to leave the room."
+          }
+        },
+        {
+          "moment": 4,
+          "text": {
+            "es": "Acabas de tomarle la tensión arterial a un paciente y vas a atender a otro.",
+            "ca": "Acabes de prendre la tensió arterial a un pacient i aniràs a atendre'n un altre.",
+            "en": "You have just taken a patient's blood pressure and are going to see another patient."
+          }
+        },
+        {
+          "moment": 4,
+          "text": {
+            "es": "Has terminado la exploración física de un paciente.",
+            "ca": "Has acabat l'exploració física d'un pacient.",
+            "en": "You have finished a patient's physical examination."
+          }
+        },
+        {
+          "moment": 5,
+          "text": {
+            "es": "Has cambiado la ropa de cama sin tocar al paciente y vas a salir.",
+            "ca": "Has canviat la roba de llit sense tocar el pacient i aniràs a sortir.",
+            "en": "You have changed the bed linen without touching the patient and are about to leave."
+          }
+        },
+        {
+          "moment": 5,
+          "text": {
+            "es": "Has ajustado la velocidad del gotero y silenciado la alarma del monitor.",
+            "ca": "Has ajustat la velocitat del degoteig i silenciat l'alarma del monitor.",
+            "en": "You have adjusted the infusion rate and silenced the monitor alarm."
+          }
+        },
+        {
+          "moment": 5,
+          "text": {
+            "es": "Has movido la barandilla y recogido la bandeja de la mesilla del paciente.",
+            "ca": "Has mogut la barana i recollit la safata de la tauleta de nit del pacient.",
+            "en": "You have moved the bed rail and cleared the tray from the patient's bedside table."
+          }
+        }
       ]
-     }
     }
-   ],
-   "situations": [
-    {
-     "moment": 1,
-     "text": {
-      "es": "Vas a entrar en la habitación para ayudar a una paciente a incorporarse.",
-      "ca": "Aniràs a l'habitació per ajudar una pacient a incorporar-se.",
-      "en": "You are about to enter the room to help a patient sit up."
-     }
-    },
-    {
-     "moment": 1,
-     "text": {
-      "es": "Vas a tomarle la tensión arterial y el pulso a un paciente.",
-      "ca": "Aniràs a prendre la tensió arterial i el pols a un pacient.",
-      "en": "You are about to take a patient's blood pressure and pulse."
-     }
-    },
-    {
-     "moment": 1,
-     "text": {
-      "es": "Vas a acompañar a un residente desde la silla hasta la cama, sujetándolo del brazo.",
-      "ca": "Aniràs a acompanyar un resident des de la cadira fins al llit, subjectant-lo pel braç.",
-      "en": "You are about to walk a resident from the chair to the bed, holding their arm."
-     }
-    },
-    {
-     "moment": 2,
-     "text": {
-      "es": "Vas a curar una herida quirúrgica.",
-      "ca": "Aniràs a curar una ferida quirúrgica.",
-      "en": "You are about to dress a surgical wound."
-     }
-    },
-    {
-     "moment": 2,
-     "text": {
-      "es": "Vas a aspirar secreciones de un paciente traqueostomizado.",
-      "ca": "Aniràs a aspirar secrecions d'un pacient amb traqueostomia.",
-      "en": "You are about to suction secretions from a patient with a tracheostomy."
-     }
-    },
-    {
-     "moment": 2,
-     "text": {
-      "es": "Vas a preparar y administrar una inyección subcutánea.",
-      "ca": "Aniràs a preparar i administrar una injecció subcutània.",
-      "en": "You are about to prepare and give a subcutaneous injection."
-     }
-    },
-    {
-     "moment": 2,
-     "text": {
-      "es": "Vas a colocar una sonda vesical.",
-      "ca": "Aniràs a col·locar una sonda vesical.",
-      "en": "You are about to insert a urinary catheter."
-     }
-    },
-    {
-     "moment": 3,
-     "text": {
-      "es": "Acabas de vaciar una bolsa de diuresis.",
-      "ca": "Acabes de buidar una bossa de diüresi.",
-      "en": "You have just emptied a urine drainage bag."
-     }
-    },
-    {
-     "moment": 3,
-     "text": {
-      "es": "Acabas de extraer una muestra de sangre y te has quitado los guantes.",
-      "ca": "Acabes d'extreure una mostra de sang i t'has tret els guants.",
-      "en": "You have just drawn a blood sample and taken off your gloves."
-     }
-    },
-    {
-     "moment": 3,
-     "text": {
-      "es": "Acabas de retirar una cuña con heces y de limpiar un vómito.",
-      "ca": "Acabes de retirar una botzina amb femta i de netejar un vòmit.",
-      "en": "You have just removed a bedpan with faeces and cleaned up vomit."
-     }
-    },
-    {
-     "moment": 4,
-     "text": {
-      "es": "Has terminado de ayudar a una paciente a incorporarse y vas a salir de la habitación.",
-      "ca": "Has acabat d'ajudar una pacient a incorporar-se i aniràs a sortir de l'habitació.",
-      "en": "You have finished helping a patient sit up and are about to leave the room."
-     }
-    },
-    {
-     "moment": 4,
-     "text": {
-      "es": "Acabas de tomarle la tensión arterial a un paciente y vas a atender a otro.",
-      "ca": "Acabes de prendre la tensió arterial a un pacient i aniràs a atendre'n un altre.",
-      "en": "You have just taken a patient's blood pressure and are going to see another patient."
-     }
-    },
-    {
-     "moment": 4,
-     "text": {
-      "es": "Has terminado la exploración física de un paciente.",
-      "ca": "Has acabat l'exploració física d'un pacient.",
-      "en": "You have finished a patient's physical examination."
-     }
-    },
-    {
-     "moment": 5,
-     "text": {
-      "es": "Has cambiado la ropa de cama sin tocar al paciente y vas a salir.",
-      "ca": "Has canviat la roba de llit sense tocar el pacient i aniràs a sortir.",
-      "en": "You have changed the bed linen without touching the patient and are about to leave."
-     }
-    },
-    {
-     "moment": 5,
-     "text": {
-      "es": "Has ajustado la velocidad del gotero y silenciado la alarma del monitor.",
-      "ca": "Has ajustat la velocitat del degoteig i silenciat l'alarma del monitor.",
-      "en": "You have adjusted the infusion rate and silenced the monitor alarm."
-     }
-    },
-    {
-     "moment": 5,
-     "text": {
-      "es": "Has movido la barandilla y recogido la bandeja de la mesilla del paciente.",
-      "ca": "Has mogut la barana i recollit la safata de la tauleta de nit del pacient.",
-      "en": "You have moved the bed rail and cleared the tray from the patient's bedside table."
-     }
-    }
-   ]
-  }
- ]
+  ]
 }
