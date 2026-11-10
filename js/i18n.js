@@ -15,7 +15,7 @@ window.I18N = {
     ogDesc: 'Un lugar para compartir docencia, investigación científica y solidaridad.',
     dataError: 'No se han podido cargar los datos. Si estás abriendo el archivo index.html directamente desde el disco, el navegador lo bloquea: publica la web (ver README) o ábrela con un servidor local.',
     soon: 'Próximamente.', soonContent: 'Contenido próximamente.', error: 'Error',
-    seeMore: 'Ver más', readListen: 'Leer o escuchar', openApp: 'Abrir aplicación',
+    seeMore: 'Ver más', readListen: 'Leer o escuchar', openApp: 'Abrir aplicación', byInvite: 'Con invitación', freeUse: 'Uso libre', appsLead: 'Herramientas propias para la docencia y la investigación.', appsNote: a => `Las apps con la etiqueta «Con invitación» son gratuitas: pide tu código en ${a}.`,
     types: { articulo: 'Artículo', radio: 'Radio', prensa: 'Prensa', entrevista: 'Entrevista', audio: 'Audio', podcast: 'Podcast', video: 'Vídeo' },
     // portada
     heroTitle: 'Cómo conviven los microorganismos con nuestro sistema inmunitario',
@@ -25,8 +25,8 @@ window.I18N = {
     explore: 'Explora', whatHere: '¿Qué encontrarás aquí?',
     access: {
       docencia: 'Campus: materiales, notas y seguimiento para el alumnado matriculado (Universidad, FP y Formación Continuada).',
-      aplicaciones: 'Herramientas y aplicaciones propias.',
-      investigacion: 'Líneas actuales y producción científica.',
+      aplicaciones: 'Herramientas y aplicaciones propias para la docencia y la investigación.',
+      investigacion: 'Líneas actuales, producción científica y grupos con los que colaboro.',
       divulgacion: 'Artículos, entrevistas y participaciones en medios.',
       fotografia: 'Imágenes de aficionado, una a una.',
       solidaridad: 'Bhai Nepal, cooperación internacional.'
@@ -83,7 +83,7 @@ window.I18N = {
     ogDesc: 'Un lloc per compartir docència, recerca científica i solidaritat.',
     dataError: 'No s\'han pogut carregar les dades. Si estàs obrint l\'arxiu index.html directament des del disc, el navegador ho bloqueja: publica la web (vegeu el README) o obre-la amb un servidor local.',
     soon: 'Aviat.', soonContent: 'Contingut aviat.', error: 'Error',
-    seeMore: 'Veure\'n més', readListen: 'Llegir o escoltar', openApp: 'Obre l\'aplicació',
+    seeMore: 'Veure\'n més', readListen: 'Llegir o escoltar', openApp: 'Obre l\'aplicació', byInvite: 'Amb invitació', freeUse: 'Ús lliure', appsLead: 'Eines pròpies per a la docència i la recerca.', appsNote: a => `Les apps amb l'etiqueta «Amb invitació» són gratuïtes: demana el teu codi a ${a}.`,
     types: { articulo: 'Article', radio: 'Ràdio', prensa: 'Premsa', entrevista: 'Entrevista', audio: 'Àudio', podcast: 'Pòdcast', video: 'Vídeo' },
     heroTitle: 'Com conviuen els microorganismes amb el nostre sistema immunitari',
     heroLead: 'Sóc en Luis Franco, doctor en Immunologia. Investigo a la UOC, ensenyo ciències de la salut i presideixo l\'ONG Bhai Nepal.',
@@ -92,8 +92,8 @@ window.I18N = {
     explore: 'Explora', whatHere: 'Què hi trobaràs?',
     access: {
       docencia: 'Campus: materials, notes i seguiment per a l\'alumnat matriculat (Universitat, FP i Formació Contínua).',
-      aplicaciones: 'Eines i aplicacions pròpies.',
-      investigacion: 'Línies actuals i producció científica.',
+      aplicaciones: 'Eines i aplicacions pròpies per a la docència i la recerca.',
+      investigacion: 'Línies actuals, producció científica i grups amb què col·laboro.',
       divulgacion: 'Articles, entrevistes i participacions en mitjans.',
       fotografia: 'Imatges d\'aficionat, una a una.',
       solidaridad: 'Bhai Nepal, cooperació internacional.'
@@ -145,7 +145,7 @@ window.I18N = {
     ogDesc: 'A place to share teaching, scientific research and solidarity.',
     dataError: 'The data could not be loaded. If you are opening index.html directly from your disk, the browser blocks it: publish the site (see the README) or open it with a local server.',
     soon: 'Coming soon.', soonContent: 'Content coming soon.', error: 'Error',
-    seeMore: 'Read more', readListen: 'Read or listen', openApp: 'Open app',
+    seeMore: 'Read more', readListen: 'Read or listen', openApp: 'Open app', byInvite: 'By invitation', freeUse: 'Free to use', appsLead: 'My own tools for teaching and research.', appsNote: a => `Apps tagged “By invitation” are free: ask for your code via ${a}.`,
     types: { articulo: 'Article', radio: 'Radio', prensa: 'Press', entrevista: 'Interview', audio: 'Audio', podcast: 'Podcast', video: 'Video' },
     heroTitle: 'How microorganisms live alongside our immune system',
     heroLead: 'I\'m Luis Franco, a PhD in Immunology. I do research at the UOC, teach health sciences and chair the NGO Bhai Nepal.',
@@ -154,8 +154,8 @@ window.I18N = {
     explore: 'Explore', whatHere: 'What will you find here?',
     access: {
       docencia: 'Campus: materials, grades and follow-up for enrolled students (University, Vocational Training and Continuing Education).',
-      aplicaciones: 'My own tools and apps.',
-      investigacion: 'Current lines of work and scientific output.',
+      aplicaciones: 'My own tools and apps for teaching and research.',
+      investigacion: 'Current lines of work, scientific output and the groups I collaborate with.',
       divulgacion: 'Articles, interviews and appearances in the media.',
       fotografia: 'Amateur photographs, one by one.',
       solidaridad: 'Bhai Nepal, international cooperation.'

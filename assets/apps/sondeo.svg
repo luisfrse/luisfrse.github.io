@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a2a"/><stop offset="1" stop-color="#3b6ea5"/></linearGradient><radialGradient id="h"><stop offset="0" stop-color="#b08be0" stop-opacity=".45"/><stop offset="1" stop-color="#b08be0" stop-opacity="0"/></radialGradient></defs>
+<rect width="640" height="256" fill="url(#g)"/>
+<circle cx="160" cy="140" r="200" fill="url(#h)"/>
+<rect x="62" y="64" width="42" height="150" rx="8" fill="#b08be0" fill-opacity=".92"/>
+<rect x="124" y="106" width="42" height="108" rx="8" fill="#9fc4ee" fill-opacity=".92"/>
+<rect x="186" y="24" width="42" height="190" rx="8" fill="#e2d4f7" fill-opacity=".92"/>
+<rect x="248" y="144" width="42" height="70" rx="8" fill="#7fb2ea" fill-opacity=".92"/>
+<path d="M46 216 H320" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+<text x="380" y="70" font-family="Verdana,sans-serif" font-weight="700" font-size="40" fill="#e2d4f7" fill-opacity="1">42 %</text>
+<text x="520" y="112" font-family="Verdana,sans-serif" font-weight="700" font-size="28" fill="#9fc4ee" fill-opacity="0.7">QR</text>
+<text x="380" y="150" font-family="Verdana,sans-serif" font-weight="700" font-size="36" fill="#e2d4f7" fill-opacity="0.85">A</text>
+<text x="480" y="150" font-family="Verdana,sans-serif" font-weight="700" font-size="30" fill="#9fc4ee" fill-opacity="0.75">+1</text>
+<text x="420" y="205" font-family="Verdana,sans-serif" font-weight="700" font-size="30" fill="#9fc4ee" fill-opacity="0.7">B</text>
+<text x="520" y="205" font-family="Verdana,sans-serif" font-weight="700" font-size="44" fill="#e2d4f7" fill-opacity="0.9">?</text>
+<text x="535" y="60" font-family="Verdana,sans-serif" font-weight="700" font-size="24" fill="#9fc4ee" fill-opacity="0.55">100</text>
+</svg>

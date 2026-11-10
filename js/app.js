@@ -235,9 +235,25 @@
 
   pages.aplicaciones = async () => {
     const list = await data('aplicaciones');
-    return `${pageHead(esc(t('nav.aplicaciones')))}
+    const tonos = [['#0d1a2a', '#3b6ea5'], ['#1c3a5c', '#5a2d86'], ['#36005a', '#8f63c9'], ['#0d1a2a', '#5a2d86'], ['#0b1020', '#2a2060']];
+    const appTile = (a, i) => `
+          <a class="card tile app" href="${url(a.enlace)}"${ext(a.enlace)}>
+            <div class="tile-img" style="--g1:${tonos[i % tonos.length][0]};--g2:${tonos[i % tonos.length][1]}">
+              <i class="big ${esc(a.icono || 'fa-solid fa-laptop-code')}" aria-hidden="true"></i>
+              ${a.imagen ? `<img loading="lazy" src="${url(a.imagen)}" alt="" onerror="this.remove()">` : ''}
+              <div class="ico"><i class="${esc(a.icono || 'fa-solid fa-laptop-code')}" aria-hidden="true"></i></div>
+            </div>
+            <div class="tile-body">
+              <span class="tag${a.acceso ? ' on' : ''}">${esc(t(a.acceso ? 'byInvite' : 'freeUse'))}</span>
+              <h3>${esc(L(a, 'titulo'))}</h3><p>${esc(L(a, 'descripcion'))}</p>
+              <span class="more">${esc(t('openApp'))}</span>
+            </div>
+          </a>`;
+    const nota = Array.isArray(list) && list.some(a => a.acceso) ? `<p class="apps-note">${t('appsNote')(`<a href="#/contacto">${esc(t('nav.contacto'))}</a>`)}</p>` : '';
+    return `${pageHead(esc(t('nav.aplicaciones')), esc(t('appsLead')))}
       <section class="section"><div class="wrap">
-        ${list === null ? errorBox() : list.length ? `<div class="grid">${list.map(a => card({ ...a, cta: t('openApp') })).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
+        ${nota}
+        ${list === null ? errorBox() : list.length ? `<div class="grid apps-grid">${list.map(appTile).join('')}</div>` : `<div class="empty">${esc(t('soon'))}</div>`}
       </div></section>`;
   };
 

@@ -323,3 +323,11 @@ a.card{text-decoration:none;color:inherit}
 .card.row h3{font-size:1.05rem;margin:0}
 .card.row i{color:var(--sea);font-size:.8rem;transition:transform .2s}
 .card.row:hover i{transform:translateX(3px)}
+
+/* Aplicaciones */
+.grid.apps-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.card.tile.app .tile-img{aspect-ratio:5/2}
+.apps-note{margin:0 0 26px;color:var(--ink-soft);max-width:80ch}
+.apps-note a{color:var(--sea);font-weight:600}
+@media (max-width:980px){.grid.apps-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid.apps-grid{grid-template-columns:1fr}}
