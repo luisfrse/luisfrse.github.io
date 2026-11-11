@@ -407,7 +407,7 @@
 
   /* ============================== guía paso a paso ============================== */
   const SVB = [
-    ['seguridad', 'eval', 'seguridad'], ['respuesta', 'eval', 'respuesta'], ['ayuda', 'eval', 'ayuda'], ['aire', 'eval', 'aire'], ['respira', 'eval', 'respira'], ['llamar', 'eval', 'llamar'],
+    ['seguridad', 'eval', 'seguridad'], ['respuesta', 'eval', 'respuesta'], ['llamar', 'eval', 'llamar'], ['aire', 'eval', 'aire'], ['respira', 'eval', 'respira'],
     ['manos', 'rcp', 'manos'], ['profundidad', 'rcp', 'profundidad'], ['ventilar', 'rcp', 'ventilar'], ['ciclo', 'rcp', 'ciclo'],
     ['dea_on', 'aed', 'dea_on'], ['dea_pads', 'aed', 'dea_pads'], ['dea_analiza', 'aed', 'dea_analiza'], ['dea_descarga', 'aed', 'dea_descarga'],
     ['reanuda', 'keep', 'dosmin'], ['sigue', 'keep', 'corazon']
