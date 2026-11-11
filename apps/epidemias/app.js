@@ -307,20 +307,20 @@
     els.stats.innerHTML = tiles.map(x => `<div class="stat ${x.hl ? 'hl' : ''} ${x.cls || ''}"><b>${x.b}</b><span>${K.esc(x.l)}</span></div>`).join('');
   }
   function updateLegend() {
-    const stamp = sim.cnt.join(',');
+    const stamp = sim.cnt.join(',') + '|' + popReal();
     if (stamp === lastStamp) return; lastStamp = stamp;
-    els.legend.querySelectorAll('[data-s]').forEach(e => { e.querySelector('em').textContent = fmtN(sim.cnt[STATES.indexOf(e.dataset.s)]); });
+    els.legend.querySelectorAll('[data-s]').forEach(e => { e.querySelector('em').textContent = fmtN(Math.round(sim.cnt[STATES.indexOf(e.dataset.s)] * (popReal() / sim.N))); });
   }
   function renderLegend() {
     els.legend.innerHTML = STATES.map(s => `<span class="chip" data-s="${s}" title="${K.esc(t('sd_' + s))}"><i style="background:${COL[s]}"></i>${K.esc(t('st_' + s))}<em>0</em></span>`).join('');
     lastStamp = ''; if (sim) updateLegend();
   }
   function updateReadout() {
-    const h = sim.h, i = cursor != null ? Math.min(cursor, h.t.length - 1) : h.t.length - 1, f = fmtN;
+    const h = sim.h, i = cursor != null ? Math.min(cursor, h.t.length - 1) : h.t.length - 1, k = popReal() / sim.N, f = (v) => fmtN(Math.round(v * k));
     els.readout.textContent = t('readout', { d: K.fmt(h.t[i], 1), S: f(h.S[i]), E: f(h.E[i]), I: f(h.I[i]), R: f(h.R[i]), V: f(h.V[i]), D: f(h.D[i]) });
   }
   function updateAria() {
-    const s = sim.summary(), f = fmtN;
+    const s = sim.summary(), k = popReal() / sim.N, f = (v) => fmtN(Math.round(v * k));
     const summ = t('sum_now', { d: K.fmt(s.t, 1), I: f(s.I), S: f(s.S), p: K.fmt(s.peak * 100, 2), pd: K.fmt(s.peakDay, 1) });
     els.stack.setAttribute('aria-label', t('stack_aria', { s: summ }));
     els.inc.setAttribute('aria-label', t('inc_aria', { s: summ }));
