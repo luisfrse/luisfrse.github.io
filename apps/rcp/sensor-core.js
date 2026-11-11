@@ -8,8 +8,27 @@
 (function (root) {
   'use strict';
 
+  /* Perfiles según la superficie: las superficies blandas absorben el golpe y la aceleración medida es mucho menor,
+     así que necesitan umbrales más bajos (floor0 = umbral inicial, minFloor = suelo tras calibrar, k = desviaciones típicas
+     del ruido, rel = fracción de la amplitud reciente, lpHz = paso bajo, fast = la referencia de amplitud decae antes si se pierde una compresión). */
+  const PROFILES = {
+    firm:     { floor0: 0.8,  minFloor: 0.7,  k: 4, rel: 0.40, lpHz: 4, fast: false },
+    manikin:  { floor0: 0.5,  minFloor: 0.4,  k: 4, rel: 0.35, lpHz: 4, fast: true },
+    soft:     { floor0: 0.25, minFloor: 0.18, k: 3, rel: 0.30, lpHz: 5, fast: true },
+    verysoft: { floor0: 0.12, minFloor: 0.08, k: 3, rel: 0.25, lpHz: 5, fast: true }
+  };
+
   function createDetector(opts) {
-    const o = Object.assign({ floor: 0.8, minFloor: 0.7, hpHz: 0.6, lpHz: 4, minInt: 0.30, pauseSec: 2.0, band: [100, 120], onCompression: null }, opts);
+    const o = Object.assign({ floor: 0.8, minFloor: 0.7, hpHz: 0.6, lpHz: 4, minInt: 0.30, pauseSec: 2.0, band: [100, 120], onCompression: null, profile: 'firm', sens: 1, rel: 0.40, k: 4, fast: false }, opts);
+    let noise = 0, lastH = 0;
+    /* Cambia el perfil o la sensibilidad (sens > 1 = más sensible) sin reiniciar el detector. */
+    function setProfile(name, sens) {
+      const P = PROFILES[name] || PROFILES.firm;
+      o.profile = PROFILES[name] ? name : 'firm'; o.sens = sens > 0 ? sens : 1;
+      o.minFloor = P.minFloor; o.k = P.k; o.rel = P.rel; o.lpHz = P.lpHz; o.fast = P.fast;
+      if (!noise) noise = P.floor0;
+      o.floor = Math.max(o.minFloor, noise) / o.sens;
+    }
     let lastT = null, base = 0, lp1 = 0, lp2 = 0, y1 = 0, y2 = 0, t1 = 0, init = false;
     let env = 0, lastPeak = null, firstPeak = null;
     const peaks = [], ivs = [];                         // instantes de compresión e intervalos válidos (≤ pauseSec)
@@ -25,7 +44,7 @@
         else ivs.push({ t, dt });
       } else firstPeak = t;
       lastPeak = t; peaks.push(t);
-      env = env ? 0.7 * env + 0.3 * h : h;
+      env = env ? 0.7 * env + 0.3 * h : h; lastH = h;
       if (o.onCompression) o.onCompression(t, peaks.length);
     }
 
@@ -43,10 +62,13 @@
       const x = m - base, a = alpha(dt, o.lpHz);
       lp1 += a * (x - lp1); lp2 += a * (lp1 - lp2);
       const y = lp2;
-      if (env && lastPeak !== null && t - lastPeak > 2.5) env *= Math.exp(-dt / 2);
+      if (env && lastPeak !== null) {
+        const mi0 = medianInt(), lim = o.fast && mi0 ? Math.max(1.0, 1.6 * mi0) : 2.5;
+        if (t - lastPeak > lim) env *= Math.exp(-dt / (o.fast ? 0.8 : 2));
+      }
       // y1 es la muestra anterior: ¿es un máximo local?
       if (init && y1 > y2 && y1 >= y) {
-        const thr = Math.max(o.floor, 0.4 * env);
+        const thr = Math.max(o.floor, o.rel * env);
         const mi = Math.max(o.minInt, 0.55 * medianInt());
         if (y1 > thr && (lastPeak === null || t1 - lastPeak >= mi)) accept(t1, y1);
       }
@@ -102,10 +124,10 @@
     function endCalibration() {
       if (!calib || calib.length < 10) { calib = null; return o.floor; }
       const sd = Math.sqrt(calib.reduce((a, v) => a + v * v, 0) / calib.length);
-      calib = null; o.floor = Math.max(o.minFloor, 4 * sd); return o.floor;
+      calib = null; noise = o.k * sd; o.floor = Math.max(o.minFloor, noise) / o.sens; return o.floor;
     }
 
-    return { push, snapshot, summary, beginCalibration, endCalibration, get peaks() { return peaks; }, setFloor(f) { o.floor = f; }, get floor() { return o.floor; } };
+    return { push, snapshot, summary, beginCalibration, endCalibration, get peaks() { return peaks; }, setFloor(f) { o.floor = f; }, setProfile, get floor() { return o.floor; }, get lastHeight() { return lastH; }, get profile() { return o.profile; } };
   }
 
   /* generador de señales sintéticas (para pruebas y modo demostración) */
@@ -129,6 +151,6 @@
     return out;
   }
 
-  const api = { createDetector, synth };
+  const api = { createDetector, synth, PROFILES };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.RCPSensor = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -8,7 +8,7 @@
     es: {
       tabSensor: 'Sensor', snTitle: 'Feedback con el acelerómetro', snIntro: 'Con el móvil sobre la mano de compresión, la aplicación detecta cada compresión y te dice si vas lento, rápido o has hecho pausas largas.',
       snDepthTitle: 'La profundidad NO se puede medir de forma fiable con un móvil', snDepthText: 'Esta herramienta solo evalúa el ritmo (compresiones por minuto) y las pausas. Un buen ritmo no garantiza compresiones de 5–6 cm ni que el pecho se reexpanda: no te dé una falsa seguridad. Úsala solo para entrenar; en una emergencia real, céntrate en comprimir fuerte y rápido y sigue al operador del 112.',
-      snPlaceTitle: 'Cómo colocar el móvil', snPlace: ['Pon el móvil plano, con la pantalla hacia arriba, sobre el dorso de la mano con la que comprimes (o fíjalo en el pecho de un maniquí).', 'Sujétalo con la otra mano o con una banda para que se mueva con tu cuerpo y no se caiga.', 'Pulsa «Empezar»; al pedirlo, concede el permiso de movimiento y quédate quieto 2 segundos (calibración).', 'Cuando oigas el pitido, empieza a comprimir. Para terminar, pulsa «Parar».'],
+      snProfTitle: 'Superficie y sensibilidad', snProf: { firm: 'Firme (suelo, maniquí rígido)', manikin: 'Maniquí de entrenamiento (con muelle)', soft: 'Cojín o almohada', verysoft: 'Muy blanda (colchón, peluche, cojín grueso)' }, snSensTitle: 'Sensibilidad', snSensHint: 'Elige dónde comprimes: las superficies blandas absorben el golpe y el móvil nota menos aceleración. Si no cuenta todas las compresiones, elige una superficie más blanda o sube la sensibilidad; si cuenta de más (el móvil se mueve solo), bájala.', snSig: 'Señal / umbral', snSigHint: 'Si la señal queda por debajo del umbral, esa compresión no se cuenta.', snPlaceTitle: 'Cómo colocar el móvil', snPlace: ['Pon el móvil plano, con la pantalla hacia arriba, sobre el dorso de la mano con la que comprimes (o fíjalo en el pecho de un maniquí).', 'Sujétalo con la otra mano o con una banda para que se mueva con tu cuerpo y no se caiga.', 'Pulsa «Empezar»; al pedirlo, concede el permiso de movimiento y quédate quieto 2 segundos (calibración).', 'Cuando oigas el pitido, empieza a comprimir. Para terminar, pulsa «Parar».'],
       snStart: 'Empezar', snStop: 'Parar', snDemo: 'Modo demostración', snDemoStop: 'Parar demostración', snDemoHint: 'Sin sensor (por ejemplo en un ordenador) puedes ver cómo funciona con una señal simulada.',
       snAsk: 'Pidiendo permiso…', snWait: 'Buscando el sensor…', snCalib: 'Calibrando: mantén el móvil quieto sobre la mano ({n} s)', snGo: '¡Comprime!', snDemoOn: 'Demostración: señal simulada (110/min con tramos lentos, rápidos y una pausa)',
       snUnavailable: 'No se detecta el acelerómetro en este dispositivo (es normal en un ordenador). Prueba en un móvil o tableta, o usa el modo demostración.',
@@ -25,7 +25,7 @@
     ca: {
       tabSensor: 'Sensor', snTitle: 'Feedback amb l\'acceleròmetre', snIntro: 'Amb el mòbil sobre la mà de compressió, l\'aplicació detecta cada compressió i et diu si vas lent, ràpid o has fet pauses llargues.',
       snDepthTitle: 'La profunditat NO es pot mesurar de manera fiable amb un mòbil', snDepthText: 'Aquesta eina només avalua el ritme (compressions per minut) i les pauses. Un bon ritme no garanteix compressions de 5–6 cm ni que el pit es reexpandeixi: que no et doni una falsa seguretat. Fes-la servir només per entrenar; en una emergència real, centra\'t a comprimir fort i ràpid i segueix l\'operador del 112.',
-      snPlaceTitle: 'Com col·locar el mòbil', snPlace: ['Posa el mòbil pla, amb la pantalla cap amunt, sobre el dors de la mà amb la qual comprimeixes (o fixa\'l al pit d\'un maniquí).', 'Subjecta\'l amb l\'altra mà o amb una banda perquè es mogui amb el teu cos i no caigui.', 'Prem «Comença»; quan ho demani, concedeix el permís de moviment i queda\'t quiet 2 segons (calibratge).', 'Quan sentis el xiulet, comença a comprimir. Per acabar, prem «Para».'],
+      snProfTitle: 'Superfície i sensibilitat', snProf: { firm: 'Ferma (terra, maniquí rígid)', manikin: 'Maniquí d\'entrenament (amb moll)', soft: 'Coixí o coixinera', verysoft: 'Molt tova (matalàs, peluix, coixí gruixut)' }, snSensTitle: 'Sensibilitat', snSensHint: 'Tria on comprimeixes: les superfícies toves absorbeixen el cop i el mòbil nota menys acceleració. Si no compta totes les compressions, tria una superfície més tova o puja la sensibilitat; si en compta de més (el mòbil es mou sol), baixa-la.', snSig: 'Senyal / llindar', snSigHint: 'Si el senyal queda per sota del llindar, aquella compressió no es compta.', snPlaceTitle: 'Com col·locar el mòbil', snPlace: ['Posa el mòbil pla, amb la pantalla cap amunt, sobre el dors de la mà amb la qual comprimeixes (o fixa\'l al pit d\'un maniquí).', 'Subjecta\'l amb l\'altra mà o amb una banda perquè es mogui amb el teu cos i no caigui.', 'Prem «Comença»; quan ho demani, concedeix el permís de moviment i queda\'t quiet 2 segons (calibratge).', 'Quan sentis el xiulet, comença a comprimir. Per acabar, prem «Para».'],
       snStart: 'Comença', snStop: 'Para', snDemo: 'Mode demostració', snDemoStop: 'Para la demostració', snDemoHint: 'Sense sensor (per exemple en un ordinador) pots veure com funciona amb un senyal simulat.',
       snAsk: 'Demanant permís…', snWait: 'Cercant el sensor…', snCalib: 'Calibrant: mantén el mòbil quiet sobre la mà ({n} s)', snGo: 'Comprimeix!', snDemoOn: 'Demostració: senyal simulat (110/min amb trams lents, ràpids i una pausa)',
       snUnavailable: 'No es detecta l\'acceleròmetre en aquest dispositiu (és normal en un ordinador). Prova en un mòbil o tauleta, o fes servir el mode demostració.',
@@ -42,7 +42,7 @@
     en: {
       tabSensor: 'Sensor', snTitle: 'Accelerometer feedback', snIntro: 'With your phone on your compressing hand, the app detects each compression and tells you if you are too slow, too fast or have paused for long.',
       snDepthTitle: 'Depth can NOT be measured reliably with a phone', snDepthText: 'This tool only assesses rate (compressions per minute) and pauses. A good rate does not guarantee 5–6 cm compressions or full chest recoil: do not let it give you false reassurance. Use it for training only; in a real emergency, focus on pushing hard and fast and follow the 112 call-taker.',
-      snPlaceTitle: 'Where to put the phone', snPlace: ['Lay the phone flat, screen up, on the back of the hand you compress with (or fix it to the chest of a manikin).', 'Hold it with your other hand or a strap so it moves with your body and does not fall.', 'Press "Start"; when asked, allow motion access and stay still for 2 seconds (calibration).', 'When you hear the beep, start compressing. To finish, press "Stop".'],
+      snProfTitle: 'Surface and sensitivity', snProf: { firm: 'Firm (floor, rigid manikin)', manikin: 'Training manikin (with spring)', soft: 'Cushion or pillow', verysoft: 'Very soft (mattress, plush toy, thick cushion)' }, snSensTitle: 'Sensitivity', snSensHint: 'Choose where you compress: soft surfaces absorb the impact so the phone senses less acceleration. If it misses compressions, pick a softer surface or raise the sensitivity; if it counts extra (the phone moves by itself), lower it.', snSig: 'Signal / threshold', snSigHint: 'If the signal stays below the threshold, that compression is not counted.', snPlaceTitle: 'Where to put the phone', snPlace: ['Lay the phone flat, screen up, on the back of the hand you compress with (or fix it to the chest of a manikin).', 'Hold it with your other hand or a strap so it moves with your body and does not fall.', 'Press "Start"; when asked, allow motion access and stay still for 2 seconds (calibration).', 'When you hear the beep, start compressing. To finish, press "Stop".'],
       snStart: 'Start', snStop: 'Stop', snDemo: 'Demo mode', snDemoStop: 'Stop demo', snDemoHint: 'With no sensor (for example on a computer) you can see how it works with a simulated signal.',
       snAsk: 'Asking permission…', snWait: 'Looking for the sensor…', snCalib: 'Calibrating: keep the phone still on your hand ({n} s)', snGo: 'Push!', snDemoOn: 'Demo: simulated signal (110/min with slow, fast and paused stretches)',
       snUnavailable: 'No accelerometer detected on this device (normal on a computer). Try a phone or tablet, or use demo mode.',
@@ -58,6 +58,8 @@
     }
   });
 
+  const CFG = Object.assign({ prof: 'soft', sens: 1 }, AppKit.storage('rcp').get('sensorCfg', {}));
+  const saveCfg = () => AppKit.storage('rcp').set('sensorCfg', CFG);
   const S = { state: 'idle', src: null, det: null, t0: 0, listener: null, tick: 0, demo: 0, calibEnd: 0, summary: null, error: '', lastCue: 0, lastState: '', startedAt: 0, calibTimer: 0 };
   const now = () => performance.now() / 1000;
   const fmtN = (n, d = 0) => (Number.isFinite(n) ? AppKit.fmt(n, d) : '—');
@@ -104,7 +106,7 @@
   async function start(src) {
     stopAll(true);
     S.src = src; S.error = ''; S.summary = null; S.gotSample = false;
-    S.det = RCPSensor.createDetector();
+    S.det = RCPSensor.createDetector(); S.det.setProfile(CFG.prof, CFG.sens);
     if (src === 'sensor') {
       if (!('DeviceMotionEvent' in window)) return fail('snUnavailable');
       if (window.isSecureContext === false) return fail('snInsecure');
@@ -160,6 +162,7 @@
     if (S.state === 'calib') { const e = $('#snAlert'); if (e) { e.textContent = v.msg; e.className = 'verdict wait'; } return; }
     set('snRateV', Number.isFinite(s.rate) ? Math.round(s.rate) : '—');
     set('snCnt', s.count); set('snReg2', Number.isFinite(s.regularity) ? s.regularity + '%' : '—');
+    set('snSig', S.det.lastHeight ? `${fmtN(S.det.lastHeight, 2)} / ${fmtN(S.det.floor, 2)}` : `— / ${fmtN(S.det.floor, 2)}`);
     set('snSince2', s.count ? T('snSeconds', { n: fmtN(s.sinceLast, 1) }) : '—');
     set('snPause2', T('snSeconds', { n: fmtN(s.pauseTotal, 1) })); set('snCcf2', Number.isFinite(s.ccf) ? s.ccf + '%' : '—');
     const al = $('#snAlert'); if (al) { al.textContent = v.msg; al.className = 'verdict ' + v.k; }
@@ -204,6 +207,7 @@
         <div class="row" style="justify-content:center"><span class="verdict wait" id="snAlert" role="status" aria-live="polite">${esc(S.state === 'calib' ? T('snCalib', { n: 3 }) : T('snStarting'))}</span></div>
         <div class="live-stats">
           <div class="stat"><b id="snCnt">0</b><span>${esc(T('snCount'))}</span></div>
+          <div class="stat"><b id="snSig">—</b><span>${esc(T('snSig'))}</span><small>${esc(T('snSigHint'))}</small></div>
           <div class="stat"><b id="snReg2">—</b><span>${esc(T('snReg'))}</span></div>
           <div class="stat"><b id="snSince2">—</b><span>${esc(T('snSince'))}</span></div>
           <div class="stat"><b id="snPause2">0 s</b><span>${esc(T('snPause'))}</span></div>
@@ -221,6 +225,11 @@
             ${placeSvg()}
             <h3 style="margin-top:14px">${esc(T('snPlaceTitle'))}</h3>
             <ol class="plain-steps">${T('snPlace').map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+            <div class="sn-sens">
+              <label class="field"><span><b>${esc(T('snProfTitle'))}</b></span><select id="snProf">${['firm', 'manikin', 'soft', 'verysoft'].map(k => `<option value="${k}"${CFG.prof === k ? ' selected' : ''}>${esc(T('snProf')[k])}</option>`).join('')}</select></label>
+              <label class="field"><span><b>${esc(T('snSensTitle'))}</b> <output id="snSensV">×${AppKit.fmt(CFG.sens, 1)}</output></span><input type="range" id="snSens" min="0.5" max="3" step="0.1" value="${CFG.sens}" aria-label="${esc(T('snSensTitle'))}"></label>
+              <small class="muted">${esc(T('snSensHint'))}</small>
+            </div>
             <div class="row">
               <button type="button" class="btn big" id="snStart" ${S.state === 'ask' || S.state === 'wait' ? 'disabled' : ''}>${esc(active && S.src === 'sensor' ? T('snStop') : T('snStart'))}</button>
               <button type="button" class="btn ghost" id="snDemo" ${busy && !(active && S.src === 'demo') ? 'disabled' : ''}>${esc(active && S.src === 'demo' ? T('snDemoStop') : T('snDemo'))}</button>
@@ -234,6 +243,9 @@
       </div>`;
     $('#snStart').addEventListener('click', () => { if (active && S.src === 'sensor') finish(); else start('sensor'); });
     $('#snDemo').addEventListener('click', () => { if (active && S.src === 'demo') finish(); else start('demo'); });
+    const pr = $('#snProf'), se = $('#snSens'), apply = () => { saveCfg(); if (S.det) S.det.setProfile(CFG.prof, CFG.sens); };
+    if (pr) pr.addEventListener('change', () => { CFG.prof = pr.value; apply(); });
+    if (se) se.addEventListener('input', () => { CFG.sens = +se.value; $('#snSensV').textContent = '×' + AppKit.fmt(CFG.sens, 1); apply(); });
     const s2 = $('#snStop2'); if (s2) s2.addEventListener('click', finish);
     const again = $('#snAgain'); if (again) again.addEventListener('click', () => { S.state = 'idle'; S.summary = null; render(); });
     const cp = $('#snCopy'); if (cp) cp.addEventListener('click', async () => { if (await R.copy(summaryText(S.summary))) AppKit.toast(T('snCopied')); });
