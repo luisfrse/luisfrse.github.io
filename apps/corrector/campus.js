@@ -182,7 +182,7 @@
         <div class="stat"><b style="font-size:1.1rem">${esc(a.title)}</b>
           <span>${a.date ? esc(K.fmtDate(a.date)) : ''}</span>
           <span><span class="chip ${a.has_key ? 'accent' : 'warn'}">${T(a.has_key ? 'cpKeyYes' : 'cpKeyNo')}</span> ${a.nq ? a.nq + ' ' + T('qs') : ''}${a.scanned ? ' · ' + T('cpCorrN', { n: a.scanned }) : ''}</span>
-          <div class="row" style="margin-top:10px">${String(a.id) === cur ? `<span class="chip accent">${T('cpCurrent')}</span>` : `<button class="btn small" data-act="c:open" data-id="${a.id}">${T('cpOpen')}</button>`}</div></div>`;
+          <div class="row" style="margin-top:10px">${String(a.id) === cur ? `<span class="chip accent">${T('cpCurrent')}</span>` : `<button class="btn small" data-act="c:open" data-id="${a.id}" data-key="${a.has_key ? 1 : 0}">${T('cpOpen')}</button>`}</div></div>`;
       /* agrupadas por asignatura (por orden alfabético); dentro de cada una, la más reciente primero */
       const by = new Map(); r.exams.forEach(a => { if (!by.has(a.subject_title)) by.set(a.subject_title, []); by.get(a.subject_title).push(a); });
       const subs = [...by.keys()].sort((x, y) => x.localeCompare(y, K.locale()));
@@ -218,7 +218,7 @@
     });
     d.addEventListener('close', () => d.remove());
   }
-  function openAssessment(id) { if (active() && String(Y.id) === String(id)) { X().showTab('campus'); return; } Y.id = String(id); Y.state = 'off'; Y.res = null; S.base = null; S.at = 0; try { history.replaceState(null, '', '?assessment=' + encodeURIComponent(id)); } catch (_) { /* nada */ } load(false, 'campus'); }
+  function openAssessment(id, tab) { tab = tab || 'campus'; if (active() && String(Y.id) === String(id)) { X().showTab(tab); return; } Y.id = String(id); Y.state = 'off'; Y.res = null; S.base = null; S.at = 0; try { history.replaceState(null, '', '?assessment=' + encodeURIComponent(id)); } catch (_) { /* nada */ } load(false, tab); }
 
   function render() {
     if (Y.state === 'loading' || Y.state === 'off') return `<section class="panel"><p>${T('cpLoading')}</p></section>`;
@@ -245,7 +245,7 @@
     if (!MODE) return;
     $('#app').addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-act^="c:"]'); if (!b) return; const a = b.dataset.act;
-      if (a === 'c:new') newAssessment(); else if (a === 'c:open') openAssessment(b.dataset.id); else if (a === 'c:reload') load(false); else if (a === 'c:key') saveKey(true); else if (a === 'c:send') send();
+      if (a === 'c:new') newAssessment(); else if (a === 'c:open') openAssessment(b.dataset.id, b.dataset.key === '1' ? 'scan' : 'key'); else if (a === 'c:reload') load(false); else if (a === 'c:key') saveKey(true); else if (a === 'c:send') send();
       else if (a === 'c:pv') X().openPreview('personal'); else if (a === 'c:pr') X().doPrint(X().docFor('personal'));
     });
   }
@@ -255,5 +255,5 @@
     X().TABS.splice(X().TABS.indexOf('scan') + 1, 0, 'campus'); watch(); started = true;      // la pestaña solo se muestra cuando el examen abierto es del campus
     if (Y.id && /^\d+$/.test(Y.id)) { X().showTab(hashTab()); load(true, hashTab()); } else { Y.id = null; followExam(); }
   }
-  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE };
+  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
 })();

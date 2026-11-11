@@ -256,6 +256,7 @@
       <div>
         <h2>${esc(exam.name || t('untitled'))}</h2>
         <div class="meta">
+          ${exam.campus && exam.campus.subjectTitle ? `<span class="chip accent">${CAMPUS ? '☁ ' : ''}${esc(exam.campus.subjectTitle)}</span>` : ''}
           <span class="chip">${exam.nq} ${t('qs')} · ${exam.nopt} ${t('opts')}</span>
           <span class="chip">${exam.students.length} ${t('studentsN')}</span>
           ${st ? `<span class="chip accent">${t('sMean')}: ${K.fmt(st.mean, 2)} / ${K.fmt(exam.scoring.maxGrade, 2)}</span>` : ''}
@@ -264,9 +265,7 @@
         </div>
       </div>
       <div class="exam-switch no-print">
-        <label class="sr-only" for="examsel">${t('switchExam')}</label>
-        <select id="examsel" title="${esc(t('switchExam'))}">${examList().map(e => `<option value="${e.id}"${e.id === exam.id ? ' selected' : ''}>${esc(e.name || t('untitled'))} · ${esc(K.fmtDate(e.date))}</option>`).join('')}</select>
-        <button type="button" class="btn small" data-act="newExam">+ ${t('newExam')}</button>
+        <button type="button" class="btn exam-pick" data-act="pick" aria-haspopup="dialog">⇄ ${t('pickChange')}</button>
       </div>`;
     renderStatus();
     $$('.tabs [data-tab="students"] .n').forEach(n => { n.textContent = exam.students.length || ''; });
@@ -694,6 +693,7 @@
       <div id="view" role="tabpanel"></div>`;
     renderView();
     C.uiCampus.followExam();
+    C.uiPicker.touch(exam);
   }
 
   /* ---------------------------------------------------------- eventos */
@@ -708,6 +708,7 @@
       case 'preset': exam.scoring.preset = v; changed(); renderView(); break;
       case 'annulMode': exam.annulMode = v; changed(); renderView(); break;
       case 'cols': ui.sheet.cols = +v; save(); renderView(); break;
+      case 'pick': C.uiPicker.open(); break;
       case 'newExam': {
         if (isBlank(exam)) { ui.tab = 'exam'; renderView(); window.scrollTo({ top: 0, behavior: 'smooth' }); K.toast(t('blankKept'), 3200); const nm = $('[data-f="name"]'); if (nm) nm.focus(); break; }
         persist(); exam = newExam(); persist(); ui.kv = 'A'; ui.sel = null; ui.tab = 'exam'; renderView(); announceOpen();
@@ -886,7 +887,12 @@
   }
 
   /* ---------------------------------------------------------- arranque */
+  const fire = (act) => { const b = document.createElement('button'); b.dataset.act = act; b.hidden = true; app.append(b); b.click(); b.remove(); };
   C.ctx = { get exam() { return exam; }, ui, changed, TABS,
+    /* para el selector de examen */
+    listExams() { return examIndex().map(e => ({ id: e.id, name: e.name, date: e.date, nq: e.nq, students: (e.students || []).length, scanned: (e.students || []).filter(x => x.scanned).length, campusId: e.campus && e.campus.id != null ? e.campus.id : null })); },
+    openLocal(id) { if (openExam(id)) { renderShell(); announceOpen(); } },
+    newExam() { fire('newExam'); }, demo() { fire('demo'); },
     /* abre (o crea) un examen completo a partir de un objeto; lo usa el modo Campus */
     openExamObject(o) { if (exam && exam.id !== o.id) { if (!dropIfBlank()) persist(); } exam = fix(o); examsCache = null; ui.kv = exam.versions[0]; ui.sel = exam.students[0] ? exam.students[0].id : null; persist(); renderShell(); },
     showTab(tb) { ui.tab = tb; renderShell(); }, renderView, fix, flush: persist, score, fileName, copyText, openPreview, doPrint, docFor,

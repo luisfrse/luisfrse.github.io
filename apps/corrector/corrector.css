@@ -287,3 +287,18 @@ dialog.kit-dialog.wide{max-width:96vw;max-height:94vh;overflow:auto}
 .corr-head h2{margin:0 0 6px}
 details.help summary{padding:8px 14px;font-size:.92rem}
 details.help summary::before{width:20px;height:20px;font-size:.8rem}
+
+/* selector de examen */
+.exam-pick{white-space:nowrap}
+dialog.pick{width:min(640px,94vw);max-height:88vh;display:flex;flex-direction:column;gap:12px}
+dialog.pick[open]{display:flex}
+.pk-list{overflow:auto;min-height:120px;max-height:56vh;display:flex;flex-direction:column;gap:6px;padding-right:2px}
+.pk-h{margin:10px 0 2px;font:700 .8rem var(--font-body);color:var(--muted);text-transform:none;letter-spacing:.02em}
+.pk-subj{margin:8px 0 0;font-weight:700;color:var(--accent)}
+.pk-row{display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--panel-2,rgba(255,255,255,.04));color:inherit;font:inherit;cursor:pointer;min-height:48px}
+.pk-row:hover,.pk-row:focus-visible{border-color:var(--accent);background:var(--panel)}
+.pk-row.cur{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.pk-row b{grid-column:1}.pk-sub{grid-column:1;color:var(--muted);font-size:.85rem}.pk-chips{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pk-empty{margin:4px 2px}.pk-foot{justify-content:flex-start;padding-top:4px;border-top:1px solid var(--line)}
+.pk-list>*{flex:none}.pk-row{line-height:1.35;align-content:center}
+.pk-list{scrollbar-width:thin;scrollbar-color:var(--accent) transparent}
