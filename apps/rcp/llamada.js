@@ -6,7 +6,7 @@
 
   R.addI18N({
     es: {
-      tabCall: '112', callTitle: 'Llama al 112', callBtn: 'Llamar al 112', callBtnSub: 'Toca para marcar ahora',
+      callConfirmTitle: '¿Quieres llamar a emergencias?', callConfirmMsg: 'Vas a llamar al 112 de verdad. Si solo estás practicando o probando la aplicación, cancela: una llamada falsa ocupa la línea de emergencias.', callConfirmOk: 'Sí, llamar al 112', callConfirmNo: 'No, cancelar', tabCall: '112', callTitle: 'Llama al 112', callBtn: 'Llamar al 112', callBtnSub: 'Toca para marcar ahora',
       callNote: '112 es el número europeo de emergencias. Si estás en otro país, marca su número local de emergencias.',
       callTips: 'Mientras llamas', callTipList: [
         { t: 'Pon el teléfono en altavoz', d: 'Así puedes comprimir y escuchar al operador a la vez.' },
@@ -38,7 +38,7 @@
       toMetro: 'Abrir el metrónomo', callRescue: 'Cuando cuelgues o mientras esperas, empieza o continúa la RCP.'
     },
     ca: {
-      tabCall: '112', callTitle: 'Truca al 112', callBtn: 'Truca al 112', callBtnSub: 'Toca per marcar ara',
+      callConfirmTitle: 'Vols trucar a emergències?', callConfirmMsg: "Estàs a punt de trucar al 112 de debò. Si només estàs practicant o provant l'aplicació, cancel·la: una trucada falsa ocupa la línia d'emergències.", callConfirmOk: 'Sí, truca al 112', callConfirmNo: 'No, cancel·la', tabCall: '112', callTitle: 'Truca al 112', callBtn: 'Truca al 112', callBtnSub: 'Toca per marcar ara',
       callNote: '112 és el número europeu d\'emergències. Si ets en un altre país, marca el seu número local d\'emergències.',
       callTips: 'Mentre truques', callTipList: [
         { t: 'Posa el telèfon en altaveu', d: 'Així pots comprimir i escoltar l\'operador alhora.' },
@@ -70,7 +70,7 @@
       toMetro: 'Obre el metrònom', callRescue: 'Quan pengis o mentre esperes, comença o continua la RCP.'
     },
     en: {
-      tabCall: '112', callTitle: 'Call 112', callBtn: 'Call 112', callBtnSub: 'Tap to dial now',
+      callConfirmTitle: 'Do you want to call emergency services?', callConfirmMsg: 'You are about to really call 112. If you are only practising or testing the app, cancel: a false call ties up the emergency line.', callConfirmOk: 'Yes, call 112', callConfirmNo: 'No, cancel', tabCall: '112', callTitle: 'Call 112', callBtn: 'Call 112', callBtnSub: 'Tap to dial now',
       callNote: '112 is the European emergency number. If you are in another country, dial its local emergency number.',
       callTips: 'While you call', callTipList: [
         { t: 'Put the phone on speaker', d: 'So you can do compressions and hear the call-taker at the same time.' },
@@ -194,6 +194,10 @@
       </div>`;
     renderLoc();
     $('#addr').addEventListener('input', e => { S.addr = e.target.value; });
+    $('#call112').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (await AppKit.confirm(T('callConfirmMsg'), { title: T('callConfirmTitle'), okText: T('callConfirmOk'), cancelText: T('callConfirmNo') })) window.location.href = 'tel:112';
+    });
     $('#goMetro').addEventListener('click', () => R.go('metro'));
     $('#scriptReset').addEventListener('click', () => { S.checks = {}; render(); });
     $$('#callRoot .script input').forEach(inp => inp.addEventListener('change', () => {
