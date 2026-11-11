@@ -30,8 +30,6 @@
 .banner .row{margin-top:6px;gap:8px}
 
 /* ---------- Simulación ---------- */
-.sim-grid{display:grid;gap:clamp(16px,2.5vw,26px);grid-template-columns:minmax(0,1fr)}
-@media (min-width:1000px){.sim-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);align-items:start}}
 .world-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .world-head h2{margin:0}
 .legend{display:flex;flex-wrap:wrap;gap:6px}
@@ -167,3 +165,14 @@
 #bandout{min-height:1.4em;color:#7fd3ff}
 @media (max-width:520px){.pgroup{width:100%}.seg button{padding:7px 11px}.toolbar .btn{min-width:78px;padding:10px 14px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Disposición: simulación fija a un lado (escritorio) para ver el efecto de los parámetros al instante */
+.epi-layout{display:grid;gap:clamp(16px,2.5vw,26px);grid-template-columns:minmax(0,1fr)}
+.epi-live{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);align-content:start}
+.epi-rest{display:grid;gap:clamp(16px,2.5vw,26px);min-width:0}
+@media (min-width:1100px){
+  .epi-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);grid-template-areas:"intro live" "rest live";align-items:start}
+  .epi-intro{grid-area:intro}.epi-rest{grid-area:rest}
+  .epi-live{grid-area:live;position:sticky;top:10px;max-height:calc(100vh - 20px);overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
+}
+@media (min-width:1100px){.epi-live .world-wrap{max-width:min(100%,46vh);margin-inline:auto}}

@@ -15,9 +15,10 @@
 </head>
 <body>
 <main class="kit-main" id="app">
+<div class="epi-layout">
 
   <!-- Lugar, patógeno y ficha -->
-  <section class="panel intro">
+  <section class="panel intro epi-intro">
     <div class="intro-text">
       <h2 data-i18n="intro_h"></h2>
       <p class="muted" data-i18n="intro_p"></p>
@@ -28,8 +29,8 @@
     <div class="banner challenge-banner" id="challenge-banner" hidden></div>
   </section>
 
-  <!-- Simulación y gráficos -->
-  <section class="sim-grid">
+  <!-- Simulación y gráficos: columna fija a un lado mientras se ajustan los parámetros -->
+  <section class="epi-live" aria-label="Simulación">
     <div class="panel world-panel">
       <div class="world-head">
         <h2 data-i18n="world_h"></h2>
@@ -51,6 +52,7 @@
         <span class="small muted" data-i18n="speed_l"></span>
         <div class="seg" id="speed" role="group" data-i18n-aria="speed_l"></div>
         <label class="check"><input type="checkbox" id="opt-radius"><span data-i18n="opt_radius"></span></label>
+        <label class="check"><input type="checkbox" id="opt-live"><span data-i18n="opt_live"></span></label>
       </div>
       <p class="muted small" data-i18n="click_hint"></p>
     </div>
@@ -80,6 +82,8 @@
       <p class="sr-only" id="live" aria-live="polite"></p>
     </div>
   </section>
+
+  <div class="epi-rest">
 
   <!-- Cifras absolutas y capacidad asistencial -->
   <section class="panel">
@@ -128,6 +132,8 @@
   <section class="panel explain" id="explain"><div id="explain-body"></div>
     <details class="credits"><summary data-i18n="cr_h"></summary><div id="credits"></div></details>
   </section>
+  </div>
+</div>
 </main>
 
 <script src="../shared/app.js"></script>

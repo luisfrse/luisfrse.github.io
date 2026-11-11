@@ -40,7 +40,7 @@
   const CHAL_ORDER = ['measles', 'flat', 'cap', 'eff', 'ebola'];
 
   let P = null, scenId = 'measles', speedIdx = K.clamp(store.get('speed', 3), 0, SPEEDS.length - 1);
-  let showRadius = !!store.get('radius', false), showSEIR = store.get('seir', true) !== false, showCF = store.get('cf', true) !== false;
+  let showRadius = !!store.get('radius', false), showSEIR = store.get('seir', true) !== false, showCF = store.get('cf', true) !== false, liveApply = store.get('live', true) !== false, liveT = 0;
   let done = store.get('done', {});
   let sim = null, ode = null, cf = null, dBase = null, view = null, domain = null;
   const geoCache = {};
@@ -400,8 +400,14 @@
     if (isMap()) { Panels.renderMapSide(); updateMapInfo(); }
     if (autoplay && !RM) play(); else if (RM) { els.msg.textContent = t('world_msg_rm'); els.msg.hidden = false; }
   }
-  const applyReset = K.debounce(() => restart(false), 280);
-  function needReset() { if (!sim || sim.t === 0 || sim.finished) applyReset(); else { dirty = true; els.dirty.hidden = false; els.apply.hidden = false; } }
+  /* Al cambiar un parámetro la simulación se reinicia al momento (y sigue en marcha si lo estaba); con «aplicar al instante» desactivado se pide reiniciar. */
+  function needReset() {
+    const unstarted = !sim || sim.t === 0 || sim.finished;
+    if (unstarted || liveApply) {
+      const wp = !!playing && !!sim && !sim.finished;
+      clearTimeout(liveT); liveT = setTimeout(() => restart(wp), 260);
+    } else { dirty = true; els.dirty.hidden = false; els.apply.hidden = false; }
+  }
   function onFinished() {
     const s = sim.summary();
     els.msg.textContent = t('world_msg_done', { d: K.fmt(sim.finishedAt ?? s.t, 1), p: pct(s.attack, 1) }); els.msg.hidden = false;
@@ -427,14 +433,14 @@
       if (isMap() && geo() && !geo().features.some(f => f.id === P.origin)) P.origin = defaultOrigin(geo());
       prepareGeo(); saveP();
       Panels.renderPlaces(); Panels.renderMapSide(); $('#map-panel').hidden = !isMap();
-      renderControls(); recomputeODE(); restart(!opts.noplay);
+      renderControls(); recomputeODE(); restart(false);
     }).catch(() => K.toast(t('err_geo')));
   }
   function loadPathogen(id) {
     if (id === 'custom') { scenId = 'custom'; Panels.renderPathogens(); return; }
     scenId = id; applyPathogen(id, true);
     if (!challenge) { capLine = null; } challenge = null; capLine = null; saveP(); store.set('scen', scenId);
-    refreshDerive(); Panels.renderPathogens(); Panels.renderMeasures(); Panels.renderVaccines(); renderControls(); renderChallenges(); recomputeODE(); restart(true);
+    refreshDerive(); Panels.renderPathogens(); Panels.renderMeasures(); Panels.renderVaccines(); renderControls(); renderChallenges(); recomputeODE(); restart(false);
   }
 
   /* ================= retos ================= */
@@ -549,7 +555,7 @@
     $('#t-stack').textContent = t('t_stack'); $('#t-inc').textContent = t('t_inc');
     $('#inc-key').innerHTML = `<span class="chip" style="color:#ff5d73"><i></i>${K.esc(t('k_agents'))}</span><span class="chip dash" style="color:#fff"><i></i>${K.esc(t('k_seir'))}</span><span class="chip dash" style="color:#f5b82e"><i></i>${K.esc(t('k_cf'))}</span>${ref ? `<span class="chip dash" style="color:#5eead4"><i></i>${K.esc(t('k_ref'))}</span>` : ''}${bands ? `<span class="chip" style="color:#7fd3ff"><i></i>${K.esc(t('k_bands'))}</span>` : ''}`;
     els.ref.textContent = ref ? t('ref_clear') : t('ref_set');
-    $('#opt-radius').checked = showRadius; $('#opt-seir').checked = showSEIR; $('#opt-cf').checked = showCF;
+    $('#opt-radius').checked = showRadius; $('#opt-live').checked = liveApply; $('#opt-seir').checked = showSEIR; $('#opt-cf').checked = showCF;
     $('#explain-body').innerHTML = `<h2>${K.esc(t('ex_h'))}</h2><div class="banner disc">${K.esc(t('disc'))}</div>` +
       ['ex1', 'ex2', 'ex3', 'ex4', 'ex5', 'ex6'].map((k, i) => `<details ${i === 0 ? 'open' : ''}><summary>${K.esc(t(k + '_t'))}</summary>${k === 'ex1' ? `<ul>${STATES.map(s => `<li><span class="sw" style="background:${COL[s]}"></span><b>${K.esc(t('st_' + s))}</b>: ${K.esc(t('sd_' + s))}</li>`).join('')}</ul>` : ''}<p>${K.esc(t(k + '_p'))}</p></details>`).join('');
     renderLegend(); Panels.renderAll(); renderControls(); renderChallenges(); renderBanner(); updateRatio(); updateMapInfo();
@@ -619,7 +625,7 @@
     measuresChanged() { refreshDerive(); sim.setParams(P); saveP(); Panels.updateMeasureSummary(); Panels.renderCard(); recomputeODE(); render.len = -1; if (!playing) render(); },
     vaccinesChanged() { refreshDerive(); saveP(); Panels.updateVaxInfo(); Panels.renderCard(); recomputeODE(); needReset(); },
     mapParamChanged(k, reset) { saveP(); sim.setParams(P); if (reset) needReset(); else { render.len = -1; if (!playing) render(); } },
-    setOrigin(id) { P.origin = id; saveP(); restart(true); }
+    setOrigin(id) { P.origin = id; saveP(); restart(playing); }
   };
   const Panels = window.EpiPanels;
 
@@ -631,6 +637,7 @@
     $('#btn-reset').addEventListener('click', () => restart(false));
     els.apply.addEventListener('click', () => restart(true));
     $('#speed').addEventListener('click', e => { const b = e.target.closest('[data-speed]'); if (!b) return; speedIdx = +b.dataset.speed; store.set('speed', speedIdx); $('#speed').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.speed === speedIdx))); });
+    $('#opt-live').addEventListener('change', e => { liveApply = e.target.checked; store.set('live', liveApply); });
     $('#opt-radius').addEventListener('change', e => { showRadius = e.target.checked; store.set('radius', showRadius); render.len = -1; render(); });
     $('#opt-seir').addEventListener('change', e => { showSEIR = e.target.checked; store.set('seir', showSEIR); drawCharts(); });
     $('#opt-cf').addEventListener('change', e => { showCF = e.target.checked; store.set('cf', showCF); drawCharts(); });

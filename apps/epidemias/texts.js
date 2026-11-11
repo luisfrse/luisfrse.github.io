@@ -83,6 +83,7 @@
     /* simulación */
     world_h: ['Población', 'Població', 'Population'], btn_play: ['Iniciar', 'Inicia', 'Start'], btn_resume: ['Reanudar', 'Reprèn', 'Resume'], btn_pause: ['Pausar', 'Pausa', 'Pause'],
     btn_step: ['+1 día', '+1 dia', '+1 day'], btn_week: ['+7 días', '+7 dies', '+7 days'], btn_reset: ['Reiniciar', 'Reinicia', 'Reset'], speed_l: ['Velocidad', 'Velocitat', 'Speed'],
+    opt_live: ['Aplicar los cambios al instante', 'Aplica els canvis a l\'instant', 'Apply changes instantly'],
     opt_radius: ['Mostrar radio de contacto', 'Mostra el radi de contacte', 'Show contact radius'],
     click_hint: ['Haz clic en la población o el mapa para introducir casos nuevos.', 'Fes clic a la població o al mapa per introduir casos nous.', 'Click the population or map to introduce new cases.'],
     world_msg_done: ['La epidemia terminó el día {d}: se infectó el {p} % de la población.', 'L\'epidèmia ha acabat el dia {d}: s\'ha infectat el {p} % de la població.', 'The epidemic ended on day {d}: {p}% of the population was infected.'],
