@@ -10,6 +10,7 @@
   const esc = K.esc;
   const LET = ['A', 'B', 'C', 'D', 'E'];
   const VERS = ['A', 'B', 'C', 'D'];
+  const CAMPUS = document.documentElement.dataset.mode === 'campus';
   const TABS = ['exam', 'key', 'students', 'sheet', 'scan', 'results', 'print', 'sync'];
   /* en el campus todo se guarda ya en el servidor: la pestaña de sincronizar con carpetas/archivos sobra */
   if (document.documentElement.dataset.mode === 'campus') TABS.splice(TABS.indexOf('sync'), 1);
@@ -47,6 +48,10 @@
     e.maps = e.maps || {};
     e.versions.forEach(v => { e.maps[v] = (v !== 'A' && isPerm(e.maps[v])) ? e.maps[v].slice() : Array.from({ length: e.nq }, (_, i) => i); });
     Object.keys(e.maps).forEach(v => { if (!e.versions.includes(v)) delete e.maps[v]; });
+    /* opciones desordenadas por versión: opts[v][i][letra nueva] = letra de la A (índices) */
+    const isOpt = (a) => Array.isArray(a) && a.length === e.nopt && a.every(x => Number.isInteger(x) && x >= 0 && x < e.nopt) && new Set(a).size === e.nopt;
+    e.opts = e.opts || {};
+    Object.keys(e.opts).forEach(v => { const o = e.opts[v]; if (v === 'A' || !e.versions.includes(v) || !Array.isArray(o) || o.length !== e.nq || !o.every(isOpt)) delete e.opts[v]; });
     e.annulMode = e.annulMode === 'exclude' ? 'exclude' : 'credit';
     e.weightsOn = !!e.weightsOn;
     e.weights = fit(e.weights, e.nq, 1).map(w => (Number.isFinite(+w) ? +w : 1));
@@ -165,7 +170,8 @@
     const upper = k ? sorted.slice(0, k) : [], lower = k ? sorted.slice(-k) : [];
     const skip = (st) => st === 'n' || st === 'x' || st === 'a';
     const inv = {}; exam.versions.forEach(v => { inv[v] = []; (exam.maps[v] || []).forEach((m, i) => { inv[v][m] = i; }); });
-    const at = (s, r, m) => { const i = inv[s.version][m]; return { i, st: r.per[i], a: s.answers[i] || '', key: exam.keys[s.version][i] }; };
+    const canon = (v, i, L) => { const o = exam.opts[v] && exam.opts[v][i]; const x = LET.indexOf(L); return o && x >= 0 ? LET[o[x]] : L; };
+    const at = (s, r, m) => { const i = inv[s.version][m]; return { i, st: r.per[i], a: canon(s.version, i, s.answers[i] || ''), key: canon(s.version, i, exam.keys[s.version][i]) }; };
     const out = [];
     for (let m = 0; m < exam.nq; m++) {
       const cnt = {}; letters().forEach(L => { cnt[L] = 0; }); cnt['-'] = 0;
@@ -254,14 +260,14 @@
           <span class="chip">${exam.students.length} ${t('studentsN')}</span>
           ${st ? `<span class="chip accent">${t('sMean')}: ${K.fmt(st.mean, 2)} / ${K.fmt(exam.scoring.maxGrade, 2)}</span>` : ''}
           <span class="chip" id="savechip"></span>${C.uiSync.chipHtml()}
+          <span class="chip lock">${CAMPUS ? '☁' : '🔒'} ${t(CAMPUS ? 'privacyCampus' : 'privacy')}</span>
         </div>
       </div>
       <div class="exam-switch no-print">
         <label class="sr-only" for="examsel">${t('switchExam')}</label>
         <select id="examsel" title="${esc(t('switchExam'))}">${examList().map(e => `<option value="${e.id}"${e.id === exam.id ? ' selected' : ''}>${esc(e.name || t('untitled'))} · ${esc(K.fmtDate(e.date))}</option>`).join('')}</select>
         <button type="button" class="btn small" data-act="newExam">+ ${t('newExam')}</button>
-      </div>
-      <span class="chip lock">🔒 ${t('privacy')}</span>`;
+      </div>`;
     renderStatus();
     $$('.tabs [data-tab="students"] .n').forEach(n => { n.textContent = exam.students.length || ''; });
     const filled = exam.versions.reduce((a, v) => a + exam.keys[v].filter(Boolean).length, 0), tot = exam.nq * exam.versions.length;
@@ -312,7 +318,7 @@
     ${C.uiCampus.listPanel()}
     <section class="panel stack">
       <div class="row spread"><h2 style="margin:0">${t('myExams')}</h2>
-        <div class="row"><button class="btn small" data-act="newExam">+ ${t('newExam')}</button><button class="btn ghost small" data-act="demo">${t('demo')}</button></div></div>
+        <div class="row"><button class="btn ghost small" data-act="demo">${t('demo')}</button></div></div>
       <div class="grid cols-2">${list.map(e => `
         <div class="stat" ${e.id === exam.id ? 'data-act="gotop"' : `data-act="openExam" data-id="${e.id}"`} style="cursor:pointer;${e.id === exam.id ? 'border-color:var(--accent)' : ''}">
           <b style="font-size:1.15rem">${esc(e.name || t('untitled'))}</b>
@@ -324,11 +330,11 @@
           </div>
         </div>`).join('')}</div>
     </section>
-    <section class="panel stack">
+    ${CAMPUS ? '' : `<section class="panel stack">
       <h2>${t('backup')}</h2><p class="muted">${t('backupNote')}</p>
       <div class="row"><button class="btn small" data-act="exportBackup">${t('exportBackup')}</button><button class="btn ghost small" data-act="importBackup">${t('importBackup')}</button>
         <input type="file" id="bfile" accept="application/json,.json" hidden></div>
-    </section>`;
+    </section>`}`;
   }
 
   function bubbleRow(cls, q, cur, keyL, showCorr) {
@@ -340,6 +346,31 @@
     }).join('');
   }
 
+  /* ---------- generar una versión desordenando la A ---------- */
+  function genVersion(v, shufQ, shufO) {
+    const rnd = Math.random, ident = Array.from({ length: exam.nq }, (_, i) => i);
+    const map = shufQ ? K.shuffle(ident.slice(), rnd) : ident.slice();
+    const opts = [], key = [];
+    map.forEach((m, i) => {
+      const p = shufO ? K.shuffle(Array.from({ length: exam.nopt }, (_, j) => j), rnd) : Array.from({ length: exam.nopt }, (_, j) => j);   // p[letra nueva] = letra de la A
+      opts.push(p); const kA = exam.keys.A[m]; key[i] = kA ? LET[p.indexOf(LET.indexOf(kA))] : '';
+    });
+    exam.maps[v] = map; exam.keys[v] = key; if (shufO) exam.opts[v] = opts; else delete exam.opts[v];
+  }
+  function genTableText(v) {
+    const map = exam.maps[v] || [], o = exam.opts[v];
+    const rows = map.map((m, i) => t('genRow', { v, n: i + 1, m: m + 1 }) + (o ? '   (' + o[i].map((a, j) => LET[j].toLowerCase() + '=' + LET[a]).join(' ') + ')' : ''));
+    return rows.concat(['', t('genKeyLine', { v, k: ansString(exam.keys[v]) })]).join('\n');
+  }
+  function genPanel(v) {
+    const moved = (exam.maps[v] || []).some((m, i) => m !== i) || !!exam.opts[v];
+    return `<section class="panel stack"><h2 style="margin:0">${t('genTitle')}</h2><p class="muted" style="margin:0">${t('genHelp')}</p>
+      <label class="check"><input type="checkbox" id="genq" checked> ${t('genQ')}</label>
+      <label class="check"><input type="checkbox" id="geno" checked> ${t('genO')}</label>
+      <div class="row"><button class="btn" data-act="kgen">${t('genBtn', { v })}</button></div>
+      ${moved ? `<details class="stack" open><summary>${t('genTable', { v })}</summary><small class="muted">${t('genTableHelp', { v })}</small><pre style="white-space:pre-wrap;font-size:.85rem;max-height:320px;overflow:auto;margin:6px 0">${esc(genTableText(v))}</pre><div class="row"><button class="btn ghost small" data-act="kgentab">${t('genCopy')}</button></div></details>` : ''}
+    </section>`;
+  }
   function viewKey() {
     const v = ui.kv, key = exam.keys[v], an = exam.annul;
     const filled = key.filter(Boolean).length;
@@ -360,6 +391,7 @@
     </section>
     ${v !== 'A' ? `<section class="panel stack"><div class="keybar"><label class="field">${t('mapTitle')}<input type="text" id="kmap" value="${exam.maps[v].map(x => x + 1).join(' ')}" autocomplete="off" spellcheck="false" style="font-family:monospace"><small>${t('mapHelp')}</small></label>
       <div class="row"><button class="btn" data-act="kmap">${t('apply')}</button><button class="btn ghost" data-act="kmapreset">${t('mapReset')}</button></div></div><div class="fb" id="kmapfb" aria-live="polite"></div></section>` : ''}
+    ${v !== 'A' ? genPanel(v) : ''}
     ${filled === 0 ? `<div class="empty">${t('keyNone')}</div>` : ''}
     <section class="panel"><div class="qgrid" id="kgrid">${key.map((k, q) => { const m = masterOf(v, q); return `
       <div class="qrow ${an[m] ? 'annulled' : ''}" data-q="${q}"><span class="qn">${q + 1}</span>${m !== q ? `<span class="chip" title="${esc(t('mapTitle'))}" style="padding:1px 7px;font-size:.72rem">=A${m + 1}</span>` : ''}${bubbleRow('kpick', q, k, null, false)}
@@ -632,11 +664,18 @@
   }
 
   /* ---------------------------------------------------------- render general */
+  /* paso siguiente del flujo: examen → clave → alumnado → hoja → escanear → resultados */
+  const FLOW = ['exam', 'key', 'students', 'sheet', 'scan', 'results'];
+  function nextBtn() {
+    const i = FLOW.indexOf(ui.tab); if (i < 0 || i === FLOW.length - 1) return '';
+    const nx = FLOW[i + 1]; if (!TABS.includes(nx)) return '';
+    return `<div class="row next-step no-print"><button type="button" class="btn" data-tab="${nx}">${t('nextStep', { n: t('tab_' + nx) })}</button></div>`;
+  }
   function renderView() {
     if (ui.tab !== 'scan') C.uiScan.stopLive();
     if (ui.tab === 'campus' && !(exam && exam.campus)) ui.tab = 'exam';
     const v = $('#view'), f = { exam: viewExam, key: viewKey, students: viewStudents, sheet: C.uiSheet.render, scan: C.uiScan.render, results: viewResults, print: viewPrint, sync: C.uiSync.render, campus: () => C.uiCampus.render() }[ui.tab];
-    v.innerHTML = f();
+    v.innerHTML = f() + (ui.tab === 'scan' ? '' : nextBtn());
     if (ui.tab === 'students' && C.uiStudents.ui2.stab === 'answers') { renderStudentList(); renderEditor(); }
     if (ui.tab === 'scan') C.uiScan.mount();
     if (ui.tab === 'sync') C.uiSync.mount();
@@ -660,7 +699,7 @@
   /* ---------------------------------------------------------- eventos */
   const app = $('#app');
   app.addEventListener('click', async (ev) => {
-    const tab = ev.target.closest('[data-tab]'); if (tab) { ui.tab = tab.dataset.tab; renderView(); save(); return; }
+    const tab = ev.target.closest('[data-tab]'); if (tab) { ui.tab = tab.dataset.tab; renderView(); save(); if (tab.classList.contains('btn')) window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     const b = ev.target.closest('[data-act]'); if (!b) return;
     const act = b.dataset.act, q = b.dataset.q !== undefined ? +b.dataset.q : null, id = b.dataset.id, v = b.dataset.v;
     switch (act) {
@@ -707,9 +746,17 @@
       case 'kmap': {
         const nums = $('#kmap').value.split(/[\s,;.\-]+/).filter(Boolean).map(x => parseInt(x, 10) - 1), ok = nums.length === exam.nq && new Set(nums).size === exam.nq && nums.every(x => x >= 0 && x < exam.nq);
         const fb = $('#kmapfb'); if (!ok) { fb.className = 'fb bad'; fb.textContent = t('mapBad', { n: exam.nq }); break; }
-        exam.maps[ui.kv] = nums; changed(); renderView(); { const f2 = $('#kmapfb'); f2.className = 'fb good'; f2.textContent = t('mapOk'); } break;
+        exam.maps[ui.kv] = nums; delete exam.opts[ui.kv]; changed(); renderView(); { const f2 = $('#kmapfb'); f2.className = 'fb good'; f2.textContent = t('mapOk'); } break;
       }
-      case 'kmapreset': exam.maps[ui.kv] = Array.from({ length: exam.nq }, (_, i) => i); changed(); renderView(); break;
+      case 'kmapreset': exam.maps[ui.kv] = Array.from({ length: exam.nq }, (_, i) => i); delete exam.opts[ui.kv]; changed(); renderView(); break;
+      case 'kgen': {
+        const q = $('#genq').checked, o = $('#geno').checked;
+        if (!q && !o) { K.toast(t('genNone')); break; }
+        if (!exam.keys.A.some(Boolean)) { K.toast(t('genNeedA')); break; }
+        if (exam.keys[ui.kv].some(Boolean) && !(await K.confirm(t('genOverwrite', { v: ui.kv })))) break;
+        genVersion(ui.kv, q, o); changed(); renderView(); K.toast(t('genDone', { v: ui.kv }), 3000); break;
+      }
+      case 'kgentab': K.toast((await copyText(genTableText(ui.kv))) ? t('keyCopied') : t('error')); break;
       case 'kfrom': { const from = $('#kfrom').value; exam.keys[ui.kv] = exam.keys[from].slice(); changed(); renderView(); break; }
       /* alumnado */
       case 'selstud': ui.sel = id; ui.cur = 0; renderStudentList(); renderEditor(); { const f = $('#fast'); if (f && matchMedia('(hover:hover)').matches) f.focus(); } break;

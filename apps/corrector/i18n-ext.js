@@ -4,6 +4,8 @@
   const add = (lang, o) => Object.assign(D[lang], o);
 
   add('es', {
+    privacyCampus: 'Guardado en el campus', nextStep: 'Siguiente: {n}', backCampus: 'Campus',
+    genTitle: 'Generar esta versión a partir de la A', genHelp: 'Desordena las preguntas y/o las opciones de respuesta de la versión A y calcula sola la clave y la correspondencia de esta versión. Después te da la tabla para montar el examen impreso.', genQ: 'Desordenar las preguntas', genO: 'Desordenar las opciones de respuesta', genBtn: 'Generar versión {v}', genNeedA: 'La versión A aún no tiene clave: rellénala antes.', genOverwrite: 'Esto sustituye la clave y el orden actuales de la versión {v}. ¿Continuar?', genDone: 'Versión {v} generada: clave y correspondencia calculadas.', genNone: 'Marca al menos una de las dos opciones.', genTable: 'Tabla de correspondencia (para montar el examen {v})', genTableHelp: 'Cada fila: la pregunta de la versión {v} y de cuál de la A viene; entre paréntesis, qué opción de la A es cada letra de {v}.', genCopy: 'Copiar tabla', genRow: '{v}{n} = A{m}', genKeyLine: 'Clave {v}: {k}',
     delete: 'Eliminar', add: 'Añadir', cancel: 'Cancelar', error: 'Algo ha fallado. Inténtalo de nuevo.', ok: 'Aceptar', copy: 'Copiar', copied: 'Copiado', save: 'Guardar', rename: 'Renombrar', blank: 'en blanco', actions: 'Acciones',
     colCode: 'Código', colLast: 'Apellidos', colFirst: 'Nombre', colGroup: 'Grupo', colAnswers: 'Respuestas', editInTable: 'Para cambiar apellidos, nombre, grupo o código usa la pestaña Alumnado › Tabla.',
     sheetMoved: 'La hoja de respuestas escaneable (con casillas de código, versión y nombre) está en su propia pestaña.',
@@ -85,6 +87,8 @@
   });
 
   add('ca', {
+    privacyCampus: 'Desat al campus', nextStep: 'Següent: {n}', backCampus: 'Campus',
+    genTitle: 'Genera aquesta versió a partir de la A', genHelp: "Desordena les preguntes i/o les opcions de resposta de la versió A i calcula sola la clau i la correspondència d'aquesta versió. Després et dona la taula per muntar l'examen imprès.", genQ: 'Desordena les preguntes', genO: 'Desordena les opcions de resposta', genBtn: 'Genera la versió {v}', genNeedA: 'La versió A encara no té clau: omple-la abans.', genOverwrite: "Això substitueix la clau i l'ordre actuals de la versió {v}. Continuar?", genDone: 'Versió {v} generada: clau i correspondència calculades.', genNone: 'Marca almenys una de les dues opcions.', genTable: "Taula de correspondència (per muntar l'examen {v})", genTableHelp: 'Cada fila: la pregunta de la versió {v} i de quina de la A ve; entre parèntesis, quina opció de la A és cada lletra de {v}.', genCopy: 'Copia la taula', genRow: '{v}{n} = A{m}', genKeyLine: 'Clau {v}: {k}',
     delete: 'Elimina', add: 'Afegeix', cancel: 'Cancel·la', error: "Alguna cosa ha fallat. Torna-ho a provar.", ok: "D'acord", copy: 'Copia', copied: 'Copiat', save: 'Desa', rename: 'Canvia el nom', blank: 'en blanc', actions: 'Accions',
     colCode: 'Codi', colLast: 'Cognoms', colFirst: 'Nom', colGroup: 'Grup', colAnswers: 'Respostes', editInTable: "Per canviar cognoms, nom, grup o codi usa la pestanya Alumnat › Taula.",
     sheetMoved: "El full de respostes escanejable (amb caselles de codi, versió i nom) és a la seva pròpia pestanya.",
@@ -162,6 +166,8 @@
   });
 
   add('en', {
+    privacyCampus: 'Saved in the campus', nextStep: 'Next: {n}', backCampus: 'Campus',
+    genTitle: 'Generate this version from A', genHelp: 'Shuffles the questions and/or the answer options of version A and works out this version\u2019s key and correspondence automatically. Then gives you the table to build the printed exam.', genQ: 'Shuffle the questions', genO: 'Shuffle the answer options', genBtn: 'Generate version {v}', genNeedA: 'Version A has no key yet: fill it in first.', genOverwrite: 'This replaces the current key and order of version {v}. Continue?', genDone: 'Version {v} generated: key and correspondence worked out.', genNone: 'Tick at least one of the two options.', genTable: 'Correspondence table (to build exam {v})', genTableHelp: 'Each row: the question in version {v} and which question of A it comes from; in brackets, which option of A each letter of {v} is.', genCopy: 'Copy table', genRow: '{v}{n} = A{m}', genKeyLine: 'Key {v}: {k}',
     delete: 'Delete', add: 'Add', cancel: 'Cancel', error: 'Something went wrong. Please try again.', ok: 'OK', copy: 'Copy', copied: 'Copied', save: 'Save', rename: 'Rename', blank: 'blank', actions: 'Actions',
     colCode: 'Code', colLast: 'Last name', colFirst: 'First name', colGroup: 'Group', colAnswers: 'Answers', editInTable: 'To change last name, first name, group or code use the Students › Table tab.',
     sheetMoved: 'The scannable answer sheet (with code, version and name fields) has its own tab.',

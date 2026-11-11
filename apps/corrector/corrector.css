@@ -281,3 +281,9 @@ dialog.kit-dialog.wide{max-width:96vw;max-height:94vh;overflow:auto}
 .cpdot.warn{background:#e0a100}.cpdot.wait{background:#3b82f6}.cpdot.bad{background:#d33}
 .csbadge{left:auto;right:12px}
 @media (max-width:700px){.csbadge{bottom:58px}}
+.next-step{justify-content:flex-end;margin:18px 0 6px}
+/* cabecera más compacta: más sitio para el contenido en todas las pestañas */
+.corr-head{padding:14px 20px}
+.corr-head h2{margin:0 0 6px}
+details.help summary{padding:8px 14px;font-size:.92rem}
+details.help summary::before{width:20px;height:20px;font-size:.8rem}
