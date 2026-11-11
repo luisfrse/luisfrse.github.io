@@ -97,3 +97,73 @@
 .explain p,.explain ul{margin:.5em 0 .3em;color:#dbe5f1;max-width:80ch}
 .explain li{margin:.25em 0}
 .explain .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+
+/* ---------- Lugar y patógeno ---------- */
+.pick{display:grid;gap:6px}
+.pick-l{font:700 .8rem var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pgroups{gap:10px 14px}
+.pgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 8px 6px 12px;border:1px solid var(--line);border-radius:18px;background:rgba(8,17,29,.3)}
+.pg-h{font-size:.78rem;font-weight:700;color:var(--accent);margin-right:4px}
+.pgroup button,.scen-chips>button{padding:6px 13px;font-size:.9rem}
+.badge{display:inline-block;font:600 .7rem var(--font-body);padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted);vertical-align:middle;margin-left:4px}
+.badge.warn{color:var(--c-e);border-color:rgba(245,184,46,.5)}
+.how{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.how h4,#rank h4{margin:0 0 6px;font:700 1rem var(--font-head)}
+.rbar{display:flex;height:22px;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.seg-r{display:flex;align-items:center;justify-content:center;font:700 .72rem var(--font-body);color:#0d1a2a;min-width:2px}
+.rleg{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0;font-size:.82rem;color:var(--muted)}
+.rleg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.why b{color:var(--accent)}
+.src.unver,.unver{color:var(--c-e)}
+.facts div b{font-size:1.1rem}
+
+/* ---------- Medidas y vacunas ---------- */
+.mpre{margin-bottom:10px;gap:8px}
+.msum{margin:8px 0 14px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(8,17,29,.4)}
+.msum p{margin:.4em 0 0}
+.msum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.msum-grid div{padding:8px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line)}
+.msum-grid b{display:block;font:700 1.5rem/1.1 var(--font-head);font-variant-numeric:tabular-nums}
+.msum-grid span{font-size:.78rem;color:var(--muted)}
+.msum-grid .ok b,.ok{color:var(--green)}
+.mcat{margin-bottom:14px}
+.mcat h3{margin:0 0 8px;font-size:1.02rem;color:var(--accent)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 24px;align-items:start}
+.meas,.vac{padding:10px 12px;margin-bottom:8px;border:1px solid var(--line);border-radius:14px;background:rgba(8,17,29,.3)}
+.meas.na{opacity:.5}.meas.none .eff{color:var(--faint)}
+.mhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.eff{font-size:.82rem;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+.marg{font-style:normal;color:var(--accent);margin-left:4px}
+.meas p,.vac p{margin:.3em 0 0}
+.mopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px 12px;margin-top:8px}
+.mo{display:flex;flex-direction:column;gap:3px;font-size:.85rem;font-weight:600}
+.mo output{color:var(--accent);font-family:var(--font-head)}
+.mo input[type=number],.mo select,.ctl select{background:var(--panel-2);color:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font:inherit;width:100%}
+.meas details,.vac details{margin-top:6px}
+.meas summary,.vac summary{cursor:pointer;font-size:.8rem;color:var(--faint)}
+.vctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px;margin-bottom:10px}
+.vlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:0 20px;align-items:start}
+.vstats{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.vstats .chip{font-size:.78rem;padding:2px 9px}
+.vstats .chip b{color:var(--accent);margin-left:2px}
+.hyp{margin-top:8px}
+
+/* ---------- Mapa, ranking y créditos ---------- */
+.mside-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px;margin-bottom:8px}
+.rank{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+.rank th,.rank td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.rank th{color:var(--muted);font-weight:600}
+.tablewrap{overflow-x:auto}
+.cr td{min-width:130px}
+.credits{border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.credits summary{cursor:pointer;font:700 1.02rem var(--font-head)}
+.ratio{margin:8px 2px 0}
+.map-info{margin:6px 2px 0;min-height:2.6em;color:#dbe5f1}
+#world:focus-visible,#cv-stack:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.disc{margin-bottom:10px}
+.explain .banner{max-width:none}
+.stats .stat.bad b{color:var(--c-i)}
+#results .banner{margin-top:8px}
+#bandout{min-height:1.4em;color:#7fd3ff}
+@media (max-width:520px){.pgroup{width:100%}.seg button{padding:7px 11px}.toolbar .btn{min-width:78px;padding:10px 14px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

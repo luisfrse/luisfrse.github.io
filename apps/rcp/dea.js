@@ -11,7 +11,7 @@
       tabAed: 'Simulador DEA', deaTitle: 'Simulador de DEA', deaIntro: 'Practica con un desfibrilador automático que habla, analiza el ritmo y te guía. Coloca los parches en el paciente, no lo toques durante el análisis y aléjate antes de la descarga.',
       deaDisclaimer: 'Simulador didáctico genérico: los DEA reales varían según el fabricante (mensajes, tiempos, botones y parches). No sustituye la formación práctica acreditada en soporte vital básico y uso del DEA.',
       deaModel: 'Modelo', deaSemi: 'Semiautomático', deaAuto: 'Automático', deaModelHint: 'Semiautomático: tú pulsas el botón de descarga. Automático: descarga sola tras el aviso.',
-      deaScenario: 'Ritmo del paciente', deaScRandom: 'Aleatorio', deaScVF: 'Fibrilación ventricular', deaScAsys: 'Asistolia', deaScHint: 'La fibrilación ventricular es desfibrilable; la asistolia no.',
+      deaScenario: 'Ritmo del paciente', deaScRandom: 'Aleatorio', deaScVF: 'Fibrilación ventricular', deaScAsys: 'Asistolia', deaScHint: 'Marca uno o varios. Si marcas varios, el simulador elige uno al azar y no te dice cuál: lo sabrás en la evaluación.',
       deaAge: 'Paciente', deaAdult: 'Adulto', deaChild: 'Niño (parches pediátricos)', deaMode: 'Modo', deaGuided: 'Guiado', deaExam: 'Examen', deaModeHint: 'Guiado: con ayudas visibles. Examen: sin ayudas y con evaluación final.',
       deaSound: 'Pitidos y sonidos del DEA', deaCprLen: 'Duración de la RCP', deaCpr2: '2 minutos (real)', deaCpr30: '30 segundos (práctica rápida)',
       deaStart: 'Empezar simulacro', deaFinish: 'Terminar y evaluar', deaRestart: 'Nuevo simulacro', deaToSetup: 'Cambiar ajustes',
@@ -23,30 +23,32 @@
       zoneR: 'Bajo la clavícula derecha', zoneL: 'Costado izquierdo, bajo la axila',
       scr: { off: 'DEA APAGADO', on: 'ENCENDIDO', undress: 'DESCUBRA EL PECHO', pads: 'COLOQUE LOS PARCHES', connect: 'CONECTE EL CABLE', check: 'COMPRUEBE PARCHES', lost: 'REVISE LOS PARCHES', analyze: 'ANALIZANDO…', motion: 'NO TOQUE AL PACIENTE', charging: 'CARGANDO…', clear: 'ALÉJESE DEL PACIENTE', press: 'PULSE DESCARGA', auto: 'DESCARGA EN {n}', shocked: 'DESCARGA ADMINISTRADA', noshock: 'DESCARGA NO RECOMENDADA', cpr: 'RCP', cprend: 'PREPARE EL ANÁLISIS', cancelled: 'DESCARGA CANCELADA', done: 'FIN' },
       say: {
+        breaths: '{n} compresiones. Dé dos insuflaciones.', resume: 'Reanude las compresiones.', padsInfant: 'Use parches pediátricos. Coloque un parche en el centro del pecho y otro en el centro de la espalda del bebé.', 
         on: 'Equipo encendido. Siga las instrucciones.', undress: 'Retire la ropa del pecho del paciente.', pads: 'Coloque los parches adhesivos en el pecho desnudo del paciente, como indican los dibujos.',
         padsChild: 'Use parches pediátricos. Colóquelos en el pecho desnudo del niño, como indican los dibujos.', check: 'Compruebe la colocación de los parches.', lost: 'Parches desconectados o despegados. Compruébelos.', connect: 'Conecte el cable de los parches al desfibrilador.',
         analyze: 'Analizando el ritmo. No toque al paciente.', motion: 'Movimiento detectado. No toque al paciente.', shockAdv: 'Descarga recomendada. Cargando.', clear: 'Aléjese del paciente. Compruebe que nadie lo toca.', press: 'Pulse el botón de descarga ahora.',
-        auto: 'Aléjese del paciente. La descarga se administrará en tres, dos, uno.', shocked: 'Descarga administrada. Inicie la RCP.', noshock: 'Descarga no recomendada. Inicie la RCP.', cancelled: 'Descarga cancelada. Inicie la RCP.',
+        auto: 'Aléjese del paciente. La descarga se administrará en tres, dos, uno.', shocked: 'Descarga administrada. Inicie la RCP.', noshock: 'Descarga no recomendada. Compruebe al paciente.', cancelled: 'Descarga cancelada. Inicie la RCP.',
         cpr: 'Continúe con la RCP.', push: 'Comprima fuerte y rápido.', cprend: 'Prepárese para detener la RCP.'
       },
-      hint: { on: 'Pulsa el botón verde para encender el DEA.', undress: 'Toca la ropa del paciente para retirarla.', pads: 'Arrastra cada parche a una zona marcada del pecho.', connect: 'Toca el conector del DEA para enchufar el cable.', wait: 'Espera sin tocar al paciente.', clear: 'Pulsa «Aparté a todos» y después el botón naranja.', clearAuto: 'Pulsa «Aparté a todos» antes de que termine la cuenta atrás.', cpr: 'Pulsa «Empiezo la RCP» y comprime.', cprOn: 'Comprime a 100–120 por minuto, siguiendo el metrónomo.' },
+      hint: { on: 'Pulsa el botón verde para encender el DEA.', undress: 'Toca la ropa del paciente para retirarla.', pads: 'Arrastra cada parche a una zona marcada del pecho.', connect: 'Toca el conector del DEA para enchufar el cable.', wait: 'Espera sin tocar al paciente.', clear: 'Pulsa «Aparté a todos» y después el botón naranja.', clearAuto: 'Pulsa «Aparté a todos» antes de que termine la cuenta atrás.', cpr: 'Comprueba al paciente: si no respira, comprime y da las insuflaciones; si respira con normalidad, colócalo en posición lateral de seguridad.', cprOn: 'Comprueba al paciente: si no respira, comprime y da las insuflaciones; si respira con normalidad, colócalo en posición lateral de seguridad.', cprBreath: 'Da dos insuflaciones (botón «Insuflación» o tecla B).', padsInfant: 'Lactante: un parche en el centro del pecho y el otro en el centro de la espalda (recuadro «Espalda»).' },
       fbOk: 'Parche {n} bien colocado', fbBad: 'Parche {n} mal colocado: {why}', fbShirt: 'Retira antes la ropa del pecho', fbNoShock: 'No hay ninguna descarga cargada',
       why: { out: 'fuera de la zona del tórax', abd: 'demasiado bajo', side: 'lejos de la zona indicada', same: 'los dos parches están en el mismo lado' },
       ev: {
+        cycle: 'Ciclo {i}: {c} compresiones a {r}/min', recov: 'Paciente recuperado: posición lateral de seguridad', recovWrong: 'Posición lateral de seguridad con el paciente en parada', cprRosc: 'Comprimió a un paciente que respiraba', pause: 'Pausa de más de 10 s sin comprimir', 
         start: 'Comienza el simulacro', on: 'DEA encendido', undress: 'Ropa retirada del pecho', padOk: 'Parche {n} colocado ({zone})', padBad: 'Parche {n} mal colocado: {why}', padOff: 'Parche {n} retirado', plug: 'Cable conectado', unplug: 'Cable desconectado',
         analysis: 'Análisis {n} del ritmo', touchAna: 'Tocó al paciente durante el análisis', touchCh: 'Tocó al paciente con la descarga cargada', shockAdv: 'Descarga recomendada', noShock: 'Descarga no recomendada', clear: 'Confirmó que todos estaban apartados',
         shock: 'Descarga administrada', shockNoClear: 'Descarga administrada sin confirmar que todos estaban apartados', shockEarly: 'Pulsó descarga sin descarga cargada', cancel: 'Descarga cancelada por tiempo', cprPrompt: 'El DEA indica iniciar la RCP', cprStart: 'Inicia la RCP ({s} s tras el aviso)', cprEnd: 'Fin del periodo de RCP', finish: 'Fin del simulacro'
       },
       evTitle: 'Evaluación', evScore: 'Puntuación didáctica', evTimes: 'Tiempos', evOn: 'Hasta encender el DEA', evShock: 'Hasta la primera descarga', evNoShockNeeded: 'No estaba indicada', evNoShockDone: 'No se llegó a descargar', evCprDelay: 'Retraso medio en empezar la RCP', evErrors: 'Errores', evNoErrors: 'Sin errores: muy bien.', evLog: 'Registro cronológico', evCopy: 'Copiar registro', evCopied: 'Registro copiado', evSlow: 'Consejo: en una emergencia real, la descarga debe llegar lo antes posible; practica a encender, poner los parches y apartarte con fluidez.', evScoreNote: 'Puntuación orientativa solo para este simulador.',
       evVerdict: { good: 'Muy bien: secuencia correcta y segura.', ok: 'Bien, con puntos que mejorar.', low: 'Repite el simulacro con el modo guiado.' },
-      err: { pad: 'Parches mal colocados', touch: 'Tocó al paciente durante el análisis', noclear: 'No se apartó antes de la descarga', touchch: 'Tocó al paciente con la descarga cargada', cprdelay: 'Retraso en empezar la RCP (más de 10 s)', nocpr: 'No inició la RCP', timeout: 'No administró la descarga a tiempo', noshock: 'No llegó a administrar la descarga indicada' },
-      scenesTitle: 'Escenario'
+      err: { cycle: 'Ciclos con compresiones o insuflaciones incorrectas', rate: 'Ritmo medio fuera de 100–120/min', cprRosc: 'Comprimió a un paciente que respiraba', recovWrong: 'Posición de seguridad con el paciente en parada', pause: 'Pausas de más de 10 s sin comprimir', noRecov: 'No reconoció la recuperación del paciente', pad: 'Parches mal colocados', touch: 'Tocó al paciente durante el análisis', noclear: 'No se apartó antes de la descarga', touchch: 'Tocó al paciente con la descarga cargada', cprdelay: 'Retraso en empezar la RCP (más de 10 s)', nocpr: 'No inició la RCP', timeout: 'No administró la descarga a tiempo', noshock: 'No llegó a administrar la descarga indicada' },
+      deaScenarios: 'Ritmos posibles', deaInfant: 'Lactante (<1 año, parches pediátricos)', deaSceneI: 'Un lactante se ha desplomado: no responde y no respira con normalidad. Ya has llamado al 112 y te traen el DEA.', deaRatio: 'Relación compresiones:insuflaciones', deaRatioAuto: 'Según la edad', deaRatioComp: 'Solo compresiones', deaRatioHint: 'Según la edad: 30:2 en adultos y 15:2 en niños y lactantes (quien tiene deber de asistencia; un testigo sin formación puede usar 30:2).', deaMetro: 'Metrónomo durante la RCP (solo en modo guiado)', deaBtnRecov: 'Comprobar y poner en posición lateral de seguridad', deaBack: 'ESPALDA', zoneF: 'Centro del pecho (delante)', zoneB: 'Centro de la espalda', cpTap: 'COMPRIMIR', cpBreathNow: '¡{n} hechas! Da 2 insuflaciones', cpBreath: 'Insuflación', cpBreathK: 'Insuflación {k}/2', cpFirst: 'Empieza con las compresiones.', cpCycleBad: 'Ciclo incorrecto: lo correcto son {n} compresiones y 2 insuflaciones.', cpKeys: 'Toca el botón grande en cada compresión (o barra espaciadora). Insuflación: botón o tecla B.', cpFast: 'demasiado rápido', cpSlow: 'demasiado lento', cpGood: 'ritmo correcto', cpTotal: 'Compresiones: {n}', obsDead: 'Compruebas al paciente: no responde, no se mueve y no respira con normalidad.', obsAlive: 'Compruebas al paciente: se mueve, abre los ojos y respira con normalidad.', evRhythm: 'Ritmo real del paciente', evCprTitle: 'Calidad de la RCP', evComp: 'Compresiones', evRate: 'Ritmo medio', evInRange: 'Dentro de 100–120/min', evCycles: 'Ciclos correctos', evBreaths: 'Insuflaciones', deaRatio30: '30:2', deaRatio15: '15:2', sc: { vf: 'Fibrilación ventricular', vt: 'Taquicardia ventricular sin pulso', asys: 'Asistolia', pea: 'Actividad eléctrica sin pulso (AESP)', rosc: 'FV con recuperación tras algunas descargas' }, tech: { adult: 'Adulto: dos manos en el centro del pecho, hunde 5–6 cm, 100–120/min; 30 compresiones y 2 insuflaciones.', child: 'Niño: una o dos manos en la mitad inferior del esternón, hunde 1/3 del tórax (≈5 cm), 100–120/min; 15 compresiones y 2 insuflaciones.', infant: 'Lactante: dos dedos (o los pulgares rodeando el tórax) en la mitad inferior del esternón, hunde 1/3 del tórax (≈4 cm), 100–120/min; 15 compresiones y 2 insuflaciones.' }, deaEcg: 'Mostrar el ECG en la pantalla del DEA (revela el ritmo)', scenesTitle: 'Escenario'
     },
     ca: {
       tabAed: 'Simulador DEA', deaTitle: 'Simulador de DEA', deaIntro: 'Practica amb un desfibril·lador automàtic que parla, analitza el ritme i et guia. Col·loca els pegats al pacient, no el toquis durant l\'anàlisi i allunya\'t abans de la descàrrega.',
       deaDisclaimer: 'Simulador didàctic genèric: els DEA reals varien segons el fabricant (missatges, temps, botons i pegats). No substitueix la formació pràctica acreditada en suport vital bàsic i ús del DEA.',
       deaModel: 'Model', deaSemi: 'Semiautomàtic', deaAuto: 'Automàtic', deaModelHint: 'Semiautomàtic: tu prems el botó de descàrrega. Automàtic: descarrega sol després de l\'avís.',
-      deaScenario: 'Ritme del pacient', deaScRandom: 'Aleatori', deaScVF: 'Fibril·lació ventricular', deaScAsys: 'Asistòlia', deaScHint: 'La fibril·lació ventricular és desfibril·lable; l\'asistòlia no.',
+      deaScenario: 'Ritme del pacient', deaScRandom: 'Aleatori', deaScVF: 'Fibril·lació ventricular', deaScAsys: 'Asistòlia', deaScHint: "Marca'n un o diversos. Si en marques diversos, el simulador en tria un a l'atzar i no et diu quin: ho sabràs a l'avaluació.",
       deaAge: 'Pacient', deaAdult: 'Adult', deaChild: 'Infant (pegats pediàtrics)', deaMode: 'Mode', deaGuided: 'Guiat', deaExam: 'Examen', deaModeHint: 'Guiat: amb ajudes visibles. Examen: sense ajudes i amb avaluació final.',
       deaSound: 'Xiulets i sons del DEA', deaCprLen: 'Durada de la RCP', deaCpr2: '2 minuts (real)', deaCpr30: '30 segons (pràctica ràpida)',
       deaStart: 'Comença el simulacre', deaFinish: 'Acaba i avalua', deaRestart: 'Nou simulacre', deaToSetup: 'Canvia els ajustos',
@@ -58,30 +60,32 @@
       zoneR: 'Sota la clavícula dreta', zoneL: 'Costat esquerre, sota l\'aixella',
       scr: { off: 'DEA APAGAT', on: 'ENCÈS', undress: 'DESCOBREIXI EL PIT', pads: 'COL·LOQUI ELS PEGATS', connect: 'CONNECTI EL CABLE', check: 'COMPROVI ELS PEGATS', lost: 'REVISI ELS PEGATS', analyze: 'ANALITZANT…', motion: 'NO TOQUI EL PACIENT', charging: 'CARREGANT…', clear: 'ALLUNYI\'S DEL PACIENT', press: 'PREMI DESCÀRREGA', auto: 'DESCÀRREGA EN {n}', shocked: 'DESCÀRREGA ADMINISTRADA', noshock: 'DESCÀRREGA NO RECOMANADA', cpr: 'RCP', cprend: 'PREPARI L\'ANÀLISI', cancelled: 'DESCÀRREGA CANCEL·LADA', done: 'FI' },
       say: {
+        breaths: '{n} compressions. Faci dues insuflacions.', resume: 'Reprengui les compressions.', padsInfant: "Utilitzi pegats pediàtrics. Col·loqui un pegat al centre del pit i un altre al centre de l'esquena del bebè.", 
         on: 'Equip encès. Segueixi les instruccions.', undress: 'Tregui la roba del pit del pacient.', pads: 'Col·loqui els pegats adhesius al pit nu del pacient, com indiquen els dibuixos.',
         padsChild: 'Utilitzi pegats pediàtrics. Col·loqui\'ls al pit nu de l\'infant, com indiquen els dibuixos.', check: 'Comprovi la col·locació dels pegats.', lost: 'Pegats desconnectats o despegats. Comprovi\'ls.', connect: 'Connecti el cable dels pegats al desfibril·lador.',
         analyze: 'Analitzant el ritme. No toqui el pacient.', motion: 'Moviment detectat. No toqui el pacient.', shockAdv: 'Descàrrega recomanada. Carregant.', clear: 'Allunyi\'s del pacient. Comprovi que ningú el toca.', press: 'Premi el botó de descàrrega ara.',
-        auto: 'Allunyi\'s del pacient. La descàrrega s\'administrarà en tres, dos, un.', shocked: 'Descàrrega administrada. Iniciï la RCP.', noshock: 'Descàrrega no recomanada. Iniciï la RCP.', cancelled: 'Descàrrega cancel·lada. Iniciï la RCP.',
+        auto: 'Allunyi\'s del pacient. La descàrrega s\'administrarà en tres, dos, un.', shocked: 'Descàrrega administrada. Iniciï la RCP.', noshock: 'Descàrrega no recomanada. Comprovi el pacient.', cancelled: 'Descàrrega cancel·lada. Iniciï la RCP.',
         cpr: 'Continuï amb la RCP.', push: 'Comprimeixi fort i ràpid.', cprend: 'Prepari\'s per aturar la RCP.'
       },
-      hint: { on: 'Prem el botó verd per encendre el DEA.', undress: 'Toca la roba del pacient per retirar-la.', pads: 'Arrossega cada pegat a una zona marcada del pit.', connect: 'Toca el connector del DEA per endollar el cable.', wait: 'Espera sense tocar el pacient.', clear: 'Prem «M\'he apartat…» i després el botó taronja.', clearAuto: 'Prem «M\'he apartat…» abans que acabi el compte enrere.', cpr: 'Prem «Començo la RCP» i comprimeix.', cprOn: 'Comprimeix a 100–120 per minut, seguint el metrònom.' },
+      hint: { on: 'Prem el botó verd per encendre el DEA.', undress: 'Toca la roba del pacient per retirar-la.', pads: 'Arrossega cada pegat a una zona marcada del pit.', connect: 'Toca el connector del DEA per endollar el cable.', wait: 'Espera sense tocar el pacient.', clear: 'Prem «M\'he apartat…» i després el botó taronja.', clearAuto: 'Prem «M\'he apartat…» abans que acabi el compte enrere.', cpr: "Comprova el pacient: si no respira, comprimeix i fes les insuflacions; si respira amb normalitat, posa'l en posició lateral de seguretat.", cprOn: "Comprova el pacient: si no respira, comprimeix i fes les insuflacions; si respira amb normalitat, posa'l en posició lateral de seguretat.", cprBreath: 'Fes dues insuflacions (botó «Insuflació» o tecla B).', padsInfant: "Lactant: un pegat al centre del pit i l'altre al centre de l'esquena (requadre «Esquena»)." },
       fbOk: 'Pegat {n} ben col·locat', fbBad: 'Pegat {n} mal col·locat: {why}', fbShirt: 'Retira abans la roba del pit', fbNoShock: 'No hi ha cap descàrrega carregada',
       why: { out: 'fora de la zona del tòrax', abd: 'massa baix', side: 'lluny de la zona indicada', same: 'els dos pegats són al mateix costat' },
       ev: {
+        cycle: 'Cicle {i}: {c} compressions a {r}/min', recov: 'Pacient recuperat: posició lateral de seguretat', recovWrong: 'Posició lateral de seguretat amb el pacient en parada', cprRosc: 'Va comprimir un pacient que respirava', pause: 'Pausa de més de 10 s sense comprimir', 
         start: 'Comença el simulacre', on: 'DEA encès', undress: 'Roba retirada del pit', padOk: 'Pegat {n} col·locat ({zone})', padBad: 'Pegat {n} mal col·locat: {why}', padOff: 'Pegat {n} retirat', plug: 'Cable connectat', unplug: 'Cable desconnectat',
         analysis: 'Anàlisi {n} del ritme', touchAna: 'Va tocar el pacient durant l\'anàlisi', touchCh: 'Va tocar el pacient amb la descàrrega carregada', shockAdv: 'Descàrrega recomanada', noShock: 'Descàrrega no recomanada', clear: 'Va confirmar que tothom era apartat',
         shock: 'Descàrrega administrada', shockNoClear: 'Descàrrega administrada sense confirmar que tothom era apartat', shockEarly: 'Va prémer descàrrega sense descàrrega carregada', cancel: 'Descàrrega cancel·lada per temps', cprPrompt: 'El DEA indica iniciar la RCP', cprStart: 'Inicia la RCP ({s} s després de l\'avís)', cprEnd: 'Fi del període de RCP', finish: 'Fi del simulacre'
       },
       evTitle: 'Avaluació', evScore: 'Puntuació didàctica', evTimes: 'Temps', evOn: 'Fins a encendre el DEA', evShock: 'Fins a la primera descàrrega', evNoShockNeeded: 'No estava indicada', evNoShockDone: 'No es va arribar a descarregar', evCprDelay: 'Retard mitjà a començar la RCP', evErrors: 'Errors', evNoErrors: 'Sense errors: molt bé.', evLog: 'Registre cronològic', evCopy: 'Copia el registre', evCopied: 'Registre copiat', evSlow: 'Consell: en una emergència real, la descàrrega ha d\'arribar el més aviat possible; practica a encendre, posar els pegats i apartar-te amb fluïdesa.', evScoreNote: 'Puntuació orientativa només per a aquest simulador.',
       evVerdict: { good: 'Molt bé: seqüència correcta i segura.', ok: 'Bé, amb punts a millorar.', low: 'Repeteix el simulacre amb el mode guiat.' },
-      err: { pad: 'Pegats mal col·locats', touch: 'Va tocar el pacient durant l\'anàlisi', noclear: 'No es va apartar abans de la descàrrega', touchch: 'Va tocar el pacient amb la descàrrega carregada', cprdelay: 'Retard a començar la RCP (més de 10 s)', nocpr: 'No va iniciar la RCP', timeout: 'No va administrar la descàrrega a temps', noshock: 'No va arribar a administrar la descàrrega indicada' },
-      scenesTitle: 'Escenari'
+      err: { cycle: 'Cicles amb compressions o insuflacions incorrectes', rate: 'Ritme mitjà fora de 100–120/min', cprRosc: 'Va comprimir un pacient que respirava', recovWrong: 'Posició de seguretat amb el pacient en parada', pause: 'Pauses de més de 10 s sense comprimir', noRecov: 'No va reconèixer la recuperació del pacient', pad: 'Pegats mal col·locats', touch: 'Va tocar el pacient durant l\'anàlisi', noclear: 'No es va apartar abans de la descàrrega', touchch: 'Va tocar el pacient amb la descàrrega carregada', cprdelay: 'Retard a començar la RCP (més de 10 s)', nocpr: 'No va iniciar la RCP', timeout: 'No va administrar la descàrrega a temps', noshock: 'No va arribar a administrar la descàrrega indicada' },
+      deaScenarios: 'Ritmes possibles', deaInfant: 'Lactant (<1 any, pegats pediàtrics)', deaSceneI: "Un lactant s'ha desplomat: no respon i no respira amb normalitat. Ja has trucat al 112 i et porten el DEA.", deaRatio: 'Relació compressions:insuflacions', deaRatioAuto: "Segons l'edat", deaRatioComp: 'Només compressions', deaRatioHint: "Segons l'edat: 30:2 en adults i 15:2 en infants i lactants (qui té deure d'assistència; un testimoni sense formació pot fer servir 30:2).", deaMetro: 'Metrònom durant la RCP (només en mode guiat)', deaBtnRecov: 'Comprovar i posar en posició lateral de seguretat', deaBack: 'ESQUENA', zoneF: 'Centre del pit (davant)', zoneB: "Centre de l'esquena", cpTap: 'COMPRIMEIX', cpBreathNow: '{n} fetes! Fes 2 insuflacions', cpBreath: 'Insuflació', cpBreathK: 'Insuflació {k}/2', cpFirst: 'Comença amb les compressions.', cpCycleBad: 'Cicle incorrecte: el correcte són {n} compressions i 2 insuflacions.', cpKeys: 'Toca el botó gran a cada compressió (o barra espaiadora). Insuflació: botó o tecla B.', cpFast: 'massa ràpid', cpSlow: 'massa lent', cpGood: 'ritme correcte', cpTotal: 'Compressions: {n}', obsDead: 'Comproves el pacient: no respon, no es mou i no respira amb normalitat.', obsAlive: 'Comproves el pacient: es mou, obre els ulls i respira amb normalitat.', evRhythm: 'Ritme real del pacient', evCprTitle: 'Qualitat de la RCP', evComp: 'Compressions', evRate: 'Ritme mitjà', evInRange: 'Dins de 100–120/min', evCycles: 'Cicles correctes', evBreaths: 'Insuflacions', deaRatio30: '30:2', deaRatio15: '15:2', sc: { vf: 'Fibril·lació ventricular', vt: 'Taquicàrdia ventricular sense pols', asys: 'Asistòlia', pea: 'Activitat elèctrica sense pols (AESP)', rosc: 'FV amb recuperació després d\'algunes descàrregues' }, tech: { adult: 'Adult: dues mans al centre del pit, enfonsa 5–6 cm, 100–120/min; 30 compressions i 2 insuflacions.', child: 'Infant: una o dues mans a la meitat inferior de l\'estern, enfonsa 1/3 del tòrax (≈5 cm), 100–120/min; 15 compressions i 2 insuflacions.', infant: 'Lactant: dos dits (o els polzes envoltant el tòrax) a la meitat inferior de l\'estern, enfonsa 1/3 del tòrax (≈4 cm), 100–120/min; 15 compressions i 2 insuflacions.' }, deaEcg: 'Mostra l\'ECG a la pantalla del DEA (revela el ritme)', scenesTitle: 'Escenari'
     },
     en: {
       tabAed: 'AED simulator', deaTitle: 'AED simulator', deaIntro: 'Practise with an automated external defibrillator that speaks, analyses the rhythm and guides you. Place the pads on the patient, do not touch them during analysis and stand clear before the shock.',
       deaDisclaimer: 'Generic teaching simulator: real AEDs differ by manufacturer (prompts, timings, buttons and pads). It does not replace accredited hands-on training in basic life support and AED use.',
       deaModel: 'Model', deaSemi: 'Semi-automatic', deaAuto: 'Fully automatic', deaModelHint: 'Semi-automatic: you press the shock button. Automatic: it shocks by itself after the warning.',
-      deaScenario: 'Patient rhythm', deaScRandom: 'Random', deaScVF: 'Ventricular fibrillation', deaScAsys: 'Asystole', deaScHint: 'Ventricular fibrillation is shockable; asystole is not.',
+      deaScenario: 'Patient rhythm', deaScRandom: 'Random', deaScVF: 'Ventricular fibrillation', deaScAsys: 'Asystole', deaScHint: 'Tick one or several. With several, the simulator picks one at random and does not tell you which: you will find out in the assessment.',
       deaAge: 'Patient', deaAdult: 'Adult', deaChild: 'Child (paediatric pads)', deaMode: 'Mode', deaGuided: 'Guided', deaExam: 'Exam', deaModeHint: 'Guided: with visible help. Exam: no help and a final assessment.',
       deaSound: 'AED beeps and sounds', deaCprLen: 'CPR duration', deaCpr2: '2 minutes (real)', deaCpr30: '30 seconds (quick practice)',
       deaStart: 'Start simulation', deaFinish: 'Finish and assess', deaRestart: 'New simulation', deaToSetup: 'Change settings',
@@ -93,46 +97,57 @@
       zoneR: 'Below the right collarbone', zoneL: 'Left side, below the armpit',
       scr: { off: 'AED OFF', on: 'POWER ON', undress: 'BARE THE CHEST', pads: 'APPLY THE PADS', connect: 'CONNECT THE CABLE', check: 'CHECK THE PADS', lost: 'CHECK THE PADS', analyze: 'ANALYSING…', motion: 'DO NOT TOUCH PATIENT', charging: 'CHARGING…', clear: 'STAND CLEAR', press: 'PRESS SHOCK', auto: 'SHOCK IN {n}', shocked: 'SHOCK DELIVERED', noshock: 'NO SHOCK ADVISED', cpr: 'CPR', cprend: 'PREPARE TO ANALYSE', cancelled: 'SHOCK CANCELLED', done: 'END' },
       say: {
+        breaths: '{n} compressions. Give two breaths.', resume: 'Resume compressions.', padsInfant: "Use paediatric pads. Apply one pad to the centre of the baby's chest and the other to the centre of the back.", 
         on: 'Unit on. Follow the instructions.', undress: 'Remove clothing from the patient\'s chest.', pads: 'Apply the adhesive pads to the patient\'s bare chest, as shown in the pictures.',
         padsChild: 'Use paediatric pads. Apply them to the child\'s bare chest, as shown in the pictures.', check: 'Check the position of the pads.', lost: 'Pads disconnected or loose. Check them.', connect: 'Connect the pad cable to the defibrillator.',
         analyze: 'Analysing the rhythm. Do not touch the patient.', motion: 'Movement detected. Do not touch the patient.', shockAdv: 'Shock advised. Charging.', clear: 'Stand clear of the patient. Make sure nobody is touching them.', press: 'Press the shock button now.',
-        auto: 'Stand clear of the patient. A shock will be delivered in three, two, one.', shocked: 'Shock delivered. Start CPR.', noshock: 'No shock advised. Start CPR.', cancelled: 'Shock cancelled. Start CPR.',
+        auto: 'Stand clear of the patient. A shock will be delivered in three, two, one.', shocked: 'Shock delivered. Start CPR.', noshock: 'No shock advised. Check the patient.', cancelled: 'Shock cancelled. Start CPR.',
         cpr: 'Continue CPR.', push: 'Push hard and fast.', cprend: 'Get ready to stop CPR.'
       },
-      hint: { on: 'Press the green button to switch the AED on.', undress: 'Tap the patient\'s clothing to remove it.', pads: 'Drag each pad to a marked area of the chest.', connect: 'Tap the AED connector to plug in the cable.', wait: 'Wait without touching the patient.', clear: 'Press "I and everyone stand clear", then the orange button.', clearAuto: 'Press "I and everyone stand clear" before the countdown ends.', cpr: 'Press "I start CPR" and compress.', cprOn: 'Compress at 100–120 per minute, following the metronome.' },
+      hint: { on: 'Press the green button to switch the AED on.', undress: 'Tap the patient\'s clothing to remove it.', pads: 'Drag each pad to a marked area of the chest.', connect: 'Tap the AED connector to plug in the cable.', wait: 'Wait without touching the patient.', clear: 'Press "I and everyone stand clear", then the orange button.', clearAuto: 'Press "I and everyone stand clear" before the countdown ends.', cpr: 'Check the patient: if not breathing, compress and give breaths; if breathing normally, place them in the recovery position.', cprOn: 'Check the patient: if not breathing, compress and give breaths; if breathing normally, place them in the recovery position.', cprBreath: 'Give two breaths (the «Breath» button or the B key).', padsInfant: 'Infant: one pad on the centre of the chest and the other on the centre of the back (the «Back» box).' },
       fbOk: 'Pad {n} placed correctly', fbBad: 'Pad {n} misplaced: {why}', fbShirt: 'Remove the clothing from the chest first', fbNoShock: 'No shock is charged',
       why: { out: 'outside the chest area', abd: 'too low', side: 'away from the marked area', same: 'both pads are on the same side' },
       ev: {
+        cycle: 'Cycle {i}: {c} compressions at {r}/min', recov: 'Patient recovered: recovery position', recovWrong: 'Recovery position with the patient in arrest', cprRosc: 'Compressed a breathing patient', pause: 'Pause of over 10 s without compressing', 
         start: 'Simulation starts', on: 'AED switched on', undress: 'Chest bared', padOk: 'Pad {n} placed ({zone})', padBad: 'Pad {n} misplaced: {why}', padOff: 'Pad {n} removed', plug: 'Cable connected', unplug: 'Cable disconnected',
         analysis: 'Rhythm analysis {n}', touchAna: 'Touched the patient during analysis', touchCh: 'Touched the patient while the shock was charged', shockAdv: 'Shock advised', noShock: 'No shock advised', clear: 'Confirmed everyone was clear',
         shock: 'Shock delivered', shockNoClear: 'Shock delivered without confirming everyone was clear', shockEarly: 'Pressed shock with no shock charged', cancel: 'Shock cancelled (timed out)', cprPrompt: 'The AED tells you to start CPR', cprStart: 'Starts CPR ({s} s after the prompt)', cprEnd: 'End of the CPR period', finish: 'Simulation ends'
       },
       evTitle: 'Assessment', evScore: 'Teaching score', evTimes: 'Times', evOn: 'To switch the AED on', evShock: 'To the first shock', evNoShockNeeded: 'Not indicated', evNoShockDone: 'No shock was delivered', evCprDelay: 'Mean delay starting CPR', evErrors: 'Errors', evNoErrors: 'No errors: well done.', evLog: 'Chronological log', evCopy: 'Copy log', evCopied: 'Log copied', evSlow: 'Tip: in a real emergency the shock must come as soon as possible; practise switching on, applying the pads and standing clear fluently.', evScoreNote: 'Indicative score for this simulator only.',
       evVerdict: { good: 'Very good: correct and safe sequence.', ok: 'Good, with points to improve.', low: 'Repeat the simulation in guided mode.' },
-      err: { pad: 'Misplaced pads', touch: 'Touched the patient during analysis', noclear: 'Did not stand clear before the shock', touchch: 'Touched the patient while the shock was charged', cprdelay: 'Delay starting CPR (over 10 s)', nocpr: 'Did not start CPR', timeout: 'Did not deliver the shock in time', noshock: 'Did not deliver the indicated shock' },
-      scenesTitle: 'Scenario'
+      err: { cycle: 'Cycles with wrong compressions or breaths', rate: 'Mean rate outside 100–120/min', cprRosc: 'Compressed a breathing patient', recovWrong: 'Recovery position with the patient in arrest', pause: 'Pauses of over 10 s without compressing', noRecov: "Did not recognise the patient's recovery", pad: 'Misplaced pads', touch: 'Touched the patient during analysis', noclear: 'Did not stand clear before the shock', touchch: 'Touched the patient while the shock was charged', cprdelay: 'Delay starting CPR (over 10 s)', nocpr: 'Did not start CPR', timeout: 'Did not deliver the shock in time', noshock: 'Did not deliver the indicated shock' },
+      deaScenarios: 'Possible rhythms', deaInfant: 'Infant (<1 year, paediatric pads)', deaSceneI: 'An infant has collapsed: unresponsive and not breathing normally. You have already called 112 and the AED is brought to you.', deaRatio: 'Compression:breath ratio', deaRatioAuto: 'By age', deaRatioComp: 'Compressions only', deaRatioHint: 'By age: 30:2 for adults and 15:2 for children and infants (for those with a duty to respond; an untrained bystander may use 30:2).', deaMetro: 'Metronome during CPR (guided mode only)', deaBtnRecov: 'Check and place in the recovery position', deaBack: 'BACK', zoneF: 'Centre of the chest (front)', zoneB: 'Centre of the back', cpTap: 'COMPRESS', cpBreathNow: '{n} done! Give 2 breaths', cpBreath: 'Breath', cpBreathK: 'Breath {k}/2', cpFirst: 'Start with compressions.', cpCycleBad: 'Wrong cycle: the correct one is {n} compressions and 2 breaths.', cpKeys: 'Tap the big button for each compression (or the space bar). Breath: button or the B key.', cpFast: 'too fast', cpSlow: 'too slow', cpGood: 'good rate', cpTotal: 'Compressions: {n}', obsDead: 'You check the patient: unresponsive, not moving and not breathing normally.', obsAlive: 'You check the patient: moving, opening their eyes and breathing normally.', evRhythm: 'Actual rhythm', evCprTitle: 'CPR quality', evComp: 'Compressions', evRate: 'Mean rate', evInRange: 'Within 100–120/min', evCycles: 'Correct cycles', evBreaths: 'Breaths', deaRatio30: '30:2', deaRatio15: '15:2', sc: { vf: 'Ventricular fibrillation', vt: 'Pulseless ventricular tachycardia', asys: 'Asystole', pea: 'Pulseless electrical activity (PEA)', rosc: 'VF recovering after a few shocks' }, tech: { adult: 'Adult: two hands on the centre of the chest, press 5–6 cm deep, 100–120/min; 30 compressions and 2 breaths.', child: 'Child: one or two hands on the lower half of the breastbone, press one third of the chest depth (≈5 cm), 100–120/min; 15 compressions and 2 breaths.', infant: 'Infant: two fingers (or both thumbs encircling the chest) on the lower half of the breastbone, press one third of the chest depth (≈4 cm), 100–120/min; 15 compressions and 2 breaths.' }, deaEcg: 'Show the ECG on the AED screen (reveals the rhythm)', scenesTitle: 'Scenario'
     }
   });
 
   /* ============================== ajustes y estado ============================== */
-  const CFG = Object.assign({ model: 'semi', scenario: 'random', age: 'adult', mode: 'guided', sound: true, cprLen: 120 }, store.get('dea', {}));
+  const CFG = Object.assign({ model: 'semi', scenarios: null, age: 'adult', mode: 'guided', sound: true, cprLen: 120, ratio: 'auto', metro: true, ecg: true }, store.get('dea', {}));
+  if (!Array.isArray(CFG.scenarios) || !CFG.scenarios.length) CFG.scenarios = CFG.scenario === 'vf' ? ['vf'] : CFG.scenario === 'asys' ? ['asys'] : ['vf', 'asys', 'rosc'];
+  if (!['adult', 'child', 'infant'].includes(CFG.age)) CFG.age = 'adult';
   const saveCfg = () => store.set('dea', CFG);
   const TIM = { analysis: 8, charge: 4, armedTimeout: 30, autoCount: 6, cprDelayOk: 10, reprompt: 15, bpm: 110 };      // modificables en pruebas
   const PAD_W = 64, PAD_H = 46;
   let view = 'setup';                                            // setup | sim | eval
   let G = null, timer = 0, ecgTimer = 0, layoutWide = true, evalData = null;
 
+  const newCp = () => ({ count: 0, breaths: 0, state: 'comp', last: 0, idle: performance.now(), cyc: [], short: false, pauseFlag: false, roscErr: false, bT: 0, nudged: false });
+  /* Guion de análisis del ritmo (S = descarga indicada, N = no indicada, R = el paciente se ha recuperado). El último análisis cierra el simulacro. */
+  const scriptFor = (sc) => (sc === 'vf' || sc === 'vt') ? ['S', 'S', 'N'] : sc === 'rosc' ? Array(1 + Math.floor(Math.random() * 3)).fill('S').concat('R') : ['N', 'N', 'N'];
+  const ratioN = () => { const r = CFG.ratio === 'auto' ? (CFG.age === 'adult' ? '30' : '15') : CFG.ratio; return r === 'comp' ? 0 : +r; };
+  const metroOn = () => CFG.metro && CFG.mode !== 'exam';
   const newG = () => {
-    const sc = CFG.scenario === 'random' ? (Math.random() < 0.5 ? 'vf' : 'asys') : (CFG.scenario === 'vf' ? 'vf' : 'asys');
+    const pool = CFG.scenarios.length ? CFG.scenarios : ['vf'];
+    const sc = pool[Math.floor(Math.random() * pool.length)];
     return {
-      sc, simT: 0, running: false, phase: 'off', phaseT: 0, powered: false, shirt: false, plug: false, clear: false, analysisN: 0, shocks: 0, finalCycle: false,
+      sc, script: scriptFor(sc), simT: 0, running: false, phase: 'off', phaseT: 0, powered: false, shirt: false, plug: false, clear: false, analysisN: 0, shocks: 0, finalCycle: false,
       pads: [1, 2].map(id => ({ id, inBag: true, x: 0, y: 0, zone: null, ok: false })), msg: { type: 'scr', key: 'off' }, say: null, lastPrompt: 0, step: null,
-      events: [], errs: { pad: 0, touch: 0, noclear: 0, touchch: 0, cprdelay: 0, nocpr: 0, timeout: 0, noshock: 0 },
-      tOn: null, tShock: null, cprPromptT: 0, cprStarted: true, cprDelays: [], ecg: [], touchFx: 0, clearFx: 0, flash: 0, lastBeep: 0, lastCue: 0, fb: ''
+      events: [], errs: { pad: 0, touch: 0, noclear: 0, touchch: 0, cprdelay: 0, nocpr: 0, timeout: 0, noshock: 0, cycle: 0, rate: 0, cprRosc: 0, recovWrong: 0, pause: 0, noRecov: 0 },
+      tOn: null, tShock: null, cprPromptT: 0, cprStarted: true, cprDelays: [], ecg: [], touchFx: 0, clearFx: 0, flash: 0, lastBeep: 0, lastCue: 0, fb: '', obs: null, rosc: false, recovered: false, cp: newCp(), cpTot: { total: 0, ivs: [], cycles: [], breaths: 0 }, sayP: null, compTs: [], shockPerf: 0, noshockPerf: 0
     };
   };
 
-  const young = () => CFG.age === 'child';
+  const young = () => CFG.age !== 'adult';
+  const infant = () => CFG.age === 'infant';
   const mmss = (s) => AppKit.mmss(s);
   const logEv = (key, params, err) => { G.events.push({ t: G.simT, key, params: params || {}, err: !!err }); };
   const evText = (e) => { const p = Object.assign({}, e.params); if (p.why) p.why = T('why')[p.why] || p.why; if (p.zoneKey) p.zone = T(p.zoneKey); return T('ev')[e.key].replace(/\{(\w+)\}/g, (m, k) => (k in p ? p[k] : m)); };
@@ -173,13 +188,14 @@
 
   /* ============================== voz y rótulos ============================== */
   function speak(key, params, o = {}) {
-    G.say = key; G.msg = { type: 'say', key, params };
+    G.say = key; G.sayP = params || null; G.msg = { type: 'say', key, params };
     G.lastPrompt = G.simT;
-    R.voice.say(T('say')[key], { cancel: o.cancel !== false });
+    R.voice.say(sayText(key, params), { cancel: o.cancel !== false });
     paintCaption();
   }
   function screenMsg(key, params) { G.msg = { type: 'scr', key, params }; }
-  const caption = () => (G.say && T('say')[G.say]) || '';
+  const sayText = (key, params) => (T('say')[key] || '').replace(/\{(\w+)\}/g, (m, k) => (params && k in params ? params[k] : m));
+  const caption = () => (G.say ? sayText(G.say, G.sayP) : '');
 
   /* ============================== geometría ============================== */
   const DEA_W = 360, DEA_H = 420, PAT_W = 400, PAT_H = 440, BAG = { w: 300, h: 64 };
@@ -188,11 +204,20 @@
     tall: { vb: '0 0 400 944', dea: [20, 0], bag: [50, 424], pat: [0, 500] }
   };
   const lay = () => (layoutWide ? LAY.wide : LAY.tall);
-  const KID = 0.72;
-  const loc = (x, y) => (young() ? [200 + (x - 200) * KID, 20 + (y - 20) * KID] : [x, y]);           // coordenadas del paciente → escena (relativas al grupo)
-  const ZONES = { R: { cx: 136, cy: 152, rx: 34, ry: 25 }, L: { cx: 280, cy: 248, rx: 28, ry: 34 } };
-  const zoneScene = (k) => { const z = ZONES[k], [px, py] = lay().pat, [cx, cy] = loc(z.cx, z.cy), s = young() ? KID : 1; return { x: px + cx, y: py + cy, rx: z.rx * s, ry: z.ry * s }; };
-  const padScale = () => (young() ? KID : 1);
+  const AGE_S = { adult: 1, child: 0.72, infant: 0.5 };
+  const kid = () => AGE_S[CFG.age] || 1;
+  const loc = (x, y) => [200 + (x - 200) * kid(), 20 + (y - 20) * kid()];           // coordenadas del paciente → escena (relativas al grupo)
+  /* Adulto y niño: parche bajo la clavícula derecha y otro en el costado izquierdo. Lactante: uno en el centro del pecho y otro en el centro de la espalda (recuadro «Espalda»). */
+  const ZONES_A = { R: { cx: 136, cy: 152, rx: 34, ry: 25 }, L: { cx: 280, cy: 248, rx: 28, ry: 34 } };
+  const ZONES_I = { F: { cx: 200, cy: 196, rx: 38, ry: 30 }, B: { abs: true, cx: 200, cy: 350, rx: 56, ry: 42 } };
+  const zonesDef = () => (infant() ? ZONES_I : ZONES_A);
+  const zoneKeys = () => Object.keys(zonesDef());
+  const zoneScene = (k) => {
+    const z = zonesDef()[k], [px, py] = lay().pat;
+    if (z.abs) return { x: px + z.cx, y: py + z.cy, rx: z.rx, ry: z.ry };
+    const [cx, cy] = loc(z.cx, z.cy), s = kid(); return { x: px + cx, y: py + cy, rx: z.rx * s, ry: z.ry * s };
+  };
+  const padScale = () => Math.max(kid(), 0.6);
   const slot = (i) => { const [bx, by] = lay().bag; return { x: bx + (i === 0 ? 92 : 208), y: by + 26 }; };
   const plugPos = () => { const [dx, dy] = lay().dea; return G && G.plug ? { x: dx + 180, y: dy + 366 } : { x: dx + 282, y: dy + 392 }; };
   const torsoBox = () => { const [px, py] = lay().pat, a = loc(70, 96), b = loc(330, 345); return { x1: px + a[0], y1: py + a[1], x2: px + b[0], y2: py + b[1] }; };
@@ -257,14 +282,16 @@
       <path d="M92 336L308 336L318 414L82 414Z" fill="#3b6ea5"/><path d="M92 340L308 340" stroke="#27507d" stroke-width="5"/>
       <g stroke="${V2}" stroke-width="3" fill="none" stroke-linecap="round"><path d="M126 126Q164 112 194 130M274 126Q236 112 206 130M200 134V252"/><path d="M122 196Q160 212 196 204M278 196Q240 212 204 204M126 226Q160 240 196 232M274 226Q240 240 204 232"/></g>
       <circle cx="152" cy="206" r="4.5" fill="${V2}"/><circle cx="248" cy="206" r="4.5" fill="${V2}"/><circle cx="200" cy="304" r="3.5" fill="${V2}"/>`;
-    const zones = ['R', 'L'].map(k => { const z = ZONES[k]; return `<g class="zone" data-z="${k}"><ellipse cx="${z.cx}" cy="${z.cy}" rx="${z.rx}" ry="${z.ry}" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="2.5" stroke-dasharray="6 5"/></g>`; }).join('');
+    const zoneEl = (k) => { const z = zonesDef()[k]; return `<g class="zone" data-z="${k}"><ellipse cx="${z.cx}" cy="${z.cy}" rx="${z.rx}" ry="${z.ry}" fill="rgba(74,222,128,.14)" stroke="#4ade80" stroke-width="2.5" stroke-dasharray="6 5"/></g>`; };
+    const zones = zoneKeys().filter(k => !zonesDef()[k].abs).map(zoneEl).join('');
+    const backBox = infant() ? `<g><rect x="100" y="262" width="200" height="170" rx="18" fill="rgba(127,178,234,.10)" stroke="#7fb2ea" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-family="Source Sans 3,system-ui,sans-serif" font-size="11" font-weight="700" fill="#9fc4ee">${esc(T('deaBack'))}</text><ellipse cx="200" cy="352" rx="82" ry="66" fill="${V}"/></g>${zoneKeys().filter(k => zonesDef()[k].abs).map(zoneEl).join('')}` : '';
     const shirt = `<g id="shirt" role="button" tabindex="0" class="svg-btn shirt" aria-label="${esc(T('aShirt'))}">
       <path d="M62 120Q62 98 108 96L160 96Q200 124 240 96L292 96Q338 98 338 120L330 346L70 346Z" fill="${S}" stroke="${S2}" stroke-width="3"/><path d="M160 96Q200 124 240 96" fill="none" stroke="${S2}" stroke-width="4"/><path d="M200 118V346" stroke="${S2}" stroke-width="2.5" stroke-dasharray="3 7"/>
       <circle cx="200" cy="170" r="3.5" fill="${S2}"/><circle cx="200" cy="218" r="3.5" fill="${S2}"/><circle cx="200" cy="266" r="3.5" fill="${S2}"/></g>`;
     const hands = `<g id="hands" class="fx" opacity="0"><ellipse cx="196" cy="196" rx="34" ry="20" fill="#f0c9a8" stroke="#b98a64" stroke-width="3"/><ellipse cx="206" cy="188" rx="32" ry="18" fill="#f5d6ba" stroke="#b98a64" stroke-width="3"/></g>`;
     const ring = `<ellipse id="clearFx" class="fx" cx="200" cy="230" rx="176" ry="212" fill="none" stroke="#4ade80" stroke-width="5" stroke-dasharray="14 10" opacity="0"/>`;
-    const inner = young() ? `translate(200 20) scale(${KID}) translate(-200 -20)` : '';
-    return `<g id="patG"><g transform="${inner}">${body}${zones}${shirt}${hands}${ring}</g><rect id="flash" x="0" y="0" width="${PAT_W}" height="${PAT_H}" rx="20" fill="#fff" opacity="0" pointer-events="none"/></g>`;
+    const inner = young() ? `translate(200 20) scale(${kid()}) translate(-200 -20)` : '';
+    return `<g id="patG"><g transform="${inner}"><g class="breathe">${body}</g>${zones}${shirt}${hands}${ring}</g>${backBox}<rect id="flash" x="0" y="0" width="${PAT_W}" height="${PAT_H}" rx="20" fill="#fff" opacity="0" pointer-events="none"/></g>`;
   }
 
   function padSvg(p) {
@@ -294,7 +321,7 @@
   }
 
   function zoneHit(p) {
-    const k = ['R', 'L'].find(z => { const s = zoneScene(z); return ((p.x - s.x) / (s.rx * 1.3)) ** 2 + ((p.y - s.y) / (s.ry * 1.3)) ** 2 <= 1; });
+    const k = zoneKeys().find(z => { const s = zoneScene(z); return ((p.x - s.x) / (s.rx * 1.3)) ** 2 + ((p.y - s.y) / (s.ry * 1.3)) ** 2 <= 1; });
     return k || null;
   }
   const inTorso = (p) => { const b = torsoBox(); return p.x > b.x1 && p.x < b.x2 && p.y > b.y1 && p.y < b.y2; };
@@ -359,10 +386,32 @@
     /* barra de acciones y ayuda */
     const cprBtn = $('#aCpr'); if (cprBtn) cprBtn.disabled = !(ph === 'cpr' && !G.cprStarted);
     const clr = $('#aClear'); if (clr) clr.disabled = !(ph === 'charging' || ph === 'armed' || ph === 'analyzing' || ph === 'cpr');
-    const hint = $('#deaHint'); if (hint) { const k = exam ? null : hintKey(); hint.textContent = k ? T('hint')[k] : ''; hint.hidden = !k; }
+    const hint = $('#deaHint'); if (hint) { const k = exam ? null : hintKey(); hint.textContent = k ? T('hint')[k === 'pads' && infant() ? 'padsInfant' : k] : ''; hint.hidden = !k; }
+    const rc = $('#aRecov'); if (rc) rc.disabled = ph !== 'cpr';
+    const ob = $('#deaObs'); const showObs = !!G.obs && ph === 'cpr' && G.phaseT > 3;
+    if (ob) { ob.hidden = !showObs; if (showObs) ob.textContent = T(G.obs === 'alive' ? 'obsAlive' : 'obsDead'); }
+    const pg = $('#patG'); if (pg) pg.classList.toggle('alive', showObs && G.obs === 'alive');
+    paintCpr();
     paintCaption();
   }
-  const scrKeyForSay = (k) => ({ on: 'on', undress: 'undress', pads: 'pads', padsChild: 'pads', check: 'check', lost: 'lost', connect: 'connect', analyze: 'analyze', motion: 'motion', shockAdv: 'charging', clear: 'clear', press: 'press', auto: 'auto', shocked: 'shocked', noshock: 'noshock', cancelled: 'cancelled', cpr: 'cpr', push: 'cpr', cprend: 'cprend' }[k] || 'on');
+  function paintCpr() {
+    const box = $('#cprBox'); if (!box) return;
+    const show = G.phase === 'cpr'; box.hidden = !show; if (!show) return;
+    const c = G.cp, n = ratioN(), guided = CFG.mode === 'guided';
+    $('#cpCount').textContent = n ? `${c.count}/${n}` : String(G.cpTot.total);
+    $('#cpLbl').textContent = c.state === 'breath' ? T('cpBreathNow', { n }) : T('cpTap');
+    box.classList.toggle('breath', c.state === 'breath');
+    const br = $('#cpBreath'); br.hidden = !n; br.textContent = c.state === 'breath' ? T('cpBreathK', { k: Math.min(2, c.breaths + 1) }) : T('cpBreath');
+    br.classList.toggle('pulse', c.state === 'breath');
+    $('#cpBar').style.width = n ? Math.min(100, c.count / n * 100) + '%' : '0';
+    $('#cpTech').textContent = guided ? T('tech')[CFG.age] + ' ' + T('cpKeys') : '';
+    const rb = $('#cpBpm'); const iv = c.cyc.slice(-6);
+    if (guided && iv.length >= 3 && c.state === 'comp') {
+      const bpm = Math.round(60000 / (iv.reduce((a, b) => a + b, 0) / iv.length)), ok = bpm >= 100 && bpm <= 120;
+      rb.textContent = `${bpm}/min · ${T(ok ? 'cpGood' : bpm < 100 ? 'cpSlow' : 'cpFast')}`; rb.className = 'cpr-bpm ' + (ok ? 'ok' : 'bad');
+    } else { rb.textContent = guided ? '' : T('cpTotal', { n: G.cpTot.total }); rb.className = 'cpr-bpm'; }
+  }
+  const scrKeyForSay = (k) => ({ on: 'on', undress: 'undress', pads: 'pads', padsChild: 'pads', padsInfant: 'pads', check: 'check', lost: 'lost', connect: 'connect', analyze: 'analyze', motion: 'motion', shockAdv: 'charging', clear: 'clear', press: 'press', auto: 'auto', shocked: 'shocked', noshock: 'noshock', cancelled: 'cancelled', cpr: 'cpr', push: 'cpr', cprend: 'cprend' }[k] || 'on');
   function paintCaption() { const c = $('#deaCaption'); if (c) c.textContent = caption(); }
 
   function helpTarget() {
@@ -380,22 +429,48 @@
     if (ph === 'analyzing') return 'wait';
     if (ph === 'charging') return 'wait';
     if (ph === 'armed') return CFG.model === 'auto' ? 'clearAuto' : 'clear';
-    if (ph === 'cpr') return G.cprStarted ? 'cprOn' : 'cpr';
+    if (ph === 'cpr') return G.cp.state === 'breath' ? 'cprBreath' : (G.cprStarted ? 'cprOn' : 'cpr');
     return null;
   }
 
   /* ============================== ECG ============================== */
+  /* ECG sintético: ritmo sinusal (P-QRS-T), FV, TV sin pulso, asistolia y AESP; las compresiones añaden artefacto a la señal. */
+  const gau = (u, m, s) => Math.exp(-0.5 * ((u - m) / s) ** 2);
+  const sinus = (t, bpm, k) => {
+    const p = 60 / bpm, u = (t % p);
+    return k * (0.13 * gau(u, 0.12 * p / 0.8 * 0.8, 0.045) - 0.12 * gau(u, 0.255, 0.014) + 1.0 * gau(u, 0.285, 0.016) - 0.22 * gau(u, 0.315, 0.016) + 0.30 * gau(u, 0.52, 0.075));
+  };
+  const rhythmNow = (tn) => {
+    const base = G.sc === 'vt' ? 'vt' : (G.sc === 'asys' ? 'asys' : (G.sc === 'pea' ? 'pea' : 'vf'));
+    if (G.phase === 'cpr') {
+      if (G.rosc) return 'sinus';
+      if (G.shockPerf && G.shockPerf > G.noshockPerf) {                        // tras una descarga: breve línea plana y después lo que corresponda
+        const since = tn - G.shockPerf, nx = G.script[G.analysisN] || 'N';
+        if (since < 1.8) return 'flat';
+        if (nx === 'R') return since > 3 ? 'sinus' : 'flat';
+        return nx === 'S' ? base : 'asys';
+      }
+      return base === 'vf' || base === 'vt' ? 'asys' : base;                    // RCP tras «no descarga» en un ritmo desfibrilable que degeneró
+    }
+    return base;
+  };
   function ecgY(t) {
-    const ph = G.phase;
-    if (!G.powered || !G.plug || !padsValid() || !G.shirt) return null;
-    if (ph === 'cpr') return 0.65 * Math.sin(2 * Math.PI * (TIM.bpm / 60) * t) + 0.12 * Math.sin(2 * Math.PI * 9 * t);
-    if (G.sc === 'vf' && G.analysisN <= 2 || ph === 'charging' || ph === 'armed') return (0.55 + 0.3 * Math.sin(2 * Math.PI * 0.45 * t)) * (0.6 * Math.sin(2 * Math.PI * 4.7 * t + 1.4 * Math.sin(2 * Math.PI * 0.8 * t)) + 0.4 * Math.sin(2 * Math.PI * 7.9 * t + 2));
-    if (G.sc === 'vf') return 0.05 * Math.sin(2 * Math.PI * 1.1 * t) + 0.04 * (Math.random() - 0.5);
-    return 0.03 * Math.sin(2 * Math.PI * 0.3 * t) + 0.03 * (Math.random() - 0.5);
+    if (!CFG.ecg || !G.powered || !G.plug || !padsValid() || !G.shirt) return null;
+    const r = rhythmNow(t); let y;
+    if (r === 'sinus') y = sinus(t, 78, 0.8);
+    else if (r === 'vt') y = 0.75 * Math.sin(2 * Math.PI * 3.1 * t) + 0.25 * Math.sin(2 * Math.PI * 6.2 * t + 0.6);
+    else if (r === 'vf') y = (0.5 + 0.28 * Math.sin(2 * Math.PI * 0.4 * t)) * (0.6 * Math.sin(2 * Math.PI * 4.7 * t + 1.6 * Math.sin(2 * Math.PI * 0.7 * t)) + 0.4 * Math.sin(2 * Math.PI * 7.3 * t + 2.2 * Math.sin(2 * Math.PI * 0.45 * t)) + 0.25 * Math.sin(2 * Math.PI * 3.1 * t + 1.1));
+    else if (r === 'pea') y = sinus(t, 38, 0.32) * 1 + 0.015 * (Math.random() - 0.5);
+    else if (r === 'asys') y = 0.04 * Math.sin(2 * Math.PI * 0.25 * t) + 0.025 * (Math.random() - 0.5);
+    else y = 0.012 * (Math.random() - 0.5);
+    if (G.compTs && G.compTs.length) {                                         // artefacto de compresión
+      for (const tc of G.compTs) { const d = t - tc; if (d >= 0 && d < 0.5) y += 1.05 * Math.exp(-d * 7) * Math.cos(d * 22); }
+    }
+    return Math.max(-1.4, Math.min(1.4, y));
   }
   function ecgTick() {
     if (!G || view !== 'sim') return;
-    const N = 132, y = ecgY(G.simT);
+    const N = 240, y = ecgY(performance.now() / 1000);
     G.ecg.push(y === null ? null : y); if (G.ecg.length > N) G.ecg.shift();
     const el = $('#ecg'); if (!el) return;
     const x0 = 48, w = 264, mid = 146, amp = 22;
@@ -417,7 +492,7 @@
     if (s === null) { startAnalysis(); return; }
     if (s === G.step && !force) return;
     G.step = s;
-    const key = s === 'pads' ? (G.pads.every(p => !p.inBag) ? 'check' : (young() ? 'padsChild' : 'pads')) : s;
+    const key = s === 'pads' ? (G.pads.every(p => !p.inBag) ? 'check' : (infant() ? 'padsInfant' : young() ? 'padsChild' : 'pads')) : s;
     speak(key, null, { cancel: true });
     screenMsg(scrKeyForSay(key));
   }
@@ -433,21 +508,25 @@
     const s = stepNeeded();
     if (s === null) { startAnalysis(); return; }
     G.step = s;
-    const key = s === 'pads' ? (G.pads.every(p => !p.inBag) ? 'check' : (young() ? 'padsChild' : 'pads')) : s;
+    const key = s === 'pads' ? (G.pads.every(p => !p.inBag) ? 'check' : (infant() ? 'padsInfant' : young() ? 'padsChild' : 'pads')) : s;
     speak(key, null, { cancel: false }); screenMsg(scrKeyForSay(key)); paint();
   }
 
   function startAnalysis() {
-    G.analysisN++; G.phase = 'analyzing'; G.phaseT = 0; G.clear = false; G.cprStarted = true; G.step = null;
+    G.analysisN++; G.phase = 'analyzing'; G.phaseT = 0; G.clear = false; G.cprStarted = true; G.step = null; G.obs = null; G.rosc = false;
     logEv('analysis', { n: G.analysisN }); Snd.metro(false); Snd.beep(660, 0.12);
     speak('analyze'); screenMsg('analyze'); paint();
   }
   function analysisResult() {
-    const shockable = G.sc === 'vf' && G.analysisN <= 2;
-    G.finalCycle = G.analysisN >= 3;
-    if (shockable) {
+    const out = G.script[G.analysisN - 1] || 'N';
+    G.finalCycle = G.analysisN >= G.script.length;
+    G.noshockPerf = out === 'S' ? (G.noshockPerf || 0) : performance.now() / 1000;
+    if (out === 'S') {
       G.phase = 'charging'; G.phaseT = 0; logEv('shockAdv'); speak('shockAdv'); screenMsg('charging'); Snd.charge(TIM.charge);
-    } else { logEv('noShock'); startCpr('noshock'); }
+    } else {
+      logEv('noShock'); startCpr('noshock');
+      G.obs = out === 'R' ? 'alive' : 'dead'; G.rosc = out === 'R';        // el DEA dice lo mismo en ambos casos: hay que comprobar al paciente
+    }
     paint();
   }
   function armShock() {
@@ -458,15 +537,15 @@
   function deliverShock() {
     const clear = G.clear;
     if (clear) logEv('shock'); else { logEv('shockNoClear', null, true); addErr('noclear', T('ev').shockNoClear); }
-    G.shocks++; if (G.tShock === null) G.tShock = G.simT;
+    G.shocks++; if (G.tShock === null) G.tShock = G.simT; G.shockPerf = performance.now() / 1000;
     G.flash = 1; Snd.thump(); startCpr('shock');
   }
   function startCpr(kind) {
-    G.phase = 'cpr'; G.phaseT = 0; G.cprPromptT = G.simT; G.cprStarted = false; G.clear = false; G.lastCue = 0;
+    G.phase = 'cpr'; G.phaseT = 0; G.cprPromptT = G.simT; G.cprStarted = false; G.clear = false; G.lastCue = 0; G.cp = newCp(); G.obs = null; G.rosc = false;
     logEv('cprPrompt');
     speak(kind === 'shock' ? 'shocked' : kind === 'cancel' ? 'cancelled' : 'noshock');
     screenMsg(kind === 'shock' ? 'shocked' : kind === 'cancel' ? 'cancelled' : 'noshock');
-    Snd.metro(true); paint();
+    Snd.metro(metroOn()); paint();
   }
   function pressShock() {
     if (!G || !G.running || CFG.model === 'auto') return;
@@ -489,11 +568,58 @@
     if (G.phase === 'charging' || G.phase === 'armed') logEv('clear');
     paint();
   }
+  const roscErr = () => { if (G.cp.roscErr) return; G.cp.roscErr = true; addErr('cprRosc', T('err').cprRosc); logEv('cprRosc', null, true); Snd.error(); };
   function startCprBtn() {
     if (!G || G.phase !== 'cpr' || G.cprStarted) return;
-    G.cprStarted = true; const d = G.simT - G.cprPromptT; G.cprDelays.push(d);
+    G.cprStarted = true;
+    if (G.rosc) { roscErr(); paint(); return; }
+    const d = G.simT - G.cprPromptT; G.cprDelays.push(d);
     logEv('cprStart', { s: Math.round(d) });
     if (d > TIM.cprDelayOk) { G.events[G.events.length - 1].err = true; addErr('cprdelay', T('err').cprdelay); }
+    paint();
+  }
+
+  /* ---- compresiones e insuflaciones medidas con los toques ---- */
+  function closeCycle(ok) {
+    const c = G.cp, n = ratioN();
+    const rate = c.cyc.length >= 3 ? Math.round(60000 / (c.cyc.reduce((a, b) => a + b, 0) / c.cyc.length)) : null;
+    G.cpTot.cycles.push({ c: c.count, ok, rate });
+    logEv('cycle', { i: G.cpTot.cycles.length, c: c.count, r: rate === null ? '—' : rate }, !ok);
+    if (!ok) { G.errs.cycle++; if (CFG.mode === 'guided') toast(T('cpCycleBad', { n }), true); }
+    Object.assign(c, { count: 0, breaths: 0, state: 'comp', cyc: [], short: false, last: 0, idle: performance.now(), pauseFlag: false, nudged: false });
+  }
+  function compress() {
+    if (!G || !G.running || G.phase !== 'cpr') return;
+    G.touchFx = 0.18; Snd.beep(760, 0.04, 0.22);
+    G.compTs.push(performance.now() / 1000); if (G.compTs.length > 8) G.compTs.shift();
+    if (G.rosc) { G.cprStarted = true; roscErr(); paint(); return; }
+    if (!G.cprStarted) startCprBtn();
+    const c = G.cp, n = ratioN(), now = performance.now();
+    if (c.state === 'breath') { closeCycle(false); Snd.metro(metroOn()); }
+    if (c.last && c.count > 0 && now - c.last < 2000) { const iv = now - c.last; c.cyc.push(iv); G.cpTot.ivs.push(iv); }
+    c.last = now; c.pauseFlag = false; c.count++; G.cpTot.total++;
+    if (n && c.count === n) { c.state = 'breath'; c.bT = G.simT; c.nudged = false; Snd.metro(false); Snd.beep(1100, 0.25, 0.5); speak('breaths', { n }); }
+    paint();
+  }
+  function breath() {
+    if (!G || !G.running || G.phase !== 'cpr') return;
+    const c = G.cp, n = ratioN(); if (!n) return;
+    if (G.rosc) { G.cprStarted = true; return; }
+    if (c.state === 'comp') {
+      if (c.count === 0) { toast(T('cpFirst')); return; }
+      c.short = c.count < n; c.state = 'breath'; c.breaths = 0; c.bT = G.simT; Snd.metro(false);
+    }
+    c.breaths++; G.cpTot.breaths++; Snd.beep(520, 0.35, 0.45);
+    if (c.breaths >= 2) {
+      closeCycle(!c.short && c.count === n);
+      speak('resume', null, { cancel: false }); Snd.metro(metroOn());
+    }
+    paint();
+  }
+  function recovery() {
+    if (!G || !G.running || G.phase !== 'cpr') return;
+    if (G.rosc) { G.recovered = true; logEv('recov'); finish(); return; }
+    G.errs.recovWrong++; logEv('recovWrong', null, true); Snd.error(); if (CFG.mode === 'guided') toast(T('ev').recovWrong, true);
     paint();
   }
 
@@ -520,12 +646,17 @@
       }
     } else if (ph === 'cpr') {
       const len = CFG.cprLen, left = len - G.phaseT;
-      if (G.cprStarted && G.lastCue < 1 && G.phaseT > len * 0.25) { G.lastCue = 1; speak('push', null, { cancel: false }); }
-      else if (G.lastCue < 2 && G.phaseT > len * 0.5) { G.lastCue = 2; speak('cpr', null, { cancel: false }); }
+      if (G.cprStarted && !G.rosc) {
+        const c = G.cp, np = performance.now();
+        if (c.state === 'comp' && !c.pauseFlag && np - Math.max(c.last, c.idle) > 10000) { c.pauseFlag = true; G.errs.pause++; logEv('pause', null, true); if (CFG.mode === 'guided') toast(T('ev').pause, true); }
+        if (c.state === 'breath' && !c.nudged && G.simT - c.bT > 10) { c.nudged = true; speak('breaths', { n: ratioN() }, { cancel: false }); }
+      }
+      if (G.cprStarted && !G.rosc && G.lastCue < 1 && G.phaseT > len * 0.25) { G.lastCue = 1; speak('push', null, { cancel: false }); }
+      else if (!G.rosc && G.lastCue < 2 && G.phaseT > len * 0.5) { G.lastCue = 2; speak('cpr', null, { cancel: false }); }
       else if (G.lastCue < 3 && left <= Math.min(10, len * 0.2)) { G.lastCue = 3; speak('cprend', null, { cancel: false }); screenMsg('cprend'); }
       if (left <= 0) {
         logEv('cprEnd');
-        if (!G.cprStarted) { G.errs.nocpr++; G.events[G.events.length - 1].err = true; }
+        if (!G.cprStarted && !G.rosc) { G.errs.nocpr++; G.events[G.events.length - 1].err = true; }
         if (G.finalCycle) finish(); else startAnalysis();
       }
     }
@@ -551,7 +682,7 @@
     let why = null;
     if (!z) why = whyBad(p); else if (other && other.zone === z) why = 'same';
     p.zone = z; p.ok = !why;
-    if (!why) { logEv('padOk', { n: p.id, zoneKey: z === 'R' ? 'zoneR' : 'zoneL' }); if (CFG.mode === 'guided') toast(T('fbOk', { n: p.id })); }
+    if (!why) { logEv('padOk', { n: p.id, zoneKey: 'zone' + z }); if (CFG.mode === 'guided') toast(T('fbOk', { n: p.id })); }
     else { logEv('padBad', { n: p.id, why }, true); addErr('pad', T('fbBad', { n: p.id, why: T('why')[why] })); Snd.error(); }
     onPadsChanged();
   }
@@ -598,7 +729,7 @@
         if (mv) { e.preventDefault(); p.x += mv[0]; p.y += mv[1]; clampScene(p); p.inBag = false; paint(); clearTimeout(p.kt); p.kt = setTimeout(() => dropPad(p), 600); }
         else if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (CFG.mode === 'guided' && G.shirt) { const k = ['R', 'L'].find(z => !G.pads.some(q => q !== p && q.zone === z)); const s = zoneScene(k); p.x = s.x; p.y = s.y; dropPad(p); }
+          if (CFG.mode === 'guided' && G.shirt) { const k = zoneKeys().find(z => !G.pads.some(q => q !== p && q.zone === z)); const s = zoneScene(k); p.x = s.x; p.y = s.y; dropPad(p); }
           else { p.y -= 30; clampScene(p); paint(); clearTimeout(p.kt); p.kt = setTimeout(() => dropPad(p), 600); }
         }
       });
@@ -611,12 +742,19 @@
     G.running = false; G.phase = 'done'; clearInterval(timer); clearInterval(ecgTimer); Snd.stop(); R.voice.cancel();
     logEv('finish');
     const e = G.errs;
-    if (G.sc === 'vf' && G.shocks === 0 && G.powered) e.noshock++;
-    let pen = 5 * Math.min(e.pad, 4) + 10 * Math.min(e.touch, 3) + 20 * Math.min(e.noclear, 2) + 15 * Math.min(e.touchch, 2) + 10 * Math.min(e.cprdelay, 3) + 15 * Math.min(e.nocpr, 2) + 10 * Math.min(e.timeout, 2) + 30 * Math.min(e.noshock, 1);
+    if (G.script.includes('S') && G.shocks === 0 && G.powered) e.noshock++;
+    const ivs = G.cpTot.ivs; let avgRate = null, inRange = null;
+    if (ivs.length >= 5) {
+      avgRate = Math.round(60000 / (ivs.reduce((a, b) => a + b, 0) / ivs.length));
+      inRange = Math.round(100 * ivs.filter(v => { const b = 60000 / v; return b >= 100 && b <= 120; }).length / ivs.length);
+      if (avgRate < 100 || avgRate > 120) e.rate++;
+    }
+    if (G.rosc && !G.recovered) e.noRecov++;
+    let pen = 5 * Math.min(e.pad, 4) + 10 * Math.min(e.touch, 3) + 20 * Math.min(e.noclear, 2) + 15 * Math.min(e.touchch, 2) + 10 * Math.min(e.cprdelay, 3) + 15 * Math.min(e.nocpr, 2) + 10 * Math.min(e.timeout, 2) + 30 * Math.min(e.noshock, 1) + 5 * Math.min(e.cycle, 4) + 10 * Math.min(e.rate, 1) + 20 * Math.min(e.cprRosc, 1) + 10 * Math.min(e.recovWrong, 2) + 5 * Math.min(e.pause, 3) + 30 * Math.min(e.noRecov, 1);
     const score = G.tOn === null ? 0 : Math.max(0, 100 - pen);
     const slow = G.tShock !== null && G.tShock - G.tOn > 90;
     const avgDelay = G.cprDelays.length ? G.cprDelays.reduce((a, b) => a + b, 0) / G.cprDelays.length : null;
-    evalData = { score, tOn: G.tOn, tShock: G.tShock, shockable: G.sc === 'vf', avgDelay, errs: Object.assign({}, e), slow, events: G.events.slice() };
+    evalData = { score, tOn: G.tOn, tShock: G.tShock, shockable: G.script.includes('S'), sc: G.sc, cpr: { total: G.cpTot.total, avgRate, inRange, cyc: G.cpTot.cycles.slice(), breaths: G.cpTot.breaths }, avgDelay, errs: Object.assign({}, e), slow, events: G.events.slice() };
     view = 'eval'; render();
   }
 
@@ -636,10 +774,13 @@
           <h2>${esc(T('deaTitle'))}</h2>
           <p class="muted">${esc(T('deaIntro'))}</p>
           <div class="field-row"><div><b>${esc(T('deaModel'))}</b><small>${esc(T('deaModelHint'))}</small></div>${seg('cModel', 'model', [['semi', 'deaSemi'], ['auto', 'deaAuto']])}</div>
-          <div class="field-row"><div><b>${esc(T('deaScenario'))}</b><small>${esc(T('deaScHint'))}</small></div>${seg('cScen', 'scenario', [['random', 'deaScRandom'], ['vf', 'deaScVF'], ['asys', 'deaScAsys']])}</div>
-          <div class="field-row"><div><b>${esc(T('deaAge'))}</b></div>${seg('cAge', 'age', [['adult', 'deaAdult'], ['child', 'deaChild']])}</div>
+          <div class="field-row"><div><b>${esc(T('deaScenarios'))}</b><small>${esc(T('deaScHint'))}</small></div><div class="seg" id="cScen" role="group">${['vf', 'vt', 'asys', 'pea', 'rosc'].map(k => `<button type="button" data-v="${k}" aria-pressed="${CFG.scenarios.includes(k)}">${esc(T('sc')[k])}</button>`).join('')}</div></div>
+          <div class="field-row"><div><b>${esc(T('deaAge'))}</b></div>${seg('cAge', 'age', [['adult', 'deaAdult'], ['child', 'deaChild'], ['infant', 'deaInfant']])}</div>
           <div class="field-row"><div><b>${esc(T('deaMode'))}</b><small>${esc(T('deaModeHint'))}</small></div>${seg('cMode', 'mode', [['guided', 'deaGuided'], ['exam', 'deaExam']])}</div>
           <div class="field-row"><div><b>${esc(T('deaCprLen'))}</b></div>${seg('cCpr', 'cprLen', [[120, 'deaCpr2'], [30, 'deaCpr30']])}</div>
+          <div class="field-row"><div><b>${esc(T('deaRatio'))}</b><small>${esc(T('deaRatioHint'))}</small></div>${seg('cRatio', 'ratio', [['auto', 'deaRatioAuto'], ['30', 'deaRatio30'], ['15', 'deaRatio15'], ['comp', 'deaRatioComp']])}</div>
+          <div class="field-row"><div><b>${esc(T('deaMetro'))}</b></div><label class="check"><input type="checkbox" id="cMetro" ${CFG.metro ? 'checked' : ''}><span class="sr-only">${esc(T('deaMetro'))}</span></label></div>
+          <div class="field-row"><div><b>${esc(T('deaEcg'))}</b></div><label class="check"><input type="checkbox" id="cEcg" ${CFG.ecg ? 'checked' : ''}><span class="sr-only">${esc(T('deaEcg'))}</span></label></div>
           <div class="field-row"><div><b>${esc(T('deaSound'))}</b></div><label class="check"><input type="checkbox" id="cSound" ${CFG.sound ? 'checked' : ''}><span class="sr-only">${esc(T('deaSound'))}</span></label></div>
           <div class="row" style="margin-top:12px"><button type="button" class="btn big" id="deaGo">${esc(T('deaStart'))}</button></div>
           <p class="disclaimer" style="margin-top:14px">${esc(T('deaDisclaimer'))}</p>
@@ -650,17 +791,26 @@
   function simHtml() {
     return `
       <div class="panel dea-top">
-        <div class="row spread"><p class="grow" style="margin:0"><b>${esc(T(young() ? 'deaSceneC' : 'deaSceneA'))}</b> <span class="muted">${esc(T('deaSteps'))}</span></p>
+        <div class="row spread"><p class="grow" style="margin:0"><b>${esc(T(infant() ? 'deaSceneI' : young() ? 'deaSceneC' : 'deaSceneA'))}</b> <span class="muted">${esc(T('deaSteps'))}</span></p>
           <div class="row"><span class="chip">${esc(T(CFG.model === 'semi' ? 'deaSemi' : 'deaAuto'))} · ${esc(T(CFG.mode === 'guided' ? 'deaGuided' : 'deaExam'))}</span><button type="button" class="btn ghost small" id="deaEnd">${esc(T('deaFinish'))}</button></div></div>
       </div>
       <div class="dea-stage panel">
         <div class="dea-msgbar"><div class="dea-cap" role="status" aria-live="polite"><span id="deaCaption"></span></div>
-        <p class="dea-hint" id="deaHint" role="note"></p></div>
+        <p class="dea-hint" id="deaHint" role="note"></p><p class="dea-obs" id="deaObs" role="status" hidden></p><p class="cpr-tech muted" id="cpTech"></p></div>
         <div class="dea-svgwrap">${sceneHtml()}<div id="deaToast" class="dea-toast" role="status" aria-live="polite"></div></div>
+        <div class="dea-dock">
+        <div class="cpr-box" id="cprBox" hidden>
+          <div class="cpr-row">
+            <button type="button" class="cpr-tap" id="cpTap"><b id="cpCount">0</b><span id="cpLbl"></span></button>
+            <div class="cpr-side"><div class="cpr-bpm" id="cpBpm" aria-live="off"></div><div class="cpr-bar" aria-hidden="true"><i id="cpBar"></i></div><button type="button" class="btn" id="cpBreath"></button></div>
+          </div>
+        </div>
         <div class="dea-actions">
           <button type="button" class="btn ghost" id="aTouch" title="${esc(T('deaBtnTouchHint'))}">✋ ${esc(T('deaBtnTouch'))}</button>
           <button type="button" class="btn" id="aClear" title="${esc(T('deaBtnClearHint'))}">🙌 ${esc(T('deaBtnClear'))}</button>
+          <button type="button" class="btn ghost" id="aRecov" title="${esc(T('deaBtnRecov'))}">🛌 ${esc(T('deaBtnRecov'))}</button>
           <button type="button" class="btn ghost" id="aCpr">❤ ${esc(T('deaBtnCpr'))}</button>
+        </div>
         </div>
       </div>
       <div class="panel settings voice-panel" data-voice-ctl id="deaVoice"></div>
@@ -669,6 +819,13 @@
   function evalHtml() {
     const d = evalData, errs = Object.keys(d.errs).filter(k => d.errs[k] > 0);
     const verdict = d.score >= 90 ? 'good' : d.score >= 70 ? 'ok' : 'low';
+    const cy = d.cpr.cyc, cyOk = cy.filter(x => x.ok).length;
+    const cprBlock = d.cpr.total ? `<h3>${esc(T('evCprTitle'))}</h3><div class="eval-stats">
+          <div class="stat"><b>${d.cpr.total}</b><span>${esc(T('evComp'))}</span></div>
+          <div class="stat"><b>${d.cpr.avgRate !== null ? d.cpr.avgRate + '/min' : '—'}</b><span>${esc(T('evRate'))}</span></div>
+          <div class="stat"><b>${d.cpr.inRange !== null ? d.cpr.inRange + ' %' : '—'}</b><span>${esc(T('evInRange'))}</span></div>
+          <div class="stat"><b>${cy.length ? cyOk + '/' + cy.length : '—'}</b><span>${esc(T('evCycles'))}</span></div>
+          <div class="stat"><b>${d.cpr.breaths}</b><span>${esc(T('evBreaths'))}</span></div></div>` : '';
     const timeShock = d.tShock !== null ? mmss(d.tShock) : (d.shockable ? T('evNoShockDone') : T('evNoShockNeeded'));
     return `
       <div class="panel eval">
@@ -682,7 +839,9 @@
           <div class="stat"><b>${d.tOn !== null ? mmss(d.tOn) : '—'}</b><span>${esc(T('evOn'))}</span></div>
           <div class="stat"><b>${esc(String(timeShock))}</b><span>${esc(T('evShock'))}</span></div>
           <div class="stat"><b>${d.avgDelay !== null ? Math.round(d.avgDelay) + ' s' : '—'}</b><span>${esc(T('evCprDelay'))}</span></div>
+          <div class="stat"><b style="font-size:1.05rem">${esc(T('sc')[d.sc])}</b><span>${esc(T('evRhythm'))}</span></div>
         </div>
+        ${cprBlock}
         <h3>${esc(T('evErrors'))}</h3>
         ${errs.length ? `<ul class="mistakes">${errs.map(k => `<li><span aria-hidden="true">✕</span>${esc(T('err')[k])}${d.errs[k] > 1 ? ` <b>×${d.errs[k]}</b>` : ''}</li>`).join('')}</ul>` : `<p class="callout ok">${esc(T('evNoErrors'))}</p>`}
         <h3>${esc(T('evLog'))}</h3>
@@ -710,15 +869,17 @@
     $$('[data-voice-ctl]', root).forEach(R.voice.mount);
     if (view === 'setup') {
       const bindSeg = (id, key, num) => $$('#' + id + ' button').forEach(b => b.addEventListener('click', () => { CFG[key] = num ? +b.dataset.v : b.dataset.v; saveCfg(); render(); }));
-      bindSeg('cModel', 'model'); bindSeg('cScen', 'scenario'); bindSeg('cAge', 'age'); bindSeg('cMode', 'mode'); bindSeg('cCpr', 'cprLen', true);
+      bindSeg('cModel', 'model'); bindSeg('cRatio', 'ratio'); $$('#cScen button').forEach(b => b.addEventListener('click', () => { const v = b.dataset.v, i = CFG.scenarios.indexOf(v); if (i >= 0) { if (CFG.scenarios.length > 1) CFG.scenarios.splice(i, 1); } else CFG.scenarios.push(v); saveCfg(); render(); })); $('#cEcg').addEventListener('change', e => { CFG.ecg = e.target.checked; saveCfg(); }); $('#cMetro').addEventListener('change', e => { CFG.metro = e.target.checked; saveCfg(); }); bindSeg('cAge', 'age'); bindSeg('cMode', 'mode'); bindSeg('cCpr', 'cprLen', true);
       $('#cSound').addEventListener('change', e => { CFG.sound = e.target.checked; saveCfg(); });
       $('#deaGo').addEventListener('click', begin);
     } else if (view === 'sim') {
       layoutWide = $('.dea-svgwrap').clientWidth >= 640;
       applyLayout(); bindScene();
-      $('#aTouch').addEventListener('click', touch); $('#aClear').addEventListener('click', clearAll); $('#aCpr').addEventListener('click', startCprBtn);
+      $('#aTouch').addEventListener('click', touch); $('#aClear').addEventListener('click', clearAll); $('#aCpr').addEventListener('click', startCprBtn); $('#aRecov').addEventListener('click', recovery);
+      $('#cpTap').addEventListener('pointerdown', e => { e.preventDefault(); compress(); });
+      $('#cpBreath').addEventListener('pointerdown', e => { e.preventDefault(); breath(); });
       $('#deaEnd').addEventListener('click', finish);
-      paint(); watch(); if (G.running && G.phase === 'cpr') Snd.metro(true);
+      paint(); watch(); if (G.running && G.phase === 'cpr') Snd.metro(metroOn() && G.cp.state === 'comp');
     } else {
       $('#deaAgain').addEventListener('click', begin);
       $('#deaCfg').addEventListener('click', () => { view = 'setup'; render(); });
@@ -728,6 +889,15 @@
       });
     }
   }
+
+  /* Teclado: barra espaciadora = comprimir, B = insuflar (solo durante la RCP del simulador) */
+  document.addEventListener('keydown', (e) => {
+    if (view !== 'sim' || !G || !G.running || G.phase !== 'cpr' || e.repeat) return;
+    const tg = e.target, tag = tg && tg.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+    if (tg && tg !== document.body && tg.id !== 'cpTap' && tg.id !== 'cpBreath') return;
+    if (e.code === 'Space') { e.preventDefault(); compress(); } else if (e.code === 'KeyB') { e.preventDefault(); breath(); }
+  });
 
   let ro = null;
   if (window.ResizeObserver) ro = new ResizeObserver(() => {
@@ -742,5 +912,5 @@
     render() { render(); watch(); },
     leave() { if (view === 'sim' && G && G.running) { G.running = false; Snd.stop(); R.voice.cancel(); } }
   };
-  R.dea = { CFG, TIM, get G() { return G; }, get view() { return view; }, get evalData() { return evalData; }, begin, tick, powerOn, touch, clearAll, pressShock, startCprBtn, finish, dropPad, padsValid, zoneScene, lay };      // gancho de pruebas
+  R.dea = { CFG, TIM, get G() { return G; }, get view() { return view; }, get evalData() { return evalData; }, begin, tick, powerOn, touch, clearAll, pressShock, startCprBtn, finish, compress, breath, recovery, ratioN, ecgY, rhythmNow, dropPad, padsValid, zoneScene, lay };      // gancho de pruebas
 })();

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulador de epidemias · Luis Franco Serrano</title>
-<meta name="description" content="Simulador interactivo de epidemias e inmunidad de grupo: vacunas, R0, distanciamiento, mascarillas y aislamiento. Funciona en el navegador.">
+<meta name="description" content="Simulador interactivo de epidemias e inmunidad de grupo con virus reales, vacunas, medidas de control y mapas de Mataró, Barcelona, Catalunya, España, Europa y el mundo. Funciona en el navegador.">
 <meta name="theme-color" content="#0d1a2a">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,13 +16,14 @@
 <body>
 <main class="kit-main" id="app">
 
-  <!-- Escenarios -->
+  <!-- Lugar, patógeno y ficha -->
   <section class="panel intro">
     <div class="intro-text">
       <h2 data-i18n="intro_h"></h2>
       <p class="muted" data-i18n="intro_p"></p>
     </div>
-    <div class="scen-chips" id="scen-chips" role="group" data-i18n-aria="scen_h"></div>
+    <div class="pick"><span class="pick-l" data-i18n="place_l"></span><div class="scen-chips" id="place-chips" role="group" data-i18n-aria="place_l"></div></div>
+    <div class="pick"><span class="pick-l" data-i18n="pathogen_l"></span><div class="scen-chips pgroups" id="scen-chips" role="group" data-i18n-aria="pathogen_l"></div></div>
     <article class="scen-card" id="scen-card" aria-live="polite"></article>
     <div class="banner challenge-banner" id="challenge-banner" hidden></div>
   </section>
@@ -38,6 +39,8 @@
         <canvas id="world" role="img" tabindex="0"></canvas>
         <div class="world-msg" id="world-msg" hidden></div>
       </div>
+      <p class="small muted ratio" id="ratio"></p>
+      <p class="small map-info" id="map-info" hidden></p>
       <div class="toolbar">
         <button class="btn" id="btn-play" type="button"></button>
         <button class="btn ghost" id="btn-step" type="button" data-i18n="btn_step"></button>
@@ -45,6 +48,7 @@
         <button class="btn ghost" id="btn-reset" type="button" data-i18n="btn_reset"></button>
       </div>
       <div class="row opts">
+        <span class="small muted" data-i18n="speed_l"></span>
         <div class="seg" id="speed" role="group" data-i18n-aria="speed_l"></div>
         <label class="check"><input type="checkbox" id="opt-radius"><span data-i18n="opt_radius"></span></label>
       </div>
@@ -63,6 +67,7 @@
         <canvas id="cv-inc" role="img"></canvas>
         <div class="row opts">
           <label class="check"><input type="checkbox" id="opt-seir"><span data-i18n="opt_seir"></span></label>
+          <label class="check"><input type="checkbox" id="opt-cf"><span data-i18n="opt_cf"></span></label>
         </div>
         <div class="legend key" id="inc-key"></div>
       </div>
@@ -70,12 +75,39 @@
         <button class="btn ghost small" id="btn-ref" type="button"></button>
         <button class="btn ghost small" id="btn-csv" type="button" data-i18n="btn_csv"></button>
         <button class="btn ghost small" id="btn-png" type="button" data-i18n="btn_png"></button>
+        <button class="btn ghost small" id="btn-share" type="button" data-i18n="btn_share"></button>
       </div>
       <p class="sr-only" id="live" aria-live="polite"></p>
     </div>
   </section>
 
-  <!-- Controles -->
+  <!-- Cifras absolutas y capacidad asistencial -->
+  <section class="panel">
+    <h2 data-i18n="res_h"></h2>
+    <div id="results"></div>
+  </section>
+
+  <!-- Medidas de control -->
+  <section class="panel" id="measures-panel">
+    <h2 data-i18n="measures_h"></h2>
+    <p class="muted" data-i18n="measures_p"></p>
+    <div id="measures"></div>
+  </section>
+
+  <!-- Vacunas -->
+  <section class="panel" id="vaccines-panel">
+    <h2 data-i18n="vaccines_h"></h2>
+    <p class="muted" data-i18n="vaccines_p"></p>
+    <div id="vaccines"></div>
+  </section>
+
+  <!-- Mapa: origen y movilidad -->
+  <section class="panel" id="map-panel" hidden>
+    <h2 data-i18n="map_h"></h2>
+    <div id="map-side"></div>
+  </section>
+
+  <!-- Parámetros -->
   <section class="panel" id="controls-panel">
     <div class="row spread">
       <h2 data-i18n="ctl_h"></h2>
@@ -92,12 +124,19 @@
     <div class="grid cols-2" id="challenges"></div>
   </section>
 
-  <!-- Qué estás viendo -->
-  <section class="panel explain" id="explain"></section>
+  <!-- Qué estás viendo y créditos -->
+  <section class="panel explain" id="explain"><div id="explain-body"></div>
+    <details class="credits"><summary data-i18n="cr_h"></summary><div id="credits"></div></details>
+  </section>
 </main>
 
 <script src="../shared/app.js"></script>
+<script src="texts.js"></script>
+<script src="core.js"></script>
 <script src="sim.js"></script>
+<script src="mapa.js"></script>
+<script src="meta.js"></script>
+<script src="panels.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

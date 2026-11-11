@@ -1,0 +1,1125 @@
+{
+ "_note": "ve[patogeno]: inf=eficacia/efectividad frente a infeccion; dis=frente a enfermedad sintomatica; sev=frente a enfermedad grave o muerte; mode: leaky (reduce la probabilidad de infectarse en cada exposicion); half=semivida (dias) del decaimiento de la proteccion (0=sin decaimiento apreciable); approx=campos no verificados con una fuente directa.",
+ "vaccines": [
+  {
+   "id": "mmr",
+   "name": {
+    "es": "Triple vírica (SRP / MMR)",
+    "ca": "Triple vírica (SRP / MMR)",
+    "en": "MMR (measles, mumps, rubella)"
+   },
+   "platform": {
+    "es": "Virus vivo atenuado",
+    "ca": "Virus viu atenuat",
+    "en": "Live attenuated"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis (12 meses y 3–4 años). Contraindicada en embarazo e inmunodepresión grave.",
+    "ca": "2 dosis (12 mesos i 3–4 anys). Contraindicada en l'embaràs i la immunodepressió greu.",
+    "en": "2 doses (12 months and 3–4 years). Not for pregnancy or severe immunosuppression."
+   },
+   "src": [
+    "CDC, Pink Book: Measles, Mumps, Rubella (2021)",
+    "Cardemil CV et al., N Engl J Med 2017;377:947 (decaimiento en paperas)"
+   ],
+   "ve": {
+    "measles": {
+     "inf": 0.97,
+     "dis": 0.97,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [],
+     "range": [
+      0.93,
+      0.99
+     ]
+    },
+    "rubella": {
+     "inf": 0.95,
+     "dis": 0.97,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [],
+     "range": [
+      0.9,
+      0.99
+     ]
+    },
+    "mumps": {
+     "inf": 0.8,
+     "dis": 0.88,
+     "sev": 0.95,
+     "mode": "leaky",
+     "half": 12000,
+     "approx": [
+      "inf",
+      "half"
+     ],
+     "range": [
+      0.66,
+      0.95
+     ]
+    }
+   }
+  },
+  {
+   "id": "varicella",
+   "name": {
+    "es": "Varicela (2 dosis)",
+    "ca": "Varicel·la (2 dosis)",
+    "en": "Varicella (2 doses)"
+   },
+   "platform": {
+    "es": "Virus vivo atenuado",
+    "ca": "Virus viu atenuat",
+    "en": "Live attenuated"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis; una dosis protege ≈ 82 %.",
+    "ca": "2 dosis; una dosi protegeix ≈ 82 %.",
+    "en": "2 doses; one dose protects ≈82%."
+   },
+   "src": [
+    "CDC, Pink Book: Varicella (2021): eficacia 2 dosis ≈ 92 % frente a cualquier varicela y ≈ 99 % frente a la grave"
+   ],
+   "ve": {
+    "varicella": {
+     "inf": 0.85,
+     "dis": 0.92,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf"
+     ],
+     "range": [
+      0.8,
+      0.98
+     ]
+    }
+   }
+  },
+  {
+   "id": "flu_vacc",
+   "name": {
+    "es": "Gripe estacional (inactivada)",
+    "ca": "Grip estacional (inactivada)",
+    "en": "Seasonal flu (inactivated)"
+   },
+   "platform": {
+    "es": "Inactivada, reformulada cada año",
+    "ca": "Inactivada, reformulada cada any",
+    "en": "Inactivated, reformulated yearly"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Dosis anual. La efectividad depende de la concordancia con las cepas circulantes: 10–60 % según la temporada.",
+    "ca": "Dosi anual. L'efectivitat depèn de la concordança amb les soques circulants: 10–60 % segons la temporada.",
+    "en": "Yearly dose. Effectiveness depends on match with circulating strains: 10–60% by season."
+   },
+   "src": [
+    "CDC, Seasonal flu VE studies (promedio 2004–2024 ≈ 40–45 %)",
+    "Ferdinands JM et al., Clin Infect Dis 2021;73:726 (decaimiento ≈ 7–11 % por mes)"
+   ],
+   "ve": {
+    "flu": {
+     "inf": 0.4,
+     "dis": 0.45,
+     "sev": 0.55,
+     "mode": "leaky",
+     "half": 180,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ],
+     "range": [
+      0.1,
+      0.6
+     ]
+    },
+    "h1n1": {
+     "inf": 0.4,
+     "dis": 0.45,
+     "sev": 0.55,
+     "mode": "leaky",
+     "half": 180,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ],
+     "range": [
+      0.1,
+      0.6
+     ]
+    }
+   }
+  },
+  {
+   "id": "h1n1_mono",
+   "name": {
+    "es": "Gripe pandémica H1N1 (monovalente 2009)",
+    "ca": "Grip pandèmica H1N1 (monovalent 2009)",
+    "en": "Pandemic H1N1 (monovalent 2009)"
+   },
+   "platform": {
+    "es": "Inactivada / adyuvada",
+    "ca": "Inactivada / adjuvada",
+    "en": "Inactivated / adjuvanted"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Vacuna específica de la cepa pandémica; llegó en otoño de 2009.",
+    "ca": "Vacuna específica de la soca pandèmica; va arribar la tardor del 2009.",
+    "en": "Strain-specific pandemic vaccine; it arrived in autumn 2009."
+   },
+   "src": [
+    "Valenciano M et al., Eurosurveillance / PLoS One 2011 (efectividad ≈ 60–70 %; valor aproximado)"
+   ],
+   "ve": {
+    "h1n1": {
+     "inf": 0.6,
+     "dis": 0.65,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 720,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ],
+     "range": [
+      0.5,
+      0.75
+     ]
+    }
+   }
+  },
+  {
+   "id": "hyp",
+   "name": {
+    "es": "Vacuna hipotética (eficacia ajustable)",
+    "ca": "Vacuna hipotètica (eficàcia ajustable)",
+    "en": "Hypothetical vaccine (adjustable efficacy)"
+   },
+   "platform": {
+    "es": "Genérica / ejercicio",
+    "ca": "Genèrica / exercici",
+    "en": "Generic / exercise"
+   },
+   "doses": 1,
+   "adjustable": true,
+   "note": {
+    "es": "No es un producto real: sirve para explorar «qué pasaría si» (p. ej. gripe de 1918, H5N1). Eficacia ajustable.",
+    "ca": "No és un producte real: serveix per explorar «què passaria si» (p. ex. grip de 1918, H5N1). Eficàcia ajustable.",
+    "en": "Not a real product: used for what-if exploration (e.g. 1918 flu, H5N1). Adjustable efficacy."
+   },
+   "src": [
+    "Sin fuente: supuesto del ejercicio"
+   ],
+   "ve": {
+    "*": {
+     "inf": 0.6,
+     "dis": 0.6,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf",
+      "dis",
+      "sev"
+     ]
+    }
+   }
+  },
+  {
+   "id": "ipv",
+   "name": {
+    "es": "Antipolio inactivada (VPI, 3 dosis)",
+    "ca": "Antipoliomielítica inactivada (VPI, 3 dosis)",
+    "en": "Inactivated polio vaccine (IPV, 3 doses)"
+   },
+   "platform": {
+    "es": "Inactivada inyectable",
+    "ca": "Inactivada injectable",
+    "en": "Inactivated injectable"
+   },
+   "doses": 3,
+   "note": {
+    "es": "Protege casi totalmente frente a la parálisis; frente a la infección intestinal (y a la transmisión fecal) la protección es mucho menor.",
+    "ca": "Protegeix gairebé totalment de la paràlisi; davant la infecció intestinal (i la transmissió fecal) la protecció és molt menor.",
+    "en": "Almost fully prevents paralysis; protection against intestinal infection (and faecal transmission) is much lower."
+   },
+   "src": [
+    "CDC, Pink Book: Poliomyelitis (2021)",
+    "WHO, Polio vaccines: position paper, Wkly Epidemiol Rec 2022;97:277"
+   ],
+   "ve": {
+    "polio": {
+     "inf": 0.4,
+     "dis": 0.99,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf"
+     ]
+    }
+   }
+  },
+  {
+   "id": "opv",
+   "name": {
+    "es": "Antipolio oral (VPO, 3 dosis)",
+    "ca": "Antipoliomielítica oral (VPO, 3 dosis)",
+    "en": "Oral polio vaccine (OPV, 3 doses)"
+   },
+   "platform": {
+    "es": "Virus vivo atenuado oral",
+    "ca": "Virus viu atenuat oral",
+    "en": "Oral live attenuated"
+   },
+   "doses": 3,
+   "note": {
+    "es": "Genera inmunidad intestinal; en raras ocasiones puede revertir (poliovirus derivado de vacuna).",
+    "ca": "Genera immunitat intestinal; en rares ocasions pot revertir (poliovirus derivat de vacuna).",
+    "en": "Gives gut immunity; rarely it can revert (vaccine-derived poliovirus)."
+   },
+   "src": [
+    "WHO, Polio vaccines: position paper, Wkly Epidemiol Rec 2022;97:277"
+   ],
+   "ve": {
+    "polio": {
+     "inf": 0.7,
+     "dis": 0.97,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf",
+      "dis"
+     ]
+    }
+   }
+  },
+  {
+   "id": "dtpa",
+   "name": {
+    "es": "DTPa / dTpa (tos ferina acelular)",
+    "ca": "DTPa / dTpa (tos ferina acel·lular)",
+    "en": "DTaP / Tdap (acellular pertussis)"
+   },
+   "platform": {
+    "es": "Acelular (componentes)",
+    "ca": "Acel·lular (components)",
+    "en": "Acellular (components)"
+   },
+   "doses": 5,
+   "note": {
+    "es": "Protege bien los primeros años, pero decae con rapidez: refuerzos en la adolescencia y el embarazo.",
+    "ca": "Protegeix bé els primers anys, però decau ràpidament: reforços a l'adolescència i l'embaràs.",
+    "en": "Protects well in the first years but wanes quickly: boosters in adolescence and pregnancy."
+   },
+   "src": [
+    "Klein NP et al., N Engl J Med 2012;367:1012 (decaimiento de la eficacia)",
+    "CDC, Pink Book: Pertussis (2021)"
+   ],
+   "ve": {
+    "pertussis": {
+     "inf": 0.65,
+     "dis": 0.8,
+     "sev": 0.95,
+     "mode": "leaky",
+     "half": 1100,
+     "approx": [
+      "inf",
+      "half"
+     ],
+     "range": [
+      0.7,
+      0.9
+     ]
+    }
+   }
+  },
+  {
+   "id": "td",
+   "name": {
+    "es": "Difteria–tétanos (DTP / Td)",
+    "ca": "Diftèria–tètanus (DTP / Td)",
+    "en": "Diphtheria–tetanus (DTP / Td)"
+   },
+   "platform": {
+    "es": "Toxoide",
+    "ca": "Toxoide",
+    "en": "Toxoid"
+   },
+   "doses": 5,
+   "note": {
+    "es": "Neutraliza la toxina: evita la enfermedad grave pero no impide por completo ser portador.",
+    "ca": "Neutralitza la toxina: evita la malaltia greu però no impedeix del tot ser portador.",
+    "en": "Neutralises the toxin: prevents severe disease but does not fully prevent carriage."
+   },
+   "src": [
+    "WHO, Diphtheria vaccine: position paper, Wkly Epidemiol Rec 2017;92:417",
+    "CDC, Pink Book: Diphtheria (2021)"
+   ],
+   "ve": {
+    "diphtheria": {
+     "inf": 0.3,
+     "dis": 0.95,
+     "sev": 0.97,
+     "mode": "leaky",
+     "half": 3650,
+     "approx": [
+      "inf",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "comirnaty",
+   "name": {
+    "es": "Comirnaty (Pfizer-BioNTech) · pauta primaria",
+    "ca": "Comirnaty (Pfizer-BioNTech) · pauta primària",
+    "en": "Comirnaty (Pfizer-BioNTech) · primary series"
+   },
+   "platform": {
+    "es": "ARNm",
+    "ca": "ARNm",
+    "en": "mRNA"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis. Eficacia alta frente a la cepa original, que cae mucho frente a Ómicron y variantes posteriores; frente a enfermedad grave decae más despacio.",
+    "ca": "2 dosis. Eficàcia alta davant la soca original, que cau molt davant d'Òmicron i variants posteriors; davant la malaltia greu decau més lentament.",
+    "en": "2 doses. High efficacy against the original strain, falling sharply against Omicron and later variants; against severe disease it wanes more slowly."
+   },
+   "src": [
+    "Polack FP et al., N Engl J Med 2020;383:2603 (95 % enfermedad)",
+    "Thompson MG et al., N Engl J Med 2021;385:320 (90 % infección)",
+    "Haas EJ et al., Lancet 2021;397:1819 (97 % enfermedad grave)",
+    "Lopez Bernal J et al., N Engl J Med 2021;385:585 (Delta)",
+    "Andrews N et al., N Engl J Med 2022;386:1532 (Ómicron)"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.9,
+     "dis": 0.95,
+     "sev": 0.97,
+     "mode": "leaky",
+     "half": 200,
+     "approx": [
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.7,
+     "dis": 0.88,
+     "sev": 0.93,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.35,
+     "dis": 0.65,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.05,
+     "dis": 0.1,
+     "sev": 0.4,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "spikevax",
+   "name": {
+    "es": "Spikevax (Moderna) · pauta primaria",
+    "ca": "Spikevax (Moderna) · pauta primària",
+    "en": "Spikevax (Moderna) · primary series"
+   },
+   "platform": {
+    "es": "ARNm",
+    "ca": "ARNm",
+    "en": "mRNA"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis. Comportamiento similar al de Comirnaty frente a cada variante.",
+    "ca": "2 dosis. Comportament similar al de Comirnaty davant de cada variant.",
+    "en": "2 doses. Behaves much like Comirnaty against each variant."
+   },
+   "src": [
+    "Baden LR et al., N Engl J Med 2021;384:403 (94 % enfermedad)",
+    "Thompson MG et al., N Engl J Med 2021;385:320",
+    "Andrews N et al., N Engl J Med 2022;386:1532 (Ómicron)"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.89,
+     "dis": 0.94,
+     "sev": 0.98,
+     "mode": "leaky",
+     "half": 200,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.72,
+     "dis": 0.88,
+     "sev": 0.94,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.38,
+     "dis": 0.67,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.05,
+     "dis": 0.1,
+     "sev": 0.4,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "vaxzevria",
+   "name": {
+    "es": "Vaxzevria (AstraZeneca) · pauta primaria",
+    "ca": "Vaxzevria (AstraZeneca) · pauta primària",
+    "en": "Vaxzevria (AstraZeneca) · primary series"
+   },
+   "platform": {
+    "es": "Vector adenoviral",
+    "ca": "Vector adenoviral",
+    "en": "Adenoviral vector"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis. Menor eficacia que las de ARNm y decaimiento más rápido frente a Ómicron; retirada de uso en varios países.",
+    "ca": "2 dosis. Menor eficàcia que les d'ARNm i decaïment més ràpid davant d'Òmicron; retirada d'ús en diversos països.",
+    "en": "2 doses. Lower efficacy than mRNA and faster waning against Omicron; withdrawn in several countries."
+   },
+   "src": [
+    "Voysey M et al., Lancet 2021;397:99 (70 % enfermedad)",
+    "Lopez Bernal J et al., N Engl J Med 2021;385:585 (67 % Delta)",
+    "Sheikh A et al., Lancet 2021;397:2461 (hospitalización Delta)"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.5,
+     "dis": 0.7,
+     "sev": 0.9,
+     "mode": "leaky",
+     "half": 200,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.45,
+     "dis": 0.67,
+     "sev": 0.9,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.1,
+     "dis": 0.15,
+     "sev": 0.55,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.02,
+     "dis": 0.05,
+     "sev": 0.3,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "janssen",
+   "name": {
+    "es": "Janssen (Johnson & Johnson) · 1 dosis",
+    "ca": "Janssen (Johnson & Johnson) · 1 dosi",
+    "en": "Janssen (Johnson & Johnson) · 1 dose"
+   },
+   "platform": {
+    "es": "Vector adenoviral",
+    "ca": "Vector adenoviral",
+    "en": "Adenoviral vector"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Dosis única. Protección moderada frente a enfermedad y buena frente a la grave; decae pronto.",
+    "ca": "Dosi única. Protecció moderada davant la malaltia i bona davant la greu; decau aviat.",
+    "en": "Single dose. Moderate protection against disease, good against severe; wanes early."
+   },
+   "src": [
+    "Sadoff J et al., N Engl J Med 2021;384:2187 (≈ 67 % moderada–grave, 85 % grave a los 28 días)"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.55,
+     "dis": 0.67,
+     "sev": 0.85,
+     "mode": "leaky",
+     "half": 180,
+     "approx": [
+      "inf",
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.45,
+     "dis": 0.6,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.08,
+     "dis": 0.15,
+     "sev": 0.6,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.02,
+     "dis": 0.05,
+     "sev": 0.3,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "nuvaxovid",
+   "name": {
+    "es": "Nuvaxovid (Novavax) · pauta primaria",
+    "ca": "Nuvaxovid (Novavax) · pauta primària",
+    "en": "Nuvaxovid (Novavax) · primary series"
+   },
+   "platform": {
+    "es": "Proteína recombinante con adyuvante",
+    "ca": "Proteïna recombinant amb adjuvant",
+    "en": "Recombinant protein with adjuvant"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis. Eficacia alta en los ensayos con la cepa original; frente a variantes posteriores solo hay datos limitados.",
+    "ca": "2 dosis. Eficàcia alta als assajos amb la soca original; davant de variants posteriors només hi ha dades limitades.",
+    "en": "2 doses. High efficacy in trials with the original strain; only limited data against later variants."
+   },
+   "src": [
+    "Heath PT et al., N Engl J Med 2021;385:1172 (89,7 % enfermedad, Reino Unido)",
+    "Dunkle LM et al., N Engl J Med 2022;386:531 (90,4 %, EE. UU. y México)"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.8,
+     "dis": 0.9,
+     "sev": 0.97,
+     "mode": "leaky",
+     "half": 200,
+     "approx": [
+      "inf",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.6,
+     "dis": 0.8,
+     "sev": 0.9,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.25,
+     "dis": 0.5,
+     "sev": 0.75,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.03,
+     "dis": 0.08,
+     "sev": 0.35,
+     "mode": "leaky",
+     "half": 90,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "mrna_adapted",
+   "name": {
+    "es": "Refuerzo ARNm adaptado (JN.1 / LP.8.1 y similares)",
+    "ca": "Reforç ARNm adaptat (JN.1 / LP.8.1 i similars)",
+    "en": "Adapted mRNA booster (JN.1 / LP.8.1 and similar)"
+   },
+   "platform": {
+    "es": "ARNm, 1 dosis de refuerzo",
+    "ca": "ARNm, 1 dosi de reforç",
+    "en": "mRNA, 1 booster dose"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Refuerzo anual con la composición actualizada. Efectividad modesta y breve frente a infección (≈ 30–50 % frente a ingreso en adultos las primeras semanas).",
+    "ca": "Reforç anual amb la composició actualitzada. Efectivitat modesta i breu davant la infecció (≈ 30–50 % davant l'ingrés en adults les primeres setmanes).",
+    "en": "Annual booster with updated composition. Modest, short-lived protection against infection (≈30–50% against hospitalisation in adults in the first weeks)."
+   },
+   "src": [
+    "Link-Gelles R et al., MMWR 2025 (VE 2024–25 ≈ 33 % urgencias, 45 % hospitalización; adultos)",
+    "Link-Gelles R et al., MMWR 2024 (vacuna XBB.1.5)",
+    "Valores frente a infección y decaimiento: aproximados"
+   ],
+   "ve": {
+    "covid_wt": {
+     "inf": 0.5,
+     "dis": 0.7,
+     "sev": 0.9,
+     "mode": "leaky",
+     "half": 120,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_delta": {
+     "inf": 0.5,
+     "dis": 0.7,
+     "sev": 0.9,
+     "mode": "leaky",
+     "half": 120,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_omicron": {
+     "inf": 0.3,
+     "dis": 0.5,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 120,
+     "approx": [
+      "inf",
+      "dis",
+      "sev",
+      "half"
+     ]
+    },
+    "covid_current": {
+     "inf": 0.2,
+     "dis": 0.33,
+     "sev": 0.5,
+     "mode": "leaky",
+     "half": 120,
+     "approx": [
+      "inf",
+      "half"
+     ],
+     "range": [
+      0.2,
+      0.5
+     ]
+    }
+   }
+  },
+  {
+   "id": "arexvy",
+   "name": {
+    "es": "Arexvy (GSK, adultos ≥ 60)",
+    "ca": "Arexvy (GSK, adults ≥ 60)",
+    "en": "Arexvy (GSK, adults ≥ 60)"
+   },
+   "platform": {
+    "es": "Proteína F con adyuvante",
+    "ca": "Proteïna F amb adjuvant",
+    "en": "Adjuvanted F protein"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Indicada en mayores de 60 años; aquí se aplica al total de la población como simplificación (modelo sin edades).",
+    "ca": "Indicada en majors de 60 anys; aquí s'aplica al total de la població com a simplificació (model sense edats).",
+    "en": "Indicated in over-60s; applied here to the whole population as a simplification (model without ages)."
+   },
+   "src": [
+    "Papi A et al., N Engl J Med 2023;388:595 (82,6 % frente a enfermedad del tracto respiratorio inferior; 94,1 % grave)"
+   ],
+   "ve": {
+    "rsv": {
+     "inf": 0.6,
+     "dis": 0.83,
+     "sev": 0.94,
+     "mode": "leaky",
+     "half": 700,
+     "approx": [
+      "inf",
+      "half"
+     ],
+     "range": [
+      0.57,
+      0.94
+     ]
+    }
+   }
+  },
+  {
+   "id": "abrysvo",
+   "name": {
+    "es": "Abrysvo (Pfizer, ≥ 60 y embarazadas)",
+    "ca": "Abrysvo (Pfizer, ≥ 60 i embarassades)",
+    "en": "Abrysvo (Pfizer, ≥ 60 and pregnancy)"
+   },
+   "platform": {
+    "es": "Proteína F prefusión",
+    "ca": "Proteïna F prefusió",
+    "en": "Prefusion F protein"
+   },
+   "doses": 1,
+   "note": {
+    "es": "En embarazadas protege al lactante los primeros meses. Aquí se aplica a toda la población como simplificación.",
+    "ca": "En embarassades protegeix el lactant els primers mesos. Aquí s'aplica a tota la població com a simplificació.",
+    "en": "In pregnancy it protects the infant for the first months. Applied here to everyone as a simplification."
+   },
+   "src": [
+    "Walsh EE et al., N Engl J Med 2023;388:1465 (66,7 % / 85,7 % según definición; adultos ≥ 60)",
+    "Kampmann B et al., N Engl J Med 2023;388:1451 (embarazadas)"
+   ],
+   "ve": {
+    "rsv": {
+     "inf": 0.5,
+     "dis": 0.67,
+     "sev": 0.86,
+     "mode": "leaky",
+     "half": 700,
+     "approx": [
+      "inf",
+      "half"
+     ],
+     "range": [
+      0.5,
+      0.86
+     ]
+    }
+   }
+  },
+  {
+   "id": "nirsevimab",
+   "name": {
+    "es": "Nirsevimab (Beyfortus, lactantes)",
+    "ca": "Nirsevimab (Beyfortus, lactants)",
+    "en": "Nirsevimab (Beyfortus, infants)"
+   },
+   "platform": {
+    "es": "Anticuerpo monoclonal (inmunización pasiva)",
+    "ca": "Anticòs monoclonal (immunització passiva)",
+    "en": "Monoclonal antibody (passive immunisation)"
+   },
+   "doses": 1,
+   "note": {
+    "es": "No es una vacuna: protege ≈ 5–6 meses. Indicado a lactantes; aplicado aquí al total como simplificación.",
+    "ca": "No és una vacuna: protegeix ≈ 5–6 mesos. Indicat a lactants; aplicat aquí al total com a simplificació.",
+    "en": "Not a vaccine: protects for ≈5–6 months. Indicated for infants; applied here to everyone as a simplification."
+   },
+   "src": [
+    "Drexler et al. (HARMONIE), N Engl J Med 2024;391:2231 (hospitalización ≈ 83 %)",
+    "Griffin MP et al., N Engl J Med 2020;383:415 (≈ 70 % infección respiratoria baja con atención médica)"
+   ],
+   "ve": {
+    "rsv": {
+     "inf": 0.5,
+     "dis": 0.7,
+     "sev": 0.83,
+     "mode": "leaky",
+     "half": 150,
+     "approx": [
+      "inf",
+      "half"
+     ]
+    }
+   }
+  },
+  {
+   "id": "ervebo",
+   "name": {
+    "es": "Ervebo (rVSV-ZEBOV, Merck)",
+    "ca": "Ervebo (rVSV-ZEBOV, Merck)",
+    "en": "Ervebo (rVSV-ZEBOV, Merck)"
+   },
+   "platform": {
+    "es": "Vector VSV recombinante",
+    "ca": "Vector VSV recombinant",
+    "en": "Recombinant VSV vector"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Dosis única, usada en vacunación en anillo (contactos y contactos de contactos) y a personal sanitario.",
+    "ca": "Dosi única, usada en vacunació en anell (contactes i contactes de contactes) i a personal sanitari.",
+    "en": "Single dose, used in ring vaccination (contacts and contacts of contacts) and health workers."
+   },
+   "src": [
+    "Henao-Restrepo AM et al., Lancet 2017;389:505 (ensayo en anillo: 100 %; IC 95 % 68,9–100)",
+    "WHO, Ebola vaccine Ervebo (efectividad en RDC ≈ 97,5 %)"
+   ],
+   "ve": {
+    "ebola": {
+     "inf": 0.95,
+     "dis": 0.975,
+     "sev": 0.99,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf"
+     ],
+     "range": [
+      0.69,
+      1
+     ]
+    }
+   }
+  },
+  {
+   "id": "jynneos",
+   "name": {
+    "es": "Jynneos / MVA-BN (mpox y viruela)",
+    "ca": "Jynneos / MVA-BN (mpox i verola)",
+    "en": "Jynneos / MVA-BN (mpox and smallpox)"
+   },
+   "platform": {
+    "es": "Vaccinia no replicativa",
+    "ca": "Vaccinia no replicativa",
+    "en": "Non-replicating vaccinia"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis; una dosis protege ≈ 36–75 %. Frente a viruela la eficacia se infiere de animales e inmunogenicidad, no de ensayos en personas.",
+    "ca": "2 dosis; una dosi protegeix ≈ 36–75 %. Davant la verola l'eficàcia s'infereix d'animals i immunogenicitat, no d'assajos en persones.",
+    "en": "2 doses; one dose protects ≈36–75%. Against smallpox efficacy is inferred from animal and immunogenicity data, not human trials."
+   },
+   "src": [
+    "Deputy NP et al., N Engl J Med 2023;388:2434 (66 % 2 dosis; 36 % 1 dosis)",
+    "Rosenberg ES et al., N Engl J Med 2023;389:2092 (≈ 66–86 %)"
+   ],
+   "ve": {
+    "mpox": {
+     "inf": 0.66,
+     "dis": 0.66,
+     "sev": 0.85,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "sev"
+     ],
+     "range": [
+      0.36,
+      0.86
+     ]
+    },
+    "smallpox": {
+     "inf": 0.9,
+     "dis": 0.9,
+     "sev": 0.95,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf",
+      "dis",
+      "sev"
+     ]
+    }
+   }
+  },
+  {
+   "id": "vaccinia",
+   "name": {
+    "es": "Vacuna de la viruela (vaccinia, histórica)",
+    "ca": "Vacuna de la verola (vaccinia, històrica)",
+    "en": "Smallpox vaccine (vaccinia, historical)"
+   },
+   "platform": {
+    "es": "Virus vivo (vaccinia)",
+    "ca": "Virus viu (vaccinia)",
+    "en": "Live vaccinia"
+   },
+   "doses": 1,
+   "note": {
+    "es": "Vacunación en anillo de la campaña de erradicación de la OMS (1967–1977); protege también si se administra pocos días tras la exposición.",
+    "ca": "Vacunació en anell de la campanya d'eradicació de l'OMS (1967–1977); protegeix també si s'administra pocs dies després de l'exposició.",
+    "en": "Ring vaccination of the WHO eradication campaign (1967–1977); also protective if given within days of exposure."
+   },
+   "src": [
+    "Fenner F et al., Smallpox and its Eradication, WHO 1988 (protección ≈ 95 %)"
+   ],
+   "ve": {
+    "smallpox": {
+     "inf": 0.95,
+     "dis": 0.95,
+     "sev": 0.98,
+     "mode": "leaky",
+     "half": 0,
+     "approx": [
+      "inf",
+      "sev"
+     ]
+    }
+   }
+  },
+  {
+   "id": "ocv",
+   "name": {
+    "es": "Cólera oral (Euvichol-Plus / Shanchol)",
+    "ca": "Còlera oral (Euvichol-Plus / Shanchol)",
+    "en": "Oral cholera vaccine (Euvichol-Plus / Shanchol)"
+   },
+   "platform": {
+    "es": "Inactivada oral",
+    "ca": "Inactivada oral",
+    "en": "Inactivated oral"
+   },
+   "doses": 2,
+   "note": {
+    "es": "2 dosis; protección ≈ 65 % a 5 años en el ensayo de Calcuta, menor en menores de 5 años.",
+    "ca": "2 dosis; protecció ≈ 65 % a 5 anys a l'assaig de Calcuta, menor en menors de 5 anys.",
+    "en": "2 doses; ≈65% protection at 5 years in the Kolkata trial, lower in under-5s."
+   },
+   "src": [
+    "Bhattacharya SK et al., Lancet Infect Dis 2013;13:1050",
+    "Bi Q et al., Lancet Infect Dis 2017;17:1080 (metanálisis)"
+   ],
+   "ve": {
+    "cholera": {
+     "inf": 0.65,
+     "dis": 0.65,
+     "sev": 0.8,
+     "mode": "leaky",
+     "half": 1300,
+     "approx": [
+      "inf",
+      "sev"
+     ],
+     "range": [
+      0.4,
+      0.76
+     ]
+    }
+   }
+  }
+ ]
+}

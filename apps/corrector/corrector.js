@@ -10,7 +10,8 @@
   const esc = K.esc;
   const LET = ['A', 'B', 'C', 'D', 'E'];
   const VERS = ['A', 'B', 'C', 'D'];
-  const TABS = ['exam', 'key', 'students', 'results', 'print'];
+  const TABS = ['exam', 'key', 'students', 'sheet', 'scan', 'results', 'print', 'sync'];
+  const C = window.CORR, R = C.roster;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const fit = (a, n, fill) => { a = Array.isArray(a) ? a.slice(0, n) : []; while (a.length < n) a.push(fill); return a; };
@@ -52,40 +53,65 @@
     e.scoring.pass = Math.max(0, num(e.scoring.pass, 5));
     e.scoring.correct = Math.max(0.01, num(e.scoring.correct, 1));
     if (!['none', 'chance', 'quarter', 'custom'].includes(e.scoring.preset)) e.scoring.preset = 'chance';
-    e.students = (Array.isArray(e.students) ? e.students : []).map(s => ({
-      id: s.id || K.uid(), name: String(s.name || ''), version: e.versions.includes(s.version) ? s.version : e.versions[0],
-      answers: fit(s.answers, e.nq, '').map(a => (letters2(e).includes(a) ? a : ''))
-    }));
+    e.students = (Array.isArray(e.students) ? e.students : []).map(s => {
+      const o = { id: s.id || K.uid(), name: String(s.name || ''), last: String(s.last || ''), first: String(s.first || ''), group: String(s.group || ''), code: String(s.code || '').replace(/\D/g, ''),
+        version: e.versions.includes(s.version) ? s.version : e.versions[0], answers: fit(s.answers, e.nq, '').map(a => (letters2(e).includes(a) ? a : '')) };
+      if (s.rid) o.rid = s.rid; if (s.scanned) o.scanned = s.scanned;
+      if (o.last || o.first) o.name = R.display(o);
+      return o;
+    });
+    e.codeLen = K.clamp(parseInt(e.codeLen, 10) || 4, 3, 10); e.codeCheck = !!e.codeCheck; e.codeMode = e.codeMode === 'seq' ? 'seq' : 'random';
+    e.sheet = { nq: [20, 50, 100].includes(+(e.sheet && e.sheet.nq)) ? +e.sheet.nq : 0 };
     e.updated = e.updated || Date.now();
+    e.created = e.created || e.updated;
     return e;
   }
   const letters2 = (e) => LET.slice(0, e.nopt);
   const newExam = (name = '') => fix({ id: K.uid(), name, date: today(), nq: 20, nopt: 4, versions: ['A'], keys: {}, annul: [], maps: {}, students: [] });
 
   /* ---------------------------------------------------------- persistencia */
+  let dirty = false;
   function persist() {
     if (!exam) return;
-    exam.updated = Date.now();
+    const wasDirty = dirty; if (dirty) { exam.updated = Date.now(); dirty = false; }
     let ok = store.set('exam:' + exam.id, exam);
     const idx = store.get('index', []);
     if (!idx.includes(exam.id)) idx.push(exam.id);
     ok = store.set('index', idx) && ok;
-    store.set('current', exam.id);
+    store.set('current', exam.id); examsCache = null;
     store.set('ui', { tab: ui.tab, kv: ui.kv, showCorr: ui.showCorr, autoNext: ui.autoNext, sheet: ui.sheet, sortK: ui.sortK, sortDir: ui.sortDir });
     saveFailed = !ok; savedTime = Date.now();
     renderStatus();
+    if (wasDirty && C.sync.link.handle) { C.sync.link.markDirty(); C.uiSync.refreshChips(); C.sync.link.autoDebounced(); }
   }
   const save = K.debounce(persist, 300);
-  const changed = () => { save(); renderHead(); };
+  const changed = () => { dirty = true; save(); renderHead(); };
   window.addEventListener('pagehide', persist);
 
   function examIndex() {
-    return store.get('index', []).map(id => store.get('exam:' + id)).filter(Boolean).sort((a, b) => (b.updated || 0) - (a.updated || 0));
+    return store.get('index', []).map(id => store.get('exam:' + id)).filter(Boolean).sort((a, b) => (b.created || b.updated || 0) - (a.created || a.updated || 0));
+  }
+  const isBlank = (e) => !!e && !e.name && !(e.students || []).length && Object.values(e.keys || {}).every(k => !(k || []).some(Boolean)) && !(e.annul || []).some(Boolean);
+  /* Al salir de un examen completamente vacío no se guarda: así no se acumulan «Examen sin nombre». */
+  function dropIfBlank() {
+    if (!exam || !isBlank(exam)) return false;
+    store.remove('exam:' + exam.id); store.set('index', store.get('index', []).filter(x => x !== exam.id)); examsCache = null;
+    return true;
+  }
+  let examsCache = null;
+  const examList = () => {
+    if (!examsCache) examsCache = examIndex().map(e => ({ id: e.id, name: e.name, date: e.date }));
+    const l = examsCache.map(e => (e.id === exam.id ? { id: exam.id, name: exam.name, date: exam.date } : e));
+    return l.some(e => e.id === exam.id) ? l : [{ id: exam.id, name: exam.name, date: exam.date }].concat(l);
+  };
+  function announceOpen() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    K.toast(t('opened', { name: exam.name || t('untitled') }), 2600);
   }
   function openExam(id) {
     const e = store.get('exam:' + id);
     if (!e) return false;
-    persist();
+    if (!dropIfBlank()) persist();
     exam = fix(e); ui.kv = exam.versions[0]; ui.sel = exam.students[0] ? exam.students[0].id : null; ui.cur = 0;
     store.set('current', exam.id);
     return true;
@@ -225,8 +251,13 @@
           <span class="chip">${exam.nq} ${t('qs')} · ${exam.nopt} ${t('opts')}</span>
           <span class="chip">${exam.students.length} ${t('studentsN')}</span>
           ${st ? `<span class="chip accent">${t('sMean')}: ${K.fmt(st.mean, 2)} / ${K.fmt(exam.scoring.maxGrade, 2)}</span>` : ''}
-          <span class="chip" id="savechip"></span>
+          <span class="chip" id="savechip"></span>${C.uiSync.chipHtml()}
         </div>
+      </div>
+      <div class="exam-switch no-print">
+        <label class="sr-only" for="examsel">${t('switchExam')}</label>
+        <select id="examsel" title="${esc(t('switchExam'))}">${examList().map(e => `<option value="${e.id}"${e.id === exam.id ? ' selected' : ''}>${esc(e.name || t('untitled'))} · ${esc(K.fmtDate(e.date))}</option>`).join('')}</select>
+        <button type="button" class="btn small" data-act="newExam">+ ${t('newExam')}</button>
       </div>
       <span class="chip lock">🔒 ${t('privacy')}</span>`;
     renderStatus();
@@ -280,7 +311,7 @@
       <div class="row spread"><h2 style="margin:0">${t('myExams')}</h2>
         <div class="row"><button class="btn small" data-act="newExam">+ ${t('newExam')}</button><button class="btn ghost small" data-act="demo">${t('demo')}</button></div></div>
       <div class="grid cols-2">${list.map(e => `
-        <div class="stat" style="${e.id === exam.id ? 'border-color:var(--accent)' : ''}">
+        <div class="stat" ${e.id === exam.id ? 'data-act="gotop"' : `data-act="openExam" data-id="${e.id}"`} style="cursor:pointer;${e.id === exam.id ? 'border-color:var(--accent)' : ''}">
           <b style="font-size:1.15rem">${esc(e.name || t('untitled'))}</b>
           <span>${esc(K.fmtDate(e.date))} · ${t('examMeta', { q: e.nq, s: (e.students || []).length })}</span>
           <div class="row" style="margin-top:10px">
@@ -334,9 +365,11 @@
   }
 
   const curStudent = () => exam.students.find(s => s.id === ui.sel) || null;
-  const filtered = () => { const q = ui.filter.trim().toLowerCase(); return exam.students.filter(s => !q || s.name.toLowerCase().includes(q)); };
+  const filtered = () => { const q = ui.filter.trim().toLowerCase(); return exam.students.filter(s => !q || (nm(s) + ' ' + s.code).toLowerCase().includes(q)); };
+  const viewStudents = () => C.uiStudents.render(viewStudentsOld);
 
-  function viewStudents() {
+  const nm = (s) => R.display(s) || '';
+  function viewStudentsOld() {
     return `
     <div class="stud-layout">
       <section class="panel stack">
@@ -357,7 +390,7 @@
     box.innerHTML = list.length ? list.map(s => {
       const r = rs.get(s.id), a = answered(s);
       return `<button type="button" class="sitem ${s.id === ui.sel ? 'sel' : ''}" role="option" aria-selected="${s.id === ui.sel}" data-act="selstud" data-id="${s.id}">
-        <span class="sname">${esc(s.name || t('unnamed'))}</span>
+        <span class="sname">${esc(nm(s) || t('unnamed'))}${s.code ? ` <small class="muted">${esc(s.code)}</small>` : ''}</span>
         <span class="smeta">${exam.versions.length > 1 ? `<span class="pill">${s.version}</span>` : ''}<span>${t('answeredOf', { a, n: exam.nq })}</span>${a && r.grade != null ? `<span class="pill ${r.passed ? 'g-ok' : 'g-bad'}">${K.fmt(r.grade, 2)}</span>` : ''}</span></button>`;
     }).join('') : `<div class="empty">${t('noStudents')}</div>`;
   }
@@ -369,7 +402,7 @@
     const key = exam.keys[s.version], r = score(s);
     box.innerHTML = `
       <div class="row spread">
-        <label class="field grow" style="min-width:200px">${t('studentName')}<input type="text" data-f="sname" value="${esc(s.name)}" placeholder="${esc(t('unnamed'))}"></label>
+        ${(s.last || s.first) ? `<div class="field grow" style="min-width:200px"><span style="font-weight:600">${t('studentName')}</span><b style="font-size:1.1rem">${esc(nm(s))}</b><small>${s.code ? t('colCode') + ': ' + esc(s.code) + ' · ' : ''}${t('editInTable')}</small></div>` : `<label class="field grow" style="min-width:200px">${t('studentName')}<input type="text" data-f="sname" value="${esc(s.name)}" placeholder="${esc(t('unnamed'))}"></label>`}
         ${exam.versions.length > 1 ? `<div class="field"><span style="font-weight:600">${t('studentVersion')}</span>${seg('sver', exam.versions.map(x => [x, x]), s.version)}</div>` : ''}
       </div>
       <div class="fastbox">
@@ -409,11 +442,12 @@
 
   function sortedResults(rs) {
     const { sortK: k, sortDir: d } = ui;
-    const val = { name: x => x.s.name.toLowerCase(), ver: x => x.s.version, c: x => x.r.c, w: x => x.r.w, b: x => x.r.b, raw: x => x.r.raw, grade: x => (x.r.grade == null ? -1 : x.r.grade), res: x => (x.r.grade == null ? -1 : x.r.passed ? 1 : 0) }[k] || (x => x.s.name);
-    return rs.slice().sort((a, b) => { const A = val(a), B = val(b); return (A < B ? -1 : A > B ? 1 : a.s.name.localeCompare(b.s.name)) * d; });
+    const val = { name: x => R.fold(x.s.last || x.s.name), last: x => R.fold(x.s.last || x.s.name), first: x => R.fold(x.s.first), code: x => x.s.code || '~', group: x => R.fold(x.s.group), ver: x => x.s.version, c: x => x.r.c, w: x => x.r.w, b: x => x.r.b, raw: x => x.r.raw, grade: x => (x.r.grade == null ? -1 : x.r.grade), res: x => (x.r.grade == null ? -1 : x.r.passed ? 1 : 0) }[k] || (x => nm(x.s));
+    return rs.slice().sort((a, b) => { const A = val(a), B = val(b); return (A < B ? -1 : A > B ? 1 : nm(a.s).localeCompare(nm(b.s))) * d; });
   }
   const th = (k, label, cls = '') => `<th class="${cls}" ${ui.sortK === k ? `aria-sort="${ui.sortDir === 1 ? 'ascending' : 'descending'}"` : ''}><button type="button" data-act="sort" data-k="${k}">${esc(label)}</button></th>`;
 
+  const hasSplit = (rs) => rs.some(x => x.s.last || x.s.first);
   function viewResults() {
     const rs = results();
     if (!rs.length) return `<div class="empty">${t('noResults')}</div>`;
@@ -426,8 +460,8 @@
     <section class="panel stack">
       <div class="row spread"><h2 style="margin:0">${t('resultsTitle')}</h2>
         <div class="row"><button class="btn small" data-act="csv">${t('exportCsv')}</button><button class="btn ghost small" data-act="copytable">${t('copyTable')}</button></div></div>
-      <div class="table-wrap"><table class="kit"><thead><tr>${th('name', t('colName'))}${exam.versions.length > 1 ? th('ver', t('colVersion')) : ''}${th('c', t('colCorrect'), 'num')}${th('w', t('colWrong'), 'num')}${th('b', t('colBlank'), 'num')}${th('raw', t('colPoints'), 'num')}${th('grade', t('colGrade'), 'num')}${th('res', t('colResult'))}<th></th></tr></thead>
-      <tbody>${sortedResults(rs).map(({ s, r }) => `<tr class="${r.grade == null ? '' : r.passed ? 'passed' : 'failed'}"><td>${esc(s.name || t('unnamed'))}</td>${exam.versions.length > 1 ? `<td>${s.version}</td>` : ''}<td class="num">${r.c}</td><td class="num">${r.w}</td><td class="num">${r.b}</td><td class="num">${K.fmt(r.raw, 2)}</td><td class="num"><b>${r.grade == null ? '—' : K.fmt(r.grade, 2)}</b></td>
+      <div class="table-wrap"><table class="kit"><thead><tr>${hasSplit(rs) ? th('last', t('colLast')) + th('first', t('colFirst')) : th('name', t('colName'))}${rs.some(x => x.s.code) ? th('code', t('colCode')) : ''}${rs.some(x => x.s.group) ? th('group', t('colGroup')) : ''}${exam.versions.length > 1 ? th('ver', t('colVersion')) : ''}${th('c', t('colCorrect'), 'num')}${th('w', t('colWrong'), 'num')}${th('b', t('colBlank'), 'num')}${th('raw', t('colPoints'), 'num')}${th('grade', t('colGrade'), 'num')}${th('res', t('colResult'))}<th></th></tr></thead>
+      <tbody>${sortedResults(rs).map(({ s, r }) => `<tr class="${r.grade == null ? '' : r.passed ? 'passed' : 'failed'}">${hasSplit(rs) ? `<td>${esc(s.last || (s.first ? '' : s.name) || t('unnamed'))}</td><td>${esc(s.first)}</td>` : `<td>${esc(s.name || t('unnamed'))}</td>`}${rs.some(x => x.s.code) ? `<td class="mono">${esc(s.code)}</td>` : ''}${rs.some(x => x.s.group) ? `<td>${esc(s.group)}</td>` : ''}${exam.versions.length > 1 ? `<td>${s.version}</td>` : ''}<td class="num">${r.c}</td><td class="num">${r.w}</td><td class="num">${r.b}</td><td class="num">${K.fmt(r.raw, 2)}</td><td class="num"><b>${r.grade == null ? '—' : K.fmt(r.grade, 2)}</b></td>
         <td>${r.grade == null ? `<span class="tag-nogr">${t('noGrade')}</span>` : r.passed ? `<span class="tag-pass">${t('passed')}</span>` : `<span class="tag-fail">${t('failed')}</span>`}</td>
         <td><button class="btn ghost small" data-act="repstud" data-id="${s.id}">${t('report')}</button></td></tr>`).join('')}</tbody></table></div>
     </section>
@@ -465,10 +499,7 @@
     const chk = (f, label) => `<label class="check"><input type="checkbox" data-f="sh_${f}" ${o[f] ? 'checked' : ''}> ${t(label)}</label>`;
     return `
     <div class="print-cards">
-      <section class="panel stack"><h2>${t('sheetTitle')}</h2><p class="muted">${t('sheetHelp')}</p>
-        <div class="optgrid">${chk('name', 'optName')}${chk('date', 'optDate')}${chk('group', 'optGroup')}${exam.versions.length > 1 ? chk('version', 'optVersion') : ''}${chk('grade', 'optGrade')}${chk('instr', 'optInstr')}</div>
-        <div class="field"><span style="font-weight:600">${t('columns')}</span>${seg('cols', [[0, t('auto')], [1, '1'], [2, '2'], [3, '3'], [4, '4']], o.cols)}</div>
-        <div class="row"><button class="btn" data-act="pv-sheet">${t('preview')}</button><button class="btn ghost" data-act="pr-sheet">${t('printBtn')}</button></div></section>
+      <section class="panel stack"><h2>${t('sheetTitle')}</h2><p class="muted">${t('sheetMoved')}</p><div class="row"><button class="btn" data-tab="sheet">${t('tab_sheet')}</button></div></section>
       <section class="panel stack"><h2>${t('classReport')}</h2><p class="muted">${t('classReportHelp')}</p>
         <div class="row"><button class="btn" data-act="pv-class" ${exam.students.length ? '' : 'disabled'}>${t('preview')}</button><button class="btn ghost" data-act="pr-class" ${exam.students.length ? '' : 'disabled'}>${t('printBtn')}</button></div></section>
       <section class="panel stack"><h2>${t('studentReports')}</h2><p class="muted">${t('studentReportsHelp')}</p>
@@ -501,7 +532,7 @@
     const half = Math.ceil(exam.nq / 2), thead = `<thead><tr><th class="c">#</th><th class="c">${t('answer')}</th><th class="c">${t('theKey')}</th><th class="c">${t('rightWrong')}</th></tr></thead>`;
     const body = rows.split('</tr>').filter(Boolean).map(x => x + '</tr>');
     return `<div class="page"><div class="sub">${esc(exam.name || t('untitled'))} · ${esc(K.fmtDate(exam.date))}${exam.versions.length > 1 ? ` · ${t('sheetVersion')} ${s.version}` : ''}</div>
-      <h1>${esc(s.name || t('unnamed'))}</h1>
+      <h1>${esc(nm(s) || t('unnamed'))}</h1>${s.code || s.group ? `<div class="sub">${[s.group, s.code ? t('colCode') + ' ' + s.code : ''].filter(Boolean).map(esc).join(' · ')}</div>` : ''}
       <div class="rp-grade"><b>${r.grade == null ? '—' : nf(r.grade)}</b><span>/ ${nf(exam.scoring.maxGrade)}</span>${r.grade == null ? '' : `<span class="rp-tag">${r.passed ? t('passed') : t('failed')}</span>`}</div>
       <div class="rp-stats"><span>${t('colCorrect')}: <b>${r.c}</b></span><span>${t('colWrong')}: <b>${r.w}</b></span><span>${t('colBlank')}: <b>${r.b}</b></span><span>${t('pointsOf', { r: nf(r.raw), m: nf(r.max) })}</span>${st ? `<span>${t('classMean')}: <b>${nf(st.mean)}</b></span>` : ''}</div>
       <div class="rp-cols"><table class="rt">${thead}<tbody>${body.slice(0, half).join('')}</tbody></table>
@@ -520,7 +551,7 @@
       <div class="rp-axis">${st.bins.map((_, i) => `<span>${nf(i * mg / 10, 1)}–${nf((i + 1) * mg / 10, 1)}</span>`).join('')}</div>
       <h3>${t('resultsTitle')}</h3>
       <table class="rt"><thead><tr><th>${t('colName')}</th>${exam.versions.length > 1 ? `<th class="c">${t('colVersion')}</th>` : ''}<th class="r">${t('colCorrect')}</th><th class="r">${t('colWrong')}</th><th class="r">${t('colBlank')}</th><th class="r">${t('colGrade')}</th><th>${t('colResult')}</th></tr></thead>
-      <tbody>${sorted.map(({ s, r }) => `<tr><td>${esc(s.name || t('unnamed'))}</td>${exam.versions.length > 1 ? `<td class="c">${s.version}</td>` : ''}<td class="r">${r.c}</td><td class="r">${r.w}</td><td class="r">${r.b}</td><td class="r"><b>${r.grade == null ? '—' : nf(r.grade)}</b></td><td>${r.grade == null ? '—' : r.passed ? t('passed') : t('failed')}</td></tr>`).join('')}</tbody></table>
+      <tbody>${sorted.map(({ s, r }) => `<tr><td>${esc(nm(s) || t('unnamed'))}</td>${exam.versions.length > 1 ? `<td class="c">${s.version}</td>` : ''}<td class="r">${r.c}</td><td class="r">${r.w}</td><td class="r">${r.b}</td><td class="r"><b>${r.grade == null ? '—' : nf(r.grade)}</b></td><td>${r.grade == null ? '—' : r.passed ? t('passed') : t('failed')}</td></tr>`).join('')}</tbody></table>
       <div class="foot"><span>${t('generatedBy')}</span><span></span></div></div>
     <div class="page"><h2>${t('items')}</h2><div class="sub">${t('itemsHelp')}</div>
       ${rs.length < 5 ? `<p>${t('needMore')}</p>` : ''}
@@ -529,7 +560,7 @@
       ${flagged.length ? `<p><b>${t('problems', { list: flagged.map(x => x.i + 1).join(', ') })}</b></p>` : ''}
       <div class="foot"><span>${t('generatedBy')}</span><span></span></div></div>`;
   }
-  const docFor = (kind, id) => ({ sheet: docSheet, class: docClass, students: () => docStudents(), student: () => docStudents(exam.students.filter(s => s.id === id)) }[kind]());
+  const docFor = (kind, id) => ({ class: docClass, students: () => docStudents(), student: () => docStudents(exam.students.filter(s => s.id === id)) }[kind] || (() => C.docs[kind](exam, id)))();
 
   function openPreview(kind, id) {
     const html = docFor(kind, id); if (!html) return;
@@ -548,12 +579,8 @@
 
   /* ---------------------------------------------------------- CSV, copiar, copia de seguridad */
   function tableRows() {
-    const head = [t('colName')]; if (exam.versions.length > 1) head.push(t('colVersion'));
-    head.push(t('colCorrect'), t('colWrong'), t('colBlank'), t('colPoints'), t('colGrade'), t('colResult'), t('csvAnswers'));
-    const rows = sortedResults(results()).map(({ s, r }) => {
-      const row = [s.name]; if (exam.versions.length > 1) row.push(s.version);
-      row.push(r.c, r.w, r.b, nf(r.raw), r.grade == null ? '' : nf(r.grade), r.grade == null ? '' : r.passed ? t('passed') : t('failed'), ansString(s.answers)); return row;
-    });
+    const head = [t('colLast'), t('colFirst'), t('colCode'), t('colGroup'), t('colVersion'), t('colCorrect'), t('colWrong'), t('colBlank'), t('colPoints'), t('colGrade'), t('colResult'), t('csvAnswers')];
+    const rows = sortedResults(results()).map(({ s, r }) => [s.last || (s.first ? '' : s.name), s.first || '', s.code || '', s.group || '', s.version, r.c, r.w, r.b, nf(r.raw), r.grade == null ? '' : nf(r.grade), r.grade == null ? '' : r.passed ? t('passed') : t('failed'), ansString(s.answers)]);
     return [head, ...rows];
   }
   const fileName = (ext) => (exam.name || 'examen').toLowerCase().replace(/[^a-z0-9áéíóúüñç]+/gi, '-').replace(/^-+|-+$/g, '') + '.' + ext;
@@ -565,17 +592,12 @@
   }
   function exportBackup() {
     persist();
-    const data = { app: 'corrector', version: 1, exported: new Date().toISOString(), exams: examIndex() };
+    const data = C.sync.buildPackage(C.sync.readLocal(), {}); store.set('lastExport', Date.now());
     K.download('corrector-copia-' + today() + '.json', JSON.stringify(data, null, 1), 'application/json');
   }
   async function importBackup(file) {
-    try {
-      const data = JSON.parse(await K.readFile(file));
-      if (!data || data.app !== 'corrector' || !Array.isArray(data.exams)) throw new Error('bad');
-      const idx = store.get('index', []); let n = 0;
-      data.exams.forEach(e => { e = fix(e); if (idx.includes(e.id)) { e.id = K.uid(); e.name = t('copyOf', { name: e.name || t('untitled') }); } store.set('exam:' + e.id, e); idx.push(e.id); n++; });
-      store.set('index', idx); K.toast(t('backupDone', { n })); renderView();
-    } catch (_) { K.toast(t('backupBad'), 3000); }
+    try { const data = JSON.parse(await K.readFile(file)); if (C.sync.validatePackage(data)) throw new Error('bad'); persist(); C.uiSync.mergePackages([data], { source: file.name }); }
+    catch (_) { K.toast(t('backupBad'), 3000); }
   }
 
   /* ---------------------------------------------------------- ejemplo */
@@ -602,14 +624,19 @@
       });
       return { id: K.uid(), name: t('demoStudent', { n: i + 1 }), version: ver, answers };
     });
+    { const cs = R.genCodes(e.students.length, { L: 4 }); e.students.forEach((s, i) => { s.code = cs[i]; }); }
     return fix(e);
   }
 
   /* ---------------------------------------------------------- render general */
   function renderView() {
-    const v = $('#view'), f = { exam: viewExam, key: viewKey, students: viewStudents, results: viewResults, print: viewPrint }[ui.tab];
+    if (ui.tab !== 'scan') C.uiScan.stopLive();
+    const v = $('#view'), f = { exam: viewExam, key: viewKey, students: viewStudents, sheet: C.uiSheet.render, scan: C.uiScan.render, results: viewResults, print: viewPrint, sync: C.uiSync.render, campus: () => C.uiCampus.render() }[ui.tab];
     v.innerHTML = f();
-    if (ui.tab === 'students') { renderStudentList(); renderEditor(); }
+    if (ui.tab === 'students' && C.uiStudents.ui2.stab === 'answers') { renderStudentList(); renderEditor(); }
+    if (ui.tab === 'scan') C.uiScan.mount();
+    if (ui.tab === 'sync') C.uiSync.mount();
+    if (ui.tab === 'campus') C.uiCampus.mount();
     renderHead();
     $$('.tabs [role="tab"]').forEach(b => { const on = b.dataset.tab === ui.tab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
   }
@@ -636,9 +663,14 @@
       case 'preset': exam.scoring.preset = v; changed(); renderView(); break;
       case 'annulMode': exam.annulMode = v; changed(); renderView(); break;
       case 'cols': ui.sheet.cols = +v; save(); renderView(); break;
-      case 'newExam': persist(); exam = newExam(); persist(); ui.kv = 'A'; ui.sel = null; renderView(); break;
-      case 'demo': persist(); exam = demoExam(); persist(); ui.kv = 'A'; ui.sel = exam.students[0].id; ui.tab = 'results'; renderView(); break;
-      case 'openExam': if (openExam(id)) renderView(); break;
+      case 'newExam': {
+        if (isBlank(exam)) { ui.tab = 'exam'; renderView(); window.scrollTo({ top: 0, behavior: 'smooth' }); K.toast(t('blankKept'), 3200); const nm = $('[data-f="name"]'); if (nm) nm.focus(); break; }
+        persist(); exam = newExam(); persist(); ui.kv = 'A'; ui.sel = null; ui.tab = 'exam'; renderView(); announceOpen();
+        const nm = $('[data-f="name"]'); if (nm) nm.focus({ preventScroll: true }); break;
+      }
+      case 'gotop': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
+      case 'demo': if (!dropIfBlank()) persist(); exam = demoExam(); persist(); ui.kv = 'A'; ui.sel = exam.students[0].id; ui.tab = 'results'; renderView(); break;
+      case 'openExam': if (openExam(id)) { renderView(); announceOpen(); } break;
       case 'dupExam': { persist(); const src = store.get('exam:' + id); if (!src) break; const c = fix(JSON.parse(JSON.stringify(src))); c.id = K.uid(); c.name = t('copyOf', { name: c.name || t('untitled') }); c.students.forEach(s => { s.id = K.uid(); }); store.set('exam:' + c.id, c); const idx = store.get('index', []); idx.push(c.id); store.set('index', idx); renderView(); break; }
       case 'delExam': {
         const e = store.get('exam:' + id); if (!e) break;
@@ -714,6 +746,7 @@
   }
   app.addEventListener('change', (ev) => {
     const el = ev.target;
+    if (el.id === 'examsel') { if (el.value !== exam.id && openExam(el.value)) { renderView(); announceOpen(); } return; }
     if (el.id === 'bfile') { if (el.files[0]) importBackup(el.files[0]); el.value = ''; return; }
     const f = el.dataset.f; if (!f) return;
     if (f === 'date') { exam.date = el.value || today(); changed(); }
@@ -800,6 +833,11 @@
   }
 
   /* ---------------------------------------------------------- arranque */
+  C.ctx = { get exam() { return exam; }, ui, changed, TABS,
+    /* abre (o crea) un examen completo a partir de un objeto; lo usa el modo Campus */
+    openExamObject(o) { if (exam && exam.id !== o.id) { if (!dropIfBlank()) persist(); } exam = fix(o); examsCache = null; ui.kv = exam.versions[0]; ui.sel = exam.students[0] ? exam.students[0].id : null; persist(); renderShell(); },
+    showTab(tb) { ui.tab = tb; renderShell(); }, renderView, fix, flush: persist, score, fileName, copyText, openPreview, doPrint, docFor,
+    reloadCurrent() { const e = store.get('exam:' + exam.id); exam = e ? fix(e) : (examIndex()[0] ? fix(examIndex()[0]) : newExam()); examsCache = null; ui.kv = exam.versions[0]; ui.sel = exam.students[0] ? exam.students[0].id : null; persist(); renderShell(); } };
   K.mount({ titleKey: 'title' });
   const cur = store.get('current'); const e0 = cur && store.get('exam:' + cur);
   exam = e0 ? fix(e0) : null;
@@ -808,5 +846,8 @@
   if (!exam.versions.includes(ui.kv)) ui.kv = exam.versions[0];
   if (!ui.sel || !curStudent()) ui.sel = exam.students[0] ? exam.students[0].id : null;
   renderShell(); persist();
-  K.onLang(() => { renderShell(); });
+  [C.uiStudents, C.uiSheet, C.uiScan, C.uiSync, C.uiCampus].forEach(m => m.init());
+  K.onLang(() => { C.uiScan.stopLive(); renderShell(); });
+  C.uiSync.start();
+  C.uiCampus.start();
 })();
