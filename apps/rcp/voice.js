@@ -9,7 +9,7 @@
   R.addI18N({
     es: {
       voiceTitle: 'Voz guiada', voiceOn: 'Avisos hablados', voiceOnHint: 'Dice «comprime», «dos insuflaciones», «cambio de reanimador»…', voiceVol: 'Volumen de la voz', voiceRate: 'Velocidad de la voz',
-      voiceTest: 'Probar voz', voiceSample: 'Voz activada. Empieza las compresiones.', voiceChoose: 'Voz', voiceUsing: 'Voz: {name}', voiceNone: 'No hay ninguna voz instalada para este idioma; se usará la voz por defecto del navegador, que puede sonar con acento extranjero.',
+      voiceAll: 'Mostrar todas las voces del dispositivo', voiceNoLang: 'Este navegador no ofrece voces en este idioma, así que se usa otra (acento distinto). Para tener una: prueba Edge (incluye voces naturales en catalán), instala el idioma en Windows o, en Android, la voz en Google Text-to-Speech.', voiceTest: 'Probar voz', voiceSample: 'Voz activada. Empieza las compresiones.', voiceChoose: 'Voz', voiceUsing: 'Voz: {name}', voiceNone: 'No hay ninguna voz instalada para este idioma; se usará la voz por defecto del navegador, que puede sonar con acento extranjero.',
       voiceLoading: 'Cargando voces…', voiceGesture: 'Tu navegador solo permite hablar tras tocar un botón: pulsa «Probar voz» para activarla.',
       voiceUnsupported: 'Voz no disponible: este navegador no incluye síntesis de voz (speechSynthesis) o no tiene voces instaladas. La aplicación sigue funcionando con sonidos y textos en pantalla.',
       vo_start: 'Empieza las compresiones', vo_comp: 'Comprime', vo_breaths: 'Dos insuflaciones', vo_init: 'Cinco insuflaciones iniciales', vo_resume: 'Continúa', vo_swap: 'Cambio de reanimador', vo_pause: 'Pausa', vo_end: 'Fin',
@@ -17,7 +17,7 @@
     },
     ca: {
       voiceTitle: 'Veu guiada', voiceOn: 'Avisos parlats', voiceOnHint: 'Diu «comprimeix», «dues insuflacions», «canvi de reanimador»…', voiceVol: 'Volum de la veu', voiceRate: 'Velocitat de la veu',
-      voiceTest: 'Prova la veu', voiceSample: 'Veu activada. Comença les compressions.', voiceChoose: 'Veu', voiceUsing: 'Veu: {name}', voiceNone: 'No hi ha cap veu instal·lada per a aquest idioma; s\'utilitzarà la veu per defecte del navegador, que pot sonar amb accent estranger.',
+      voiceAll: 'Mostra totes les veus del dispositiu', voiceNoLang: 'Aquest navegador no ofereix veus en aquest idioma, així que s\'utilitza una altra (accent diferent). Per tenir-ne una: prova Edge (inclou veus naturals en català: Joana i Enric), instal·la l\'idioma a Windows o, a Android, la veu a Google Text-to-Speech.', voiceTest: 'Prova la veu', voiceSample: 'Veu activada. Comença les compressions.', voiceChoose: 'Veu', voiceUsing: 'Veu: {name}', voiceNone: 'No hi ha cap veu instal·lada per a aquest idioma; s\'utilitzarà la veu per defecte del navegador, que pot sonar amb accent estranger.',
       voiceLoading: 'Carregant veus…', voiceGesture: 'El teu navegador només permet parlar després de tocar un botó: prem «Prova la veu» per activar-la.',
       voiceUnsupported: 'Veu no disponible: aquest navegador no inclou síntesi de veu (speechSynthesis) o no té veus instal·lades. L\'aplicació continua funcionant amb sons i textos a la pantalla.',
       vo_start: 'Comença les compressions', vo_comp: 'Comprimeix', vo_breaths: 'Dues insuflacions', vo_init: 'Cinc insuflacions inicials', vo_resume: 'Continua', vo_swap: 'Canvi de reanimador', vo_pause: 'Pausa', vo_end: 'Fi',
@@ -25,7 +25,7 @@
     },
     en: {
       voiceTitle: 'Voice guidance', voiceOn: 'Spoken prompts', voiceOnHint: 'Says "push", "two breaths", "switch rescuers"…', voiceVol: 'Voice volume', voiceRate: 'Voice speed',
-      voiceTest: 'Test voice', voiceSample: 'Voice on. Start compressions.', voiceChoose: 'Voice', voiceUsing: 'Voice: {name}', voiceNone: 'No voice is installed for this language; the browser\'s default voice will be used and may sound foreign.',
+      voiceAll: 'Show all device voices', voiceNoLang: 'This browser offers no voices in this language, so another one is used (different accent). To get one: try Edge (it includes natural voices), install the language in Windows or, on Android, the voice in Google Text-to-Speech.', voiceTest: 'Test voice', voiceSample: 'Voice on. Start compressions.', voiceChoose: 'Voice', voiceUsing: 'Voice: {name}', voiceNone: 'No voice is installed for this language; the browser\'s default voice will be used and may sound foreign.',
       voiceLoading: 'Loading voices…', voiceGesture: 'Your browser only lets pages speak after a tap on a button: press "Test voice" to enable it.',
       voiceUnsupported: 'Voice not available: this browser has no speech synthesis (speechSynthesis) or no voices installed. The app keeps working with sounds and on-screen text.',
       vo_start: 'Start compressions', vo_comp: 'Push', vo_breaths: 'Two breaths', vo_init: 'Five initial breaths', vo_resume: 'Continue', vo_swap: 'Switch rescuers', vo_pause: 'Paused', vo_end: 'Stopped',
@@ -35,7 +35,7 @@
 
   const synth = window.speechSynthesis, UTT = window.SpeechSynthesisUtterance;
   const supported = !!(synth && UTT);
-  const V = Object.assign({ on: true, vol: 1, rate: 1, pick: {} }, store.get('voice', {}));
+  const V = Object.assign({ on: true, vol: 1, rate: 1, pick: {}, all: false }, store.get('voice', {}));
   const save = () => store.set('voice', V);
   let voices = [], loaded = false, needGesture = false;
   const live = new Set();                                       // referencias para que no se recojan antes de terminar
@@ -53,8 +53,19 @@
       return { v, s };
     }).sort((a, b) => b.s - a.s).map(x => x.v);
   };
+  /* Voces ofrecidas: las del idioma; si no hay ninguna (o se pide ver todas), también el resto, con el castellano primero cuando la interfaz es catalana. */
+  const pool = () => {
+    const m = forLang();
+    if (!m.length || V.all) {
+      const near = AppKit.lang === 'ca' ? 'es' : '';
+      const isNear = (v) => (near && norm(v.lang).startsWith(near) ? 1 : 0);
+      const rest = voices.filter(v => !m.includes(v)).sort((a, b) => isNear(b) - isNear(a) || String(a.lang).localeCompare(String(b.lang)));
+      return m.concat(rest);
+    }
+    return m;
+  };
   const current = () => {
-    const list = forLang(); if (!list.length) return null;
+    const list = pool(); if (!list.length) return null;
     const sel = V.pick[AppKit.lang]; return list.find(v => v.voiceURI === sel) || list[0];
   };
 
@@ -97,11 +108,12 @@
   /* ---------- controles ---------- */
   function html() {
     if (!supported) return `<h2>${esc(AppKit.t('voiceTitle'))}</h2><p class="voice-note warn" role="status">${esc(AppKit.t('voiceUnsupported'))}</p>`;
-    const list = forLang(), cur = current();
+    const list = pool(), cur = current(), noLang = loaded && voices.length > 0 && !forLang().length;
     let note = '';
     if (!loaded) note = AppKit.t('voiceLoading');
     else if (needGesture) note = AppKit.t('voiceGesture');
     else if (!cur) note = AppKit.t('voiceNone');
+    else if (noLang) note = AppKit.t('voiceNoLang') + ' ' + AppKit.t('voiceUsing', { name: cur.name + ' (' + cur.lang + ')' });
     else note = AppKit.t('voiceUsing', { name: cur.name });
     return `
       <h2>${esc(AppKit.t('voiceTitle'))}</h2>
@@ -110,7 +122,8 @@
       <div class="field-row"><div><b>${esc(AppKit.t('voiceVol'))}</b></div><div class="row"><input type="range" data-v="vol" min="0.1" max="1" step="0.05" value="${V.vol}" aria-label="${esc(AppKit.t('voiceVol'))}"></div></div>
       <div class="field-row"><div><b>${esc(AppKit.t('voiceRate'))}</b></div><div class="row"><input type="range" data-v="rate" min="0.7" max="1.4" step="0.05" value="${V.rate}" aria-label="${esc(AppKit.t('voiceRate'))}"><span class="val" data-v="rateVal">${V.rate.toFixed(2)}×</span></div></div>
       ${list.length > 1 ? `<div class="field-row"><div><b>${esc(AppKit.t('voiceChoose'))}</b></div><select data-v="voice" aria-label="${esc(AppKit.t('voiceChoose'))}">${list.map(v => `<option value="${esc(v.voiceURI)}" ${cur && cur.voiceURI === v.voiceURI ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select></div>` : ''}
-      <div class="field-row"><button type="button" class="btn ghost small" data-v="test">${esc(AppKit.t('voiceTest'))}</button><small class="voice-note ${(!loaded || needGesture || !cur) ? 'warn' : ''}" role="status">${esc(note)}</small></div>`;
+      ${voices.length > 1 ? `<div class="field-row"><div><b>${esc(AppKit.t('voiceAll'))}</b></div><label class="check"><input type="checkbox" data-v="all" ${V.all ? 'checked' : ''}><span class="sr-only">${esc(AppKit.t('voiceAll'))}</span></label></div>` : ''}
+      <div class="field-row"><button type="button" class="btn ghost small" data-v="test">${esc(AppKit.t('voiceTest'))}</button><small class="voice-note ${(!loaded || needGesture || !cur || noLang) ? 'warn' : ''}" role="status">${esc(note)}</small></div>`;
   }
   function renderBox(el) {
     el.innerHTML = html();
@@ -118,6 +131,7 @@
     el.querySelector('[data-v="on"]').addEventListener('change', e => { V.on = e.target.checked; save(); if (V.on) unlock(); else cancel(); syncBoxes(el); });
     el.querySelector('[data-v="vol"]').addEventListener('input', e => { V.vol = +e.target.value; save(); syncBoxes(el); });
     el.querySelector('[data-v="rate"]').addEventListener('input', e => { V.rate = +e.target.value; save(); syncBoxes(el); });
+    const allc = el.querySelector('[data-v="all"]'); if (allc) allc.addEventListener('change', () => { V.all = allc.checked; save(); renderAll(); });
     const sel = el.querySelector('[data-v="voice"]');
     if (sel) sel.addEventListener('change', () => { V.pick[AppKit.lang] = sel.value; save(); renderAll(); });
     el.querySelector('[data-v="test"]').addEventListener('click', () => { unlock(); if (!V.on) { V.on = true; save(); renderAll(); } say(AppKit.t('voiceSample')); });
