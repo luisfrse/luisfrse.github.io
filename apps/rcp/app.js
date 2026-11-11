@@ -58,6 +58,7 @@
   const statusEl = $('#status'), dots = $('#breathDots'), swapBox = $('#swapAlert');
   const startBtn = $('#startBtn');
 
+  let voiceSkipUntil = 0;
   const run = { running: false, started: false, accum: 0, t0: 0, swapAccum: 0, swapT0: 0, alertShown: false, lastAlert: 0, timer: 0, raf: 0 };
   let eng = null;
   let uiq = [];
@@ -94,6 +95,7 @@
       countEl.textContent = ev.n; countLabel.textContent = t('compressions');
       lit(ev.n); statusEl.textContent = t('compress');
       pulse(); vibrate(ev.accent ? 35 : 14);
+      if (ev.n === 1 && ev.t > voiceSkipUntil) RCP.voice.sayKey('vo_comp');
     } else if (ev.type === 'init') {
       setPhase('init');
       lit(0); countEl.textContent = ev.i; countLabel.textContent = t('initBreathOf', { i: ev.i, of: ev.of });
@@ -103,6 +105,7 @@
       lit(0); $$('i', dots).forEach(d => d.classList.remove('on'));
       countLabel.textContent = t('ventilating'); statusEl.textContent = t('giveBreaths');
       countEl.textContent = Math.ceil(ev.dur);
+      RCP.voice.sayKey('vo_breaths');
     } else if (ev.type === 'breath') {
       $$('i', dots).forEach((d, k) => d.classList.toggle('on', k < ev.i));
       pulse(); vibrate(70);
@@ -137,6 +140,7 @@
     run.alertShown = true; run.lastAlert = Aud.now();
     swapBox.hidden = false; dial.classList.add('swap');
     Aud.alarm(Aud.now() + 0.05); vibrate([200, 100, 200]);
+    RCP.voice.sayKey('vo_swap');
   }
   function hideSwap() { run.alertShown = false; swapBox.hidden = true; dial.classList.remove('swap'); }
 
@@ -161,7 +165,9 @@
     $('#noAudio').hidden = ok || !S.sound;
     Aud.setVolume(S.volume);
     const first = !run.started;
+    RCP.voice.unlock(); RCP.voice.sayKey(first ? (isYoung() && S.initBreaths ? 'vo_init' : 'vo_start') : 'vo_resume');
     const now = Aud.now();
+    voiceSkipUntil = now + 2.5;
     if (first) { ui.n = 0; ui.cycle = 1; ui.total = 0; buildTicks(comps()); }
     const state = resumeState();
     eng = RCPEngine.createEngine({
@@ -189,12 +195,15 @@
     AppKit.keepAwake(false);
     startBtn.textContent = t('resume');
     statusEl.textContent = t('paused');
+    RCP.voice.sayKey('vo_pause');
     lockControls(false);
     refreshStats();
   }
 
   function reset() {
+    const was = run.running;
     pause();
+    if (was) RCP.voice.sayKey('vo_end');
     Object.assign(run, { running: false, started: false, accum: 0, swapAccum: 0, alertShown: false });
     Object.assign(ui, { phase: 'idle', n: 0, cycle: 1, total: 0, ventEnd: 0 });
     hideSwap(); setPhase('idle');
@@ -493,16 +502,19 @@
 
   /* ============================== pestañas ============================== */
   let tab = 'metro';
-  const TABS = ['metro', 'train', 'guide', 'quality'];
+  const TABS = ['metro', 'call', 'aed', 'choke', 'sensor', 'train', 'guide', 'quality'];
   function showTab(name, focus) {
     if (!TABS.includes(name)) name = 'metro';
     tab = name; store.set('tab', name);
     $$('#tabs [role=tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
     TABS.forEach(n => { $('#tab-' + n).hidden = n !== name; });
     if (name !== 'train') Train.stopGuide();
+    Object.keys(RCP.tabs).forEach(n => { if (n !== name && RCP.tabs[n].leave) RCP.tabs[n].leave(); });
     if (name === 'train') Train.render();
     if (name === 'guide') renderGuide();
     if (name === 'quality') renderQuality();
+    if (RCP.tabs[name]) RCP.tabs[name].render();
+    const tb = $(`#tabs [data-tab="${name}"]`); if (tb && tb.scrollIntoView) tb.scrollIntoView({ block: 'nearest', inline: 'center' });
     if (focus) window.scrollTo({ top: 0 });
   }
   $$('#tabs [role=tab]').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab, true)));
@@ -523,8 +535,15 @@
     if (tab === 'train') Train.render();
     if (tab === 'guide') renderGuide();
     if (tab === 'quality') renderQuality();
+    if (RCP.tabs[tab]) RCP.tabs[tab].render();
   }
   AppKit.onLang(refreshLang);
+
+  /* enlaces entre pestañas (los usan los módulos): RCP.go('metro', { age: 'infant' }) */
+  RCP._go = (name, opts) => {
+    if (opts && opts.age && AGES.includes(opts.age) && !run.running && opts.age !== S.age) { S.age = opts.age; save(); if (run.started) reset(); else buildTicks(comps()); syncControls(); }
+    showTab(name, true);
+  };
 
   /* ============================== arranque ============================== */
   buildTicks(comps()); lit(0);
@@ -533,6 +552,7 @@
   syncControls(); refreshStats();
   showTab(store.get('tab', 'metro'));
   AppKit.applyDom();
+  RCP.voice.mountAll();
 
   /* gancho de pruebas (solo lectura del estado; no afecta al uso normal) */
   window.__rcp = { S, ui, run, get tab() { return tab; }, showTab, start, pause, reset, setBpm, Aud };

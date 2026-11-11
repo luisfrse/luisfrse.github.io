@@ -4,20 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Metrónomo de RCP · Luis Franco Serrano</title>
-<meta name="description" content="Metrónomo de RCP con ciclos 30:2, entrenamiento de ritmo y guía paso a paso de soporte vital básico y DEA. Herramienta didáctica.">
+<meta name="description" content="Metrónomo de RCP con ciclos 30:2, entrenamiento de ritmo y guía paso a paso de soporte vital básico y DEA, voz guiada, llamada al 112, simulador de DEA, atragantamiento y sensor de ritmo. Herramienta didáctica.">
 <meta name="theme-color" content="#0d1a2a">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RCP">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/app.css">
 <link rel="stylesheet" href="rcp.css">
+<link rel="stylesheet" href="modulos.css">
 </head>
 <body>
 <main class="kit-main">
 
+  <div class="pwa-bar" id="pwaBar" hidden></div>
+
   <div class="tabs" role="tablist" id="tabs">
     <button type="button" role="tab" data-tab="metro" aria-selected="true" aria-controls="tab-metro" data-i18n="tabMetro">Metrónomo</button>
+    <button type="button" role="tab" data-tab="call" aria-selected="false" aria-controls="tab-call" data-i18n="tabCall">112</button>
+    <button type="button" role="tab" data-tab="aed" aria-selected="false" aria-controls="tab-aed" data-i18n="tabAed">Simulador DEA</button>
+    <button type="button" role="tab" data-tab="choke" aria-selected="false" aria-controls="tab-choke" data-i18n="tabChoke">Atragantamiento</button>
+    <button type="button" role="tab" data-tab="sensor" aria-selected="false" aria-controls="tab-sensor" data-i18n="tabSensor">Sensor</button>
     <button type="button" role="tab" data-tab="train" aria-selected="false" aria-controls="tab-train" data-i18n="tabTrain">Entrena tu ritmo</button>
     <button type="button" role="tab" data-tab="guide" aria-selected="false" aria-controls="tab-guide" data-i18n="tabGuide">Guía paso a paso</button>
     <button type="button" role="tab" data-tab="quality" aria-selected="false" aria-controls="tab-quality" data-i18n="tabQuality">Calidad y edades</button>
@@ -115,6 +127,8 @@
           <p class="noaudio" id="noAudio" hidden data-i18n="noAudio"></p>
         </div>
 
+        <div class="panel settings voice-panel" data-voice-ctl></div>
+
         <div class="panel params" id="params"></div>
       </div>
     </div>
@@ -164,13 +178,26 @@
     <div class="stack" id="qualityRoot"></div>
   </section>
 
+  <section id="tab-call" class="tabpanel" role="tabpanel" hidden><div id="callRoot"></div></section>
+  <section id="tab-aed" class="tabpanel" role="tabpanel" hidden><div class="stack" id="aedRoot"></div></section>
+  <section id="tab-choke" class="tabpanel" role="tabpanel" hidden><div class="stack" id="chokeRoot"></div></section>
+  <section id="tab-sensor" class="tabpanel" role="tabpanel" hidden><div class="stack" id="sensorRoot"></div></section>
+
   <p class="disclaimer" data-i18n="disclaimer"></p>
 </main>
 
 <script src="../shared/app.js"></script>
 <script src="i18n.js"></script>
+<script src="kit.js"></script>
 <script src="engine.js"></script>
 <script src="illustrations.js"></script>
+<script src="voice.js"></script>
+<script src="llamada.js"></script>
+<script src="dea.js"></script>
+<script src="atragantamiento.js"></script>
+<script src="sensor-core.js"></script>
+<script src="sensor.js"></script>
 <script src="app.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>
