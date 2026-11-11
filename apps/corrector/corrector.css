@@ -273,3 +273,9 @@ dialog.kit-dialog.wide{max-width:96vw;max-height:94vh;overflow:auto}
 .qrbox{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.qrbox svg{width:min(260px,70vw);height:auto;border-radius:8px}
 @media (max-width:520px){.wiz li{grid-template-columns:1fr}.ill{max-width:200px}}
 @media (prefers-reduced-motion:reduce){.live-flash,.live-hud .progress i{transition:none}}
+
+/* modo campus: indicador de guardado de la clave */
+.cpbadge{position:fixed;left:12px;bottom:12px;z-index:50;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 24px);padding:8px 12px;border-radius:999px;background:var(--panel,#fff);color:var(--ink,#1a1a1a);border:1px solid var(--line,#ccc);box-shadow:0 2px 10px rgba(0,0,0,.18);font-size:.85rem}
+.cpbadge[hidden]{display:none}
+.cpdot{width:10px;height:10px;border-radius:50%;flex:none;background:#2e9e5b}
+.cpdot.warn{background:#e0a100}.cpdot.wait{background:#3b82f6}.cpdot.bad{background:#d33}

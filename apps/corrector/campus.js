@@ -19,7 +19,7 @@
     cpPreview: 'Vista previa', cpPrint: 'Imprimir / PDF', cpSend: 'Enviar resultados al campus', cpSendHelp: '{n} hojas escaneadas listas para enviar de {t} alumnos.', cpSendBtn: 'Enviar resultados',
     cpConfirm: '¿Enviar al campus {n} resultados de «{name}»? Solo se envían códigos, versión y letras marcadas; las notas existentes de esos alumnos se actualizarán.', cpNothing: 'Aún no hay hojas escaneadas.',
     cpSent: 'Enviado: {s} guardados.', cpUnmatched: 'Sin emparejar', cpDup: 'Duplicados', cpErrors: 'Con errores', cpLast: 'Último envío: {d} ({s} guardados)', cpSending: 'Enviando…', cpNoCode: 'Alumnos sin código: {n}', cpPrivacy: 'La lista de clase y los resultados se guardan también en este navegador.',
-    cpScanned: '{n} escaneadas'
+    cpScanned: '{n} escaneadas'    ,cpSaved: 'Clave guardada en el campus ✓ {t}', cpUnsaved: 'Sin guardar en el campus', cpSaving: 'Guardando en el campus…', cpFail: 'No se pudo guardar en el campus (se reintenta). Tus cambios siguen aquí.', cpSaveNow: 'Guardar en el campus', cpNoKeyYet: 'Clave aún no guardada en el campus'
   });
   Object.assign(D.ca, {
     tab_campus: 'Campus', cpTitle: 'Prova del campus', cpHelp: "Aquesta prova en paper es corregeix aquí i només s'envien al campus els codis i les respostes, mai imatges.",
@@ -30,7 +30,7 @@
     cpPreview: 'Previsualització', cpPrint: 'Imprimeix / PDF', cpSend: 'Envia resultats al campus', cpSendHelp: '{n} fulls escanejats llestos per enviar de {t} alumnes.', cpSendBtn: 'Envia resultats',
     cpConfirm: "Enviar al campus {n} resultats de «{name}»? Només s'envien codis, versió i lletres marcades; les notes existents d'aquests alumnes s'actualitzaran.", cpNothing: 'Encara no hi ha fulls escanejats.',
     cpSent: 'Enviat: {s} desats.', cpUnmatched: 'Sense emparellar', cpDup: 'Duplicats', cpErrors: 'Amb errors', cpLast: 'Darrer enviament: {d} ({s} desats)', cpSending: 'Enviant…', cpNoCode: 'Alumnes sense codi: {n}', cpPrivacy: 'La llista de classe i els resultats es desen també en aquest navegador.',
-    cpScanned: '{n} escanejats'
+    cpScanned: '{n} escanejats'    ,cpSaved: 'Clau desada al campus ✓ {t}', cpUnsaved: 'Sense desar al campus', cpSaving: 'Desant al campus…', cpFail: "No s'ha pogut desar al campus (es reintenta). Els teus canvis són aquí.", cpSaveNow: 'Desa al campus', cpNoKeyYet: 'Clau encara no desada al campus'
   });
   Object.assign(D.en, {
     tab_campus: 'Campus', cpTitle: 'Campus exam', cpHelp: 'This paper exam is graded here and only codes and answers are sent to the campus, never images.',
@@ -41,7 +41,7 @@
     cpPreview: 'Preview', cpPrint: 'Print / PDF', cpSend: 'Send results to the campus', cpSendHelp: '{n} scanned sheets ready to send out of {t} students.', cpSendBtn: 'Send results',
     cpConfirm: 'Send {n} results of "{name}" to the campus? Only codes, version and marked letters are sent; existing grades of those students will be updated.', cpNothing: 'No scanned sheets yet.',
     cpSent: 'Sent: {s} saved.', cpUnmatched: 'Unmatched', cpDup: 'Duplicates', cpErrors: 'With errors', cpLast: 'Last send: {d} ({s} saved)', cpSending: 'Sending…', cpNoCode: 'Students without a code: {n}', cpPrivacy: 'The class list and results are also stored in this browser.',
-    cpScanned: '{n} scanned'
+    cpScanned: '{n} scanned'    ,cpSaved: 'Key saved in the campus ✓ {t}', cpUnsaved: 'Not saved in the campus', cpSaving: 'Saving to the campus…', cpFail: 'Could not save to the campus (retrying). Your changes are kept here.', cpSaveNow: 'Save to the campus', cpNoKeyYet: 'Key not saved in the campus yet'
   });
 
   const Y = { id: new URLSearchParams(location.search).get('assessment'), state: 'off', err: '', busy: false, res: null, noKey: false };
@@ -77,15 +77,16 @@
     return e;
   }
 
+  const hashTab = () => ({ '#key': 'key', '#clave': 'key', '#scan': 'scan', '#escanear': 'scan', '#sheets': 'campus', '#hojas': 'campus' }[location.hash] || 'campus');
   async function load(quiet) {
     Y.state = 'loading'; Y.err = ''; redraw();
     try {
       const data = await api('/api/corrector/exam?assessment=' + encodeURIComponent(Y.id));
       const prev = JSON.parse(localStorage.getItem('corrector:exam:campus-' + Y.id) || 'null');
       const e = toExam(data, prev); Y.noKey = !data.config || !data.config.has_key;
-      X().openExamObject(e); Y.state = 'ok';
+      X().openExamObject(e); Y.state = 'ok'; S.base = sig(); S.at = 0; if (data.config && data.config.has_key) S.at = data.config.updated_at ? +new Date(data.config.updated_at) || Date.now() : Date.now(); S.fail = false;
       if (!quiet) K.toast(T('cpLoaded', { n: e.students.filter(s => s.code).length }), 3000);
-      X().showTab('campus');
+      X().showTab(hashTab());
     } catch (err) {
       Y.state = 'error'; Y.err = err.status === 401 ? T('cpErr401') : (err.status === 409 || err.status === 404 || err.code === 'not-paper' || err.code === 'notfound') ? T('cpErrNot') : T('cpErrGen', { m: err.message });
       redraw();
@@ -93,14 +94,52 @@
   }
   const redraw = () => { if (X() && X().ui.tab === 'campus') { const v = $('#view'); if (v) { v.innerHTML = render(); } } };
 
-  async function saveKey() {
+  function keyBody() {
     const e = X().exam;
-    if (!e.versions.every(v => (e.keys[v] || []).some(Boolean))) { K.toast(T('cpKeyEmpty'), 3500); return; }
     const body = { nq: e.nq, nopt: e.nopt, versions: e.versions, keys: {}, annulled: [], weights: e.weightsOn ? e.weights.map(Number) : [], penalty: null };
     e.versions.forEach(v => { body.keys[v] = (e.keys[v] || []).map(x => x || ''); if (v !== 'A' || (e.maps[v] || []).some((m, i) => m !== i)) body.maps = Object.assign(body.maps || {}, { [v]: (e.maps[v] || []).map(m => m + 1) }); });
     e.annul.forEach((a, i) => { if (a) body.annulled.push(i + 1); });
-    try { const r = await api('/api/corrector/exam?assessment=' + encodeURIComponent(Y.id), { method: 'PUT', body }); Y.noKey = !r.has_key; K.toast(T('cpKeyOk', { n: r.regraded || 0 }), 3600); redraw(); }
-    catch (err) { K.toast(T('cpErrGen', { m: err.message }), 5000); }
+    return body;
+  }
+  const sig = () => { try { return JSON.stringify(keyBody()); } catch (_) { return ''; } };
+  const hhmm = (d) => new Date(d).toLocaleTimeString(K.locale(), { hour: '2-digit', minute: '2-digit' });
+  /* indicador fijo + guardado automatico de la clave en el campus */
+  const S = { base: null, at: 0, saving: false, fail: false, chg: 0, try: 0, dd: false };
+  function badge() {
+    let el = $('#cpbadge');
+    if (!el) { el = document.createElement('div'); el.id = 'cpbadge'; el.className = 'cpbadge'; el.setAttribute('role', 'status'); document.body.appendChild(el); el.addEventListener('click', (ev) => { if (ev.target.closest('button')) saveKey(true); }); }
+    return el;
+  }
+  function paint() {
+    if (!Y.id || Y.state !== 'ok') { const o = $('#cpbadge'); if (o) o.hidden = true; return; }
+    const el = badge(); el.hidden = false;
+    const dirty = sig() !== S.base, cls = S.fail ? 'bad' : S.saving ? 'wait' : dirty ? 'warn' : 'ok';
+    const txt = S.fail ? T('cpFail') : S.saving ? T('cpSaving') : dirty ? T('cpUnsaved') : (S.at ? T('cpSaved', { t: hhmm(S.at) }) : T('cpNoKeyYet'));
+    const html = `<span class="cpdot ${cls}"></span><span>${esc(txt)}</span>${dirty || S.fail ? `<button type="button" class="btn small">${T('cpSaveNow')}</button>` : ''}`;
+    if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
+  }
+  async function saveKey(manual) {
+    if (S.saving) return;
+    const e = X().exam, filled = e.versions.some(v => (e.keys[v] || []).some(Boolean));
+    if (!filled) { if (manual) K.toast(T('cpKeyEmpty'), 3500); return; }
+    if (manual === true && !e.versions.every(v => (e.keys[v] || []).some(Boolean))) { K.toast(T('cpKeyEmpty'), 3500); return; }
+    const body = keyBody(), mine = JSON.stringify(body);
+    S.saving = true; paint();
+    try {
+      const r = await api('/api/corrector/exam?assessment=' + encodeURIComponent(Y.id), { method: 'PUT', body });
+      Y.noKey = !r.has_key; S.base = mine; S.at = Date.now(); S.fail = false;
+      if (manual) K.toast(T('cpKeyOk', { n: r.regraded || 0 }), 3600); redraw();
+    } catch (err) { S.fail = true; if (manual) K.toast(T('cpErrGen', { m: err.message }), 5000); }
+    S.saving = false; paint();
+  }
+  function watch() {
+    setInterval(() => {
+      if (Y.state !== 'ok' || S.saving || S.base === null) return;
+      const d = sig() !== S.base;
+      if (d && (S.fail ? Date.now() - S.try > 8000 : Date.now() - S.chg > 1500)) { S.try = Date.now(); saveKey(false); }
+      if (d && !S.dd) S.chg = Date.now(); S.dd = d;
+      paint();
+    }, 700);
   }
   const ready = () => X().exam.students.filter(s => s.scanned && s.code);
   async function send() {
@@ -141,13 +180,13 @@
     if (!Y.id) return;
     $('#app').addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-act^="c:"]'); if (!b) return; const a = b.dataset.act;
-      if (a === 'c:reload') load(false); else if (a === 'c:key') saveKey(); else if (a === 'c:send') send();
+      if (a === 'c:reload') load(false); else if (a === 'c:key') saveKey(true); else if (a === 'c:send') send();
       else if (a === 'c:pv') X().openPreview('personal'); else if (a === 'c:pr') X().doPrint(X().docFor('personal'));
     });
   }
   function start() {
     if (!Y.id || !/^\d+$/.test(Y.id)) return;
-    X().TABS.splice(X().TABS.indexOf('scan') + 1, 0, 'campus'); X().showTab('campus'); load(true);
+    X().TABS.splice(X().TABS.indexOf('scan') + 1, 0, 'campus'); X().showTab('campus'); load(true); watch();
   }
   C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y };
 })();
