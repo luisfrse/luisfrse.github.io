@@ -176,9 +176,9 @@
           "enlace": "/apps/pasos/"
         },
         {
-          "titulo": "Metrónomo de RCP y guía de soporte vital",
-          "titulo_ca": "Metrònom de RCP i guia de suport vital",
-          "titulo_en": "CPR metronome and life support guide",
+          "titulo": "Soporte vital: RCP y DEA (metrónomo, simulador y guía)",
+          "titulo_ca": "Suport vital: RCP i DEA (metrònom, simulador i guia)",
+          "titulo_en": "Life support: CPR & AED (metronome, simulator and guide)",
           "enlace": "/apps/rcp/"
         },
         {
@@ -217,9 +217,9 @@
           "enlace": "/apps/pasos/"
         },
         {
-          "titulo": "Metrónomo de RCP y guía de soporte vital",
-          "titulo_ca": "Metrònom de RCP i guia de suport vital",
-          "titulo_en": "CPR metronome and life support guide",
+          "titulo": "Soporte vital: RCP y DEA (metrónomo, simulador y guía)",
+          "titulo_ca": "Suport vital: RCP i DEA (metrònom, simulador i guia)",
+          "titulo_en": "Life support: CPR & AED (metronome, simulator and guide)",
           "enlace": "/apps/rcp/"
         }
       ]
@@ -268,9 +268,9 @@
       "descripcion_en": "First aid is the immediate, basic care given to an injured or ill person in an emergency. Its aim is to preserve life and prevent injuries from getting worse until specialised healthcare personnel arrive.",
       "recursos": [
         {
-          "titulo": "Metrónomo de RCP y guía de soporte vital",
-          "titulo_ca": "Metrònom de RCP i guia de suport vital",
-          "titulo_en": "CPR metronome and life support guide",
+          "titulo": "Soporte vital: RCP y DEA (metrónomo, simulador y guía)",
+          "titulo_ca": "Suport vital: RCP i DEA (metrònom, simulador i guia)",
+          "titulo_en": "Life support: CPR & AED (metronome, simulator and guide)",
           "enlace": "/apps/rcp/"
         }
       ]

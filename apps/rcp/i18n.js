@@ -4,7 +4,7 @@
 window.RCP_I18N = {
   /* ============================ CASTELLANO ============================ */
   es: {
-    title: 'Metrónomo de RCP',
+    title: 'Soporte vital: RCP y DEA',
     tabMetro: 'Metrónomo', tabTrain: 'Entrena tu ritmo', tabGuide: 'Guía paso a paso', tabQuality: 'Calidad y edades',
     disclaimer: 'Herramienta didáctica: no sustituye una formación acreditada ni las guías vigentes del ERC. Ante una emergencia real, llama al 112.',
     age: 'Edad de la víctima', adult: 'Adulto', child: 'Niño', infant: 'Lactante',
@@ -84,7 +84,7 @@ window.RCP_I18N = {
 
   /* ============================== CATALÀ ============================== */
   ca: {
-    title: 'Metrònom de RCP',
+    title: 'Suport vital: RCP i DEA',
     tabMetro: 'Metrònom', tabTrain: 'Entrena el ritme', tabGuide: 'Guia pas a pas', tabQuality: 'Qualitat i edats',
     disclaimer: 'Eina didàctica: no substitueix una formació acreditada ni les guies vigents de l\'ERC. Davant d\'una emergència real, truca al 112.',
     age: 'Edat de la víctima', adult: 'Adult', child: 'Infant', infant: 'Lactant',
@@ -161,7 +161,7 @@ window.RCP_I18N = {
 
   /* ============================== ENGLISH ============================== */
   en: {
-    title: 'CPR metronome',
+    title: 'Life support: CPR & AED',
     tabMetro: 'Metronome', tabTrain: 'Train your rhythm', tabGuide: 'Step-by-step guide', tabQuality: 'Quality & ages',
     disclaimer: 'Teaching tool: it does not replace accredited training or current ERC guidelines. In a real emergency, call 112 (or your local emergency number).',
     age: 'Casualty age', adult: 'Adult', child: 'Child', infant: 'Infant',

@@ -32,7 +32,7 @@ y el idioma (ES/CA/EN) se comparte con la web.
 | `apps/corrector/` | Corrector de tests (penalización, versiones, análisis de preguntas, hojas imprimibles) |
 | `apps/histologia/` | Quiz de imágenes de histología y citología (imágenes con licencia abierta y atribución) |
 | `apps/pasos/` | Orden de pasos: lavado de manos, EPI, tipos de mascarilla y 5 momentos (secuencias editables en `data/secuencias.json`) |
-| `apps/rcp/` | Metrónomo de RCP y guía de soporte vital |
+| `apps/rcp/` | Soporte vital: RCP y DEA (metrónomo, simulador, atragantamiento y guía) |
 | `apps/goteo/` | Calculadora de goteo y dosis |
 | `apps/epidemias/` | Simulador de epidemias e inmunidad de grupo |
 | `apps/ruta/` | Calculadora de tiempos de ruta (GPX, luz del día) |

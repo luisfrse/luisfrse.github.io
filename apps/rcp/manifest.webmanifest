@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Metrónomo de RCP",
+  "name": "Soporte vital: RCP y DEA",
   "short_name": "RCP",
-  "description": "Metrónomo de RCP, voz guiada, llamada al 112, simulador de DEA, atragantamiento y sensor de ritmo. Herramienta didáctica.",
+  "description": "RCP y DEA: metrónomo, voz guiada, llamada al 112, simulador de DEA, atragantamiento y sensor de ritmo. Herramienta didáctica.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
