@@ -195,3 +195,9 @@ ol.script{counter-reset:none}
 .dea-dock .cpr-tap b{font-size:2rem}
 .dea-dock .cpr-row{align-items:center}
 @media (max-width:520px){.dea-dock .cpr-tap{min-height:76px}.dea-dock .cpr-tap span{font-size:.8rem}}
+
+.dea-clear2{display:block;margin:10px auto 0;min-height:56px;padding:12px 28px;font-size:1.1rem;animation:cprpulse .9s ease-in-out infinite}
+.dea-clear2[hidden]{display:none}
+.dea-clear2.done{background:#16a34a;color:#fff;animation:none}
+.dea-actions .btn:disabled{display:none}
+@media (prefers-reduced-motion:reduce){.dea-clear2{animation:none}}
