@@ -183,7 +183,7 @@
   function renderHome() {
     poster.innerHTML = '';
     app.innerHTML = `
-      <section class="stack"><h2 style="font-size:clamp(1.6rem,4vw,2.4rem);margin:0">${esc(t('homeTitle'))}</h2><p class="lead">${esc(t('homeLead'))}</p></section>
+      <section class="stack"><h2 class="app-title" style="margin:0">${esc(t('homeTitle'))}</h2><p class="lead">${esc(t('homeLead'))}</p></section>
       <div class="seq-grid">${DATA.sequences.map(s => {
         const b = bestOf(s.id, 'prueba');
         return `<a class="seq-card" href="#/${s.id}">${img(s.cover)}<div class="body"><h3>${esc(L(s.title))}</h3><p>${esc(L(s.subtitle))}</p>

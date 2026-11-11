@@ -42,7 +42,7 @@ window.RCP_I18N = {
     ageCells: {
       adult: { depth: '5–6 cm', hands: 'Talón de una mano en la mitad inferior del esternón y la otra encima', rate: '100–120/min', ratio: '30:2', initial: 'Directo a las compresiones', aed: 'Parches de adulto' },
       child: { depth: 'Al menos un tercio del grosor del tórax (≈ 5 cm)', hands: 'Una mano (dos si hace falta) en la mitad inferior del esternón', rate: '100–120/min', ratio: '15:2 con personal sanitario o 2+ reanimadores formados; 30:2 en el resto', initial: '5 insuflaciones iniciales', aed: 'Parches pediátricos si los hay; si no, los de adulto' },
-      infant: { depth: 'Al menos un tercio del grosor del tórax (≈ 4 cm)', hands: 'Dos dedos (un reanimador) o dos pulgares rodeando el tórax (dos reanimadores)', rate: '100–120/min', ratio: '15:2 con personal sanitario o 2+ reanimadores formados; 30:2 en el resto', initial: '5 insuflaciones iniciales', aed: 'Parches pediátricos si los hay; si no, los de adulto' }
+      infant: { depth: 'Al menos un tercio del grosor del tórax (≈ 4 cm)', hands: 'Dos pulgares rodeando el tórax, en la mitad inferior del esternón (técnica recomendada por el ERC 2025)', rate: '100–120/min', ratio: '15:2 con personal sanitario o 2+ reanimadores formados; 30:2 en el resto', initial: '5 insuflaciones iniciales', aed: 'Parches pediátricos si los hay; si no, los de adulto' }
     },
     qualityTips: [
       { t: 'Comprime fuerte y rápido', d: 'Profundidad y frecuencia importan: 5–6 cm en adultos y 100–120 por minuto. Usa el metrónomo y el entrenamiento de ritmo.' },
@@ -119,7 +119,7 @@ window.RCP_I18N = {
     ageCells: {
       adult: { depth: '5–6 cm', hands: 'Taló d\'una mà a la meitat inferior de l\'estern i l\'altra a sobre', rate: '100–120/min', ratio: '30:2', initial: 'Directe a les compressions', aed: 'Pegats d\'adult' },
       child: { depth: 'Almenys un terç del gruix del tòrax (≈ 5 cm)', hands: 'Una mà (dues si cal) a la meitat inferior de l\'estern', rate: '100–120/min', ratio: '15:2 amb personal sanitari o 2+ reanimadors formats; 30:2 en la resta', initial: '5 insuflacions inicials', aed: 'Pegats pediàtrics si n\'hi ha; si no, els d\'adult' },
-      infant: { depth: 'Almenys un terç del gruix del tòrax (≈ 4 cm)', hands: 'Dos dits (un reanimador) o dos polzes rodejant el tòrax (dos reanimadors)', rate: '100–120/min', ratio: '15:2 amb personal sanitari o 2+ reanimadors formats; 30:2 en la resta', initial: '5 insuflacions inicials', aed: 'Pegats pediàtrics si n\'hi ha; si no, els d\'adult' }
+      infant: { depth: 'Almenys un terç del gruix del tòrax (≈ 4 cm)', hands: 'Dos polzes rodejant el tòrax, a la meitat inferior de l\'estern (tècnica recomanada per l\'ERC 2025)', rate: '100–120/min', ratio: '15:2 amb personal sanitari o 2+ reanimadors formats; 30:2 en la resta', initial: '5 insuflacions inicials', aed: 'Pegats pediàtrics si n\'hi ha; si no, els d\'adult' }
     },
     qualityTips: [
       { t: 'Comprimeix fort i ràpid', d: 'Importen la profunditat i la freqüència: 5–6 cm en adults i 100–120 per minut. Fes servir el metrònom i l\'entrenament de ritme.' },
@@ -196,7 +196,7 @@ window.RCP_I18N = {
     ageCells: {
       adult: { depth: '5–6 cm', hands: 'Heel of one hand on the lower half of the breastbone, the other hand on top', rate: '100–120/min', ratio: '30:2', initial: 'Straight to compressions', aed: 'Adult pads' },
       child: { depth: 'At least one third of the chest depth (≈ 5 cm)', hands: 'One hand (two if needed) on the lower half of the breastbone', rate: '100–120/min', ratio: '15:2 for healthcare staff or 2+ trained rescuers; 30:2 otherwise', initial: '5 initial rescue breaths', aed: 'Paediatric pads if available; otherwise adult pads' },
-      infant: { depth: 'At least one third of the chest depth (≈ 4 cm)', hands: 'Two fingers (one rescuer) or two thumbs encircling the chest (two rescuers)', rate: '100–120/min', ratio: '15:2 for healthcare staff or 2+ trained rescuers; 30:2 otherwise', initial: '5 initial rescue breaths', aed: 'Paediatric pads if available; otherwise adult pads' }
+      infant: { depth: 'At least one third of the chest depth (≈ 4 cm)', hands: 'Two thumbs encircling the chest, on the lower half of the breastbone (technique recommended by ERC 2025)', rate: '100–120/min', ratio: '15:2 for healthcare staff or 2+ trained rescuers; 30:2 otherwise', initial: '5 initial rescue breaths', aed: 'Paediatric pads if available; otherwise adult pads' }
     },
     qualityTips: [
       { t: 'Push hard and fast', d: 'Depth and rate matter: 5–6 cm in adults at 100–120 per minute. Use the metronome and the rhythm trainer.' },

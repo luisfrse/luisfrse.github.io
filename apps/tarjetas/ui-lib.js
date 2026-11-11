@@ -258,7 +258,7 @@
     }).join('');
     U.root().innerHTML = `
       <section class="lib-head">
-        <div class="grow"><h2>${t('lib.title')}</h2><p class="muted">${t('lib.sub')}</p></div>
+        <div class="grow"><h2 class="app-title">${t('lib.title')}</h2><p class="muted">${t('lib.sub')}</p></div>
         <div class="row">
           <button type="button" class="btn" data-act="new-deck">${ICONS.plus}<span>${t('lib.newDeck')}</span></button>
           <button type="button" class="btn ghost" data-act="import">${t('lib.import')}</button>

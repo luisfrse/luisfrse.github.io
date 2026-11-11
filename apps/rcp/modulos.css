@@ -205,3 +205,11 @@ ol.script{counter-reset:none}
 .sn-sens{display:grid;gap:10px;margin:14px 0;padding:12px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line)}
 .sn-sens select,.sn-sens input[type=range]{width:100%}
 .sn-sens output{color:var(--accent);font-weight:700}
+.sn-opts .check{display:flex;gap:8px;align-items:center;min-height:44px}
+.sn-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.sn-two{grid-template-columns:1fr}}
+.sn-cyc{display:grid;gap:8px;margin:10px 0}
+.sn-cyc-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.sn-cyc-n{font:700 2rem/1 var(--font-head);font-variant-numeric:tabular-nums}
+.sn-cyc.breath .btn{background:#f59e0b;color:#000}
+.sn-tech{margin:0;font-size:.85rem;text-align:center}

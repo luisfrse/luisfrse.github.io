@@ -139,3 +139,7 @@ dialog.kit-dialog.wide .viewer{max-height:58vh}
 .help li{margin:6px 0}
 .tag-cat{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--muted)}
 .tag-cat::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--c)}
+
+/* ---------- Revisión de diseño ---------- */
+#btn-help{min-width:44px;min-height:44px}
+#open-credits{display:inline-flex;align-items:center;min-height:44px}

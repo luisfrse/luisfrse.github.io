@@ -151,6 +151,85 @@
     return out;
   }
 
-  const api = { createDetector, synth, PROFILES };
+  /* Entreno completo: ciclos de n compresiones + 2 insuflaciones (y, en pediatría, 5 insuflaciones iniciales).
+     comp(t) y breath(t) devuelven el evento para avisar: 'breath' (toca insuflar), 'cycle' (ciclo cerrado), 'initDone', 'ignored'. */
+  function createCycler(o) {
+    o = Object.assign({ n: 30, init: 0, lateSec: 10, grace: 0.4 }, o);
+    let state = o.init > 0 ? 'init' : 'comp', count = 0, breaths = 0, ib = 0, bT = 0, firstB = null, short = false, cb = 0, lastC = 0, nudged = false, win = null, civ = [];
+    const cycles = [], windows = [], errs = { cycle: 0, short: 0, omit: 0, late: 0, compBreath: 0, initOmit: 0, initComp: 0 };
+    let total = 0, totalBreaths = 0, initGiven = 0;
+    function close(t) {
+      const delay = (firstB !== null ? firstB : t) - bT, om = Math.max(0, 2 - breaths), late = delay > o.lateSec;
+      const ok = !short && count === o.n && !om && !late && !cb;
+      const rate = civ.length >= 3 ? Math.round(60 / (civ.reduce((a, b) => a + b, 0) / civ.length)) : null;
+      cycles.push({ c: count, ok, rate, breaths, late, short, omit: om, cb, delay });
+      if (short) errs.short++; if (om) errs.omit += om; if (late) errs.late++; if (cb) errs.compBreath += cb;
+      count = 0; breaths = 0; firstB = null; short = false; cb = 0; civ = []; nudged = false; state = 'comp';
+    }
+    function comp(t) {
+      if (state === 'init') { errs.initOmit += o.init - ib; errs.initComp++; state = 'comp'; }
+      else if (state === 'breath') {
+        if (t - bT < o.grace) return 'ignored';
+        cb++; close(t);
+      }
+      if (win) { win.e = t; windows.push(win); win = null; }
+      if (lastC && count > 0 && t - lastC < 2) civ.push(t - lastC);
+      lastC = t; count++; total++;
+      if (o.n && count === o.n) { state = 'breath'; bT = t; breaths = 0; win = { s: t }; return 'breath'; }
+      return '';
+    }
+    function breath(t) {
+      if (state === 'init') { ib++; initGiven++; totalBreaths++; if (ib >= o.init) { state = 'comp'; return 'initDone'; } return 'init'; }
+      if (state === 'comp') {
+        if (!count) return 'ignored';
+        short = count < o.n; state = 'breath'; bT = lastC; breaths = 0; win = { s: lastC };
+      }
+      breaths++; totalBreaths++; if (firstB === null) firstB = t;
+      if (breaths >= 2) { close(t); return 'cycle'; }
+      return 'first';
+    }
+    function tick(t) { if (state === 'breath' && !breaths && !nudged && t - bT > o.lateSec) { nudged = true; return 'nudge'; } return ''; }
+    function finish(t) {
+      if (state === 'breath' && breaths < 2 && t - bT > o.lateSec) close(t);
+      if (win) { win.e = t; windows.push(win); win = null; }
+      if (state === 'init' && ib > 0 && ib < o.init) errs.initOmit += o.init - ib;
+    }
+    return { comp, breath, tick, finish, get state() { return state; }, get count() { return count; }, get breaths() { return breaths; }, get ib() { return ib; }, get n() { return o.n; }, get init() { return o.init; },
+      result() { return { cycles: cycles.slice(), windows: windows.slice(), errs: Object.assign({}, errs), total, breaths: totalBreaths, initGiven, init: o.init, n: o.n }; } };
+  }
+
+  /* Evaluación didáctica 0–100 (ritmo, pausas y, en entreno completo, ciclos). cy = createCycler().result() o null. */
+  function evaluate(m, cy) {
+    const errs = {}; let pen = 0;
+    const add = (k, p, times) => { errs[k] = (errs[k] || 0) + (times || 1); pen += p; };
+    if (!m.count) return { score: 0, errs: { none: 1 }, verdict: 'low', pen: 100, pauseCount: 0, longest: 0, pauseTotal: 0, cycles: cy ? cy.cycles : [] };
+    // pausas efectivas: se descuenta el tiempo dedicado a las insuflaciones
+    const eff = (m.pauses || []).map(p => {
+      let ov = 0; if (cy) cy.windows.forEach(w => { ov += Math.max(0, Math.min(p.end, w.e) - Math.max(p.start, w.s)); });
+      return Math.max(0, p.len - ov);
+    }).filter(x => x > 2);
+    const pauseTotal = eff.reduce((a, b) => a + b, 0), longest = Math.max(0, ...eff);
+    if (m.count < 20) add('few', 5);
+    if (m.avgRate < 100) add('slow', Math.min(25, Math.round(100 - m.avgRate))); else if (m.avgRate > 120) add('fast', Math.min(25, Math.round(m.avgRate - 120)));
+    if (m.pctInBand < 80) add('band', Math.min(24, Math.round((80 - m.pctInBand) * 0.3)));
+    if (m.regularity < 70) add('irreg', Math.min(15, Math.round((70 - m.regularity) * 0.4)));
+    const p10 = eff.filter(x => x > 10).length, p2 = eff.length - p10;
+    if (p2) add('pause', Math.min(15, 3 * p2), p2);
+    if (p10) add('pause10', Math.min(20, 10 * p10), p10);
+    if (m.ccf < 60) add('ccf', Math.min(15, Math.round((60 - m.ccf) * 0.5)));
+    if (cy) {
+      const e = cy.errs;
+      if (e.short) add('short', Math.min(12, 3 * e.short), e.short);
+      if (e.compBreath) add('compBreath', Math.min(12, 2 * e.compBreath), e.compBreath);
+      if (e.omit) add('omit', Math.min(16, 3 * e.omit), e.omit);
+      if (e.late) add('late', Math.min(12, 3 * e.late), e.late);
+      if (e.initOmit) add('initOmit', Math.min(10, 2 * e.initOmit), e.initOmit);
+      const bad = cy.cycles.filter(c => !c.ok).length; if (bad) { errs.cycle = bad; pen += Math.min(30, 6 * bad); }
+    }
+    const score = Math.max(0, Math.round(100 - pen));
+    return { score, verdict: score >= 90 ? 'good' : score >= 70 ? 'ok' : 'low', errs, pen, pauseCount: eff.length, longest, pauseTotal, cycles: cy ? cy.cycles : [] };
+  }
+
+  const api = { createDetector, createCycler, evaluate, synth, PROFILES };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.RCPSensor = api;
 })(typeof window !== 'undefined' ? window : globalThis);

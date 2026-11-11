@@ -134,3 +134,6 @@ table.ages th{font-size:.95rem;color:#fff}
   .guide-bar .row .seg{flex:1 1 100%}
 }
 .seg{border-radius:20px}
+
+/* ---------- Revisión de diseño ---------- */
+@media (max-width:720px){.tabs{top:72px}}

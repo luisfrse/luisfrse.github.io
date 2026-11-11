@@ -1,7 +1,7 @@
 /* Estilos propios de la calculadora de goteo y dosis (se suman a apps/shared/app.css) */
 .lead{font-size:1.1rem;max-width:70ch;margin:0}
 #tablist{margin:0;padding:0 0 12px;border-bottom:1px solid var(--line);overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}
-#tablist button{white-space:nowrap}
+#tablist button{white-space:nowrap;flex:none}
 #panel{display:flex;flex-direction:column;gap:clamp(16px,2.5vw,26px);outline:none}
 #panel>.grid{align-items:start}
 
@@ -12,7 +12,7 @@
 .inp:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,139,224,.25)}
 .inp input,.inp select{border:0;background:transparent;border-radius:0;min-width:0;flex:1;font-variant-numeric:tabular-nums}
 .inp input{padding:11px 12px;font-size:1.1rem}
-.inp input:focus-visible,.inp select:focus-visible{outline:none}
+.inp input:focus-visible,.inp select:focus-visible{outline:none;box-shadow:none;border-color:transparent}
 .inp select{flex:0 0 auto;width:auto;max-width:48%;padding:0 10px;border-left:1px solid var(--line);background:var(--panel-2);font-weight:600;cursor:pointer}
 .inp .unit{display:grid;place-items:center;padding:0 12px;background:var(--panel-2);color:var(--muted);font-weight:600;white-space:nowrap;border-left:1px solid var(--line)}
 .inp input.bad{color:var(--red)}
@@ -92,3 +92,7 @@ button[disabled]{pointer-events:none}
 .seg{align-self:flex-start;border-radius:22px;max-width:100%}
 .big.long b{font-size:clamp(1.4rem,3.2vw,1.95rem)}
 .rule-row>span:nth-child(3){text-align:center}
+
+/* ---------- Revisión de diseño ---------- */
+.lead{padding-left:14px;border-left:3px solid var(--accent);color:var(--muted)}
+#tablist{padding-bottom:10px}

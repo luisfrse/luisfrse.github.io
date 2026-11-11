@@ -42,6 +42,7 @@
 .rt-stage input[aria-invalid="true"]{border-color:var(--red);background:rgba(248,113,113,.1)}
 .rt-stage .acts{display:flex;gap:4px;align-items:center}
 .rt-stage .acts .icon-btn{width:34px;height:34px;font-size:.85rem}
+@media (max-width:720px),(pointer:coarse){.rt-stage .acts .icon-btn{width:44px;height:44px}}
 @media (max-width:760px){.rt-stage{grid-template-columns:1fr 1fr 1fr}.rt-stage .cell.name,.rt-stage .cell.terr{grid-column:1/-1}.rt-stage .acts{grid-column:1/-1;justify-content:flex-end}}
 .rt-sum{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.92rem;padding:2px 4px}
 .rt-sum b{color:#fff;font-variant-numeric:tabular-nums}
