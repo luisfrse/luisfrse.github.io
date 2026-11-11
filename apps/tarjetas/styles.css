@@ -150,3 +150,9 @@ i.m1{background:#7fb2ea}i.m2{background:#f87171}i.m3{background:#f5b82e}i.m4{bac
   .toolbar select,.toolbar .seg{width:100%}
 }
 @media print{.tools,.controls,.study-bar{display:none}}
+
+/* Ayudas de importación */
+dialog .imp-tools{gap:8px;justify-content:flex-start;margin-top:0}
+details.imp-ai{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--panel)}
+details.imp-ai summary{cursor:pointer;font-weight:700}
+#ai-out{font-size:.9rem}

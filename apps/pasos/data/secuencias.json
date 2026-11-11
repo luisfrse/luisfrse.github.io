@@ -565,19 +565,19 @@
         "en": "Putting on PPE (donning)"
       },
       "subtitle": {
-        "es": "Calzas, bata, gorro, mascarilla o respirador, protección ocular y guantes, en este orden.",
-        "ca": "Cobrecalçat, bata, gorra, mascareta o respirador, protecció ocular i guants, en aquest ordre.",
-        "en": "Shoe covers, gown, cap, mask or respirator, eye protection and gloves, in this order."
+        "es": "Calzas, bata, mascarilla o respirador, protección ocular, gorro y guantes, en este orden.",
+        "ca": "Cobrecalçat, bata, mascareta o respirador, protecció ocular, gorra i guants, en aquest ordre.",
+        "en": "Shoe covers, gown, mask or respirator, eye protection, cap and gloves, in this order."
       },
       "source": {
-        "es": "Secuencia basada en la de los CDC (EE. UU.) para la colocación del equipo de protección individual y coherente con las recomendaciones de la OMS.",
-        "ca": "Seqüència basada en la dels CDC (EUA) per a la col·locació de l'equip de protecció individual i coherent amb les recomanacions de l'OMS.",
-        "en": "Sequence based on the US CDC sequence for putting on personal protective equipment and consistent with WHO recommendations."
+        "es": "Secuencia basada en la de los CDC (EE. UU.) para la colocación del equipo de protección individual y coherente con las recomendaciones de la OMS. Consultadas también la guía de la EAPN de Asturias y el vídeo de OpenWHO (OMS) sobre el EPP frente a gotas y contacto.",
+        "ca": "Seqüència basada en la dels CDC (EUA) per a la col·locació de l'equip de protecció individual i coherent amb les recomanacions de l'OMS. Consultades també la guia de l'EAPN d'Astúries i el vídeo d'OpenWHO (OMS) sobre l'EPI davant de gotes i contacte.",
+        "en": "Sequence based on the US CDC one for putting on personal protective equipment and consistent with WHO recommendations. The EAPN Asturias guide and the OpenWHO (WHO) video on PPE for droplet and contact precautions were also consulted."
       },
       "note": {
-        "es": "Los protocolos varían según el nivel de riesgo y el centro: adapta esta secuencia al protocolo de tu centro. El gorro y las calzas solo forman parte de algunos protocolos (aislamiento reforzado, quirófano…) y su posición exacta varía entre centros.",
-        "ca": "Els protocols varien segons el nivell de risc i el centre: adapta aquesta seqüència al protocol del teu centre. La gorra i el cobrecalçat només formen part d'alguns protocols (aïllament reforçat, quiròfan…) i la seva posició exacta varia entre centres.",
-        "en": "Protocols vary with the level of risk and the centre: adapt this sequence to your own centre's protocol. The cap and shoe covers are only part of some protocols (enhanced isolation, operating theatre…) and their exact position varies between centres."
+        "es": "Los protocolos varían según el nivel de riesgo y el centro: adapta esta secuencia al protocolo de tu centro. La secuencia base (bata, mascarilla, protección ocular y guantes) coincide con la de la OMS y los CDC. El gorro y las calzas no figuran en esas guías: su posición es la que se enseña en esta aplicación y puede cambiar según el protocolo del centro.",
+        "ca": "Els protocols varien segons el nivell de risc i el centre: adapta aquesta seqüència al protocol del teu centre. La seqüència base (bata, mascareta, protecció ocular i guants) coincideix amb la de l'OMS i els CDC. La gorra i el cobrecalçat no figuren en aquestes guies: la seva posició és la que s'ensenya en aquesta aplicació i pot canviar segons el protocol del centre.",
+        "en": "Protocols vary with the level of risk and the centre: adapt this sequence to your own centre's protocol. The basic sequence (gown, mask, eye protection and gloves) matches the WHO and CDC ones. The cap and shoe covers are not in those guidelines: their position is the one taught in this app and may change with your centre's protocol."
       },
       "finish": {
         "es": "EPI colocado: comprueba que no queda piel al descubierto.",
@@ -686,31 +686,6 @@
           }
         },
         {
-          "id": "gorro",
-          "img": "epi-gorro",
-          "seconds": 0,
-          "title": {
-            "es": "Gorro",
-            "ca": "Gorra",
-            "en": "Cap"
-          },
-          "text": {
-            "es": "Recoge todo el cabello y colócate el gorro cubriéndolo por completo, bien ajustado a la frente y sin dejar mechones fuera. Ponlo antes de la mascarilla y de las gafas para que sus cintas y su montura queden por encima.",
-            "ca": "Recull tot el cabell i col·loca't la gorra cobrint-lo del tot, ben ajustada al front i sense deixar cap manyoc fora. Posa-te-la abans de la mascareta i de les ulleres perquè les seves cintes i la seva muntura quedin per sobre.",
-            "en": "Gather all your hair and put the cap on so that it covers it completely, snug at the forehead with no loose strands. Put it on before the mask and the eyewear so that their straps and frame sit over it."
-          },
-          "why": {
-            "es": "Evita que el cabello se contamine, caiga sobre el campo de trabajo o te lo toques durante la atención.",
-            "ca": "Evita que el cabell es contamini, caigui sobre el camp de treball o te'l toquis durant l'atenció.",
-            "en": "It stops your hair from becoming contaminated, falling onto the work area or being touched during care."
-          },
-          "mistake": {
-            "es": "Dejar mechones fuera del gorro o recolocárselo después con los guantes puestos.",
-            "ca": "Deixar manyocs fora de la gorra o recol·locar-se-la després amb els guants posats.",
-            "en": "Leaving strands outside the cap or readjusting it later with gloves on."
-          }
-        },
-        {
           "id": "mascarilla",
           "img": "epi-4-mascarilla",
           "seconds": 0,
@@ -761,6 +736,31 @@
           }
         },
         {
+          "id": "gorro",
+          "img": "epi-gorro",
+          "seconds": 0,
+          "title": {
+            "es": "Gorro",
+            "ca": "Gorra",
+            "en": "Cap"
+          },
+          "text": {
+            "es": "Colócatelo al final del equipo de la cabeza, después de la mascarilla y de las gafas y antes de los guantes: cubre todo el cabello y la parte superior de las cintas, sin mover la mascarilla ni las gafas.",
+            "ca": "Col·loca-te'l al final de l'equip del cap, després de la mascareta i de les ulleres i abans dels guants: cobreix tot el cabell i la part superior de les cintes, sense moure la mascareta ni les ulleres.",
+            "en": "Put it on last of the head equipment, after the mask and eyewear and before the gloves: it covers all your hair and the top of the straps, without moving the mask or the eyewear."
+          },
+          "why": {
+            "es": "Si va antes, el gorro estorba al ajustar las cintas de la mascarilla y de las gafas y obliga a recolocarlas, tocándote la cara. Colocarlo después evita esos retoques.",
+            "ca": "Si va abans, la gorra destorba en ajustar les cintes de la mascareta i de les ulleres i obliga a recol·locar-les tocant-te la cara. Posar-la després evita aquests retocs.",
+            "en": "If it goes first, the cap gets in the way when adjusting the mask and eyewear straps and forces you to readjust them, touching your face. Putting it on afterwards avoids that."
+          },
+          "mistake": {
+            "es": "Ponerlo antes de la mascarilla y las gafas, o desplazarlas al colocarlo.",
+            "ca": "Posar-la abans de la mascareta i les ulleres, o desplaçar-les en col·locar-la.",
+            "en": "Putting it on before the mask and eyewear, or moving them as you put it on."
+          }
+        },
+        {
           "id": "guantes",
           "img": "epi-6-guantes",
           "seconds": 0,
@@ -805,14 +805,14 @@
         "en": "The most contaminated items come off first, without touching them with bare hands."
       },
       "source": {
-        "es": "Secuencia basada en la de los CDC (EE. UU.) para la retirada del equipo de protección individual; la mascarilla o el respirador se retira al final.",
-        "ca": "Seqüència basada en la dels CDC (EUA) per a la retirada de l'equip de protecció individual; la mascareta o el respirador es retira al final.",
-        "en": "Sequence based on the US CDC sequence for removing personal protective equipment; the mask or respirator comes off last."
+        "es": "Secuencia basada en la de los CDC (EE. UU.) para la retirada del equipo de protección individual; la mascarilla o el respirador se retira al final. Consultadas también la guía de la EAPN de Asturias y el vídeo de OpenWHO (OMS).",
+        "ca": "Seqüència basada en la dels CDC (EUA) per a la retirada de l'equip de protecció individual; la mascareta o el respirador es treu al final. Consultades també la guia de l'EAPN d'Astúries i el vídeo d'OpenWHO (OMS).",
+        "en": "Sequence based on the US CDC one for taking off personal protective equipment; the mask or respirator comes off last. The EAPN Asturias guide and the OpenWHO (WHO) video were also consulted."
       },
       "note": {
-        "es": "Hay variantes válidas: algunos protocolos añaden higiene de manos tras retirar cada pieza o retiran bata y guantes juntos. Sigue siempre el protocolo de tu centro. Las calzas y el gorro solo se usan en algunos protocolos y su posición exacta varía entre centros.",
-        "ca": "Hi ha variants vàlides: alguns protocols afegeixen higiene de mans després de retirar cada peça o retiren bata i guants junts. Segueix sempre el protocol del teu centre. El cobrecalçat i la gorra només s'usen en alguns protocols i la seva posició exacta varia entre centres.",
-        "en": "There are valid variants: some protocols add hand hygiene after removing each item or remove gown and gloves together. Always follow your centre's protocol. Shoe covers and cap are only used in some protocols and their exact position varies between centres."
+        "es": "Hay variantes válidas: algunos protocolos añaden higiene de manos tras retirar cada pieza o retiran bata y guantes juntos. Sigue siempre el protocolo de tu centro. La OMS (OpenWHO) retira la bata antes que la protección ocular, con higiene de manos entre ambas; los CDC y la guía de la EAPN retiran la protección ocular antes que la bata. Las calzas y el gorro no figuran en esas guías: aquí el gorro sale antes que las gafas y la mascarilla porque cubre sus cintas.",
+        "ca": "Hi ha variants vàlides: alguns protocols afegeixen higiene de mans després de retirar cada peça o retiren bata i guants junts. Segueix sempre el protocol del teu centre. L'OMS (OpenWHO) treu la bata abans que la protecció ocular, amb higiene de mans entre totes dues; els CDC i la guia de l'EAPN treuen la protecció ocular abans que la bata. El cobrecalçat i la gorra no figuren en aquestes guies: aquí la gorra surt abans que les ulleres i la mascareta perquè en cobreix les cintes.",
+        "en": "There are valid variants: some protocols add hand hygiene after removing each item or remove gown and gloves together. Always follow your centre's protocol. The WHO (OpenWHO) removes the gown before the eye protection, with hand hygiene between them; the CDC and the EAPN guide remove the eye protection before the gown. Shoe covers and cap are not in those guidelines: here the cap comes off before the eyewear and the mask because it covers their straps."
       },
       "finish": {
         "es": "EPI retirado y manos higienizadas.",
@@ -871,6 +871,31 @@
           }
         },
         {
+          "id": "gorro",
+          "img": "epi-r-gorro",
+          "seconds": 0,
+          "title": {
+            "es": "Gorro",
+            "ca": "Gorra",
+            "en": "Cap"
+          },
+          "text": {
+            "es": "Retíralo antes de las gafas y de la mascarilla, porque cubre sus cintas. Sujétalo por la parte de atrás, levántalo hacia delante y hacia arriba dándole la vuelta, sin rozar la cara, y deséchalo.",
+            "ca": "Treu-te'l abans de les ulleres i de la mascareta, perquè en cobreix les cintes. Agafa'l per la part del darrere, aixeca'l cap endavant i cap amunt girant-lo del revés, sense fregar la cara, i llença'l.",
+            "en": "Take it off before the eyewear and the mask, because it covers their straps. Hold it at the back, lift it forward and up turning it inside out, without brushing your face, and discard it."
+          },
+          "why": {
+            "es": "Cubre las cintas de la mascarilla y de las gafas: hasta que no sale, no puedes retirarlas sin tocarlo. Al darle la vuelta, el exterior queda dentro.",
+            "ca": "Cobreix les cintes de la mascareta i de les ulleres: fins que no surt, no pots treure-les sense tocar-la. En girar-la del revés, l'exterior queda a dins.",
+            "en": "It covers the mask and eyewear straps: until it is off you cannot remove them without touching it. Turning it inside out keeps the outside inside."
+          },
+          "mistake": {
+            "es": "Quitarse antes las gafas o la mascarilla con el gorro puesto, o tocarse la cara y el pelo al retirarlo.",
+            "ca": "Treure's abans les ulleres o la mascareta amb la gorra posada, o tocar-se la cara i els cabells en treure-la.",
+            "en": "Taking off the eyewear or mask first with the cap still on, or touching your face and hair while removing it."
+          }
+        },
+        {
           "id": "gafas",
           "img": "epi-r2-gafas",
           "seconds": 0,
@@ -921,31 +946,6 @@
           }
         },
         {
-          "id": "gorro",
-          "img": "epi-r-gorro",
-          "seconds": 0,
-          "title": {
-            "es": "Gorro",
-            "ca": "Gorra",
-            "en": "Cap"
-          },
-          "text": {
-            "es": "Sujeta el gorro por la parte de atrás y levántalo hacia delante y hacia arriba dándole la vuelta, sin rozar la cara ni el cuello. Deséchalo.",
-            "ca": "Agafa la gorra per la part del darrere i aixeca-la cap endavant i cap amunt girant-la del revés, sense fregar la cara ni el coll. Llença-la.",
-            "en": "Hold the cap at the back and lift it forward and up, turning it inside out, without brushing your face or neck. Discard it."
-          },
-          "why": {
-            "es": "El exterior puede tener salpicaduras o partículas; al darle la vuelta quedan dentro.",
-            "ca": "L'exterior pot tenir esquitxades o partícules; en girar-la del revés queden a dins.",
-            "en": "The outside may carry splashes or particles; turning it inside out keeps them inside."
-          },
-          "mistake": {
-            "es": "Tocarse la cara o el pelo al quitárselo, o sacudir el gorro.",
-            "ca": "Tocar-se la cara o els cabells en treure-se-la, o sacsejar la gorra.",
-            "en": "Touching your face or hair while removing it, or shaking the cap."
-          }
-        },
-        {
           "id": "mascarilla",
           "img": "epi-r4-mascarilla",
           "seconds": 0,
@@ -993,6 +993,369 @@
             "es": "Salir sin hacerla, o hacerla antes de retirar la mascarilla.",
             "ca": "Sortir sense fer-la, o fer-la abans de retirar la mascareta.",
             "en": "Leaving without doing it, or doing it before removing the mask."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mascarillas",
+      "type": "match",
+      "cover": "cover-mascarillas",
+      "icon": "shield",
+      "durationSec": null,
+      "baseSec": 0,
+      "title": {
+        "es": "Tipos de mascarilla: cuándo usar cada una",
+        "ca": "Tipus de mascareta: quan fer servir cada una",
+        "en": "Types of mask: when to use each"
+      },
+      "subtitle": {
+        "es": "Quirúrgica, FFP2, FFP3, con válvula y N95/KN95: elige la adecuada para cada situación.",
+        "ca": "Quirúrgica, FFP2, FFP3, amb vàlvula i N95/KN95: tria l'adequada per a cada situació.",
+        "en": "Surgical, FFP2, FFP3, valved and N95/KN95: choose the right one for each situation."
+      },
+      "source": {
+        "es": "Ministerio de Sanidad: procedimiento de actuación para los servicios de prevención de riesgos laborales frente al SARS-CoV-2 (30/04/2020), a través de Risk XXI; normas UNE-EN 14683 y UNE-EN 149; OpenWHO (OMS), módulo 1 sobre EPP.",
+        "ca": "Ministeri de Sanitat: procediment d'actuació per als serveis de prevenció de riscos laborals davant del SARS-CoV-2 (30/04/2020), a través de Risk XXI; normes UNE-EN 14683 i UNE-EN 149; OpenWHO (OMS), mòdul 1 sobre EPI.",
+        "en": "Spanish Ministry of Health: procedure for occupational risk prevention services regarding SARS-CoV-2 (30/04/2020), via Risk XXI; standards UNE-EN 14683 and UNE-EN 149; OpenWHO (WHO), PPE module 1."
+      },
+      "note": {
+        "es": "La mascarilla adecuada depende del nivel de riesgo, de la enfermedad y del protocolo de tu centro. Los porcentajes de filtración son los mínimos de la norma UNE-EN 149 (FFP2 ≥ 94 %, FFP3 ≥ 99 %).",
+        "ca": "La mascareta adequada depèn del nivell de risc, de la malaltia i del protocol del teu centre. Els percentatges de filtració són els mínims de la norma UNE-EN 149 (FFP2 ≥ 94 %, FFP3 ≥ 99 %).",
+        "en": "The right mask depends on the level of risk, the disease and your centre's protocol. Filtration percentages are the minimums of standard UNE-EN 149 (FFP2 ≥ 94 %, FFP3 ≥ 99 %)."
+      },
+      "finish": {
+        "es": "Ya sabes elegir la mascarilla según la situación.",
+        "ca": "Ja saps triar la mascareta segons la situació.",
+        "en": "You can now choose the mask that fits each situation."
+      },
+      "labels": {
+        "itemsN": {
+          "es": "{n} tipos",
+          "ca": "{n} tipus",
+          "en": "{n} types"
+        },
+        "which": {
+          "es": "¿A qué tipo de mascarilla corresponde?",
+          "ca": "A quin tipus de mascareta correspon?",
+          "en": "Which type of mask does it match?"
+        },
+        "examples": {
+          "es": "Cuándo se usa",
+          "ca": "Quan es fa servir",
+          "en": "When it is used"
+        }
+      },
+      "moments": [
+        {
+          "id": 1,
+          "img": "mask-quirurgica",
+          "title": {
+            "es": "Mascarilla quirúrgica (médica)",
+            "ca": "Mascareta quirúrgica (mèdica)",
+            "en": "Surgical (medical) mask"
+          },
+          "short": {
+            "es": "Quirúrgica",
+            "ca": "Quirúrgica",
+            "en": "Surgical"
+          },
+          "text": {
+            "es": "Mascarilla médica según la norma UNE-EN 14683. Es plana, con pliegues, y no se sella a la cara.",
+            "ca": "Mascareta mèdica segons la norma UNE-EN 14683. És plana, amb plecs, i no es segella a la cara.",
+            "en": "Medical mask under standard UNE-EN 14683. It is flat, pleated, and does not seal to the face."
+          },
+          "why": {
+            "es": "Filtra lo que expulsa quien la lleva y protege de gotas y salpicaduras, pero no es una protección fiable frente a aerosoles. Técnicamente no se considera un EPI.",
+            "ca": "Filtra el que expulsa qui la porta i protegeix de gotes i esquitxades, però no és una protecció fiable davant d'aerosols. Tècnicament no es considera un EPI.",
+            "en": "It filters what the wearer breathes out and protects against droplets and splashes, but it is not reliable protection against aerosols. Technically it is not PPE."
+          },
+          "examples": {
+            "es": [
+              "Paciente con síntomas respiratorios (para proteger a los demás)",
+              "Precauciones por gotas y contacto",
+              "Quirófano y técnicas asépticas"
+            ],
+            "ca": [
+              "Pacient amb símptomes respiratoris (per protegir els altres)",
+              "Precaucions per gotes i contacte",
+              "Quiròfan i tècniques asèptiques"
+            ],
+            "en": [
+              "Patient with respiratory symptoms (to protect others)",
+              "Droplet and contact precautions",
+              "Operating theatre and aseptic techniques"
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "img": "mask-ffp2",
+          "title": {
+            "es": "Mascarilla autofiltrante FFP2",
+            "ca": "Mascareta autofiltrant FFP2",
+            "en": "FFP2 filtering respirator"
+          },
+          "short": {
+            "es": "FFP2",
+            "ca": "FFP2",
+            "en": "FFP2"
+          },
+          "text": {
+            "es": "Mascarilla autofiltrante (UNE-EN 149) que se ajusta a la cara y filtra como mínimo el 94 % de las partículas.",
+            "ca": "Mascareta autofiltrant (UNE-EN 149) que s'ajusta a la cara i filtra com a mínim el 94 % de les partícules.",
+            "en": "Filtering respirator (UNE-EN 149) that fits to the face and filters at least 94 % of particles."
+          },
+          "why": {
+            "es": "Protege a quien la lleva frente a aerosoles y gotas pequeñas. Es la protección respiratoria generalmente recomendada para el personal sanitario que atiende a menos de 2 m a casos en investigación o confirmados, con riesgo bajo o moderado.",
+            "ca": "Protegeix qui la porta d'aerosols i gotes petites. És la protecció respiratòria generalment recomanada per al personal sanitari que atén a menys de 2 m casos en investigació o confirmats, amb risc baix o moderat.",
+            "en": "It protects the wearer against aerosols and small droplets. It is the respiratory protection generally recommended for healthcare staff within 2 m of suspected or confirmed cases, at low or moderate risk."
+          },
+          "examples": {
+            "es": [
+              "Atención a menos de 2 m de un caso de COVID-19",
+              "Transmisión aérea (p. ej. sarampión, tuberculosis), según protocolo",
+              "Riesgo bajo o moderado de exposición"
+            ],
+            "ca": [
+              "Atenció a menys de 2 m d'un cas de COVID-19",
+              "Transmissió aèria (p. ex. xarampió, tuberculosi), segons protocol",
+              "Risc baix o moderat d'exposició"
+            ],
+            "en": [
+              "Care within 2 m of a COVID-19 case",
+              "Airborne transmission (e.g. measles, tuberculosis), per protocol",
+              "Low or moderate exposure risk"
+            ]
+          }
+        },
+        {
+          "id": 3,
+          "img": "mask-ffp3",
+          "title": {
+            "es": "Mascarilla autofiltrante FFP3",
+            "ca": "Mascareta autofiltrant FFP3",
+            "en": "FFP3 filtering respirator"
+          },
+          "short": {
+            "es": "FFP3",
+            "ca": "FFP3",
+            "en": "FFP3"
+          },
+          "text": {
+            "es": "Mascarilla autofiltrante (UNE-EN 149) de la clase más alta: filtra como mínimo el 99 % de las partículas.",
+            "ca": "Mascareta autofiltrant (UNE-EN 149) de la classe més alta: filtra com a mínim el 99 % de les partícules.",
+            "en": "Filtering respirator (UNE-EN 149) of the highest class: it filters at least 99 % of particles."
+          },
+          "why": {
+            "es": "Se reserva para riesgo alto: procedimientos que generan bioaerosoles en concentraciones elevadas.",
+            "ca": "Es reserva per a risc alt: procediments que generen bioaerosols en concentracions elevades.",
+            "en": "It is kept for high risk: procedures that generate bioaerosols in high concentrations."
+          },
+          "examples": {
+            "es": [
+              "Intubación y broncoscopia en un caso de infección respiratoria",
+              "Aspiración de secreciones de la vía aérea",
+              "Riesgo alto de exposición"
+            ],
+            "ca": [
+              "Intubació i broncoscòpia en un cas d'infecció respiratòria",
+              "Aspiració de secrecions de la via aèria",
+              "Risc alt d'exposició"
+            ],
+            "en": [
+              "Intubation and bronchoscopy in a respiratory infection case",
+              "Airway suctioning",
+              "High exposure risk"
+            ]
+          }
+        },
+        {
+          "id": 4,
+          "img": "mask-valvula",
+          "title": {
+            "es": "Autofiltrante con válvula de exhalación",
+            "ca": "Autofiltrant amb vàlvula d'exhalació",
+            "en": "Filtering respirator with exhalation valve"
+          },
+          "short": {
+            "es": "Con válvula",
+            "ca": "Amb vàlvula",
+            "en": "With valve"
+          },
+          "text": {
+            "es": "Mascarilla FFP2 o FFP3 con una válvula (suele verse como un círculo en el centro) que facilita respirar.",
+            "ca": "Mascareta FFP2 o FFP3 amb una vàlvula (se sol veure com un cercle al centre) que facilita respirar.",
+            "en": "FFP2 or FFP3 respirator with a valve (usually a circle in the centre) that makes breathing easier."
+          },
+          "why": {
+            "es": "Protege a quien la lleva, pero la válvula deja salir el aire espirado sin filtrar: no sirve para que un paciente con síntomas proteja a los demás ni donde hay que proteger al paciente. Para eso, mascarilla quirúrgica.",
+            "ca": "Protegeix qui la porta, però la vàlvula deixa sortir l'aire espirat sense filtrar: no serveix perquè un pacient amb símptomes protegeixi els altres ni on cal protegir el pacient. Per a això, mascareta quirúrgica.",
+            "en": "It protects the wearer, but the valve lets exhaled air out unfiltered: it is no use for a symptomatic patient to protect others, nor where the patient must be protected. For that, use a surgical mask."
+          },
+          "examples": {
+            "es": [
+              "No usarla en un paciente con síntomas respiratorios",
+              "No usarla donde se debe proteger al paciente (campo estéril)",
+              "Válida solo para proteger a quien la lleva"
+            ],
+            "ca": [
+              "No fer-la servir en un pacient amb símptomes respiratoris",
+              "No fer-la servir on s'ha de protegir el pacient (camp estèril)",
+              "Vàlida només per protegir qui la porta"
+            ],
+            "en": [
+              "Not for a patient with respiratory symptoms",
+              "Not where the patient must be protected (sterile field)",
+              "Only valid to protect the wearer"
+            ]
+          }
+        },
+        {
+          "id": 5,
+          "img": "mask-n95",
+          "title": {
+            "es": "Respiradores N95 y KN95",
+            "ca": "Respiradors N95 i KN95",
+            "en": "N95 and KN95 respirators"
+          },
+          "short": {
+            "es": "N95 / KN95",
+            "ca": "N95 / KN95",
+            "en": "N95 / KN95"
+          },
+          "text": {
+            "es": "Respiradores equivalentes a la FFP2 según la normativa de EE. UU. (N95, filtran al menos el 95 %) y de China (KN95).",
+            "ca": "Respiradors equivalents a la FFP2 segons la normativa dels EUA (N95, filtren almenys el 95 %) i de la Xina (KN95).",
+            "en": "Respirators equivalent to FFP2 under US (N95, filter at least 95 %) and Chinese (KN95) standards."
+          },
+          "why": {
+            "es": "No tienen el marcado CE europeo, pero pueden usarse si no hay alternativa homologada y la normativa vigente lo permite (por escasez). Se usan como una FFP2.",
+            "ca": "No tenen el marcatge CE europeu, però es poden fer servir si no hi ha alternativa homologada i la normativa vigent ho permet (per escassetat). Es fan servir com una FFP2.",
+            "en": "They do not carry the European CE mark, but may be used when there is no approved alternative and current rules allow it (shortage). They are used like an FFP2."
+          },
+          "examples": {
+            "es": [
+              "Falta de FFP2 con marcado CE",
+              "Material importado de EE. UU. (N95) o China (KN95)",
+              "Comprobar la autorización y el buen ajuste"
+            ],
+            "ca": [
+              "Manca de FFP2 amb marcatge CE",
+              "Material importat dels EUA (N95) o la Xina (KN95)",
+              "Comprovar l'autorització i el bon ajust"
+            ],
+            "en": [
+              "No CE-marked FFP2 available",
+              "Imported stock from the US (N95) or China (KN95)",
+              "Check the authorisation and a good fit"
+            ]
+          }
+        }
+      ],
+      "situations": [
+        {
+          "moment": 1,
+          "text": {
+            "es": "Un paciente con tos y fiebre espera en la sala de consultas. ¿Qué mascarilla debe ponerse él para proteger a los demás?",
+            "ca": "Un pacient amb tos i febre espera a la sala de consultes. Quina mascareta s'ha de posar ell per protegir els altres?",
+            "en": "A patient with a cough and fever waits in the consulting room. Which mask should the patient wear to protect others?"
+          }
+        },
+        {
+          "moment": 1,
+          "text": {
+            "es": "Vas a atender a un paciente con gripe, en precauciones por gotas y contacto, sin técnicas que generen aerosoles.",
+            "ca": "Aniràs a atendre un pacient amb grip, en precaucions per gotes i contacte, sense tècniques que generin aerosols.",
+            "en": "You are about to care for a patient with flu, under droplet and contact precautions, with no aerosol-generating techniques."
+          }
+        },
+        {
+          "moment": 1,
+          "text": {
+            "es": "Vas a colaborar en una técnica aséptica en quirófano y la mascarilla debe proteger al paciente.",
+            "ca": "Col·laboraràs en una tècnica asèptica a quiròfan i la mascareta ha de protegir el pacient.",
+            "en": "You will assist in an aseptic technique in the operating theatre and the mask must protect the patient."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Eres personal sanitario y vas a atender a menos de 2 metros a un caso confirmado de COVID-19, en una situación de riesgo bajo o moderado.",
+            "ca": "Ets personal sanitari i aniràs a atendre a menys de 2 metres un cas confirmat de COVID-19, en una situació de risc baix o moderat.",
+            "en": "You are healthcare staff about to care, within 2 metres, for a confirmed COVID-19 case at low or moderate risk."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Entras en la habitación de un paciente con sarampión (transmisión aérea) para hacerle una cura.",
+            "ca": "Entres a l'habitació d'un pacient amb xarampió (transmissió aèria) per fer-li una cura.",
+            "en": "You enter the room of a patient with measles (airborne transmission) to dress a wound."
+          }
+        },
+        {
+          "moment": 2,
+          "text": {
+            "es": "Necesitas la mascarilla autofiltrante que se recomienda de forma general al personal sanitario que atiende a casos en investigación o confirmados.",
+            "ca": "Necessites la mascareta autofiltrant que es recomana de forma general al personal sanitari que atén casos en investigació o confirmats.",
+            "en": "You need the filtering respirator generally recommended for healthcare staff caring for suspected or confirmed cases."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "Vas a ayudar en la intubación de un paciente con una infección respiratoria grave.",
+            "ca": "Ajudaràs en la intubació d'un pacient amb una infecció respiratòria greu.",
+            "en": "You are going to assist with the intubation of a patient with a severe respiratory infection."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "Vas a aspirar secreciones de la vía aérea de un caso confirmado: se generan bioaerosoles en concentraciones elevadas.",
+            "ca": "Aspiraràs secrecions de la via aèria d'un cas confirmat: es generen bioaerosols en concentracions elevades.",
+            "en": "You will suction airway secretions from a confirmed case: bioaerosols are generated in high concentrations."
+          }
+        },
+        {
+          "moment": 3,
+          "text": {
+            "es": "La evaluación de riesgos indica un riesgo alto de exposición a aerosoles durante la atención.",
+            "ca": "L'avaluació de riscos indica un risc alt d'exposició a aerosols durant l'atenció.",
+            "en": "The risk assessment shows a high risk of exposure to aerosols during care."
+          }
+        },
+        {
+          "moment": 4,
+          "text": {
+            "es": "Un compañero lleva una FFP2 con un pequeño círculo en el centro que deja salir el aire al espirar. ¿De qué tipo es?",
+            "ca": "Un company porta una FFP2 amb un petit cercle al centre que deixa sortir l'aire en espirar. De quin tipus és?",
+            "en": "A colleague wears an FFP2 with a small circle in the centre that lets air out when breathing out. What type is it?"
+          }
+        },
+        {
+          "moment": 4,
+          "text": {
+            "es": "Mascarilla que protege a quien la lleva pero que no filtra el aire que exhala: ¿qué tipo es?",
+            "ca": "Mascareta que protegeix qui la porta però que no filtra l'aire que exhala: de quin tipus és?",
+            "en": "A mask that protects the wearer but does not filter the air they breathe out: what type is it?"
+          }
+        },
+        {
+          "moment": 5,
+          "text": {
+            "es": "No quedan FFP2 con marcado CE y te ofrecen un respirador de normativa estadounidense, marcado N95.",
+            "ca": "No queden FFP2 amb marcatge CE i t'ofereixen un respirador de normativa estatunidenca, marcat N95.",
+            "en": "There are no CE-marked FFP2 left and you are offered a respirator under US standards, marked N95."
+          }
+        },
+        {
+          "moment": 5,
+          "text": {
+            "es": "El material importado de China incluye respiradores marcados KN95.",
+            "ca": "El material importat de la Xina inclou respiradors marcats KN95.",
+            "en": "The stock imported from China includes respirators marked KN95."
           }
         }
       ]

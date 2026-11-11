@@ -106,6 +106,24 @@
       title: t('imp.title'), wide: true,
       body: `<div class="stack">
         <p class="muted">${t('imp.intro')}</p>
+        <div class="imp-tools row">
+          <button type="button" class="btn ghost small" data-imp="tpl">${t('imp.tplBtn')}</button>
+          <button type="button" class="btn ghost small" data-imp="tplcopy">${t('imp.tplCopy')}</button>
+          <button type="button" class="btn ghost small" data-imp="file">⭳ ${t('imp.tplFileBtn')}</button>
+        </div>
+        <details class="imp-ai"><summary>${t('imp.ai.title')}</summary>
+          <div class="stack" style="margin-top:10px">
+            <p class="muted">${t('imp.ai.intro')}</p>
+            <div class="grid cols-2">
+              <label class="field">${t('imp.ai.topic')}<input type="text" id="ai-topic" maxlength="120" placeholder="${esc(t('imp.ai.topicPh'))}"></label>
+              <label class="field">${t('imp.ai.n')}<input type="number" id="ai-n" min="3" max="200" value="20"></label>
+              <label class="field">${t('imp.ai.level')}<select id="ai-level">${[1, 2, 3, 4, 5].map(i => `<option value="${i}"${i === 4 ? ' selected' : ''}>${esc(t('imp.lv' + i))}</option>`).join('')}</select></label>
+              <label class="field">${t('imp.ai.lang')}<select id="ai-lang">${['es', 'ca', 'en'].map(l => `<option value="${l}"${l === K.lang ? ' selected' : ''}>${esc(t('imp.lname.' + l))}</option>`).join('')}</select></label>
+            </div>
+            <label class="field">${t('imp.ai.out')}<textarea id="ai-out" rows="9" readonly spellcheck="false"></textarea></label>
+            <div class="row"><button type="button" class="btn small" data-imp="aicopy">${t('imp.ai.copy')}</button></div>
+            <p class="disclaimer">${t('imp.ai.warn')}</p>
+          </div></details>
         <div class="grid cols-2">
           <label class="field">${t('imp.file')}<input type="file" id="if" accept=".csv,.tsv,.txt,text/csv,text/plain"></label>
           <label class="field">${t('imp.deckName')}<input type="text" id="in" maxlength="80" placeholder="${esc(t('dlg.deckNamePh'))}"></label>
@@ -130,6 +148,24 @@
         ta.addEventListener('input', upd);
         d.querySelector('#if').addEventListener('change', async e => { const f = e.target.files[0]; if (!f) return; try { ta.value = await K.readFile(f); const n = d.querySelector('#in'); if (!n.value) n.value = f.name.replace(/\.[^.]+$/, ''); upd(); } catch (_) { K.toast(t('error')); } });
         d.querySelectorAll('[data-tg]').forEach(b => b.addEventListener('click', () => { mode = b.dataset.tg; d.querySelectorAll('[data-tg]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); upd(); }));
+        /* ayudas de importación: plantilla de texto, plantilla de archivo y sugerencia para una IA */
+        const copyText = async (s, msg) => { try { await navigator.clipboard.writeText(s); K.toast(msg || t('copied')); } catch (_) { K.toast(s.split('\n')[0], 3000); } };
+        d.querySelector('[data-imp="tpl"]').addEventListener('click', () => {
+          if (ta.value.trim()) { K.toast(t('imp.tplNotEmpty'), 3200); return; }
+          ta.value = t('imp.tpl'); upd(); K.toast(t('imp.tplInserted'), 3500);
+        });
+        d.querySelector('[data-imp="tplcopy"]').addEventListener('click', () => copyText(t('imp.tpl')));
+        d.querySelector('[data-imp="file"]').addEventListener('click', () => {
+          K.download(t('imp.tplFileName'), '\ufeff' + t('imp.tpl').replace(/\n/g, '\r\n'), 'text/csv;charset=utf-8'); K.toast(t('imp.tplFileDone'), 4000);
+        });
+        const ai = { topic: d.querySelector('#ai-topic'), n: d.querySelector('#ai-n'), level: d.querySelector('#ai-level'), lang: d.querySelector('#ai-lang'), out: d.querySelector('#ai-out') };
+        const buildAI = () => {
+          const rep = { '<<topic>>': ai.topic.value.trim() || t('imp.ai.topicDefault'), '<<n>>': String(K.clamp(parseInt(ai.n.value, 10) || 20, 3, 200)), '<<level>>': t('imp.lv' + ai.level.value), '<<lang>>': t('imp.lname.' + ai.lang.value) };
+          ai.out.value = Object.keys(rep).reduce((s, k) => s.split(k).join(rep[k]), t('imp.ai.prompt'));
+        };
+        ['input', 'change'].forEach(ev => [ai.topic, ai.n, ai.level, ai.lang].forEach(el => el.addEventListener(ev, buildAI)));
+        d.querySelector('[data-imp="aicopy"]').addEventListener('click', () => copyText(ai.out.value, t('imp.ai.copied')));
+        buildAI();
         upd();
       }
     });

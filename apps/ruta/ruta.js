@@ -34,6 +34,7 @@
       level: 'Nivel de la persona más lenta del grupo',
       lv_relaxed: 'Paseo tranquilo', lv_relaxed_d: 'Con calma y paradas', lv_average: 'Medio', lv_average_d: 'Excursionista habitual', lv_fit: 'Ágil', lv_fit_d: 'Buena forma, ritmo vivo', lv_athlete: 'Muy entrenado', lv_athlete_d: 'Montañero fuerte, trail',
       custom: 'Ajuste personal fino', customHelp: '1,00 = sin ajuste. Por debajo vas más rápido que tu nivel; por encima, más despacio.',
+      qzOpen: '¿No sabes tu nivel? Responde unas preguntas', qzTitle: 'Descubre tu nivel', qzIntro: 'Seis preguntas rápidas. Si vais en grupo, responde por la persona más lenta. Es solo una orientación: después puedes ajustar el nivel a mano.', qzSee: 'Ver mi nivel', qzMissing: 'Responde todas las preguntas para ver el resultado.', qzRes: 'Te recomendamos: {lvl}', qzScoreTxt: 'Puntuación {pts} de {max}. Ajuste fino sugerido: {adj}.', qzApply: 'Aplicar a mi ruta', qzRetry: 'Repetir', qzNoteRes: 'Es una estimación. Con tus primeras salidas, ajusta el nivel o calibra con un track GPX que ya conozcas.', qzClose: 'Cerrar', qzApplied: 'Nivel aplicado',
       pack: 'Peso de la mochila (kg)', packHelp: 'Hasta 5 kg no penaliza; a partir de ahí, +0,6 % de tiempo por kg.',
       terrain: 'Terreno', tr_path: 'Sendero marcado y bueno', tr_rough: 'Sendero irregular o pedregoso', tr_trackless: 'Sin sendero (campo a través)', tr_blocks: 'Bloques o pedrera', tr_scramble: 'Trepada fácil (grado I–II)',
       snow: 'Nieve y barro', sn_none: 'Sin nieve', sn_mud: 'Barro o suelo mojado', sn_hard: 'Nieve dura (crampones)', sn_soft: 'Nieve blanda (huella)', sn_deep: 'Nieve profunda',
@@ -48,6 +49,10 @@
       sunrise: 'Amanecer', sunset: 'Atardecer', dawn: 'Inicio del crepúsculo', dusk: 'Fin del crepúsculo', daylight: 'Horas de luz',
       lightOk: 'Llegas con {t} de margen antes del atardecer ({sunset}).', lightTight: 'Margen justo: llegas {t} antes del atardecer ({sunset}). Lleva frontal.', lightLate: 'Llegarías {t} después del atardecer ({sunset}). Adelanta la salida o acorta la ruta.',
       lightDark: 'Unos {t} de marcha serían con poca luz o de noche: lleva frontal.', lightPolar: 'A esta latitud el sol no sale o no se pone ese día.', lightNoCoords: 'Indica las coordenadas para calcular el amanecer y el atardecer.',
+      latestFinish: 'Hora límite para terminar', latestFinishHelp: 'atardecer menos {m} min de margen', turnHint: '¿Vas a volver por el mismo camino? Activa «Ida y vuelta» para ver la hora límite para dar la vuelta.', turnHintBtn: 'Activar ida y vuelta',
+      srcWikiloc: 'Wikiloc', wlTitle: 'Importar desde Wikiloc', wlIntro: 'Otra web no puede leer las rutas de Wikiloc por sí sola, pero hay dos formas de traer sus datos sin descargar ningún archivo.', wlLink: 'Enlace de la ruta en Wikiloc (opcional)', wlLinkHelp: 'Se guarda con la ruta y sale en la ficha y en el resumen.', wlOpen: 'Abrir en Wikiloc', wlLinkBad: 'Ese enlace no parece de wikiloc.com.', wlSeeLink: 'Ver en Wikiloc',
+      wlOpt1: 'Opción 1 · Marcador de un clic', wlOpt1Text: 'Arrastra este botón a tu barra de marcadores. Luego, en cualquier ruta de Wikiloc, púlsalo: lee la distancia y el desnivel de la página y abre esta calculadora con los datos rellenados.', wlBm: 'Calcular en luisfs.com', wlBmCopy: 'Copiar el enlace del marcador', wlBmCopied: 'Enlace del marcador copiado', wlBmHint: 'Si no puedes arrastrarlo, copia su enlace y créalo como marcador a mano. En móvil es más incómodo: usa la opción 2.', wlBmDrag: 'Arrástralo a la barra de marcadores', wlBmFail: 'No he encontrado la distancia y el desnivel en esta página. Abre antes una ruta de Wikiloc.',
+      wlOpt2: 'Opción 2 · Pegar los datos', wlOpt2Text: 'En la página de la ruta, selecciona el bloque con la distancia y el desnivel (o toda la página), cópialo y pégalo aquí.', wlPaste: 'Pega aquí los datos de la ruta', wlRead: 'He leído', wlNothing: 'No encuentro la distancia en ese texto. Copia también la línea que dice «Distancia».', wlUse: 'Usar estos datos', wlUsed: 'Datos de Wikiloc cargados', wlRoundHint: 'Si la ruta de Wikiloc ya incluye la vuelta, deja «Solo ida (o circular)»: su distancia ya es el total.', wlDist: 'Distancia', wlUp: 'Desnivel +', wlDown: 'Desnivel −', wlMax: 'Altitud máx.', wlMin: 'Altitud mín.', wlTime: 'Tiempo',
       latestDeparture: 'Hora límite de salida', latestDepartureHelp: 'para llegar {m} min antes del atardecer', latestTurn: 'Hora límite para dar la vuelta', turnPlanned: 'Previsto en el punto de retorno: {t}',
       turnLate: 'Llegarías al punto de retorno a las {t}: demasiado tarde. Debes dar la vuelta antes de las {limit}.',
       save: 'Guardar ruta', saved: 'Ruta guardada', copy: 'Copiar resumen', copied: 'Resumen copiado', printSheet: 'Imprimir ficha', share: 'Compartir', saveFail: 'No se ha podido guardar (¿almacenamiento lleno?).',
@@ -100,6 +105,7 @@
       level: 'Nivell de la persona més lenta del grup',
       lv_relaxed: 'Passeig tranquil', lv_relaxed_d: 'Amb calma i parades', lv_average: 'Mitjà', lv_average_d: 'Excursionista habitual', lv_fit: 'Àgil', lv_fit_d: 'Bona forma, ritme viu', lv_athlete: 'Molt entrenat', lv_athlete_d: 'Muntanyenc fort, trail',
       custom: 'Ajust personal fi', customHelp: '1,00 = sense ajust. Per sota vas més ràpid que el teu nivell; per sobre, més a poc a poc.',
+      qzOpen: 'No saps el teu nivell? Respon unes preguntes', qzTitle: 'Descobreix el teu nivell', qzIntro: 'Sis preguntes ràpides. Si aneu en grup, respon per la persona més lenta. És només una orientació: després pots ajustar el nivell a mà.', qzSee: 'Veure el meu nivell', qzMissing: 'Respon totes les preguntes per veure el resultat.', qzRes: 'Et recomanem: {lvl}', qzScoreTxt: 'Puntuació {pts} de {max}. Ajust fi suggerit: {adj}.', qzApply: 'Aplica-ho a la meva ruta', qzRetry: 'Repeteix', qzNoteRes: 'És una estimació. Amb les primeres sortides, ajusta el nivell o calibra amb un track GPX que ja coneguis.', qzClose: 'Tanca', qzApplied: 'Nivell aplicat',
       pack: 'Pes de la motxilla (kg)', packHelp: 'Fins a 5 kg no penalitza; a partir d\'aquí, +0,6 % de temps per kg.',
       terrain: 'Terreny', tr_path: 'Camí marcat i bo', tr_rough: 'Camí irregular o pedregós', tr_trackless: 'Sense camí (a través)', tr_blocks: 'Blocs o tartera', tr_scramble: 'Grimpada fàcil (grau I–II)',
       snow: 'Neu i fang', sn_none: 'Sense neu', sn_mud: 'Fang o terra mullada', sn_hard: 'Neu dura (grampons)', sn_soft: 'Neu tova (petjada)', sn_deep: 'Neu profunda',
@@ -114,6 +120,10 @@
       sunrise: 'Alba', sunset: 'Posta de sol', dawn: 'Inici del crepuscle', dusk: 'Fi del crepuscle', daylight: 'Hores de llum',
       lightOk: 'Arribes amb {t} de marge abans de la posta de sol ({sunset}).', lightTight: 'Marge just: arribes {t} abans de la posta de sol ({sunset}). Porta frontal.', lightLate: 'Arribaries {t} després de la posta de sol ({sunset}). Avança la sortida o escurça la ruta.',
       lightDark: 'Uns {t} de marxa serien amb poca llum o de nit: porta frontal.', lightPolar: 'A aquesta latitud el sol no surt o no es pon aquell dia.', lightNoCoords: 'Indica les coordenades per calcular l\'alba i la posta de sol.',
+      latestFinish: 'Hora límit per acabar', latestFinishHelp: 'posta de sol menys {m} min de marge', turnHint: 'Tornaràs pel mateix camí? Activa «Anada i tornada» per veure l\'hora límit per girar cua.', turnHintBtn: 'Activa anada i tornada',
+      srcWikiloc: 'Wikiloc', wlTitle: 'Importar des de Wikiloc', wlIntro: 'Una altra web no pot llegir les rutes de Wikiloc per si sola, però hi ha dues maneres de portar-ne les dades sense descarregar cap arxiu.', wlLink: 'Enllaç de la ruta a Wikiloc (opcional)', wlLinkHelp: 'Es desa amb la ruta i surt a la fitxa i al resum.', wlOpen: 'Obre a Wikiloc', wlLinkBad: 'Aquest enllaç no sembla de wikiloc.com.', wlSeeLink: 'Veure a Wikiloc',
+      wlOpt1: 'Opció 1 · Marcador d\'un clic', wlOpt1Text: 'Arrossega aquest botó a la barra de marcadors. Després, en qualsevol ruta de Wikiloc, prem-lo: llegeix la distància i el desnivell de la pàgina i obre aquesta calculadora amb les dades emplenades.', wlBm: 'Calcula a luisfs.com', wlBmCopy: 'Copia l\'enllaç del marcador', wlBmCopied: 'Enllaç del marcador copiat', wlBmHint: 'Si no el pots arrossegar, copia\'n l\'enllaç i crea\'l com a marcador a mà. Al mòbil és més incòmode: fes servir l\'opció 2.', wlBmDrag: 'Arrossega\'l a la barra de marcadors', wlBmFail: 'No he trobat la distància i el desnivell en aquesta pàgina. Obre abans una ruta de Wikiloc.',
+      wlOpt2: 'Opció 2 · Enganxar les dades', wlOpt2Text: 'A la pàgina de la ruta, selecciona el bloc amb la distància i el desnivell (o tota la pàgina), copia\'l i enganxa\'l aquí.', wlPaste: 'Enganxa aquí les dades de la ruta', wlRead: 'He llegit', wlNothing: 'No trobo la distància en aquest text. Copia també la línia que diu «Distància».', wlUse: 'Fes servir aquestes dades', wlUsed: 'Dades de Wikiloc carregades', wlRoundHint: 'Si la ruta de Wikiloc ja inclou la tornada, deixa «Només anada (o circular)»: la seva distància ja és el total.', wlDist: 'Distància', wlUp: 'Desnivell +', wlDown: 'Desnivell −', wlMax: 'Altitud màx.', wlMin: 'Altitud mín.', wlTime: 'Temps',
       latestDeparture: 'Hora límit de sortida', latestDepartureHelp: 'per arribar {m} min abans de la posta de sol', latestTurn: 'Hora límit per girar cua', turnPlanned: 'Previst al punt de tornada: {t}',
       turnLate: 'Arribaries al punt de tornada a les {t}: massa tard. Has de girar cua abans de les {limit}.',
       save: 'Desa la ruta', saved: 'Ruta desada', copy: 'Copia el resum', copied: 'Resum copiat', printSheet: 'Imprimeix la fitxa', share: 'Comparteix', saveFail: 'No s\'ha pogut desar (emmagatzematge ple?).',
@@ -166,6 +176,7 @@
       level: 'Level of the slowest person in the group',
       lv_relaxed: 'Easy stroll', lv_relaxed_d: 'Relaxed, with stops', lv_average: 'Average', lv_average_d: 'Regular hiker', lv_fit: 'Fit', lv_fit_d: 'Good shape, brisk pace', lv_athlete: 'Very fit', lv_athlete_d: 'Strong mountaineer, trail runner',
       custom: 'Personal fine-tuning', customHelp: '1.00 = no adjustment. Below it you are faster than your level; above, slower.',
+      qzOpen: 'Not sure of your level? Answer a few questions', qzTitle: 'Find your level', qzIntro: 'Six quick questions. If you travel as a group, answer for the slowest person. It is only a guide: you can adjust the level by hand afterwards.', qzSee: 'See my level', qzMissing: 'Answer all the questions to see the result.', qzRes: 'We recommend: {lvl}', qzScoreTxt: 'Score {pts} of {max}. Suggested fine-tuning: {adj}.', qzApply: 'Apply to my route', qzRetry: 'Start again', qzNoteRes: 'This is an estimate. After your first outings, adjust the level or calibrate with a GPX track you already know.', qzClose: 'Close', qzApplied: 'Level applied',
       pack: 'Pack weight (kg)', packHelp: 'Up to 5 kg has no penalty; beyond that, +0.6% time per kg.',
       terrain: 'Terrain', tr_path: 'Good marked path', tr_rough: 'Rough or stony path', tr_trackless: 'Trackless (cross-country)', tr_blocks: 'Boulders or scree', tr_scramble: 'Easy scramble (grade I–II)',
       snow: 'Snow and mud', sn_none: 'No snow', sn_mud: 'Mud or wet ground', sn_hard: 'Hard snow (crampons)', sn_soft: 'Soft snow (postholing)', sn_deep: 'Deep snow',
@@ -180,6 +191,10 @@
       sunrise: 'Sunrise', sunset: 'Sunset', dawn: 'Twilight begins', dusk: 'Twilight ends', daylight: 'Daylight',
       lightOk: 'You finish {t} before sunset ({sunset}).', lightTight: 'Tight margin: you finish {t} before sunset ({sunset}). Bring a headlamp.', lightLate: 'You would finish {t} after sunset ({sunset}). Start earlier or shorten the route.',
       lightDark: 'About {t} of walking would be in low light or darkness: bring a headlamp.', lightPolar: 'At this latitude the sun does not rise or set on that day.', lightNoCoords: 'Enter coordinates to calculate sunrise and sunset.',
+      latestFinish: 'Finish-by time', latestFinishHelp: 'sunset minus {m} min margin', turnHint: 'Coming back the same way? Switch on "Out and back" to see the turn-around deadline.', turnHintBtn: 'Switch on out and back',
+      srcWikiloc: 'Wikiloc', wlTitle: 'Import from Wikiloc', wlIntro: 'Another website cannot read Wikiloc routes on its own, but there are two ways to bring their data in without downloading any file.', wlLink: 'Wikiloc route link (optional)', wlLinkHelp: 'It is saved with the route and appears on the sheet and in the summary.', wlOpen: 'Open on Wikiloc', wlLinkBad: 'That link does not look like wikiloc.com.', wlSeeLink: 'See on Wikiloc',
+      wlOpt1: 'Option 1 · One-click bookmarklet', wlOpt1Text: 'Drag this button to your bookmarks bar. Then, on any Wikiloc route, click it: it reads the distance and elevation from the page and opens this calculator with the data filled in.', wlBm: 'Calculate on luisfs.com', wlBmCopy: 'Copy the bookmarklet link', wlBmCopied: 'Bookmarklet link copied', wlBmHint: 'If you cannot drag it, copy its link and create the bookmark by hand. It is clumsier on a phone: use option 2.', wlBmDrag: 'Drag it to the bookmarks bar', wlBmFail: 'I could not find the distance and elevation on this page. Open a Wikiloc route first.',
+      wlOpt2: 'Option 2 · Paste the data', wlOpt2Text: 'On the route page, select the block with the distance and elevation (or the whole page), copy it and paste it here.', wlPaste: 'Paste the route data here', wlRead: 'I read', wlNothing: 'I cannot find the distance in that text. Also copy the line that says "Distance".', wlUse: 'Use this data', wlUsed: 'Wikiloc data loaded', wlRoundHint: 'If the Wikiloc route already includes the return, leave "One way (or loop)": its distance is already the total.', wlDist: 'Distance', wlUp: 'Ascent', wlDown: 'Descent', wlMax: 'Max elevation', wlMin: 'Min elevation', wlTime: 'Time',
       latestDeparture: 'Latest start time', latestDepartureHelp: 'to finish {m} min before sunset', latestTurn: 'Turn-around deadline', turnPlanned: 'Planned at the turning point: {t}',
       turnLate: 'You would reach the turning point at {t}: too late. You must turn back before {limit}.',
       save: 'Save route', saved: 'Route saved', copy: 'Copy summary', copied: 'Summary copied', printSheet: 'Print sheet', share: 'Share', saveFail: 'Could not save (storage full?).',
@@ -238,7 +253,7 @@
   });
   const newStage = (o = {}) => ({ id: K.uid(), name: '', dist: '10', up: '600', down: '600', terrain: '', ...o });
   const S = {
-    source: 'manual', name: '', startEle: '1000',
+    source: 'manual', name: '', startEle: '1000', link: '', wlOpen: false,
     stages: [newStage()],
     gpx: null,
     set: { ...defaultSettings(), ...(store.get('settings') || {}) }
@@ -250,7 +265,7 @@
   const compactProf = (p) => p.map(q => [+q.d.toFixed(4), +q.e.toFixed(1), q.lat === null ? null : +q.lat.toFixed(5), q.lon === null ? null : +q.lon.toFixed(5)]);
   const expandProf = (a) => a.map(r => ({ d: r[0], e: r[1], lat: r[2], lon: r[3] }));
   function exportRoute() {
-    const o = { source: S.source, name: S.name, startEle: S.startEle, stages: S.stages.map(s => ({ ...s })), set: { ...S.set } };
+    const o = { source: S.source, name: S.name, link: S.link, startEle: S.startEle, stages: S.stages.map(s => ({ ...s })), set: { ...S.set } };
     if (S.gpx) {
       const g = S.gpx;
       o.gpx = { fileName: g.fileName, prof: compactProf(g.an.prof), waypoints: g.waypoints, useWpt: g.useWpt, every: g.every, noise: g.an.noise, hasEle: g.an.hasEle, count: g.an.count, recorded: g.an.recorded, mUp: g.mUp, mDown: g.mDown };
@@ -264,7 +279,7 @@
   }
   function importRoute(o) {
     S.source = o.source === 'gpx' && o.gpx ? 'gpx' : 'manual';
-    S.name = o.name || ''; S.startEle = o.startEle ?? '1000';
+    S.name = o.name || ''; S.link = o.link || ''; S.wlOpen = false; S.startEle = o.startEle ?? '1000';
     S.stages = (o.stages && o.stages.length ? o.stages : [newStage()]).map(s => ({ ...newStage(), ...s, id: K.uid() }));
     S.set = { ...defaultSettings(), ...(o.set || {}) }; S.set.date = todayISO();
     S.gpx = o.gpx ? { fileName: o.gpx.fileName, points: null, an: anFromSaved(o.gpx), waypoints: o.gpx.waypoints || [], useWpt: o.gpx.useWpt !== false, every: o.gpx.every || 0, mUp: o.gpx.mUp || '', mDown: o.gpx.mDown || '' } : null;
@@ -485,7 +500,9 @@
   function routePanel() {
     const manual = S.source === 'manual';
     let body = '';
-    if (manual) {
+    if (S.wlOpen) {
+      body = wikilocHTML();
+    } else if (manual) {
       body = `<div class="rt-two">
           <label class="field">${esc(t('startEle'))}<input type="text" inputmode="decimal" id="in-startEle" value="${esc(S.startEle)}"><small>${esc(t('startEleHelp'))}</small></label>
         </div>
@@ -520,9 +537,9 @@
     }
     return `<h2><span class="ico" aria-hidden="true">⛰</span>${esc(t('panelRoute'))}</h2>
       <div class="stack">
-        <label class="field">${esc(t('routeName'))}<input type="text" id="in-name" value="${esc(S.name)}" placeholder="${esc(t('routeNamePh'))}" maxlength="60"></label>
+        <label class="field">${esc(t('routeName'))}<input type="text" id="in-name" value="${esc(S.name)}" placeholder="${esc(t('routeNamePh'))}" maxlength="60"></label>${S.link ? `<div><a class="rt-wl-link" href="${esc(S.link)}" target="_blank" rel="noopener">${esc(t('wlSeeLink'))} ↗</a></div>` : ''}
         <div><div class="muted" style="font-weight:600;font-size:.95rem;margin-bottom:6px" id="lb-src">${esc(t('srcLabel'))}</div>
-          <div class="seg" role="group" aria-labelledby="lb-src"><button type="button" data-src="manual" aria-pressed="${manual}">${esc(t('srcManual'))}</button><button type="button" data-src="gpx" aria-pressed="${!manual}">${esc(t('srcGpx'))}</button></div></div>
+          <div class="seg" role="group" aria-labelledby="lb-src"><button type="button" data-src="manual" aria-pressed="${manual && !S.wlOpen}">${esc(t('srcManual'))}</button><button type="button" data-src="wikiloc" aria-pressed="${!!S.wlOpen}">${esc(t('srcWikiloc'))}</button><button type="button" data-src="gpx" aria-pressed="${!manual}">${esc(t('srcGpx'))}</button></div></div>
         ${body}
         <div><div class="muted" style="font-weight:600;font-size:.95rem;margin-bottom:6px" id="lb-it">${esc(t('itinerary'))}</div>
           <div class="seg" role="group" aria-labelledby="lb-it"><button type="button" data-rt="0" aria-pressed="${!S.set.roundTrip}">${esc(t('oneWay'))}</button><button type="button" data-rt="1" aria-pressed="${!!S.set.roundTrip}">${esc(t('roundTrip'))}</button></div>
@@ -534,7 +551,7 @@
     const s = S.set;
     return `<h2><span class="ico" aria-hidden="true">⏱</span>${esc(t('panelPace'))}</h2>
       <div class="stack">
-        <div><div class="muted" style="font-weight:600;font-size:.95rem;margin-bottom:6px">${esc(t('level'))}</div><div class="rt-levels" id="rt-levels">${levelButtons()}</div></div>
+        <div><div class="muted" style="font-weight:600;font-size:.95rem;margin-bottom:6px">${esc(t('level'))}</div><div class="rt-levels" id="rt-levels">${levelButtons()}</div><div style="margin-top:10px"><button type="button" class="btn ghost small" data-act="quiz">${esc(t('qzOpen'))}</button></div></div>
         <label class="field">${esc(t('custom'))}<span class="rt-range"><input type="range" id="rt-custom" min="0.5" max="1.6" step="0.01" value="${s.custom}" data-set="custom" data-type="num"><output id="rt-customval" for="rt-custom">${fx2(s.custom)}</output></span><small>${esc(t('customHelp'))}</small></label>
         <div class="rt-two">
           <label class="field">${esc(t('pack'))}<input type="text" inputmode="decimal" data-set="pack" data-type="num" value="${s.pack}"><small>${esc(t('packHelp'))}</small></label>
@@ -587,9 +604,11 @@
     let limits = '';
     if (L && L.st) {
       limits += `<div><span>${esc(t('latestDeparture'))}<br><small class="muted">${esc(t('latestDepartureHelp', { m: L.safety }))}</small></span><b>${clock(L.latestDeparture)}</b></div>`;
+      limits += `<div><span>${esc(t('latestFinish'))}<br><small class="muted">${esc(t('latestFinishHelp', { m: L.safety }))}</small></span><b>${clock(addMin(L.st.sunset, -L.safety))}</b></div>`;
       if (L.latestTurn) limits += `<div><span>${esc(t('latestTurn'))}<br><small class="muted">${esc(t('turnPlanned', { t: clock(L.plannedTurn) }))}</small></span><b>${clock(L.latestTurn)}</b></div>`;
       limits += `<div><span>${esc(t('sunrise'))} · ${esc(t('sunset'))}</span><b>${clockExact(L.st.sunrise)} · ${clockExact(L.st.sunset)}</b></div>`;
       limits += `<div><span>${esc(t('dawn'))} · ${esc(t('dusk'))}</span><b>${clockExact(L.st.dawn)} · ${clockExact(L.st.dusk)}</b></div>`;
+      if (!S.set.roundTrip) limits += `<div class="rt-turnhint"><span>${esc(t('turnHint'))}</span><button type="button" class="btn ghost small" data-rt="1">${esc(t('turnHintBtn'))}</button></div>`;
     }
     const turnWarn = L && L.turnLate ? `<div class="rt-light bad"><span class="dot"></span><span>${esc(t('turnLate', { t: clock(L.plannedTurn), limit: clock(L.latestTurn) }))}</span></div>` : '';
     const rt = S.set.roundTrip;
@@ -691,7 +710,7 @@
     const rows = p.legs.map(l => `<tr><td>${l.back ? '↩ ' : ''}${esc(l.name)}</td><td class="num">${K.fmt(l.dist, 1)}</td><td class="num">${K.fmt(l.up, 0)}</td><td class="num">${K.fmt(l.down, 0)}</td><td class="num">${hm(l.moving)}</td><td class="num"><b>${clock(addMin(dep, l.tArrive))}</b></td></tr>`).join('');
     const sun = L && L.st ? `<h2>${esc(t('sheetSun'))}</h2><div class="kv">${kv(clockExact(L.st.sunrise), t('sunrise'))}${kv(clockExact(L.st.sunset), t('sunset'))}${kv(clockExact(L.st.dawn), t('dawn'))}${kv(clockExact(L.st.dusk), t('dusk'))}</div>
       <div class="kv">${kv(clock(L.latestDeparture), t('latestDeparture'))}${L.latestTurn ? kv(clock(L.latestTurn), t('latestTurn')) : ''}${kv((L.margin < 0 ? '−' : '') + hm(Math.abs(L.margin)), t('sheetMargin'))}</div>` : '';
-    return `<h1>${esc(name)}</h1><div>${esc(dstr)} · ${esc(t('depart2'))} ${clockExact(dep)} → ${esc(t('arrive'))} ${clock(addMin(dep, p.duration))}</div>
+    return `<h1>${esc(name)}</h1>${S.link ? `<div>${esc(S.link)}</div>` : ''}<div>${esc(dstr)} · ${esc(t('depart2'))} ${clockExact(dep)} → ${esc(t('arrive'))} ${clock(addMin(dep, p.duration))}</div>
       <div class="kv">${kv(hm(round5(p.duration)), t('total'))}${kv(K.fmt(p.dist, 1) + ' km', t('sDist') + (S.set.roundTrip ? ' · ' + t('roundTripTag') : ''))}${kv('+' + K.fmt(p.up, 0) + ' / −' + K.fmt(p.down, 0) + ' m', t('sUp') + ' / ' + t('sDown'))}${kv(hm(round5(p.moving)), t('marching', { t: '' }).trim())}</div>
       <h2>${esc(t('sheetTimes'))}</h2><table><thead><tr><th>${esc(t('c_stage'))}</th><th class="num">${esc(t('c_dist'))}</th><th class="num">${esc(t('c_up'))}</th><th class="num">${esc(t('c_down'))}</th><th class="num">${esc(t('c_move'))}</th><th class="num">${esc(t('c_arrive'))}</th></tr></thead><tbody>${rows}</tbody></table>
       ${sun}<h2>${esc(t('sheetProfile'))}</h2>${profileSVG(M, { print: true })}
@@ -820,6 +839,7 @@
       t('cp3', { total: hm(round5(p.duration)), move: hm(round5(p.moving)), stops: hm(round5(p.breaks)) })];
     if (L && L.st) lines.push(t('cp4', { sr: clockExact(L.st.sunrise), ss: clockExact(L.st.sunset), ld: f(L.latestDeparture) }));
     lines.push(t('cp5', { a: hm(adj.naismith), b: hm(adj.tobler), c: hm(adj.munter), d: hm(adj.din) }));
+    if (S.link) lines.push(S.link);
     return lines.join('\n');
   }
 
@@ -831,7 +851,227 @@
     if (store.set('saved', list)) { K.toast(t('saved')); $('#rt-saved').innerHTML = savedHTML(); } else { list.shift(); K.toast(t('saveFail'), 3200); }
   }
 
+
+  /* ============================== cuestionario de nivel ============================== */
+  const Q = (es, ca, en) => ({ es, ca, en });
+  const QUIZ = [
+    { q: Q('¿Con qué frecuencia sales a caminar por montaña?', 'Amb quina freqüència surts a caminar per muntanya?', 'How often do you go hill walking?'),
+      o: [[Q('Casi nunca (unas pocas veces al año)', 'Quasi mai (unes poques vegades l\'any)', 'Hardly ever (a few times a year)'), 0],
+          [Q('Una o dos veces al mes', 'Una o dues vegades al mes', 'Once or twice a month'), 1],
+          [Q('Casi todas las semanas', 'Quasi cada setmana', 'Almost every week'), 2],
+          [Q('Varias veces por semana', 'Diverses vegades per setmana', 'Several times a week'), 3]] },
+    { q: Q('¿Cuál ha sido tu salida más larga en un día, sin llegar al límite?', 'Quina ha estat la teva sortida més llarga en un dia, sense arribar al límit?', 'What is the longest outing you have done in a day, without reaching your limit?'),
+      o: [[Q('Menos de 10 km o unas 3 horas', 'Menys de 10 km o unes 3 hores', 'Under 10 km or about 3 hours'), 0],
+          [Q('De 10 a 15 km o unas 5 horas', 'De 10 a 15 km o unes 5 hores', '10 to 15 km or about 5 hours'), 1],
+          [Q('De 15 a 22 km o unas 8 horas', 'De 15 a 22 km o unes 8 hores', '15 to 22 km or about 8 hours'), 2],
+          [Q('Más de 22 km o más de 8 horas', 'Més de 22 km o més de 8 hores', 'Over 22 km or more than 8 hours'), 3]] },
+    { q: Q('En una subida larga y constante, ¿cuánto desnivel ganas por hora a un ritmo cómodo?', 'En una pujada llarga i constant, quant desnivell guanyes per hora a un ritme còmode?', 'On a long, steady climb, how much height do you gain per hour at a comfortable pace?'),
+      o: [[Q('Menos de 300 m por hora', 'Menys de 300 m per hora', 'Under 300 m per hour'), 0],
+          [Q('Entre 300 y 400 m por hora', 'Entre 300 i 400 m per hora', '300 to 400 m per hour'), 1],
+          [Q('Entre 400 y 550 m por hora', 'Entre 400 i 550 m per hora', '400 to 550 m per hour'), 2],
+          [Q('Más de 550 m por hora', 'Més de 550 m per hora', 'Over 550 m per hour'), 3],
+          [Q('No lo sé', 'No ho sé', 'I do not know'), 1]] },
+    { q: Q('¿Practicas otros deportes de resistencia (correr, bici, natación…)?', 'Practiques altres esports de resistència (córrer, bici, natació…)?', 'Do you do other endurance sports (running, cycling, swimming…)?'),
+      o: [[Q('No', 'No', 'No'), 0],
+          [Q('Un día por semana', 'Un dia per setmana', 'One day a week'), 1],
+          [Q('Dos o tres días por semana', 'Dos o tres dies per setmana', 'Two or three days a week'), 2],
+          [Q('Cuatro o más días por semana', 'Quatre o més dies per setmana', 'Four or more days a week'), 3]] },
+    { q: Q('¿Cómo te desenvuelves por terreno irregular o con mucha pendiente?', 'Com te\'n surts per terreny irregular o amb molt de pendent?', 'How do you cope with uneven or very steep ground?'),
+      o: [[Q('Con inseguridad: voy muy despacio', 'Amb inseguretat: vaig molt a poc a poc', 'Not confidently: I go very slowly'), 0],
+          [Q('Con prudencia: voy despacio', 'Amb prudència: vaig a poc a poc', 'Carefully: I go slowly'), 1],
+          [Q('Bien, con soltura', 'Bé, amb soltesa', 'Well, with ease'), 2],
+          [Q('Muy bien, también en trepadas y bajadas técnicas', 'Molt bé, també en grimpades i baixades tècniques', 'Very well, including scrambles and technical descents'), 3]] },
+    { q: Q('¿Tienes alguna limitación física que te haga ir más despacio (rodillas, espalda, corazón…)?', 'Tens alguna limitació física que et faci anar més a poc a poc (genolls, esquena, cor…)?', 'Do you have any physical limitation that slows you down (knees, back, heart…)?'),
+      o: [[Q('Ninguna', 'Cap', 'None'), 0],
+          [Q('Leves', 'Lleus', 'Mild'), -1],
+          [Q('Importantes', 'Importants', 'Significant'), -2]] }
+  ];
+  const QZ_MAX = 15, QZ_LEVELS = [['relaxed', 0, 4, 2], ['average', 5, 9, 7], ['fit', 10, 12, 11], ['athlete', 13, 15, 14]];
+
+  function quizResult(points) {
+    const pts = Math.max(0, Math.min(QZ_MAX, points));
+    const lv = QZ_LEVELS.find(l => pts >= l[1] && pts <= l[2]) || QZ_LEVELS[1];
+    const adj = Math.round(Math.max(0.9, Math.min(1.1, 1 - (pts - lv[3]) * 0.03)) * 100) / 100;
+    return { pts, level: lv[0], adj };
+  }
+  function applyQuiz(res) {
+    S.set.level = res.level; S.set.custom = res.adj;
+    $$('#rt-levels .rt-level').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.level === res.level)));
+    const r = $('#rt-custom'); if (r) r.value = res.adj;
+    const o = $('#rt-customval'); if (o) o.textContent = fx2(res.adj);
+    persist(); update(); K.toast(t('qzApplied') + ': ' + t('lv_' + res.level));
+  }
+  function openQuiz() {
+    const lg = K.lang, pick = (o) => o[lg] || o.es;
+    const d = document.createElement('dialog'); d.className = 'kit-dialog rt-quiz';
+    d.innerHTML = `<h2>${esc(t('qzTitle'))}</h2><p class="muted">${esc(t('qzIntro'))}</p>
+      <form id="qz-form">${QUIZ.map((q, i) => `<fieldset class="rt-q"><legend>${i + 1}. ${esc(pick(q.q))}</legend>${q.o.map((o, j) => `<label class="check"><input type="radio" name="q${i}" value="${o[1]}" data-j="${j}"> <span>${esc(pick(o[0]))}</span></label>`).join('')}</fieldset>`).join('')}</form>
+      <div id="qz-res" role="status" aria-live="polite"></div>
+      <div class="row"><button type="button" class="btn ghost" data-q="close">${esc(t('qzClose'))}</button><button type="button" class="btn" data-q="see">${esc(t('qzSee'))}</button></div>`;
+    const close = () => { try { d.close(); } catch (_) { /* ya cerrado */ } d.remove(); };
+    d.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-q]'); if (!b) return;
+      if (b.dataset.q === 'close') return close();
+      if (b.dataset.q === 'retry') { d.querySelectorAll('input').forEach(i => { i.checked = false; }); $('#qz-res', d).innerHTML = ''; d.querySelector('[data-q="see"]').hidden = false; d.scrollTop = 0; return; }
+      if (b.dataset.q === 'apply') { applyQuiz(d._res); return close(); }
+      if (b.dataset.q === 'see') {
+        const sel = QUIZ.map((q, i) => d.querySelector(`input[name="q${i}"]:checked`));
+        if (sel.some(x => !x)) { $('#qz-res', d).innerHTML = `<p class="badge-warn">${esc(t('qzMissing'))}</p>`; return; }
+        const res = quizResult(sel.reduce((s, x) => s + Number(x.value), 0)); d._res = res;
+        $('#qz-res', d).innerHTML = `<div class="rt-qres"><h3>${esc(t('qzRes', { lvl: t('lv_' + res.level) }))}</h3><p>${esc(t('lv_' + res.level + '_d'))}</p>
+          <p>${esc(t('qzScoreTxt', { pts: res.pts, max: QZ_MAX, adj: fx2(res.adj) }))}</p><p class="disclaimer">${esc(t('qzNoteRes'))}</p>
+          <div class="row"><button type="button" class="btn" data-q="apply">${esc(t('qzApply'))}</button><button type="button" class="btn ghost" data-q="retry">${esc(t('qzRetry'))}</button></div></div>`;
+        b.hidden = true; $('#qz-res', d).scrollIntoView({ block: 'nearest' });
+      }
+    });
+    d.addEventListener('cancel', () => d.remove());
+    document.body.append(d); d.showModal();
+  }
+
+  /* ============================== Wikiloc ==============================
+     Esta función es AUTOSUFICIENTE (no usa nada de fuera): se reutiliza tal cual dentro
+     del marcador (bookmarklet), que la ejecuta en la página de Wikiloc, y para el texto pegado. */
+  function wlExtract(text) {
+    var t = String(text || '').replace(/[\u00a0\u202f\u2009]/g, ' ');
+    function toNum(s, kind) {
+      var c = s.indexOf(','), d = s.indexOf('.'), x;
+      if (c > -1 && d > -1) x = c > d ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, '');
+      else if (c > -1 || d > -1) {
+        var sep = c > -1 ? ',' : '.', parts = s.split(sep);
+        if (parts.length > 2) x = parts.join('');
+        else if (kind === 'm' && parts[1].length === 3) x = parts.join('');
+        else x = parts.join('.');
+      } else x = s;
+      return parseFloat(x);
+    }
+    var NUM = '(\\d{1,3}(?:[.,]\\d{3})+(?:[.,]\\d+)?|\\d+(?:[.,]\\d+)?)';
+    var UD = '(km|kms|mi|miles?|millas?)', UM = '(m|metros?|meters?|metres|ft|feet|pies?)';
+    var LABELS = {
+      dist: 'distancia|distància|distance|entfernung|distanza|afstand',
+      up: 'desnivel\\s+(?:positivo|acumulado)|desnivell\\s+positiu|elevation\\s+gain|total\\s+ascent|ascent|uphill|d[ée]nivel[ée]\\s+positif|aufstieg|anstieg|dislivello\\s+positivo|desn[ií]vel\\s+positivo|subida\\s+acumulada|pujada\\s+acumulada',
+      down: 'desnivel\\s+negativo|desnivell\\s+negatiu|elevation\\s+loss|total\\s+descent|descent|downhill|d[ée]nivel[ée]\\s+n[ée]gatif|abstieg|dislivello\\s+negativo|desn[ií]vel\\s+negativo|bajada\\s+acumulada|baixada\\s+acumulada',
+      max: 'altitud\\s+m[aá]xima|altitud\\s+màxima|cota\\s+m[aá]xima|max(?:imum)?\\.?\\s+elevation|highest\\s+point|altitude\\s+max(?:imale)?|h[oö]chster\\s+punkt|quota\\s+massima|altitude\\s+m[aá]xima',
+      min: 'altitud\\s+m[ií]nima|cota\\s+m[ií]nima|min(?:imum)?\\.?\\s+elevation|lowest\\s+point|altitude\\s+min(?:imale)?|tiefster\\s+punkt|quota\\s+minima|altitude\\s+m[ií]nima'
+    };
+    var KIND = { dist: 'km', up: 'm', down: 'm', max: 'm', min: 'm' }, UNITS = { dist: UD, up: UM, down: UM, max: UM, min: UM };
+    var marks = [];
+    Object.keys(LABELS).forEach(function (k) {
+      var re = new RegExp('(?:' + LABELS[k] + ')', 'ig'), m;
+      while ((m = re.exec(t))) marks.push({ s: m.index, e: m.index + m[0].length, k: k });
+    });
+    marks.sort(function (a, b) { return a.s - b.s; });
+    function conv(v, kind) {
+      var n = toNum(v[1], kind), u = v[2].toLowerCase();
+      if (!isFinite(n)) return null;
+      if (/^(mi|mile|miles|milla|millas)$/.test(u)) n *= 1.609344;
+      if (/^(ft|feet|pie|pies)$/.test(u)) n *= 0.3048;
+      return n;
+    }
+    /* Dos disposiciones posibles: «etiqueta valor» (after) o «valor etiqueta» (before).
+       Se prueban las dos y se usa la que reconoce más campos. */
+    function run(mode) {
+      var res = {}, found = 0;
+      Object.keys(LABELS).forEach(function (k) {
+        res[k] = null;
+        for (var i = 0; i < marks.length && res[k] == null; i++) {
+          var mk = marks[i]; if (mk.k !== k) continue;
+          var re2 = new RegExp(NUM + '\\s*' + UNITS[k] + '\\b', 'ig'), v = null, win, j;
+          if (mode === 'after') {
+            var end = Math.min(mk.e + 70, t.length);
+            for (j = i + 1; j < marks.length; j++) if (marks[j].s >= mk.e) { end = Math.min(end, marks[j].s); break; }
+            win = t.slice(mk.e, end); v = re2.exec(win);
+          } else {
+            var start = Math.max(0, mk.s - 70);
+            for (j = i - 1; j >= 0; j--) if (marks[j].e <= mk.s) { start = Math.max(start, marks[j].e); break; }
+            win = t.slice(start, mk.s); var last = null, z; while ((z = re2.exec(win))) last = z; v = last;
+          }
+          if (v) { var n = conv(v, KIND[k]); if (n != null) { res[k] = n; found++; } }
+        }
+      });
+      res._n = found; return res;
+    }
+    var A = run('after'), B = run('before'), pick = B._n > A._n ? B : A;
+    var r = { dist: pick.dist, up: pick.up, down: pick.down, max: pick.max, min: pick.min, time: null };
+    var tm = /(?:tiempo|temps|duraci[óo]n?|durada|moving\s+time|recorded\s+time|duration|dur[ée]e|dauer|durata)[^\d]{0,30}(\d{1,3}):(\d{2})(?::\d{2})?/i.exec(t);
+    if (tm) r.time = (+tm[1]) * 60 + (+tm[2]);
+    if (r.dist != null && (r.dist < 0.05 || r.dist > 1000)) r.dist = null;
+    ['up', 'down'].forEach(function (k) { if (r[k] != null && (r[k] < 0 || r[k] > 20000)) r[k] = null; });
+    return r;
+  }
+  const wlOk = (r) => r && (r.dist != null || r.up != null);
+  const wlUrlOk = (u) => /^https?:\/\/([a-z0-9-]+\.)*wikiloc\.com\//i.test(String(u || '').trim());
+
+  function wlBookmarkletHref() {
+    const app = new URL('./', location.href).href;
+    const code = '(function(){var P=' + wlExtract.toString() + ';var r=P(document.body.innerText);' +
+      'if(!r||(r.dist==null&&r.up==null)){alert(' + JSON.stringify(t('wlBmFail')) + ');return;}' +
+      'r.name=(document.title||"").replace(/\\s*[|]\\s*[Ww]ikiloc.*$/,"").replace(/\\s+-\\s+[^-]*$/,"").trim();r.url=location.href;' +
+      'var u=' + JSON.stringify(app) + '+"#wl="+encodeURIComponent(JSON.stringify(r));if(!window.open(u,"_blank"))location.href=u;})()';
+    return 'javascript:' + encodeURIComponent(code);
+  }
+
+  function wlPreviewHTML(r) {
+    if (!wlOk(r)) return '';
+    const chip = (k, v, u) => (v == null ? '' : `<span class="chip">${esc(t(k))} <b>${K.fmt(v, u === 'km' ? 2 : 0)} ${u}</b></span>`);
+    return `<div class="stack" style="gap:6px"><small class="muted">${esc(t('wlRead'))}:</small><div class="row" style="gap:6px">${chip('wlDist', r.dist, 'km')}${chip('wlUp', r.up, 'm')}${chip('wlDown', r.down, 'm')}${chip('wlMax', r.max, 'm')}${chip('wlMin', r.min, 'm')}${r.time ? `<span class="chip">${esc(t('wlTime'))} <b>${hm(r.time)}</b></span>` : ''}</div></div>`;
+  }
+
+  function wikilocHTML() {
+    return `<div class="rt-wl">
+      <p class="muted">${esc(t('wlIntro'))}</p>
+      <label class="field">${esc(t('wlLink'))}<input type="url" id="in-wllink" value="${esc(S.link)}" placeholder="https://www.wikiloc.com/…" autocomplete="off"><small id="wl-linkmsg">${esc(t('wlLinkHelp'))}</small></label>
+      <div class="row"><button type="button" class="btn ghost small" data-act="wlopen">${esc(t('wlOpen'))} ↗</button></div>
+      <div class="rt-wl-opt"><h3>${esc(t('wlOpt1'))}</h3><p>${esc(t('wlOpt1Text'))}</p>
+        <div class="row"><a class="btn rt-wl-bm" id="wl-bm" href="${esc(wlBookmarkletHref())}" onclick="event.preventDefault();return false;" title="${esc(t('wlBmDrag'))}">★ ${esc(t('wlBm'))}</a>
+          <button type="button" class="btn ghost small" data-act="wlbmcopy">${esc(t('wlBmCopy'))}</button></div>
+        <small class="muted">${esc(t('wlBmHint'))}</small></div>
+      <div class="rt-wl-opt"><h3>${esc(t('wlOpt2'))}</h3><p>${esc(t('wlOpt2Text'))}</p>
+        <label class="field"><span class="sr-only">${esc(t('wlPaste'))}</span><textarea id="in-wltext" rows="5" placeholder="${esc(t('wlPaste'))}"></textarea></label>
+        <div id="wl-prev" aria-live="polite"></div>
+        <div class="row"><button type="button" class="btn" id="wl-use" data-act="wluse" disabled>${esc(t('wlUse'))}</button></div></div>
+      <p class="disclaimer">${esc(t('wlRoundHint'))}</p></div>`;
+  }
+
+  function applyWikiloc(d) {
+    const fx = (v) => (v == null || !Number.isFinite(+v) ? '' : String(+(+v).toFixed(2)));
+    S.source = 'manual'; S.wlOpen = false;
+    if (d.name && !S.name) S.name = String(d.name).slice(0, 60);
+    if (d.url && wlUrlOk(d.url)) S.link = String(d.url);
+    S.stages = [newStage({ name: '', dist: fx(d.dist) || '10', up: fx(d.up == null ? 0 : Math.round(d.up)), down: fx(d.down == null ? 0 : Math.round(d.down)) })];
+    if (d.min != null && Number.isFinite(+d.min)) S.startEle = String(Math.round(d.min));
+    persist(); renderAll(); K.toast(t('wlUsed'));
+  }
+  function takeWikilocHash() {
+    const m = location.hash.match(/^#wl=(.+)$/); if (!m) return;
+    try { const d = JSON.parse(decodeURIComponent(m[1])); if (wlOk(d)) applyWikiloc(d); } catch (e) { console.warn(e); }
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+  function bindWikiloc() {
+    let wlData = null;
+    document.addEventListener('input', (e) => {
+      const el = e.target;
+      if (el.id === 'in-wllink') {
+        const v = el.value.trim(), msg = $('#wl-linkmsg');
+        if (!v) { S.link = ''; if (msg) msg.textContent = t('wlLinkHelp'); }
+        else if (wlUrlOk(v)) { S.link = v; if (msg) msg.textContent = t('wlLinkHelp'); }
+        else if (msg) msg.textContent = t('wlLinkBad');
+        persist();
+      }
+      if (el.id === 'in-wltext') {
+        const r = wlExtract(el.value); wlData = wlOk(r) ? r : null;
+        const prev = $('#wl-prev'), use = $('#wl-use');
+        if (prev) prev.innerHTML = el.value.trim() ? (wlData ? wlPreviewHTML(r) : `<p class="badge-warn">${esc(t('wlNothing'))}</p>`) : '';
+        if (use) use.disabled = !wlData;
+        document.__wlData = wlData;
+      }
+    });
+  }
+
   const ACTIONS = {
+    quiz: () => openQuiz(),
+    wlopen() { window.open(S.link && wlUrlOk(S.link) ? S.link : 'https://www.wikiloc.com/', '_blank', 'noopener'); },
+    async wlbmcopy() { try { await navigator.clipboard.writeText(wlBookmarkletHref()); K.toast(t('wlBmCopied')); } catch (_) { K.toast(t('wlBmDrag')); } },
+    wluse() { if (document.__wlData) applyWikiloc(document.__wlData); },
     add() { S.stages.push(newStage({ dist: '5', up: '300', down: '0' })); persist(); renderRoute(); },
     del(el) { const id = el.closest('.rt-stage').dataset.id; if (S.stages.length > 1) S.stages = S.stages.filter(s => s.id !== id); persist(); renderRoute(); },
     dup(el) { const id = el.closest('.rt-stage').dataset.id, i = S.stages.findIndex(s => s.id === id); S.stages.splice(i + 1, 0, { ...S.stages[i], id: K.uid() }); persist(); renderRoute(); },
@@ -910,7 +1150,7 @@
     app.addEventListener('click', (e) => {
       const b = e.target.closest('button, [data-act]'); if (!b) return;
       if (b.dataset.act && ACTIONS[b.dataset.act]) return ACTIONS[b.dataset.act](b);
-      if (b.dataset.src) { S.source = b.dataset.src; persist(); return renderRoute(); }
+      if (b.dataset.src) { if (b.dataset.src === 'wikiloc') { S.wlOpen = true; S.source = 'manual'; } else { S.wlOpen = false; S.source = b.dataset.src; } persist(); return renderRoute(); }
       if (b.dataset.rt !== undefined) { S.set.roundTrip = b.dataset.rt === '1'; persist(); return renderRoute(); }
       if (b.dataset.level) { S.set.level = b.dataset.level; $$('#rt-levels .rt-level').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.level === S.set.level))); persist(); return update(); }
       if (b.dataset.place !== undefined) { const p = PLACES[+b.dataset.place]; S.set.lat = p[1]; S.set.lon = p[2]; $('#in-lat').value = p[1]; $('#in-lon').value = p[2]; persist(); return update(); }
@@ -937,6 +1177,8 @@
   const draft = store.get('draft');
   if (draft) { try { const keepSet = { ...S.set }; importRoute(draft); S.set = { ...keepSet, ...S.set, date: todayISO() }; } catch (e) { console.warn(e); } }
   bindEvents();
+  bindWikiloc();
   K.onLang(() => renderAll());
+  takeWikilocHash();
   renderAll();
 })();

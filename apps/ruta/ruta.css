@@ -184,3 +184,23 @@ svg.rt-chart{width:100%;height:auto;display:block;touch-action:pan-y;user-select
 .rt-table th,.rt-table td{white-space:nowrap}
 .rt-table td:first-child{white-space:normal;min-width:110px}
 @media (max-width:560px){.rt-table th,.rt-table td{padding:8px 9px;font-size:.92rem}}
+
+/* Cuestionario de nivel */
+dialog.rt-quiz{max-width:min(620px,94vw);max-height:90vh;overflow:auto}
+.rt-q{border:1px solid var(--line);border-radius:12px;padding:8px 14px 10px;margin:0 0 10px}
+.rt-q legend{font-weight:700;padding:0 6px}
+.rt-q .check{margin:6px 0;font-weight:500;align-items:flex-start}
+.rt-q .check input{margin-top:4px;flex:none}
+.rt-qres{margin-top:12px;padding:14px 16px;border-radius:12px;background:var(--panel-2);border:1px solid var(--accent)}
+.rt-qres h3{margin:0 0 4px;font-size:1.2rem}
+
+/* Hora límite: aviso para activar ida y vuelta */
+.rt-limits .rt-turnhint{flex-wrap:wrap;align-items:center;border-bottom:0;padding:6px 0 0}
+.rt-limits .rt-turnhint span{flex:1 1 220px;color:var(--muted);font-size:.88rem}
+/* Importar desde Wikiloc */
+.rt-wl{display:flex;flex-direction:column;gap:12px}
+.rt-wl-opt{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--panel)}
+.rt-wl-opt h3{margin:0 0 4px;font-size:1.05rem}
+.rt-wl-bm{cursor:grab}
+.rt-wl-link{font-size:.9rem}
+#in-wltext{min-height:110px}

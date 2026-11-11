@@ -11,7 +11,7 @@
   const I18N = {
     es: {
       title: 'Orden de pasos', homeTitle: 'Aprende y practica el orden correcto',
-      homeLead: 'Higiene de manos, EPI y los 5 momentos de la OMS: ordena los pasos, practica con el cronómetro y repasa los errores más frecuentes.',
+      homeLead: 'Higiene de manos, EPI, tipos de mascarilla y los 5 momentos de la OMS: ordena los pasos, practica con el cronómetro y repasa los errores más frecuentes.',
       all: 'Todas las secuencias', stepsN: '{n} pasos', momentsN: '{n} momentos', best: 'Mejor: {s} %', noBest: 'Sin intentos todavía', secs: '{a}–{b} s',
       modeConsulta: 'Consulta', modeOrdenar: 'Ordenar', modeSiguiente: 'Siguiente paso', modePrueba: 'Prueba', modeGuia: 'Guía', modePracticar: 'Practicar',
       howTitle: 'Cómo usar',
@@ -21,7 +21,7 @@
       how4: '«Guía» te acompaña paso a paso, con cronómetro en el lavado de manos, para practicar de verdad.',
       how5: 'Tus mejores puntuaciones se guardan solo en este navegador.',
       sourcesTitle: 'Fuentes y aviso',
-      sourcesText: 'Higiene de manos y 5 momentos: OMS (Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009). EPI: secuencias basadas en las de los CDC (EE. UU.) y coherentes con las recomendaciones de la OMS. Los protocolos varían entre centros y niveles de riesgo: es una herramienta didáctica y no sustituye el protocolo de tu centro ni la formación acreditada. Ilustraciones propias.',
+      sourcesText: 'Higiene de manos y 5 momentos: OMS (Directrices de la OMS sobre higiene de las manos en la atención de la salud, 2009). EPI: secuencias basadas en las de los CDC (EE. UU.) y coherentes con las recomendaciones de la OMS. Mascarillas: Ministerio de Sanidad (30/04/2020, a través de Risk XXI), normas UNE-EN 14683 y UNE-EN 149. Se han consultado también la guía de la EAPN de Asturias y el vídeo de OpenWHO. Los protocolos varían entre centros y niveles de riesgo: es una herramienta didáctica y no sustituye el protocolo de tu centro ni la formación acreditada. Ilustraciones propias.',
       source: 'Fuente', whyLabel: 'Por qué', mistakeLabel: 'Error frecuente', note: 'Nota',
       print: 'Imprimir cartel (A4)', practiceNow: 'Practicar ordenando', imagesOpt: 'Imágenes', textOpt: 'Texto',
       check: 'Comprobar', shuffle: 'Mezclar de nuevo', solution: 'Ver solución', submit: 'Entregar', startTest: 'Empezar la prueba', retry: 'Repetir',
@@ -49,7 +49,7 @@
     },
     ca: {
       title: 'Ordre dels passos', homeTitle: 'Aprèn i practica l\'ordre correcte',
-      homeLead: 'Higiene de mans, EPI i els 5 moments de l\'OMS: ordena els passos, practica amb el cronòmetre i repassa els errors més freqüents.',
+      homeLead: 'Higiene de mans, EPI, tipus de mascareta i els 5 moments de l\'OMS: ordena els passos, practica amb el cronòmetre i repassa els errors més freqüents.',
       all: 'Totes les seqüències', stepsN: '{n} passos', momentsN: '{n} moments', best: 'Millor: {s} %', noBest: 'Cap intent encara', secs: '{a}–{b} s',
       modeConsulta: 'Consulta', modeOrdenar: 'Ordenar', modeSiguiente: 'Pas següent', modePrueba: 'Prova', modeGuia: 'Guia', modePracticar: 'Practicar',
       howTitle: 'Com fer-ho servir',
@@ -59,7 +59,7 @@
       how4: '«Guia» t\'acompanya pas a pas, amb cronòmetre en el rentat de mans, per practicar de debò.',
       how5: 'Les teves millors puntuacions es desen només en aquest navegador.',
       sourcesTitle: 'Fonts i avís',
-      sourcesText: 'Higiene de mans i 5 moments: OMS (Directrius de l\'OMS sobre higiene de les mans en l\'atenció sanitària, 2009). EPI: seqüències basades en les dels CDC (EUA) i coherents amb les recomanacions de l\'OMS. Els protocols varien entre centres i nivells de risc: és una eina didàctica i no substitueix el protocol del teu centre ni la formació acreditada. Il·lustracions pròpies.',
+      sourcesText: 'Higiene de mans i 5 moments: OMS (Directrius de l\'OMS sobre higiene de les mans en l\'atenció sanitària, 2009). EPI: seqüències basades en les dels CDC (EUA) i coherents amb les recomanacions de l\'OMS. Mascaretes: Ministeri de Sanitat (30/04/2020, a través de Risk XXI), normes UNE-EN 14683 i UNE-EN 149. S\'han consultat també la guia de l\'EAPN d\'Astúries i el vídeo d\'OpenWHO. Els protocols varien entre centres i nivells de risc: és una eina didàctica i no substitueix el protocol del teu centre ni la formació acreditada. Il·lustracions pròpies.',
       source: 'Font', whyLabel: 'Per què', mistakeLabel: 'Error freqüent', note: 'Nota',
       print: 'Imprimeix cartell (A4)', practiceNow: 'Practicar ordenant', imagesOpt: 'Imatges', textOpt: 'Text',
       check: 'Comprova', shuffle: 'Barreja de nou', solution: 'Mostra la solució', submit: 'Lliura', startTest: 'Comença la prova', retry: 'Repeteix',
@@ -87,7 +87,7 @@
     },
     en: {
       title: 'Step order', homeTitle: 'Learn and practise the right order',
-      homeLead: 'Hand hygiene, PPE and the WHO 5 Moments: put the steps in order, practise with the timer and review the most common mistakes.',
+      homeLead: 'Hand hygiene, PPE, types of mask and the WHO 5 Moments: put the steps in order, practise with the timer and review the most common mistakes.',
       all: 'All sequences', stepsN: '{n} steps', momentsN: '{n} moments', best: 'Best: {s} %', noBest: 'No attempts yet', secs: '{a}–{b} s',
       modeConsulta: 'Reference', modeOrdenar: 'Order', modeSiguiente: 'Next step', modePrueba: 'Test', modeGuia: 'Guide', modePracticar: 'Practise',
       howTitle: 'How to use',
@@ -97,7 +97,7 @@
       how4: '"Guide" walks you through step by step, with a timer for handwashing, so you can really practise.',
       how5: 'Your best scores are saved only in this browser.',
       sourcesTitle: 'Sources and notice',
-      sourcesText: 'Hand hygiene and the 5 Moments: WHO (WHO Guidelines on Hand Hygiene in Health Care, 2009). PPE: sequences based on the US CDC ones and consistent with WHO recommendations. Protocols vary between centres and risk levels: this is a teaching tool and does not replace your centre\'s protocol or accredited training. Original illustrations.',
+      sourcesText: 'Hand hygiene and the 5 Moments: WHO (WHO Guidelines on Hand Hygiene in Health Care, 2009). PPE: sequences based on the US CDC ones and consistent with WHO recommendations. Masks: Spanish Ministry of Health (30/04/2020, via Risk XXI), standards UNE-EN 14683 and UNE-EN 149. The EAPN Asturias guide and the OpenWHO video were also consulted. Protocols vary between centres and risk levels: this is a teaching tool and does not replace your centre\'s protocol or accredited training. Original illustrations.',
       source: 'Source', whyLabel: 'Why', mistakeLabel: 'Common mistake', note: 'Note',
       print: 'Print poster (A4)', practiceNow: 'Practise ordering', imagesOpt: 'Images', textOpt: 'Text',
       check: 'Check', shuffle: 'Shuffle again', solution: 'Show solution', submit: 'Submit', startTest: 'Start the test', retry: 'Try again',
@@ -157,7 +157,7 @@
   }
   const medal = (s) => (s >= 90 ? t('excellent') : s >= 70 ? t('great') : t('practice'));
   const durationText = (seq) => (seq.durationSec ? t('secs', { a: seq.durationSec[0], b: seq.durationSec[1] }) : '');
-  const nItems = (seq) => (seq.type === 'order' ? t('stepsN', { n: seq.steps.length }) : t('momentsN', { n: seq.moments.length }));
+  const nItems = (seq) => (seq.type === 'order' ? t('stepsN', { n: seq.steps.length }) : (seq.labels && seq.labels.itemsN ? L(seq.labels.itemsN).replace('{n}', seq.moments.length) : t('momentsN', { n: seq.moments.length })));
   const modesOf = (seq) => (seq.type === 'order' ? ['consulta', 'ordenar', 'siguiente', 'prueba', 'guia'] : ['consulta', 'practicar', 'prueba']);
 
   const explain = (seq) => seq.steps.map((s, i) => `<div class="r ok"><i>${i + 1}</i><div><b>${esc(L(s.title))}</b>
@@ -240,7 +240,7 @@
       <div class="row"><button class="btn" id="pr">${ico('print')} ${esc(t('print'))}</button><button class="btn ghost" id="pl">${esc(t('practiceNow'))}</button></div>
       <div class="stack">${seq.moments.map(m => `<article class="moment-card">${img(m.img)}<div class="mc-body"><h3>${m.id}. ${esc(L(m.title))}</h3><p style="margin:0">${esc(L(m.text))}</p>
         <p style="margin:0"><span class="tag-why">${esc(t('whyLabel'))}:</span> ${esc(L(m.why))}</p>
-        <b>${esc(t('examples'))}</b><ul>${(L(m.examples) || []).map(e => `<li>${esc(e)}</li>`).join('')}</ul></div></article>`).join('')}</div>`;
+        <b>${esc(seq.labels && seq.labels.examples ? L(seq.labels.examples) : t('examples'))}</b><ul>${(L(m.examples) || []).map(e => `<li>${esc(e)}</li>`).join('')}</ul></div></article>`).join('')}</div>`;
     $('#pr', root).onclick = () => window.print();
     $('#pl', root).onclick = () => go(seq.id, 'practicar');
   }
@@ -574,7 +574,7 @@
         <div class="qhead"><b>${esc(t('qOf', { i: qi + 1, n: deck.length }))}</b><div class="progress"><i style="width:${(qi / deck.length) * 100}%"></i></div>
           ${test ? `<span class="clock" id="clock" role="timer" aria-live="off">${K.mmss((performance.now() - t0) / 1000)}</span>` : `<span class="chip">${esc(t('streak', { n: streak }))}</span>`}</div>
         <section class="panel situation">${esc(L(q.text))}</section>
-        <h3 style="margin:0">${esc(t('whichMoment'))}</h3>
+        <h3 style="margin:0">${esc(seq.labels && seq.labels.which ? L(seq.labels.which) : t('whichMoment'))}</h3>
         <div class="mgrid">${seq.moments.map(m => `<button class="mopt" data-m="${m.id}" type="button"><span class="k">${m.id}</span>${img(m.img)}<span><b>${esc(L(m.short))}</b></span></button>`).join('')}</div><div id="fb"></div>`;
       $$('.mopt', root).forEach(b => b.addEventListener('click', () => pick(b)));
     }
