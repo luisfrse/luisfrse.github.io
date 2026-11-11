@@ -230,6 +230,25 @@
     return { score, verdict: score >= 90 ? 'good' : score >= 70 ? 'ok' : 'low', errs, pen, pauseCount: eff.length, longest, pauseTotal, cycles: cy ? cy.cycles : [] };
   }
 
-  const api = { createDetector, createCycler, evaluate, synth, PROFILES };
+  /* Resumen a partir de instantes de compresión ya conocidos (toques manuales): misma forma que detector.summary().
+     times: segundos ordenados; end: instante en que se termina (la espera posterior a la última compresión no cuenta). */
+  function metricsFromTimes(times, o) {
+    o = Object.assign({ pauseSec: 2.0, band: [100, 120] }, o);
+    const peaks = times.slice(), ivs = [], pauses = [];
+    for (let i = 1; i < peaks.length; i++) {
+      const dt = peaks[i] - peaks[i - 1];
+      if (dt > o.pauseSec) pauses.push({ start: peaks[i - 1], end: peaks[i], len: dt }); else ivs.push({ t: peaks[i], dt });
+    }
+    const rateFrom = (arr) => { const r = arr.map(x => x.dt).sort((a, b) => a - b); return r.length ? 60 / (r.length % 2 ? r[r.length >> 1] : (r[r.length / 2 - 1] + r[r.length / 2]) / 2) : NaN; };
+    const regOf = (d) => { const mean = d.reduce((a, b) => a + b, 0) / d.length, sd = Math.sqrt(d.reduce((a, b) => a + (b - mean) ** 2, 0) / d.length); return Math.round(Math.min(100, Math.max(0, 100 - (sd / mean) * 500))); };
+    let inBand = 0;
+    for (let i = 0; i < ivs.length; i++) { const r = rateFrom(ivs.slice(Math.max(0, i - 2), i + 1)); if (r >= o.band[0] && r <= o.band[1]) inBand++; }
+    const dur = peaks.length ? peaks[peaks.length - 1] - peaks[0] : 0, pauseTotal = pauses.reduce((s, p) => s + p.len, 0), longest = Math.max(0, ...pauses.map(p => p.len));
+    return { count: peaks.length, duration: dur, avgRate: ivs.length ? rateFrom(ivs) : NaN, regularity: ivs.length >= 4 ? regOf(ivs.map(x => x.dt)) : NaN,
+      pctInBand: ivs.length ? Math.round(100 * inBand / ivs.length) : NaN, pauseCount: pauses.length, pauseTotal, longestPause: longest,
+      ccf: dur > 0 ? Math.round(100 * Math.max(0, 1 - pauseTotal / dur)) : NaN, peaks, pauses };
+  }
+
+  const api = { createDetector, createCycler, evaluate, metricsFromTimes, synth, PROFILES };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.RCPSensor = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -4,11 +4,11 @@
    - Actualización controlada: la versión nueva espera hasta que la página pida SKIP_WAITING.
    - Al activarse, borra las cachés de versiones antiguas.
    IMPORTANTE: al cambiar cualquier archivo de la aplicación, sube VERSION. */
-const VERSION = 'rcp-v11';
+const VERSION = 'rcp-v12';
 const FONTS = 'rcp-fonts-v1';
 const PRECACHE = [
   './', 'index.html', 'rcp.css', 'modulos.css',
-  'kit.js', 'i18n.js', 'engine.js', 'illustrations.js', 'voice.js', 'llamada.js', 'dea.js', 'atragantamiento.js', 'sensor-core.js', 'sensor.js', 'pwa.js', 'app.js',
+  'kit.js', 'i18n.js', 'engine.js', 'illustrations.js', 'voice.js', 'llamada.js', 'dea-cercano.js', 'dea.js', 'atragantamiento.js', 'sensor-core.js', 'sensor.js', 'entreno.js', 'pwa.js', 'app.js',
   'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'manifest.webmanifest',
   '../shared/app.css', '../shared/app.js'
 ];

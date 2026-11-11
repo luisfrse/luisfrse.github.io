@@ -283,18 +283,23 @@
     + (errList(S.ev).length ? `\n${T('evErrors')}:\n` + errList(S.ev).map(k => `✕ ${T('snErr')[k]}${S.ev.errs[k] > 1 ? ' ×' + S.ev.errs[k] : ''}`).join('\n') : '')
     + (S.cyRes ? `\n${T('snCycTitle')}:\n` + S.cyRes.cycles.map(cycText).join('\n') : '') + `\n${T('snSumDepth')}`;
 
-  function summaryHtml() {
-    const m = S.summary, ev = S.ev, cy = S.cyRes;
-    if (!m.count) return `<div class="panel"><h2>${esc(T('snSumTitle'))}</h2><p class="callout warn">${esc(T('snSumNone'))}</p><button type="button" class="btn" id="snAgain">${esc(T('snAgain'))}</button></div>`;
+  /* cuerpo del informe (puntuación, cifras, errores, ciclos); lo reutiliza «Entrena tu ritmo» (RCP completo) */
+  function reportBody(m, ev, cy, extra) {
     const errs = errList(ev);
-    return `<div class="panel eval"><h2>${esc(T('evTitle'))}</h2>
+    return `<h2>${esc(T('evTitle'))}</h2>
       <div class="eval-top"><div class="score ${ev.verdict}"><b>${ev.score}</b><span>/ 100</span><small>${esc(T('evScore'))}</small></div>
         <div class="grow"><p><b>${esc(T('evVerdict')[ev.verdict])}</b></p><small class="muted">${esc(T('snScoreNote'))}</small></div></div>
       <div class="eval-stats sum-grid">${rows(m, ev, cy).map(([k, v]) => `<div class="stat"><b>${esc(String(v))}</b><span>${esc(T(k))}</span></div>`).join('')}</div>
       <h3>${esc(T('evErrors'))}</h3>
       ${errs.length ? `<ul class="mistakes">${errs.map(k => `<li><span aria-hidden="true">✕</span>${esc(T('snErr')[k])}${ev.errs[k] > 1 ? ` <b>×${ev.errs[k]}</b>` : ''}</li>`).join('')}</ul>` : `<p class="callout ok">${esc(T('evNoErrors'))}</p>`}
       ${cy && cy.cycles.length ? `<h3>${esc(T('snCycTitle'))}</h3><ol class="evlog">${cy.cycles.map((c, i) => `<li class="${c.ok ? '' : 'err'}"><time>#${i + 1}</time><span>${esc(cycText(c, i))}</span></li>`).join('')}</ol>` : ''}
-      <p class="callout warn">${esc(T('snSumDepth'))}</p>
+      ${extra || ''}
+      <p class="callout warn">${esc(T('snSumDepth'))}</p>`;
+  }
+  function summaryHtml() {
+    const m = S.summary;
+    if (!m.count) return `<div class="panel"><h2>${esc(T('snSumTitle'))}</h2><p class="callout warn">${esc(T('snSumNone'))}</p><button type="button" class="btn" id="snAgain">${esc(T('snAgain'))}</button></div>`;
+    return `<div class="panel eval">${reportBody(m, S.ev, S.cyRes)}
       <div class="row"><button type="button" class="btn" id="snCopy">${esc(T('snCopy'))}</button><button type="button" class="btn ghost" id="snCsv">${esc(T('snCsv'))}</button><button type="button" class="btn ghost" id="snAgain">${esc(T('snAgain'))}</button></div></div>`;
   }
 
@@ -404,5 +409,6 @@
     if (S.cy && S.state === 'run') { e.preventDefault(); doBreath(); }
   });
   R.tabs.sensor = { render, leave() { if (S.state === 'calib' || S.state === 'run' || S.state === 'ask' || S.state === 'wait') { stopAll(true); S.state = 'idle'; } } };
+  R.sensorUi = { reportBody, rows, errList, cycText, beep };
   R.sensor = { feed, doBreath, get ev() { return S.ev; }, get cy() { return S.cy; }, CFG, get state() { return S.state; }, get summary() { return S.summary; }, finish };      // gancho de pruebas
 })();

@@ -394,6 +394,7 @@
     pad.addEventListener('keydown', e => { if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); if (!e.repeat) tap(); } });
     document.addEventListener('keydown', e => {
       if (tab !== 'train' || e.code !== 'Space' || e.repeat) return;
+      const fr = document.getElementById('trainFullRoot'); if (fr && !fr.hidden) return;      // modo «RCP completo»: lo gestiona entreno.js
       if (e.target.closest && e.target.closest('input,select,textarea,button,a,[role="tab"]')) return;
       e.preventDefault(); tap();
     });

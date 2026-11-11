@@ -11,6 +11,8 @@
   const LET = ['A', 'B', 'C', 'D', 'E'];
   const VERS = ['A', 'B', 'C', 'D'];
   const TABS = ['exam', 'key', 'students', 'sheet', 'scan', 'results', 'print', 'sync'];
+  /* en el campus todo se guarda ya en el servidor: la pestaña de sincronizar con carpetas/archivos sobra */
+  if (document.documentElement.dataset.mode === 'campus') TABS.splice(TABS.indexOf('sync'), 1);
   const C = window.CORR, R = C.roster;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -307,6 +309,7 @@
         <p class="disclaimer" id="scoresum">${sum}</p>
       </section>
     </div>
+    ${C.uiCampus.listPanel()}
     <section class="panel stack">
       <div class="row spread"><h2 style="margin:0">${t('myExams')}</h2>
         <div class="row"><button class="btn small" data-act="newExam">+ ${t('newExam')}</button><button class="btn ghost small" data-act="demo">${t('demo')}</button></div></div>
@@ -631,12 +634,14 @@
   /* ---------------------------------------------------------- render general */
   function renderView() {
     if (ui.tab !== 'scan') C.uiScan.stopLive();
+    if (ui.tab === 'campus' && !(exam && exam.campus)) ui.tab = 'exam';
     const v = $('#view'), f = { exam: viewExam, key: viewKey, students: viewStudents, sheet: C.uiSheet.render, scan: C.uiScan.render, results: viewResults, print: viewPrint, sync: C.uiSync.render, campus: () => C.uiCampus.render() }[ui.tab];
     v.innerHTML = f();
     if (ui.tab === 'students' && C.uiStudents.ui2.stab === 'answers') { renderStudentList(); renderEditor(); }
     if (ui.tab === 'scan') C.uiScan.mount();
     if (ui.tab === 'sync') C.uiSync.mount();
     if (ui.tab === 'campus') C.uiCampus.mount();
+    if (ui.tab === 'exam') C.uiCampus.mountList();
     renderHead();
     $$('.tabs [role="tab"]').forEach(b => { const on = b.dataset.tab === ui.tab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
   }
@@ -646,9 +651,10 @@
       <div class="banner-warn" id="savewarn" hidden></div>
       <details class="panel help"><summary>${t('helpTitle')}</summary><ol><li>${t('help1')}</li><li>${t('help2')}</li><li>${t('help3')}</li><li>${t('help4')}</li><li>${t('help5')}</li></ol></details>
       <div class="panel corr-head" id="head"></div>
-      <div class="tabs" role="tablist">${TABS.map(x => `<button type="button" role="tab" data-tab="${x}" aria-selected="false">${t('tab_' + x)}<span class="n"></span></button>`).join('')}</div>
+      <div class="tabs" role="tablist">${TABS.filter(x => x !== 'campus' || (exam && exam.campus)).map(x => `<button type="button" role="tab" data-tab="${x}" aria-selected="false">${t('tab_' + x)}<span class="n"></span></button>`).join('')}</div>
       <div id="view" role="tabpanel"></div>`;
     renderView();
+    C.uiCampus.followExam();
   }
 
   /* ---------------------------------------------------------- eventos */

@@ -213,3 +213,17 @@ ol.script{counter-reset:none}
 .sn-cyc-n{font:700 2rem/1 var(--font-head);font-variant-numeric:tabular-nums}
 .sn-cyc.breath .btn{background:#f59e0b;color:#000}
 .sn-tech{margin:0;font-size:.85rem;text-align:center}
+
+/* Entrena tu ritmo: selector de modo y evaluación de RCP completa */
+.train-mode{display:flex;justify-content:center;margin:0 0 14px}
+.train-mode:empty{display:none}
+.train-grid[hidden],#trainFullRoot[hidden]{display:none}
+.mistakes.tips li span{color:var(--accent)}
+@media (max-width:520px){.train-mode .seg{width:100%}.train-mode .seg button{flex:1;padding:8px 6px;font-size:.88rem}}
+
+/* Buscador de DEA cercanos (pestaña 112) */
+.dc-item{align-items:flex-start}
+.dc-links{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;font-size:.9rem}
+.dc-links a,.dc-ext a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.dc-ext{padding-left:0;list-style:none;display:grid;gap:8px}
+.dc-ext a{display:inline-block;padding:4px 0}
