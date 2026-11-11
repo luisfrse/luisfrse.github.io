@@ -32,7 +32,7 @@
     for (let i = 0; i < nq; i++) {
       const c = Math.floor(i / rows), rr = i % rows;
       const bx = 15 + c * bw, y = FIRST_Y + rr * dy;
-      q.push({ n: i, y, nx: bx + 7, opts: Array.from({ length: nopt }, (_, o) => ({ l: 'ABCDE'[o], x: bx + 10 + px * (o + 0.5), y })) });
+      q.push({ n: i, y, nx: bx + 7, sh: Math.floor(rr / 5) % 2 === 0, opts: Array.from({ length: nopt }, (_, o) => ({ l: 'ABCDE'[o], x: bx + 10 + px * (o + 0.5), y })) });
     }
     const blocks = Array.from({ length: cols }, (_, c) => ({ x: 15 + c * bw, w: bw, y: 94.5, rows: Math.min(rows, nq - c * rows), dy, r0: c * rows }));
     return { W, H, MK, markers: MARKS.map(([cx, cy]) => ({ cx, cy, s: MK })), orient: ORIENT, nq, nopt, nver, L, code, ver, q, r, px, dy, rows, cols, blocks };

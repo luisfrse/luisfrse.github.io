@@ -113,22 +113,79 @@
       return (g[i] * (1 - fx) + g[i + x1] * fx) * (1 - fy) + (g[i + y1] * (1 - fx) + g[i + y1 + x1] * fx) * fy;
     };
   }
-  /* oscuridad de un disco (mm) frente al papel de su entorno */
-  function measure(smp, H, cx, cy, r, step) {
-    const rin = r * 0.62, pap = [];
-    for (let a = 0; a < 16; a++) {
-      const ang = a * Math.PI / 8;
-      for (const rr of [1.4, 1.6]) { const [u, v] = mapH(H, cx + Math.cos(ang) * r * rr, cy + Math.sin(ang) * r * rr); pap.push(smp(u, v)); }
+  /* aproximación afín local de la homografía en (x, y) mm: [u, v, ∂u/∂x, ∂v/∂x, ∂u/∂y, ∂v/∂y] */
+  function local(H, x, y) { const [u, v] = mapH(H, x, y), [ux, vx] = mapH(H, x + 0.5, y), [uy, vy] = mapH(H, x, y + 0.5); return [u, v, (ux - u) * 2, (vx - v) * 2, (uy - u) * 2, (vy - v) * 2]; }
+
+  /* ---------- registro fino con los propios círculos impresos ----------
+     La homografía de 4 esquinas no absorbe una hoja combada, la distorsión de la lente ni el error de los marcadores.
+     Para unas burbujas de muestra (3 por fila) se calcula un mapa de respuesta: cuánto coincide el aro impreso al
+     desplazar el centro (±1,9 mm). El desplazamiento de cada burbuja es el pico de la suma de los mapas de las
+     muestras cercanas (campo de deformación suave), con interpolación subpaso. */
+  const SS = 0.32, NS = 13, HS = 6, CS = [], SN = [];
+  for (let a = 0; a < 8; a++) { CS.push(Math.cos(a * Math.PI / 4 + 0.3)); SN.push(Math.sin(a * Math.PI / 4 + 0.3)); }
+  function ringMap(smp, H, p, dl) {
+    const map = new Float32Array(NS * NS), L = local(H, p.x, p.y), r = p.r, at = (x, y) => smp(L[0] + x * L[2] + y * L[4], L[1] + x * L[3] + y * L[5]);
+    const pap = Math.max(40, at(0, -r * 1.5), at(0, r * 1.5), at(-r * 1.5, 0), at(r * 1.5, 0)) * 8;
+    for (let j = 0, k = 0; j < NS; j++) for (let i = 0; i < NS; i++, k++) {
+      const ox = (i - HS) * SS, oy = (j - HS) * SS; let acc = 0;
+      for (let a = 0; a < 8; a++) {
+        const c = CS[a], s = SN[a], ring = at(ox + c * r, oy + s * r), mn = Math.min(at(ox + c * (r - dl), oy + s * (r - dl)), at(ox + c * (r + dl), oy + s * (r + dl)));
+        if (mn > ring) acc += mn - ring;   // solo cuenta una línea fina oscura entre dos zonas claras (no el borde de un relleno)
+      }
+      map[k] = acc / pap;
     }
-    pap.sort((a, b) => a - b); const paper = Math.max(40, pap[Math.floor(pap.length * 0.75)]);
-    let sum = 0, n = 0, dark = 0;
+    return map;
+  }
+  function register(smp, H, groups, dl) {
+    const units = [], pts = [], S2 = 100;
+    for (const G of groups) { const n = G.length, pick = n <= 3 ? G : [G[0], G[n >> 1], G[n - 1]]; for (const p of G) pts.push(p); for (const p of pick) { p.map = ringMap(smp, H, p, dl); units.push(p); } }
+    const sm = new Float32Array(NS * NS), sub = (m, c, p) => { const den = m - 2 * c + p; return den < 0 ? Math.max(-0.5, Math.min(0.5, 0.5 * (m - p) / den)) : 0; };
+    for (const p of pts) {
+      sm.fill(0); let ws = 0;
+      for (const q of units) { const d2 = (p.x - q.x) ** 2 + (p.y - q.y) ** 2; if (d2 > 4.5 * S2) continue; const w = Math.exp(-d2 / (2 * S2)), m = q.map; ws += w; for (let k = 0; k < sm.length; k++) sm[k] += w * m[k]; }
+      let b = 0; for (let k = 1; k < sm.length; k++) if (sm[k] > sm[b]) b = k;
+      const i = b % NS, j = (b - i) / NS;
+      p.dx = (i - HS + (i > 0 && i < NS - 1 ? sub(sm[b - 1], sm[b], sm[b + 1]) : 0)) * SS; p.dy = (j - HS + (j > 0 && j < NS - 1 ? sub(sm[b - NS], sm[b], sm[b + NS]) : 0)) * SS; p.pk = ws ? sm[b] / ws : 0;
+    }
+    /* sin aro visible alrededor (reflejo, zona toda rellena): hereda el desplazamiento de los vecinos fiables */
+    const hs = pts.map(p => p.pk).sort((x, y) => x - y), lim = 0.4 * (hs[hs.length >> 1] || 0), good = pts.filter(p => p.pk >= lim);
+    for (const p of pts) if (p.pk < lim) {
+      let ws = 0, dx = 0, dy = 0;
+      for (const q of good) { const w = Math.exp(-((p.x - q.x) ** 2 + (p.y - q.y) ** 2) / 3200); ws += w; dx += w * q.dx; dy += w * q.dy; }
+      p.fx = ws > 1e-12 ? dx / ws : 0; p.fy = ws > 1e-12 ? dy / ws : 0;
+    }
+    for (const p of pts) { if (p.pk < lim) { p.dx = p.fx; p.dy = p.fy; } p.map = null; }
+  }
+
+  /* medida de una burbuja (mm) frente al papel de su entorno:
+     d = oscuridad media, fr = fracción de puntos muy oscuros, dq = oscuridad del cuartil más oscuro (trazos finos),
+     vis = contraste del aro impreso (0 si lo tapa un reflejo o el desenfoque) */
+  function measure(smp, H, cx, cy, r, step, dl) {
+    const L = local(H, cx, cy), at = (x, y) => smp(L[0] + x * L[2] + y * L[4], L[1] + x * L[3] + y * L[5]);
+    /* papel: pares opuestos del anillo (su media anula el gradiente de una sombra), percentil 75;
+       su diferencia da el gradiente local de luz (gx, gy por mm), que se descuenta dentro del disco */
+    const pap = [], pr = [];
+    for (let a = 0; a < 8; a++) {
+      const c = Math.cos(a * Math.PI / 8), s = Math.sin(a * Math.PI / 8);
+      for (const k of [1.4, 1.6]) { const p1 = at(c * r * k, s * r * k), p2 = at(-c * r * k, -s * r * k); pap.push((p1 + p2) / 2); pr.push([c, s, (p1 + p2) / 2, (p1 - p2) / (2 * r * k)]); }
+    }
+    pap.sort((a, b) => a - b); const paper = Math.max(40, pap[12]);
+    let scc = 0, sss = 0, scs = 0, bc = 0, bs = 0, gx = 0, gy = 0;
+    for (const [c, s, m, dv] of pr) if (m > 0.88 * paper) { scc += c * c; sss += s * s; scs += c * s; bc += c * dv; bs += s * dv; }
+    const det = scc * sss - scs * scs; if (det > 1) { gx = (bc * sss - bs * scs) / det; gy = (bs * scc - bc * scs) / det; }
+    const rin = r * RIN, v = []; let sum = 0, dark = 0;
     for (let y = -rin; y <= rin + 1e-6; y += step) for (let x = -rin; x <= rin + 1e-6; x += step) {
       if (x * x + y * y > rin * rin) continue;
-      const [u, v] = mapH(H, cx + x, cy + y), gv = smp(u, v); sum += gv; n++; if (gv < paper * 0.6) dark++;
+      const gv = at(x, y) - gx * x - gy * y; v.push(gv); sum += gv; if (gv < paper * 0.6) dark++;
     }
-    const m = n ? sum / n : paper, d = Math.max(0, Math.min(1, 1 - m / paper)), fr = n ? dark / n : 0;
-    return { s: 0.6 * d + 0.4 * fr, d, fr, paper };
+    const n = v.length || 1; v.sort((a, b) => a - b);
+    const nq = Math.max(1, Math.round(n * 0.25)); let sq = 0; for (let i = 0; i < nq; i++) sq += v[i];
+    let vis = 0;
+    for (let a = 0; a < 12; a++) { const c = Math.cos(a * Math.PI / 6), s = Math.sin(a * Math.PI / 6), ring = at(c * r, s * r), mn = Math.min(at(c * (r - dl), s * (r - dl)), at(c * (r + dl), s * (r + dl))); if (mn > ring) vis += mn - ring; }
+    const d = Math.max(-0.3, 1 - sum / n / paper), fr = dark / n, dq = Math.max(-0.3, 1 - sq / nq / paper);
+    return { s: WD * d + WF * fr + WQ * dq, d, fr, dq, paper, vis: vis / 12 / paper };
   }
+  let RIN = 0.62, WD = 0.5, WF = 0, WQ = 0.5;
 
   /* ---------- escaneo completo ---------- */
   /* img = { data:RGBA|null, gray?:Uint8Array, width, height }; g = geometría (CORR.geom.layout)
@@ -158,54 +215,70 @@
     const pxmm = Math.sqrt(Math.abs((u1 - u0) * (v1 - v0))) || Math.hypot(u1 - u0, v1 - v0);
     const step = Math.max(0.17, 0.8 / Math.max(pxmm, 1));
 
-    /* medir todas las burbujas */
-    const qs = g.q.map(q => q.opts.map(o => measure(smp, H, o.x, o.y, g.r, step)));
-    const vs = g.ver.items.map(it => measure(smp, H, it.x, it.y, g.ver.r, step));
-    const cs = g.code.cols.map(x => g.code.rowY.map(y => measure(smp, H, x, y, g.code.r, step)));
-    const all = [].concat(...qs, vs, ...cs).map(m => m.s);
+    /* registro fino por grupos (fila de opciones / fila de dígitos / versión) y medida de todas las burbujas */
+    if (opts.tune) ({ RIN = RIN, WD = WD, WF = WF, WQ = WQ, LO = LO, HI = HI, KS = KS, MKF = MKF } = opts.tune);
+    const dl = Math.max(0.45, 1.1 / Math.max(pxmm, 1)), grp = (pts) => pts.map(p => ({ x: p.x, y: p.y, r: p.r, dx: 0, dy: 0 }));
+    const gq = g.q.map(q => grp(q.opts.map(o => ({ x: o.x, y: o.y, r: g.r }))));
+    const gv = g.ver.items.length ? [grp(g.ver.items.map(it => ({ x: it.x, y: it.y, r: g.ver.r })))] : [];
+    const gc = g.code.rowY.map(y => grp(g.code.cols.map(x => ({ x, y, r: g.code.r }))));
+    const groups = gq.concat(gv, gc); if (!opts.noRegister) register(smp, H, groups, dl);
+    const ms = (G) => G.map(p => measure(smp, H, p.x + p.dx, p.y + p.dy, p.r, step, dl));
+    const qs = gq.map(ms), vs = gv.length ? ms(gv[0]) : [], cr = gc.map(ms), cs = g.code.cols.map((_, j) => cr.map(row => row[j]));
+    const sets = qs.concat(vs.length ? [vs] : [], cs), all = [].concat(...sets);
 
-    /* nivel base y ruido de la hoja: mediana y MAD del 60 % más claro (la mayoría de burbujas están vacías) */
-    const sorted = all.slice().sort((a, b) => a - b), base = sorted[Math.floor(sorted.length * 0.5)];
-    const adj = (m) => Math.max(0, m.s - base);
-    const vals = all.map(v => Math.max(0, v - base));
-    const low = vals.slice().sort((a, b) => a - b).slice(0, Math.floor(vals.length * 0.6)), med = low.length ? low[Math.floor(low.length / 2)] : 0;
-    const dev = low.map(v => Math.abs(v - med)).sort((a, b) => a - b), sigma = 1.4826 * (dev[Math.floor(dev.length / 2)] || 0);
-    /* marca firme típica → umbral de «marca» proporcional; umbral de «duda» por encima del ruido */
-    const strong = vals.filter(v => v > 0.3).sort((a, b) => a - b), mk = strong.length ? strong[Math.floor(strong.length / 2)] : 0.6;
-    const weak = Math.max(opts.weak || 0.05, med + 6 * sigma);
-    const T = Math.max(weak * 1.6, Math.min(0.26, Math.max(0.12, 0.3 * mk)));
+    /* nivel base por fila (2.º valor más bajo: casi todas las burbujas de una fila están vacías) acotado por el de la hoja */
+    const srt = (a) => a.slice().sort((x, y) => x - y), medOf = (a) => (a.length ? srt(a)[a.length >> 1] : 0);
+    const base = medOf(all.map(m => m.s)), visS = srt(all.map(m => m.vis)), visMed = visS[visS.length >> 1], visRef = visS[Math.floor(visS.length * 0.9)];
+    const rel = (ms) => { const s = srt(ms.map(m => m.s)), b = ms.length >= 4 ? Math.min(s[1], base + 0.03) : base; return ms.map(m => m.s - b); };
+    const rels = sets.map(rel);
+    /* sesgo sistemático por columna de opción (p. ej. la banda gris que acaba a media burbuja): se resta, acotado */
+    const bias = {}, bkey = (i, j) => Math.floor(i / g.rows) + '|' + j + '|' + (g.q[i].sh ? 1 : 0);
+    qs.forEach((_, i) => rels[i].forEach((v, j) => { const k = bkey(i, j); (bias[k] = bias[k] || []).push(v); }));
+    for (const k in bias) { const a = srt(bias[k]); bias[k] = a.length >= 4 ? Math.max(-0.05, Math.min(0.05, a[Math.floor(a.length * 0.25)])) : 0; }
+    qs.forEach((_, i) => { rels[i] = rels[i].map((v, j) => v - bias[bkey(i, j)]); });
+    const flat = srt([].concat(...rels)), low = flat.slice(0, Math.floor(flat.length * 0.6)), med = medOf(low);
+    const sigma = 1.4826 * medOf(low.map(v => Math.abs(v - med)));
+    /* umbrales: «hay tinta» (weak, sobre el ruido de la hoja) y «marca firme» (T) */
+    const strong = flat.filter(v => v > 0.15), mk = strong.length ? strong[strong.length >> 1] : 0.6;
+    const weak = Math.max(opts.weak || LO, med + KS * sigma), T = Math.max(HI, 2 * weak, MKF * mk), wb = 0.6 * weak;
 
-    const decide = (ms, letters) => {
-      const sc = ms.map(adj), order = sc.map((v, i) => i).sort((i, j) => sc[j] - sc[i]), top = sc[order[0]];
-      const marked = order.filter(i => sc[i] >= T), strongM = marked.filter(i => sc[i] >= 0.5 * top);
+    const decide = (ms, sc, letters) => {
+      const order = sc.map((v, i) => i).sort((i, j) => sc[j] - sc[i]), top = sc[order[0]], sec = sc.length > 1 ? sc[order[1]] : 0;
+      const ink = order.filter(i => sc[i] >= weak).map(i => letters[i]);
       let a = '', st = 'blank', cands = [];
-      if (strongM.length > 1) { st = 'multi'; cands = strongM.map(i => letters[i]); }
-      else if (marked.length >= 1) {
+      if (top >= T) {
         a = letters[order[0]];
-        const ghost = order.filter(i => sc[i] >= Math.max(weak * 1.4, 0.11));   // marca firme + otra más débil (borrado, roce)
-        if (ghost.length === 1) st = 'ok'; else { st = 'doubt'; cands = ghost.map(i => letters[i]); }
-      } else if (top >= weak) {
-        a = letters[order[0]]; st = 'doubt'; cands = order.filter(i => sc[i] >= weak).map(i => letters[i]);
-        if (cands.length > 1 && sc[order[1]] >= 0.5 * top) st = 'multi';
+        if (sec >= Math.max(T, 0.5 * top)) { st = 'multi'; cands = order.filter(i => sc[i] >= Math.max(T, 0.5 * top)).map(i => letters[i]); }
+        else if (sec >= weak) { st = 'doubt'; cands = ink; }   // marca firme + otra más débil (borrado, roce, segunda marca tenue)
+        else st = 'ok';
+      } else if (top >= wb) {   // sin marca firme: cualquier rastro de tinta (umbral más bajo) va a revisión, nunca «en blanco» en silencio
+        a = letters[order[0]]; st = 'doubt'; cands = order.filter(i => sc[i] >= wb).map(i => letters[i]);
+        if (sec >= weak && sec >= 0.5 * top) st = 'multi';
       }
-      return { a, st, cands, s: sc.map(v => +v.toFixed(3)) };
+      /* zona ilegible (reflejo, desenfoque local): si falta el aro de alguna burbuja clara, no se da por buena */
+      const low = ms.some((m, i) => sc[i] < T && m.vis < 0.35 * visRef);
+      if (low && (st === 'ok' || st === 'blank')) { st = 'doubt'; cands = ink; }
+      const c = st === 'ok' ? Math.min(1, (top - T) / T, (weak - Math.max(0, sec)) / weak * 2) : st === 'blank' ? Math.min(1, (weak - Math.max(0, top)) / weak * 2) : 0;
+      return { a, st, cands, low, c: +Math.max(0, c).toFixed(2), s: sc.map(v => +v.toFixed(3)) };
     };
     const LET = ['A', 'B', 'C', 'D', 'E'];
-    const q = qs.map(ms => decide(ms, LET));
+    const q = qs.map((ms, i) => decide(ms, rels[i], LET));
     let version = 'A', versionSt = 'ok';
-    if (vs.length) { const d = decide(vs, 'ABCD'); version = d.st === 'ok' || d.st === 'doubt' ? d.a : ''; versionSt = d.st === 'ok' ? 'ok' : d.st === 'blank' ? 'blank' : d.st === 'multi' ? 'multi' : 'doubt'; }
-    const cd = cs.map(ms => decide(ms, '0123456789'.split('')));
+    if (vs.length) { const d = decide(vs, rels[qs.length], 'ABCD'); version = d.st === 'ok' || d.st === 'doubt' ? d.a : ''; versionSt = d.st === 'ok' ? 'ok' : d.st === 'blank' ? 'blank' : d.st === 'multi' ? 'multi' : 'doubt'; }
+    const cd = cs.map((ms, j) => decide(ms, rels[qs.length + (vs.length ? 1 : 0) + j], '0123456789'.split('')));
     const codeRaw = cd.map(d => (d.st === 'ok' || d.st === 'doubt') ? d.a : '?').join('');
     const codeSt = cd.some(d => d.st === 'multi') ? 'multi' : cd.some(d => d.st === 'blank') ? (cd.every(d => d.st === 'blank') ? 'blank' : 'incomplete') : cd.some(d => d.st === 'doubt') ? 'doubt' : 'ok';
     const code = /^\d+$/.test(codeRaw) ? codeRaw : null;
-    /* confianza */
-    const nq = opts.nq || g.nq, flagged = q.slice(0, nq).filter(x => x.st === 'multi' || x.st === 'doubt').length + (versionSt !== 'ok' ? 1 : 0) + (codeSt === 'ok' ? 0 : 1);
-    const markedV = vals.filter(v => v >= T), unmarkedV = vals.filter(v => v < T).sort((a, b) => a - b);
-    const hiU = unmarkedV[Math.floor(unmarkedV.length * 0.97)] || 0, loM = markedV.length ? markedV.slice().sort((a, b) => a - b)[Math.floor(markedV.length * 0.1)] : 0;
-    const sep = markedV.length ? Math.max(0, Math.min(1, (loM - hiU) / 0.35)) : 0;
-    const conf = Math.max(0, Math.min(1, 0.55 * sep + 0.45 * (1 - Math.min(1, flagged / (0.08 * nq + 2))))) * (markedV.length ? 1 : 0.3);
-    return { ok: true, H, quad: best.src, pxmm, T, weak, base, q, version, versionSt, code, codeRaw, codeSt, cd, conf, level: conf >= 0.75 ? 'good' : conf >= 0.45 ? 'fair' : 'bad', flagged, nMarked: markedV.length, w, h };
+    /* confianza de la hoja: nitidez (aro impreso visible), ruido de las burbujas vacías y proporción de avisos */
+    const nq = opts.nq || g.nq, qq = q.slice(0, nq), flagged = qq.filter(x => x.st === 'multi' || x.st === 'doubt').length + (versionSt !== 'ok' ? 1 : 0) + (codeSt === 'ok' ? 0 : 1);
+    const nMarked = flat.filter(v => v >= T).length, nLow = qq.filter(x => x.low).length;
+    const sharp = Math.max(0, Math.min(1, visMed / VIS)), quiet = Math.max(0, Math.min(1, 1.5 - weak / (2 * LO)));
+    const conf = Math.max(0, Math.min(1, (0.4 * sharp + 0.3 * quiet + 0.3 * (1 - Math.min(1, flagged / (0.15 * nq + 2)))) * (nLow > 0.1 * nq ? 0.5 : 1))) * (nMarked ? 1 : 0.3);
+    const out = { ok: true, H, quad: best.src, pxmm, T, weak, base, sigma, sharp: visMed, q, version, versionSt, code, codeRaw, codeSt, cd, conf, level: conf >= 0.75 ? 'good' : conf >= 0.45 ? 'fair' : 'bad', flagged, nMarked, nLow, w, h };
+    if (opts.debug) out.raw = { qs, off: gq.map(G => G.map(p => [p.dx, p.dy])) };
+    return out;
   }
+  let LO = 0.035, HI = 0.08, KS = 6, MKF = 0.2, VIS = 0.1;
 
   /* hoja rectificada (RGBA) para la pantalla de revisión */
   function rectify(img, H, ppm = 4) {

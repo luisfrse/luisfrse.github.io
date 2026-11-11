@@ -39,7 +39,7 @@
     r.q.slice(0, e.nq).forEach((q, i) => {
       if (rec.fixed[i]) return;
       if (q.st === 'multi') out.push({ k: 'q', i, sev: 'warn', text: T('isMulti', { c: q.cands.join(', ') }) });
-      else if (q.st === 'doubt') out.push({ k: 'q', i, sev: 'warn', text: T('isDoubt', { a: q.a }) });
+      else if (q.st === 'doubt') out.push({ k: 'q', i, sev: 'warn', text: q.a ? T('isDoubt', { a: q.a }) : T('isDoubtNone') });
     });
     return out;
   }
