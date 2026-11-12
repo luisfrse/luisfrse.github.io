@@ -3,7 +3,7 @@
   'use strict';
   const reduce = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  let ctx = null, on = false, sirenNodes = null;
+  let ctx = null, on = false, sirenNodes = null, sirenSpent = false, sirenTimer = null;
 
   function ac() {
     if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ctx = new AC(); }
@@ -55,9 +55,10 @@
     siren(start) {
       if (!start) {
         if (sirenNodes) { try { sirenNodes.o.stop(); sirenNodes.l.stop(); } catch (e) { /* ya parado */ } sirenNodes = null; }
+        if (sirenTimer) { clearTimeout(sirenTimer); sirenTimer = null; }
         return;
       }
-      if (!on || sirenNodes) return;
+      if (!on || sirenNodes || sirenSpent) return;
       const c = ac(); if (!c) return;
       const o = c.createOscillator(), g = c.createGain(), l = c.createOscillator(), lg = c.createGain();
       o.type = 'sawtooth'; o.frequency.value = 620;
@@ -67,7 +68,10 @@
       o.connect(g); g.connect(c.destination);
       o.start(); l.start();
       sirenNodes = { o: o, l: l };
-    }
+      /* Només sona al començament: passats uns segons s'atura i no torna fins a una partida nova. */
+      sirenTimer = setTimeout(() => { sirenSpent = true; FX.siren(false); }, 8000);
+    },
+    rearm() { sirenSpent = false; }
   };
 
   /* Confeti verd i blanc que cau per sobre d'un contenidor */

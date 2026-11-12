@@ -287,7 +287,7 @@
     else if (S.stage === 'done') viewDone();
     else viewProva();
     stage.classList.remove('shake');
-    if (S.stage !== 'done' && S.stage !== 'intro' && S.stage !== 'brief') { if (S.sound) FX.siren(true); } else FX.siren(false);
+    if (S.stage !== 'done' && S.stage !== 'intro' && S.stage !== 'brief') { if (S.sound && solvedN() === 0) FX.siren(true); else FX.siren(false); } else FX.siren(false);
   }
 
   /* ---------- Esdeveniments ---------- */
@@ -303,7 +303,7 @@
     const b = e.target.closest('[data-act]'); if (!b) return;
     const a = b.dataset.act;
     if (a === 'log') { const o = !logEl.classList.contains('open'); logEl.classList.toggle('open', o); $('#btn-log').setAttribute('aria-expanded', o); if (o) renderLog(); return; }
-    if (a === 'sound') { S.sound = !S.sound; FX.set(S.sound); b.setAttribute('aria-pressed', S.sound); b.innerHTML = S.sound ? ICO.on : ICO.off; save(); if (S.sound) { FX.click(); if (/^p|final/.test(S.stage)) FX.siren(true); } return; }
+    if (a === 'sound') { S.sound = !S.sound; FX.set(S.sound); b.setAttribute('aria-pressed', S.sound); b.innerHTML = S.sound ? ICO.on : ICO.off; save(); if (S.sound) { FX.click(); if (/^p/.test(S.stage) && solvedN() === 0) FX.siren(true); } return; }
     if (a === 'to-brief') { S.name = ($('#in-name').value || '').trim(); S.stage = 'brief'; save(); sfx('click'); render(); return; }
     if (a === 'begin') { S.stage = 'p1'; S.start = Date.now(); if (window.CampusAct) CampusAct.begin(); save(); sfx('unlock'); render(); return; }
     if (a === 'check') return check();
@@ -319,7 +319,7 @@
     }
     if (a === 'restart' || a === 'restart-log') {
       const snd = S.sound; S = fresh(); S.sound = snd; fb = null; save(); logEl.classList.remove('open');
-      $('#btn-log').setAttribute('aria-expanded', 'false'); FX.siren(false); render(); window.scrollTo({ top: 0 });
+      $('#btn-log').setAttribute('aria-expanded', 'false'); FX.siren(false); FX.rearm(); render(); window.scrollTo({ top: 0 });
     }
   });
   document.addEventListener('keydown', e => {
