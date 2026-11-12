@@ -23,8 +23,11 @@
     s.push(`<rect x="${g.orient.cx - g.orient.s / 2}" y="${g.orient.cy - g.orient.s / 2}" width="${g.orient.s}" height="${g.orient.s}"/>`);
     /* cabecera */
     s.push(`<text x="28" y="${n(12 + fs * 0.35)}" font-size="${n(fs)}" font-weight="700">${esc(title)}</text>`);
+    /* centro y asignatura (opcionales): una línea propia bajo el título; sin ellos la cabecera queda exactamente como antes */
+    const org = [exam.center, exam.subject].map(x => String(x || '').trim()).filter(Boolean).join(' · ');
+    if (org) { const fo = Math.min(3.6, 112 / (Math.max(10, org.length) * 0.52)); s.push(`<text x="28" y="18.4" font-size="${n(fo)}" font-weight="600">${esc(org)}</text>`); }
     const sub = [K.fmtDate(exam.date), `${exam.nq} ${t('qs')}`, o.sub].filter(Boolean).join(' · ');
-    s.push(`<text x="28" y="20" font-size="3.4" fill="#333">${esc(sub)}</text>`);
+    s.push(`<text x="28" y="${org ? 22.8 : 20}" font-size="3.4" fill="#333">${esc(sub)}</text>`);
     const field = (label, y, x2) => `<text x="26" y="${y}" font-size="3">${esc(label)}</text><line x1="26" y1="${y + 2}" x2="${x2}" y2="${y + 2}" stroke="#000" stroke-width=".3"/>`;
     s.push(field(t('hjLast'), 31, 140), field(t('hjFirst'), 40.5, 140), field(t('hjGroup'), 50, 112));
     const who = o.who;

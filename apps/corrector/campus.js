@@ -72,7 +72,7 @@
     const a = data.assessment || {}, cfg = data.config, id = 'campus-' + Y.id;
     const nq = cfg ? cfg.nq : (prev ? prev.nq : 20), nopt = cfg ? Math.min(5, cfg.nopt) : 4;
     const versions = cfg ? cfg.versions.filter(v => 'ABCD'.includes(v)) : ['A'];
-    const e = { id, name: a.title || 'Campus', date: a.date || undefined, nq, nopt, versions: versions.length ? versions : ['A'], keys: {}, maps: {}, annul: [], students: [], codeLen: 6, codeCheck: false, codeMode: 'random', sheet: {} };
+    const e = { id, name: a.title || 'Campus', center: (prev && prev.center) || '', subject: (prev && prev.subject) || a.subject_title || '', date: a.date || undefined, nq, nopt, versions: versions.length ? versions : ['A'], keys: {}, maps: {}, annul: [], students: [], codeLen: 6, codeCheck: false, codeMode: 'random', sheet: {} };
     if (cfg) {
       e.versions.forEach(v => { const k = cfg.keys && cfg.keys[v]; e.keys[v] = typeof k === 'string' ? k.split('').map(x => (x === '*' || x === '-' ? '' : x.toUpperCase())) : (k || []).map(x => (x === '*' ? '' : String(x || '').toUpperCase())); });
       Object.keys(cfg.maps || {}).forEach(v => { if (e.versions.includes(v)) e.maps[v] = (cfg.maps[v] || []).map(n => n - 1); });

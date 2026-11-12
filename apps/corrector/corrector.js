@@ -30,7 +30,7 @@
 
   function fix(e) {
     e.id = e.id || K.uid();
-    e.name = String(e.name || '');
+    e.name = String(e.name || ''); e.center = String(e.center || '').slice(0, 80); e.subject = String(e.subject || '').slice(0, 80);
     e.date = e.date || today();
     e.nq = K.clamp(parseInt(e.nq, 10) || 20, 1, 100);
     e.nopt = e.nopt === 5 ? 5 : 4;
@@ -291,6 +291,9 @@
       <section class="panel stack">
         <h2>${t('examData')}</h2>
         <label class="field">${t('name')}<input type="text" data-f="name" value="${esc(exam.name)}" placeholder="${esc(t('untitled'))}"></label>
+        <div class="grid cols-2"><label class="field">${t('examCenter')}<input type="text" data-f="center" maxlength="80" value="${esc(exam.center)}" placeholder="${esc(t('examCenterPh'))}"></label>
+          <label class="field">${t('examSubject')}<input type="text" data-f="subject" maxlength="80" value="${esc(exam.subject)}" placeholder="${esc(t('examSubjectPh'))}"></label></div>
+        <small class="muted" style="margin-top:-6px">${t('examHeaderHelp')}</small>
         <div class="grid cols-2">
           <label class="field">${t('date')}<input type="date" data-f="date" value="${esc(exam.date)}"></label>
           <label class="field">${t('nq')}<input type="number" data-f="nq" min="1" max="100" value="${exam.nq}"><small>${t('nqHelp')}</small></label>
@@ -788,6 +791,8 @@
     const el = ev.target, f = el.dataset.f; if (!f) { if (el.id === 'sfilter') { ui.filter = el.value; renderStudentList(); } return; }
     switch (f) {
       case 'name': exam.name = el.value; changed(); break;
+      case 'center': exam.center = el.value; changed(); break;
+      case 'subject': exam.subject = el.value; changed(); break;
       case 'maxGrade': case 'pass': case 'correct': case 'penaltyCustom': exam.scoring[f] = num(el.value, f === 'pass' ? 0 : 1); fix(exam); changed(); updateSum(); break;
       case 'sname': { const s = curStudent(); if (s) { s.name = el.value; changed(); renderStudentList(); } break; }
       case 'w': exam.weights[masterOf(ui.kv, +el.dataset.q)] = Math.max(0, num(el.value, 1)); changed(); break;
