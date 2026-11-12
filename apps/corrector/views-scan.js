@@ -112,7 +112,7 @@
     s.answers = rec.answers.slice(0, e.nq).map(a => (a && 'ABCDE'.slice(0, e.nopt).includes(a) ? a : ''));
     s.version = e.versions.includes(rec.version) ? rec.version : e.versions[0]; s.scanned = Date.now();
     if (!s.code && rec.code && R.validCode(rec.code, e.codeLen, e.codeCheck) && !e.students.some(o => o !== s && o.code === rec.code)) s.code = rec.code;
-    x.changed(); C.omrLearn.record(rec);
+    x.changed(); C.omrLearn.record(rec); if (C.uiCampus && C.uiCampus.onSaved) C.uiCampus.onSaved(s);
     const g = x.score(s), fixed = rec.fixed.filter(Boolean).length;
     S.log.push({ id: s.id, prev, created, name: R.display(s) || T('unnamed'), code: s.code, grade: g.grade, c: g.c, w: g.w, b: g.b, flagged: issuesOf(rec).length + fixed, conf: rec.res.level, ts: Date.now() });
     renderSession(); return s;

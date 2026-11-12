@@ -63,7 +63,7 @@
     e.students = (Array.isArray(e.students) ? e.students : []).map(s => {
       const o = { id: s.id || K.uid(), name: String(s.name || ''), last: String(s.last || ''), first: String(s.first || ''), group: String(s.group || ''), code: String(s.code || '').replace(/\D/g, ''),
         version: e.versions.includes(s.version) ? s.version : e.versions[0], answers: fit(s.answers, e.nq, '').map(a => (letters2(e).includes(a) ? a : '')) };
-      if (s.rid) o.rid = s.rid; if (s.scanned) o.scanned = s.scanned;
+      if (s.rid) o.rid = s.rid; if (s.scanned) o.scanned = s.scanned; if (s.sent) o.sent = s.sent;
       if (o.last || o.first) o.name = R.display(o);
       return o;
     });

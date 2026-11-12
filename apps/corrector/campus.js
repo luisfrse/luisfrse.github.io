@@ -20,6 +20,7 @@
     cpConfirm: '¿Enviar al campus {n} resultados de «{name}»? Solo se envían códigos, versión y letras marcadas; las notas existentes de esos alumnos se actualizarán.', cpNothing: 'Aún no hay hojas escaneadas.',
     cpSent: 'Enviado: {s} guardados.', cpUnmatched: 'Sin emparejar', cpDup: 'Duplicados', cpErrors: 'Con errores', cpLast: 'Último envío: {d} ({s} guardados)', cpSending: 'Enviando…', cpNoCode: 'Alumnos sin código: {n}', cpPrivacy: 'La lista de clase y los resultados se guardan también en este navegador.',
     cpNew: '+ Nueva prueba en papel en el campus', cpNewTitle: 'Nueva prueba en papel', cpNewHelp: 'Se crea en el campus (oculta al alumnado) y se abre aquí para definir la clave y corregir. Las pruebas creadas con «Nuevo examen» de «Mis exámenes» son libres: no están en ninguna asignatura y no envían notas al campus.', cpSubject: 'Asignatura', cpTitleF: 'Título', cpDateF: 'Fecha', cpKindF: 'Tipo', cpExam: 'Examen', cpForm: 'Formativa', cpWeight: 'Peso', cpRa: 'RA / UD (opcional)', cpNoRa: 'Sin RA / UD', cpCreate: 'Crear y abrir', cpCancel: 'Cancelar', cpNewErr: 'No se pudo crear la prueba: {m}',
+    cpAuto: 'Enviar cada hoja al campus al guardarla', cpAutoHelp: 'Al guardar una hoja escaneada, su nota se envía sola al campus (la clave tiene que estar guardada). Si algo falla, queda pendiente y se envía con «Enviar resultados».', cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: 'No se pudo enviar la nota de {n}: {m}', cpAutoNoKey: 'La clave aún no está en el campus: guárdala y pulsa «Enviar resultados» para enviar las notas.', cpSentN: '{n} de {t} con nota ya enviada al campus',
     cpListTitle: 'Pruebas en papel del campus', cpListHelp: 'Abre una para definir su clave, imprimir las hojas personalizadas, escanear y enviar las notas. Todo queda guardado en el campus.', cpOpen: 'Abrir', cpNone: 'Aún no hay pruebas en papel. Créalas en el campus (Evaluación → Pruebas y tareas → «En papel»).', cpKeyYes: 'Con clave', cpKeyNo: 'Sin clave', cpCorrN: '{n} corregidas', cpCurrent: 'Abierta', cpListErr: 'No se pudo cargar la lista de pruebas del campus.',
     cpScanned: '{n} escaneadas'    ,cpSaved: 'Clave guardada en el campus ✓ {t}', cpUnsaved: 'Sin guardar en el campus', cpSaving: 'Guardando en el campus…', cpFail: 'No se pudo guardar en el campus (se reintenta). Tus cambios siguen aquí.', cpSaveNow: 'Guardar en el campus', cpNoKeyYet: 'Clave aún no guardada en el campus'
   });
@@ -33,6 +34,7 @@
     cpConfirm: "Enviar al campus {n} resultats de «{name}»? Només s'envien codis, versió i lletres marcades; les notes existents d'aquests alumnes s'actualitzaran.", cpNothing: 'Encara no hi ha fulls escanejats.',
     cpSent: 'Enviat: {s} desats.', cpUnmatched: 'Sense emparellar', cpDup: 'Duplicats', cpErrors: 'Amb errors', cpLast: 'Darrer enviament: {d} ({s} desats)', cpSending: 'Enviant…', cpNoCode: 'Alumnes sense codi: {n}', cpPrivacy: 'La llista de classe i els resultats es desen també en aquest navegador.',
     cpNew: '+ Nova prova en paper al campus', cpNewTitle: 'Nova prova en paper', cpNewHelp: "Es crea al campus (oculta a l'alumnat) i s'obre aquí per definir la clau i corregir. Les proves creades amb «Nou examen» de «Els meus exàmens» són lliures: no són a cap assignatura i no envien notes al campus.", cpSubject: 'Assignatura', cpTitleF: 'Títol', cpDateF: 'Data', cpKindF: 'Tipus', cpExam: 'Examen', cpForm: 'Formativa', cpWeight: 'Pes', cpRa: 'RA / UD (opcional)', cpNoRa: 'Sense RA / UD', cpCreate: 'Crea i obre', cpCancel: 'Cancel·la', cpNewErr: "No s'ha pogut crear la prova: {m}",
+    cpAuto: 'Envia cada full al campus en desar-lo', cpAutoHelp: "En desar un full escanejat, la seva nota s'envia sola al campus (la clau ha d'estar desada). Si alguna cosa falla, queda pendent i s'envia amb «Envia resultats».", cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: "No s'ha pogut enviar la nota de {n}: {m}", cpAutoNoKey: "La clau encara no és al campus: desa-la i prem «Envia resultats» per enviar les notes.", cpSentN: '{n} de {t} amb nota ja enviada al campus',
     cpListTitle: 'Proves en paper del campus', cpListHelp: "Obre'n una per definir-ne la clau, imprimir els fulls personalitzats, escanejar i enviar les notes. Tot queda desat al campus.", cpOpen: 'Obre', cpNone: "Encara no hi ha proves en paper. Crea-les al campus (Avaluació → Proves i tasques → «En paper»).", cpKeyYes: 'Amb clau', cpKeyNo: 'Sense clau', cpCorrN: '{n} corregides', cpCurrent: 'Oberta', cpListErr: "No s'ha pogut carregar la llista de proves del campus.",
     cpScanned: '{n} escanejats'    ,cpSaved: 'Clau desada al campus ✓ {t}', cpUnsaved: 'Sense desar al campus', cpSaving: 'Desant al campus…', cpFail: "No s'ha pogut desar al campus (es reintenta). Els teus canvis són aquí.", cpSaveNow: 'Desa al campus', cpNoKeyYet: 'Clau encara no desada al campus'
   });
@@ -46,6 +48,7 @@
     cpConfirm: 'Send {n} results of "{name}" to the campus? Only codes, version and marked letters are sent; existing grades of those students will be updated.', cpNothing: 'No scanned sheets yet.',
     cpSent: 'Sent: {s} saved.', cpUnmatched: 'Unmatched', cpDup: 'Duplicates', cpErrors: 'With errors', cpLast: 'Last send: {d} ({s} saved)', cpSending: 'Sending…', cpNoCode: 'Students without a code: {n}', cpPrivacy: 'The class list and results are also stored in this browser.',
     cpNew: '+ New paper exam in the campus', cpNewTitle: 'New paper exam', cpNewHelp: 'It is created in the campus (hidden from students) and opened here to set the key and grade. Exams made with “New exam” under “My exams” are free: they belong to no subject and do not send grades to the campus.', cpSubject: 'Subject', cpTitleF: 'Title', cpDateF: 'Date', cpKindF: 'Type', cpExam: 'Exam', cpForm: 'Formative', cpWeight: 'Weight', cpRa: 'LO / UD (optional)', cpNoRa: 'No LO / UD', cpCreate: 'Create and open', cpCancel: 'Cancel', cpNewErr: 'Could not create the exam: {m}',
+    cpAuto: 'Send each sheet to the campus when saved', cpAutoHelp: 'When a scanned sheet is saved, its grade is sent to the campus automatically (the key must be saved). If something fails it stays pending and goes out with “Send results”.', cpAutoOk: '{n}: grade sent to the campus ✓', cpAutoFail: 'Could not send the grade of {n}: {m}', cpAutoNoKey: 'The key is not in the campus yet: save it and press “Send results” to send the grades.', cpSentN: '{n} of {t} with a grade already sent to the campus',
     cpListTitle: 'Paper exams in the campus', cpListHelp: 'Open one to set its key, print the personalised sheets, scan and send the grades. Everything is saved in the campus.', cpOpen: 'Open', cpNone: 'There are no paper exams yet. Create them in the campus (Assessment → Tests and tasks → “On paper”).', cpKeyYes: 'Has a key', cpKeyNo: 'No key', cpCorrN: '{n} graded', cpCurrent: 'Open', cpListErr: 'Could not load the list of campus exams.',
     cpScanned: '{n} scanned'    ,cpSaved: 'Key saved in the campus ✓ {t}', cpUnsaved: 'Not saved in the campus', cpSaving: 'Saving to the campus…', cpFail: 'Could not save to the campus (retrying). Your changes are kept here.', cpSaveNow: 'Save to the campus', cpNoKeyYet: 'Key not saved in the campus yet'
   });
@@ -81,9 +84,9 @@
     const old = new Map(((prev && prev.students) || []).map(s => [s.code, s]));
     e.students = (data.students || []).map(s => {
       const o = old.get(s.code), last = [s.ap1, s.ap2].filter(Boolean).join(' ');
-      return { id: 'c' + s.id, name: '', last, first: s.nombre || '', group: [s.group, s.subgroup].filter(Boolean).join(' '), code: String(s.code || ''), version: (o && o.version) || e.versions[0], answers: o ? o.answers : [], scanned: o ? o.scanned : undefined };
+      return { id: 'c' + s.id, name: '', last, first: s.nombre || '', group: [s.group, s.subgroup].filter(Boolean).join(' '), code: String(s.code || ''), version: (o && o.version) || e.versions[0], answers: o ? o.answers : [], scanned: o ? o.scanned : undefined, sent: o ? o.sent : undefined };
     });
-    e.campus = Object.assign({ id: Y.id, subject: a.subject, subjectTitle: a.subject_title }, prev && prev.campus ? { last: prev.campus.last } : {});
+    e.campus = Object.assign({ id: Y.id, subject: a.subject, subjectTitle: a.subject_title }, prev && prev.campus ? { last: prev.campus.last, auto: prev.campus.auto } : {});
     return e;
   }
 
@@ -98,6 +101,8 @@
       X().openExamObject(e); Y.state = 'ok'; S.base = sig(); S.at = 0; if (data.config && data.config.has_key) S.at = data.config.updated_at ? +new Date(data.config.updated_at) || Date.now() : Date.now(); S.fail = false;
       if (!quiet) K.toast(T('cpLoaded', { n: e.students.filter(s => s.code).length }), 3000);
       X().showTab(tab || X().ui.tab);
+      /* hojas ya escaneadas y guardadas que aún no llegaron al campus (p. ej. de antes de activar el envío automático): se mandan al abrir la prueba */
+      if (autoOn() && !Y.noKey) { const pend = ready().filter(s => !s.sent); if (pend.length) { pend.forEach(s => Q.map.set(s.id, s)); clearTimeout(Q.t); Q.t = setTimeout(flushAuto, 1500); } }
     } catch (err) {
       if (id !== Y.id) return;
       Y.state = 'error'; Y.err = err.status === 401 ? T('cpErr401') : (err.status === 409 || err.status === 404 || err.code === 'not-paper' || err.code === 'notfound') ? T('cpErrNot') : T('cpErrGen', { m: err.message });
@@ -154,10 +159,32 @@
     }, 700);
   }
   const ready = () => X().exam.students.filter(s => s.scanned && s.code);
+  /* envío automático de cada hoja al guardarla: se agrupan unos instantes y se mandan juntas; lo que falle queda pendiente (sin «sent») */
+  const autoOn = () => !(X().exam.campus && X().exam.campus.auto === false);
+  const Q = { map: new Map(), t: 0, warned: false };
+  async function flushAuto() {
+    Q.t = 0; if (!active() || !Q.map.size) return;
+    const e = X().exam, list = [...Q.map.values()].filter(s => s.code && s.scanned); Q.map.clear(); if (!list.length) return;
+    if (Y.noKey) { if (!Q.warned) { Q.warned = true; K.toast(T('cpAutoNoKey'), 6000); } return; }
+    const name = (s) => [s.last, s.first].filter(Boolean).join(', ') || s.name || s.code;
+    try {
+      const results = list.map(s => ({ code: s.code, version: s.version, answers: s.answers.slice(0, e.nq).map(a => a || '') }));
+      const r = await api('/api/corrector/results', { method: 'POST', body: { assessment_id: +Y.id, results } });
+      const bad = new Set(); [].concat(r.unmatched || [], r.errors || [], r.duplicates || []).forEach(x => { const t = typeof x === 'string' ? x : (x.code || '') + ' ' + (x.msg || ''); list.forEach(s => { if (t.includes(s.code)) bad.add(s.id); }); });
+      list.forEach(s => { if (!bad.has(s.id) && (r.saved || 0) > 0) s.sent = Date.now(); });
+      e.campus.last = { at: Date.now(), saved: r.saved }; X().changed(); Y.res = r;
+      const failed = list.filter(s => bad.has(s.id)), okN = list.length - failed.length;
+      if (okN === 1 && !failed.length) K.toast(T('cpAutoOk', { n: name(list[0]) }), 2600); else if (okN) K.toast(T('cpSent', { s: okN }), 2600);
+      failed.forEach(s => { const m = [].concat(r.unmatched || [], r.errors || []).map(x => (typeof x === 'string' ? x : (x.msg || ''))).find(Boolean) || ''; K.toast(T('cpAutoFail', { n: name(s), m }), 7000); });
+    } catch (err) { K.toast(T('cpAutoFail', { n: list.length > 1 ? list.length : name(list[0]), m: err.message }), 6000); }
+    redraw();
+  }
+  /* lo llama el escáner al guardar una hoja (también al corregir una ya guardada) */
+  function onSaved(s) { if (!active() || !autoOn() || !s || !s.code) return; delete s.sent; Q.map.set(s.id, s); clearTimeout(Q.t); Q.t = setTimeout(flushAuto, 700); }
   /* otro examen: se mira si es del campus (se recarga su clave y su lista) o libre (se deja de vigilar la clave) */
   function attach(id) { Y.id = id == null ? null : String(id); Y.state = 'off'; Y.res = null; Y.noKey = false; S.base = null; S.at = 0; S.fail = false; if (Y.id) load(true); else paint(); }
   let started = false;
-  function followExam() { if (!started) return; const e = X().exam; if (e && e.campus && e.campus.id != null) { if (String(e.campus.id) !== String(Y.id) || Y.state === 'off') attach(e.campus.id); } else if (Y.id) attach(null); }
+  function followExam() { if (!started || Y.state === 'loading') return; const e = X().exam; if (e && e.campus && e.campus.id != null) { if (String(e.campus.id) !== String(Y.id) || Y.state === 'off') attach(e.campus.id); } else if (Y.id) attach(null); }
   async function send() {
     const e = X().exam, list = ready();
     if (!list.length) { K.toast(T('cpNothing'), 2800); return; }
@@ -166,7 +193,7 @@
     try {
       const results = list.map(s => ({ code: s.code, version: s.version, answers: e.versions.length ? s.answers.slice(0, e.nq).map(a => a || '') : [] }));
       const r = await api('/api/corrector/results', { method: 'POST', body: { assessment_id: +Y.id, results } });
-      Y.res = r; e.campus.last = { at: Date.now(), saved: r.saved }; X().changed(); K.toast(T('cpSent', { s: r.saved }), 3500);
+      Y.res = r; list.forEach(s => { s.sent = Date.now(); }); e.campus.last = { at: Date.now(), saved: r.saved }; X().changed(); K.toast(T('cpSent', { s: r.saved }), 3500);
     } catch (err) { Y.res = { fail: err.message }; K.toast(T('cpErrGen', { m: err.message }), 5000); }
     Y.busy = false; redraw();
   }
@@ -235,6 +262,8 @@
     <section class="panel stack"><h2 style="margin:0">${T('cpSheets')}</h2><p class="muted" style="margin:0">${T('cpSheetsHelp')}${e.versions.length > 1 ? ' ' + T('cpVersions') : ''}</p>
       <div class="row"><button class="btn" data-act="c:pv" ${e.students.length ? '' : 'disabled'}>${T('cpPreview')}</button><button class="btn ghost" data-act="c:pr" ${e.students.length ? '' : 'disabled'}>${T('cpPrint')}</button><button class="btn ghost" data-tab="scan">${T('tab_scan')}</button></div></section>
     <section class="panel stack"><h2 style="margin:0">${T('cpSend')}</h2><p class="muted" style="margin:0">${n ? T('cpSendHelp', { n, t: e.students.length }) : T('cpNothing')}</p>
+      <label class="check"><input type="checkbox" data-act="c:auto" ${autoOn() ? 'checked' : ''}> ${T('cpAuto')}</label><small class="muted">${T('cpAutoHelp')}</small>
+      ${n ? `<small class="muted">${T('cpSentN', { n: e.students.filter(s => s.sent).length, t: n })}</small>` : ''}
       <div class="row"><button class="btn big" data-act="c:send" ${n && !Y.busy ? '' : 'disabled'}>${Y.busy ? T('cpSending') : T('cpSendBtn')}</button></div>
       ${last ? `<small class="muted">${T('cpLast', { d: new Date(last.at).toLocaleString(K.locale()), s: last.saved })}</small>` : ''}
       ${r && r.fail ? `<div class="banner-warn" role="alert">${esc(r.fail)}</div>` : ''}
@@ -245,6 +274,7 @@
     if (!MODE) return;
     $('#app').addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-act^="c:"]'); if (!b) return; const a = b.dataset.act;
+      if (a === 'c:auto') { const e = X().exam; e.campus.auto = b.checked; X().changed(); if (b.checked) { ready().filter(s => !s.sent).forEach(s => Q.map.set(s.id, s)); clearTimeout(Q.t); Q.t = setTimeout(flushAuto, 300); } return; }
       if (a === 'c:new') newAssessment(); else if (a === 'c:open') openAssessment(b.dataset.id, b.dataset.key === '1' ? 'scan' : 'key'); else if (a === 'c:reload') load(false); else if (a === 'c:key') saveKey(true); else if (a === 'c:send') send();
       else if (a === 'c:pv') X().openPreview('personal'); else if (a === 'c:pr') X().doPrint(X().docFor('personal'));
     });
@@ -252,8 +282,9 @@
   function start() {
     if (!MODE) return;
     const back = () => { const l = document.querySelector('.kit-back .lbl'); if (l) l.textContent = T('backCampus'); }; back(); K.onLang(back);
-    X().TABS.splice(X().TABS.indexOf('scan') + 1, 0, 'campus'); watch(); started = true;      // la pestaña solo se muestra cuando el examen abierto es del campus
-    if (Y.id && /^\d+$/.test(Y.id)) { X().showTab(hashTab()); load(true, hashTab()); } else { Y.id = null; followExam(); }
+    X().TABS.splice(X().TABS.indexOf('scan') + 1, 0, 'campus'); watch();      // la pestaña solo se muestra cuando el examen abierto es del campus
+    /* con ?assessment=… se carga esa prueba (load marca «cargando» al instante, así followExam no la suelta); sin él se sigue el examen abierto */
+    if (Y.id && /^\d+$/.test(Y.id)) { load(true, hashTab()); started = true; } else { Y.id = null; started = true; followExam(); }
   }
-  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
+  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, onSaved, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
 })();
