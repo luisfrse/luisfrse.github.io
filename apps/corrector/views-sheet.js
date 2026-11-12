@@ -23,7 +23,7 @@
       <section class="panel sheet-thumb" aria-label="${esc(T('shPreview'))}"><div class="thumb">${C.hoja.sheetSVG(e).replace(/width="210mm" height="297mm"/, 'width="100%"')}</div></section>
     </div>
     <section class="panel stack"><h2 style="margin:0">${T('shTemplates')}</h2><p class="muted" style="margin:0">${T('shTemplatesHelp')}</p>
-      <div class="grid cols-3">${tpl(20)}${tpl(50)}${tpl(100)}</div></section>
+      <div class="grid cols-3">${tpl(40)}${tpl(50)}${tpl(100)}</div></section>
     <section class="panel stack"><h2 style="margin:0">${T('shHow')}</h2>
       <ol class="steps"><li>${T('shHow1')}</li><li>${T('shHow2')}</li><li>${T('shHow3')}</li><li>${T('shHow4')}</li></ol>
       <div class="row"><button class="btn ghost small" data-tab="students">${T('tab_students')}</button><button class="btn small" data-tab="scan">${T('tab_scan')}</button></div></section>`;
