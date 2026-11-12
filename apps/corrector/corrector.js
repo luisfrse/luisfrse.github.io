@@ -68,7 +68,7 @@
       return o;
     });
     e.codeLen = K.clamp(parseInt(e.codeLen, 10) || 4, 3, 10); e.codeCheck = !!e.codeCheck; e.codeMode = e.codeMode === 'seq' ? 'seq' : 'random';
-    e.sheet = { nq: [20, 50, 100].includes(+(e.sheet && e.sheet.nq)) ? +e.sheet.nq : 0 };
+    e.sheet = { nq: [40, 50, 100].includes(+(e.sheet && e.sheet.nq)) ? +e.sheet.nq : 0 };
     e.updated = e.updated || Date.now();
     e.created = e.created || e.updated;
     return e;

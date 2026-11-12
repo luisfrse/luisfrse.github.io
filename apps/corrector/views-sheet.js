@@ -13,7 +13,7 @@
     <div class="grid cols-2 sheet-grid">
       <section class="panel stack">
         <h2>${T('shTitle')}</h2><p class="muted" style="margin:0">${T('shHelp')}</p>
-        <div class="field"><span style="font-weight:600">${T('shSize')}</span><div class="seg" role="group">${[[0, T('shAuto', { n: e.nq })], [20, '20'], [50, '50'], [100, '100']].map(([v, l]) => `<button type="button" data-act="x:shsize" data-v="${v}" aria-pressed="${(sh.nq || 0) === v}" ${v && v < e.nq ? 'disabled' : ''}>${esc(l)}</button>`).join('')}</div><small>${T('shSizeHelp')}</small></div>
+        <div class="field"><span style="font-weight:600">${T('shSize')}</span><div class="seg" role="group">${[[0, T('shAuto', { n: e.nq })], [40, '40'], [50, '50'], [100, '100']].map(([v, l]) => `<button type="button" data-act="x:shsize" data-v="${v}" aria-pressed="${(sh.nq || 0) === v}" ${v && v < e.nq ? 'disabled' : ''}>${esc(l)}</button>`).join('')}</div><small>${T('shSizeHelp')}</small></div>
         <div class="grid cols-2"><label class="field">${T('codeLen')}<select data-sh="codeLen">${[3, 4, 5, 6, 7, 8, 9, 10].map(n => `<option ${n === e.codeLen ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
           <label class="check" style="align-self:end"><input type="checkbox" data-sh="codeCheck" ${e.codeCheck ? 'checked' : ''}> ${T('codeCheck')}</label></div>
         <div class="chip accent" style="align-self:flex-start">${T('shFormat', { q: p.nq, o: p.nopt, v: p.nver, l: p.codeLen })}</div>
