@@ -22,6 +22,8 @@
       </section>
       <section class="panel sheet-thumb" aria-label="${esc(T('shPreview'))}"><div class="thumb">${C.hoja.sheetSVG(e).replace(/width="210mm" height="297mm"/, 'width="100%"')}</div></section>
     </div>
+    <section class="panel stack"><h2 style="margin:0">${T('shPersonal')}</h2><p class="muted" style="margin:0">${T('shPersonalHelp')}</p>
+      ${e.students.length ? `<div class="row"><span class="chip accent">${T('shPersonalN', { n: e.students.length, c: e.students.filter(x => x.code).length })}</span><button class="btn" data-act="x:pv" data-kind="personal">${T('preview')}</button><button class="btn ghost" data-act="x:pr" data-kind="personal">${T('printBtn')}</button></div>` : `<div class="row"><small class="muted">${T('shPersonalNone')}</small><button class="btn ghost small" data-tab="students">${T('tab_students')}</button></div>`}</section>
     <section class="panel stack"><h2 style="margin:0">${T('shTemplates')}</h2><p class="muted" style="margin:0">${T('shTemplatesHelp')}</p>
       <div class="grid cols-3">${tpl(40)}${tpl(50)}${tpl(100)}</div></section>
     <section class="panel stack"><h2 style="margin:0">${T('shHow')}</h2>
