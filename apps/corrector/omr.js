@@ -242,27 +242,30 @@
     const strong = flat.filter(v => v > 0.15), mk = strong.length ? strong[strong.length >> 1] : 0.6;
     const weak = Math.max(opts.weak || LO, med + KS * sigma), T = Math.max(HI, 2 * weak, MKF * mk), wb = 0.6 * weak;
 
-    const decide = (ms, sc, letters) => {
+    const decide = (ms, sc, letters, tolLow) => {
       const order = sc.map((v, i) => i).sort((i, j) => sc[j] - sc[i]), top = sc[order[0]], sec = sc.length > 1 ? sc[order[1]] : 0;
       const ink = order.filter(i => sc[i] >= weak).map(i => letters[i]);
       let a = '', st = 'blank', cands = [];
       if (top >= T) {
         a = letters[order[0]];
         if (sec >= Math.max(T, 0.5 * top)) { st = 'multi'; cands = order.filter(i => sc[i] >= Math.max(T, 0.5 * top)).map(i => letters[i]); }
-        else if (sec >= weak) { st = 'doubt'; cands = ink; }   // marca firme + otra más débil (borrado, roce, segunda marca tenue)
-        else st = 'ok';
+        else if (sec >= SMUDGE * top) { st = 'doubt'; cands = ink; }   // marca firme + otra a medias (> 45 % de la firme): no se sabe cuál es la buena → revisión
+        else st = top < 0.5 * mk ? 'doubt' : 'ok';                   // marca firme + restos pequeños (mancha, roce, goma, tipex a medias): se queda la bien pintada; si la «firme» es mucho más clara que las demás de la hoja (mancha suelta), a revisión
+        if (st === 'doubt' && sec < SMUDGE * top) cands = [letters[order[0]]];
       } else if (top >= wb) {   // sin marca firme: cualquier rastro de tinta (umbral más bajo) va a revisión, nunca «en blanco» en silencio
         a = letters[order[0]]; st = 'doubt'; cands = order.filter(i => sc[i] >= wb).map(i => letters[i]);
         if (sec >= weak && sec >= 0.5 * top) st = 'multi';
       }
       /* zona ilegible (reflejo, desenfoque local): si falta el aro de alguna burbuja clara, no se da por buena */
       const low = ms.some((m, i) => sc[i] < T && m.vis < 0.35 * visRef);
-      if (low && (st === 'ok' || st === 'blank')) { st = 'doubt'; cands = ink; }
-      const c = st === 'ok' ? Math.min(1, (top - T) / T, (weak - Math.max(0, sec)) / weak * 2) : st === 'blank' ? Math.min(1, (weak - Math.max(0, top)) / weak * 2) : 0;
+      if (low && (st === 'blank' || (st === 'ok' && !tolLow))) { st = 'doubt'; cands = ink; }   // con marca firme, un aro tapado suelto (tipex) no invalida la pregunta si es un caso aislado en la hoja
+      const c = st === 'ok' ? Math.min(1, (top - T) / T, (1 - Math.max(0, sec) / top) * 1.5) : st === 'blank' ? Math.min(1, (weak - Math.max(0, top)) / weak * 2) : 0;
       return { a, st, cands, low, c: +Math.max(0, c).toFixed(2), s: sc.map(v => +v.toFixed(3)) };
     };
     const LET = ['A', 'B', 'C', 'D', 'E'];
-    const q = qs.map((ms, i) => decide(ms, rels[i], LET));
+    /* zonas ilegibles: si son pocas y sueltas (tipex sobre una burbuja) no pesan; si son muchas (reflejo, desenfoque) sí */
+    const nLow0 = qs.filter((ms, i) => decide(ms, rels[i], LET).low).length, tolLow = nLow0 <= Math.max(4, Math.round(0.12 * g.nq));
+    const q = qs.map((ms, i) => decide(ms, rels[i], LET, tolLow));
     let version = 'A', versionSt = 'ok';
     if (vs.length) { const d = decide(vs, rels[qs.length], 'ABCD'); version = d.st === 'ok' || d.st === 'doubt' ? d.a : ''; versionSt = d.st === 'ok' ? 'ok' : d.st === 'blank' ? 'blank' : d.st === 'multi' ? 'multi' : 'doubt'; }
     const cd = cs.map((ms, j) => decide(ms, rels[qs.length + (vs.length ? 1 : 0) + j], '0123456789'.split('')));
@@ -278,7 +281,7 @@
     if (opts.debug) out.raw = { qs, off: gq.map(G => G.map(p => [p.dx, p.dy])) };
     return out;
   }
-  let LO = 0.035, HI = 0.08, KS = 6, MKF = 0.2, VIS = 0.1;
+  let LO = 0.035, HI = 0.08, KS = 6, MKF = 0.2, VIS = 0.1, SMUDGE = 0.45;
 
   /* hoja rectificada (RGBA) para la pantalla de revisión */
   function rectify(img, H, ppm = 4) {
