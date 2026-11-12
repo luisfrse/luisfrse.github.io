@@ -180,7 +180,7 @@
       const cur = active() ? String(Y.id) : '';
       const card = (a) => `
         <div class="stat"><b style="font-size:1.1rem">${esc(a.title)}</b>
-          <span>${a.date ? esc(K.fmtDate(a.date)) : ''}</span>
+          <span>${esc([a.ud, a.tema ? 'Tema ' + a.tema : ''].filter(Boolean).join(' · '))}${(a.ud || a.tema) && a.date ? ' · ' : ''}${a.date ? esc(K.fmtDate(a.date)) : ''}</span>
           <span><span class="chip ${a.has_key ? 'accent' : 'warn'}">${T(a.has_key ? 'cpKeyYes' : 'cpKeyNo')}</span> ${a.nq ? a.nq + ' ' + T('qs') : ''}${a.scanned ? ' · ' + T('cpCorrN', { n: a.scanned }) : ''}</span>
           <div class="row" style="margin-top:10px">${String(a.id) === cur ? `<span class="chip accent">${T('cpCurrent')}</span>` : `<button class="btn small" data-act="c:open" data-id="${a.id}" data-key="${a.has_key ? 1 : 0}">${T('cpOpen')}</button>`}</div></div>`;
       /* agrupadas por asignatura (por orden alfabético); dentro de cada una, la más reciente primero */

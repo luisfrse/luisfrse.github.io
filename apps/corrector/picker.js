@@ -73,7 +73,7 @@
           const list = camp.filter(a => String(a.id) !== String(ex.campus && ex.campus.id) && match(a.title, a.subject_title));
           const by = new Map(); list.forEach(a => { if (!by.has(a.subject_title)) by.set(a.subject_title, []); by.get(a.subject_title).push(a); });
           const subs = [...by.keys()].sort((x, y) => x.localeCompare(y, K.locale()));
-          if (subs.length) html += `<h3 class="pk-h">${t('pickCampus')}</h3>` + subs.map(n => `<div class="pk-subj">${esc(n)}</div>` + by.get(n).map(a => row({ kind: 'c', id: a.id, name: a.title, date: a.date, meta: (a.nq ? a.nq + ' ' + t('qs') : ''), chips: `<span class="pk-chips"><span class="chip ${a.has_key ? 'accent' : 'warn'}">${t(a.has_key ? 'cpKeyYes' : 'cpKeyNo')}</span>${a.scanned ? `<span class="chip">${t('cpCorrN', { n: a.scanned })}</span>` : ''}</span>` }).replace(' · </span>', '</span>')).join('')).join('');
+          if (subs.length) html += `<h3 class="pk-h">${t('pickCampus')}</h3>` + subs.map(n => `<div class="pk-subj">${esc(n)}</div>` + by.get(n).map(a => row({ kind: 'c', id: a.id, name: a.title, sub: [a.ud, a.tema ? 'Tema ' + a.tema : ''].filter(Boolean).join(' · '), date: a.date, meta: (a.nq ? a.nq + ' ' + t('qs') : ''), chips: `<span class="pk-chips"><span class="chip ${a.has_key ? 'accent' : 'warn'}">${t(a.has_key ? 'cpKeyYes' : 'cpKeyNo')}</span>${a.scanned ? `<span class="chip">${t('cpCorrN', { n: a.scanned })}</span>` : ''}</span>` }).replace(' · </span>', '</span>')).join('')).join('');
         }
       }
       /* libres */
