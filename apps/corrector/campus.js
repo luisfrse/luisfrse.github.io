@@ -21,6 +21,7 @@
     cpSent: 'Enviado: {s} guardados.', cpUnmatched: 'Sin emparejar', cpDup: 'Duplicados', cpErrors: 'Con errores', cpLast: 'Último envío: {d} ({s} guardados)', cpSending: 'Enviando…', cpNoCode: 'Alumnos sin código: {n}', cpPrivacy: 'La lista de clase y los resultados se guardan también en este navegador.',
     cpNew: '+ Nueva prueba en papel en el campus', cpNewTitle: 'Nueva prueba en papel', cpNewHelp: 'Se crea en el campus (oculta al alumnado) y se abre aquí para definir la clave y corregir. Las pruebas creadas con «Nuevo examen» de «Mis exámenes» son libres: no están en ninguna asignatura y no envían notas al campus.', cpSubject: 'Asignatura', cpTitleF: 'Título', cpDateF: 'Fecha', cpKindF: 'Tipo', cpExam: 'Examen', cpForm: 'Formativa', cpWeight: 'Peso', cpRa: 'RA / UD (opcional)', cpNoRa: 'Sin RA / UD', cpCreate: 'Crear y abrir', cpCancel: 'Cancelar', cpNewErr: 'No se pudo crear la prueba: {m}',
     cpAuto: 'Enviar cada hoja al campus al guardarla', cpAutoHelp: 'Al guardar una hoja escaneada, su nota se envía sola al campus (la clave tiene que estar guardada). Si algo falla, queda pendiente y se envía con «Enviar resultados».', cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: 'No se pudo enviar la nota de {n}: {m}', cpAutoNoKey: 'La clave aún no está en el campus: guárdala y pulsa «Enviar resultados» para enviar las notas.', cpSentN: '{n} de {t} con nota ya enviada al campus',
+    cpUnscanOk: 'Resultado quitado del campus.', cpUnscanFail: 'No se pudo quitar del campus: {m}', cpUnscanManual: 'Esa nota se cambió a mano en el campus. ¿Quitarla igualmente?',
     cpListTitle: 'Pruebas en papel del campus', cpListHelp: 'Abre una para definir su clave, imprimir las hojas personalizadas, escanear y enviar las notas. Todo queda guardado en el campus.', cpOpen: 'Abrir', cpNone: 'Aún no hay pruebas en papel. Créalas en el campus (Evaluación → Pruebas y tareas → «En papel»).', cpKeyYes: 'Con clave', cpKeyNo: 'Sin clave', cpCorrN: '{n} corregidas', cpCurrent: 'Abierta', cpListErr: 'No se pudo cargar la lista de pruebas del campus.',
     cpScanned: '{n} escaneadas'    ,cpSaved: 'Clave guardada en el campus ✓ {t}', cpUnsaved: 'Sin guardar en el campus', cpSaving: 'Guardando en el campus…', cpFail: 'No se pudo guardar en el campus (se reintenta). Tus cambios siguen aquí.', cpSaveNow: 'Guardar en el campus', cpNoKeyYet: 'Clave aún no guardada en el campus'
   });
@@ -35,6 +36,7 @@
     cpSent: 'Enviat: {s} desats.', cpUnmatched: 'Sense emparellar', cpDup: 'Duplicats', cpErrors: 'Amb errors', cpLast: 'Darrer enviament: {d} ({s} desats)', cpSending: 'Enviant…', cpNoCode: 'Alumnes sense codi: {n}', cpPrivacy: 'La llista de classe i els resultats es desen també en aquest navegador.',
     cpNew: '+ Nova prova en paper al campus', cpNewTitle: 'Nova prova en paper', cpNewHelp: "Es crea al campus (oculta a l'alumnat) i s'obre aquí per definir la clau i corregir. Les proves creades amb «Nou examen» de «Els meus exàmens» són lliures: no són a cap assignatura i no envien notes al campus.", cpSubject: 'Assignatura', cpTitleF: 'Títol', cpDateF: 'Data', cpKindF: 'Tipus', cpExam: 'Examen', cpForm: 'Formativa', cpWeight: 'Pes', cpRa: 'RA / UD (opcional)', cpNoRa: 'Sense RA / UD', cpCreate: 'Crea i obre', cpCancel: 'Cancel·la', cpNewErr: "No s'ha pogut crear la prova: {m}",
     cpAuto: 'Envia cada full al campus en desar-lo', cpAutoHelp: "En desar un full escanejat, la seva nota s'envia sola al campus (la clau ha d'estar desada). Si alguna cosa falla, queda pendent i s'envia amb «Envia resultats».", cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: "No s'ha pogut enviar la nota de {n}: {m}", cpAutoNoKey: "La clau encara no és al campus: desa-la i prem «Envia resultats» per enviar les notes.", cpSentN: '{n} de {t} amb nota ja enviada al campus',
+    cpUnscanOk: 'Resultat tret del campus.', cpUnscanFail: "No s'ha pogut treure del campus: {m}", cpUnscanManual: "Aquesta nota es va canviar a mà al campus. Treure-la igualment?",
     cpListTitle: 'Proves en paper del campus', cpListHelp: "Obre'n una per definir-ne la clau, imprimir els fulls personalitzats, escanejar i enviar les notes. Tot queda desat al campus.", cpOpen: 'Obre', cpNone: "Encara no hi ha proves en paper. Crea-les al campus (Avaluació → Proves i tasques → «En paper»).", cpKeyYes: 'Amb clau', cpKeyNo: 'Sense clau', cpCorrN: '{n} corregides', cpCurrent: 'Oberta', cpListErr: "No s'ha pogut carregar la llista de proves del campus.",
     cpScanned: '{n} escanejats'    ,cpSaved: 'Clau desada al campus ✓ {t}', cpUnsaved: 'Sense desar al campus', cpSaving: 'Desant al campus…', cpFail: "No s'ha pogut desar al campus (es reintenta). Els teus canvis són aquí.", cpSaveNow: 'Desa al campus', cpNoKeyYet: 'Clau encara no desada al campus'
   });
@@ -49,6 +51,7 @@
     cpSent: 'Sent: {s} saved.', cpUnmatched: 'Unmatched', cpDup: 'Duplicates', cpErrors: 'With errors', cpLast: 'Last send: {d} ({s} saved)', cpSending: 'Sending…', cpNoCode: 'Students without a code: {n}', cpPrivacy: 'The class list and results are also stored in this browser.',
     cpNew: '+ New paper exam in the campus', cpNewTitle: 'New paper exam', cpNewHelp: 'It is created in the campus (hidden from students) and opened here to set the key and grade. Exams made with “New exam” under “My exams” are free: they belong to no subject and do not send grades to the campus.', cpSubject: 'Subject', cpTitleF: 'Title', cpDateF: 'Date', cpKindF: 'Type', cpExam: 'Exam', cpForm: 'Formative', cpWeight: 'Weight', cpRa: 'LO / UD (optional)', cpNoRa: 'No LO / UD', cpCreate: 'Create and open', cpCancel: 'Cancel', cpNewErr: 'Could not create the exam: {m}',
     cpAuto: 'Send each sheet to the campus when saved', cpAutoHelp: 'When a scanned sheet is saved, its grade is sent to the campus automatically (the key must be saved). If something fails it stays pending and goes out with “Send results”.', cpAutoOk: '{n}: grade sent to the campus ✓', cpAutoFail: 'Could not send the grade of {n}: {m}', cpAutoNoKey: 'The key is not in the campus yet: save it and press “Send results” to send the grades.', cpSentN: '{n} of {t} with a grade already sent to the campus',
+    cpUnscanOk: 'Result removed from the campus.', cpUnscanFail: 'Could not remove it from the campus: {m}', cpUnscanManual: 'That grade was changed by hand in the campus. Remove it anyway?',
     cpListTitle: 'Paper exams in the campus', cpListHelp: 'Open one to set its key, print the personalised sheets, scan and send the grades. Everything is saved in the campus.', cpOpen: 'Open', cpNone: 'There are no paper exams yet. Create them in the campus (Assessment → Tests and tasks → “On paper”).', cpKeyYes: 'Has a key', cpKeyNo: 'No key', cpCorrN: '{n} graded', cpCurrent: 'Open', cpListErr: 'Could not load the list of campus exams.',
     cpScanned: '{n} scanned'    ,cpSaved: 'Key saved in the campus ✓ {t}', cpUnsaved: 'Not saved in the campus', cpSaving: 'Saving to the campus…', cpFail: 'Could not save to the campus (retrying). Your changes are kept here.', cpSaveNow: 'Save to the campus', cpNoKeyYet: 'Key not saved in the campus yet'
   });
@@ -179,6 +182,18 @@
     } catch (err) { K.toast(T('cpAutoFail', { n: list.length > 1 ? list.length : name(list[0]), m: err.message }), 6000); }
     redraw();
   }
+  /* quitar del campus el resultado de un alumno (ya enviado o no): true si se puede seguir quitándolo en local */
+  async function removeResult(s) {
+    if (!active() || !s || !s.code) return true;
+    const call = (force) => api('/api/corrector/results/remove', { method: 'POST', body: { assessment_id: +Y.id, code: s.code, force: !!force } });
+    try { await call(false); }
+    catch (err) {
+      if (err.code === 'manual') { if (!(await K.confirm(T('cpUnscanManual'), { danger: true }))) return false; try { await call(true); } catch (e2) { K.toast(T('cpUnscanFail', { m: e2.message }), 5000); return false; } }
+      else if (err.status === 404) { /* nunca llegó al campus: nada que quitar */ }
+      else { K.toast(T('cpUnscanFail', { m: err.message }), 5000); return false; }
+    }
+    Q.map.delete(s.id); K.toast(T('cpUnscanOk'), 2600); return true;
+  }
   /* lo llama el escáner al guardar una hoja (también al corregir una ya guardada) */
   function onSaved(s) { if (!active() || !autoOn() || !s || !s.code) return; delete s.sent; Q.map.set(s.id, s); clearTimeout(Q.t); Q.t = setTimeout(flushAuto, 700); }
   /* otro examen: se mira si es del campus (se recarga su clave y su lista) o libre (se deja de vigilar la clave) */
@@ -286,5 +301,5 @@
     /* con ?assessment=… se carga esa prueba (load marca «cargando» al instante, así followExam no la suelta); sin él se sigue el examen abierto */
     if (Y.id && /^\d+$/.test(Y.id)) { load(true, hashTab()); started = true; } else { Y.id = null; started = true; followExam(); }
   }
-  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, onSaved, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
+  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, onSaved, removeResult, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
 })();

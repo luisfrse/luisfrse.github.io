@@ -4,6 +4,7 @@
   const add = (lang, o) => Object.assign(D[lang], o);
 
   add('es', {
+    unscanBtn: 'Quitar resultado escaneado', unscanHelp: 'Borra sus respuestas escaneadas (y su nota del campus) para volver a escanear su hoja o dejarla sin resultado', unscanQ: '¿Quitar el resultado escaneado de {n}? Se borran sus respuestas.', unscanQCampus: '¿Quitar el resultado escaneado de {n}? Se borran sus respuestas y también su nota en el campus.', unscanDone: 'Resultado quitado.',
     examCenter: 'Centro / instituto', examCenterPh: 'p. ej. Institut Exemple', examSubject: 'Asignatura', examSubjectPh: 'p. ej. Higiene del medio hospitalario', examHeaderHelp: 'Salen en la cabecera de la hoja de respuestas, bajo el título (opcional). No cambian la disposición de la hoja: no hace falta volver a imprimir las ya impresas.',
     shPersonal: 'Hojas con el nombre de cada alumno', shPersonalHelp: 'Una hoja por alumno con apellidos, nombre, código y versión ya impresos: solo tienen que marcar las respuestas. Imprímelas o guárdalas como PDF desde el diálogo de impresión.', shPersonalN: '{n} alumnos · {c} con código', shPersonalNone: 'Aún no hay alumnado: añádelo (o impórtalo) para generar las hojas personalizadas.',
     privacyCampus: 'Guardado en el campus', nextStep: 'Siguiente: {n}', backCampus: 'Campus',
@@ -89,6 +90,7 @@
   });
 
   add('ca', {
+    unscanBtn: 'Treu el resultat escanejat', unscanHelp: 'Esborra les seves respostes escanejades (i la seva nota del campus) per tornar a escanejar el full o deixar-lo sense resultat', unscanQ: 'Treure el resultat escanejat de {n}? S’esborren les seves respostes.', unscanQCampus: 'Treure el resultat escanejat de {n}? S’esborren les seves respostes i també la seva nota al campus.', unscanDone: 'Resultat tret.',
     examCenter: 'Centre / institut', examCenterPh: 'p. ex. Institut Exemple', examSubject: 'Assignatura', examSubjectPh: 'p. ex. Higiene del medi hospitalari', examHeaderHelp: 'Surten a la capçalera del full de respostes, sota el títol (opcional). No canvien la disposició del full: no cal tornar a imprimir els ja impresos.',
     shPersonal: 'Fulls amb el nom de cada alumne', shPersonalHelp: 'Un full per alumne amb cognoms, nom, codi i versió ja impresos: només han de marcar les respostes. Imprimeix-los o desa’ls com a PDF des del diàleg d’impressió.', shPersonalN: '{n} alumnes · {c} amb codi', shPersonalNone: 'Encara no hi ha alumnat: afegeix-lo (o importa’l) per generar els fulls personalitzats.',
     privacyCampus: 'Desat al campus', nextStep: 'Següent: {n}', backCampus: 'Campus',
@@ -170,6 +172,7 @@
   });
 
   add('en', {
+    unscanBtn: 'Remove scanned result', unscanHelp: 'Deletes the scanned answers (and the campus grade) so you can scan the sheet again or leave it without a result', unscanQ: 'Remove the scanned result of {n}? Their answers are deleted.', unscanQCampus: 'Remove the scanned result of {n}? Their answers and their grade in the campus are deleted.', unscanDone: 'Result removed.',
     examCenter: 'School / institution', examCenterPh: 'e.g. Example Institute', examSubject: 'Subject', examSubjectPh: 'e.g. Hospital environment hygiene', examHeaderHelp: 'They appear in the answer sheet header, under the title (optional). They do not change the sheet layout: sheets already printed remain valid.',
     shPersonal: 'Sheets with each student’s name', shPersonalHelp: 'One sheet per student with surname, first name, code and version already printed: they only have to mark the answers. Print them or save as PDF from the print dialog.', shPersonalN: '{n} students · {c} with a code', shPersonalNone: 'There are no students yet: add (or import) them to generate the personalised sheets.',
     privacyCampus: 'Saved in the campus', nextStep: 'Next: {n}', backCampus: 'Campus',

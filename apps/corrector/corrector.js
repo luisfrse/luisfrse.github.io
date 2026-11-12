@@ -454,7 +454,7 @@
       <div class="keybar"><label class="field">${t('answerString')}<input type="text" id="astr" value="${esc(ansString(s.answers))}" autocomplete="off" spellcheck="false" style="font-family:monospace;letter-spacing:.06em"></label>
         <button class="btn" data-act="aapply">${t('apply')}</button></div>
       <div class="row spread"><div class="statline" id="sline"></div>
-        <div class="row"><button class="btn ghost small" data-act="aclear">${t('clearAnswers')}</button><button class="btn danger small" data-act="sremove">${t('removeStudent')}</button></div></div>`;
+        <div class="row">${s.scanned ? `<button class="btn ghost small" data-act="aunscan" title="${esc(t('unscanHelp'))}">${t('unscanBtn')}</button>` : ''}<button class="btn ghost small" data-act="aclear">${t('clearAnswers')}</button><button class="btn danger small" data-act="sremove">${t('removeStudent')}</button></div></div>`;
     updateLine(); updateCursor();
   }
   function updateLine() {
@@ -770,6 +770,12 @@
       case 'sprev': gotoStudent(-1); break;
       case 'snext': gotoStudent(1); break;
       case 'aapply': { const s = curStudent(); if (!s) break; const { arr } = parseAns($('#astr').value); s.answers = fit(arr, exam.nq, ''); changed(); renderEditor(); renderStudentList(); K.toast(t('answersRead', { n: Math.min(arr.length, exam.nq) })); break; }
+      case 'aunscan': {
+        const s = curStudent(); if (!s) break; const camp = C.uiCampus.active() && !!s.code;
+        if (!(await K.confirm(t(camp ? 'unscanQCampus' : 'unscanQ', { n: nm(s) || t('untitled') }), { danger: true, okText: t('unscanBtn') }))) break;
+        if (camp && !(await C.uiCampus.removeResult(s))) break;
+        s.answers = fit([], exam.nq, ''); delete s.scanned; delete s.sent; ui.cur = 0; changed(); renderEditor(); renderStudentList(); K.toast(t('unscanDone'), 2600); break;
+      }
       case 'aclear': { const s = curStudent(); if (!s) break; s.answers = fit([], exam.nq, ''); ui.cur = 0; changed(); renderEditor(); renderStudentList(); break; }
       case 'sremove': { const s = curStudent(); if (s && await K.confirm(t('confirmRemove', { name: s.name || t('unnamed') }), { danger: true, okText: t('removeStudent') })) { const i = exam.students.indexOf(s); exam.students.splice(i, 1); const n = exam.students[Math.min(i, exam.students.length - 1)]; ui.sel = n ? n.id : null; ui.cur = 0; changed(); renderView(); } break; }
       case 'delall': if (await K.confirm(t('confirmDeleteAll', { n: exam.students.length }), { danger: true, okText: t('deleteAll') })) { exam.students = []; ui.sel = null; changed(); renderView(); } break;
