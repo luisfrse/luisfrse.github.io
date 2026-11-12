@@ -26,7 +26,7 @@
   const m = (k, p) => String(MSG[lang()][k] || MSG.es[k] || k).replace(/\{(\w+)\}/g, (x, n) => (p && n in p ? p[n] : x));
 
   const orig = K.storage, local = orig(NS);
-  const SYNCED = (k) => /^exam:[\w\-]{1,60}$/.test(k) || k === 'rosters';
+  const SYNCED = (k) => /^exam:[\w\-]{1,60}$/.test(k) || k === 'rosters' || k === 'omrlearn';
   const mem = new Map();        // clave -> texto JSON (lo del servidor + los cambios locales aún sin enviar)
   const T = {};                 // clave -> marca (ms) del servidor que conocemos: es la «base» al escribir
   const dirty = new Map();      // clave -> 'set' | 'remove' (pendiente de enviar)

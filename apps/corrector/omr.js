@@ -242,6 +242,7 @@
     const strong = flat.filter(v => v > 0.15), mk = strong.length ? strong[strong.length >> 1] : 0.6;
     const weak = Math.max(opts.weak || LO, med + KS * sigma), T = Math.max(HI, 2 * weak, MKF * mk), wb = 0.6 * weak;
 
+    const SM = opts.smudge || SMUDGE, FA = opts.faint || 0.5;   /* umbrales (los de fábrica o los aprendidos de las hojas que validas) */
     const decide = (ms, sc, letters, tolLow) => {
       const order = sc.map((v, i) => i).sort((i, j) => sc[j] - sc[i]), top = sc[order[0]], sec = sc.length > 1 ? sc[order[1]] : 0;
       const ink = order.filter(i => sc[i] >= weak).map(i => letters[i]);
@@ -249,9 +250,9 @@
       if (top >= T) {
         a = letters[order[0]];
         if (sec >= Math.max(T, 0.5 * top)) { st = 'multi'; cands = order.filter(i => sc[i] >= Math.max(T, 0.5 * top)).map(i => letters[i]); }
-        else if (sec >= SMUDGE * top) { st = 'doubt'; cands = ink; }   // marca firme + otra a medias (> 45 % de la firme): no se sabe cuál es la buena → revisión
-        else st = top < 0.5 * mk ? 'doubt' : 'ok';                   // marca firme + restos pequeños (mancha, roce, goma, tipex a medias): se queda la bien pintada; si la «firme» es mucho más clara que las demás de la hoja (mancha suelta), a revisión
-        if (st === 'doubt' && sec < SMUDGE * top) cands = [letters[order[0]]];
+        else if (sec >= SM * top) { st = 'doubt'; cands = ink; }   // marca firme + otra a medias (> 45 % de la firme): no se sabe cuál es la buena → revisión
+        else st = top < FA * mk ? 'doubt' : 'ok';                   // marca firme + restos pequeños (mancha, roce, goma, tipex a medias): se queda la bien pintada; si la «firme» es mucho más clara que las demás de la hoja (mancha suelta), a revisión
+        if (st === 'doubt' && sec < SM * top) cands = [letters[order[0]]];
       } else if (top >= wb) {   // sin marca firme: cualquier rastro de tinta (umbral más bajo) va a revisión, nunca «en blanco» en silencio
         a = letters[order[0]]; st = 'doubt'; cands = order.filter(i => sc[i] >= wb).map(i => letters[i]);
         if (sec >= weak && sec >= 0.5 * top) st = 'multi';
@@ -277,7 +278,7 @@
     const nMarked = flat.filter(v => v >= T).length, nLow = qq.filter(x => x.low).length;
     const sharp = Math.max(0, Math.min(1, visMed / VIS)), quiet = Math.max(0, Math.min(1, 1.5 - weak / (2 * LO)));
     const conf = Math.max(0, Math.min(1, (0.4 * sharp + 0.3 * quiet + 0.3 * (1 - Math.min(1, flagged / (0.15 * nq + 2)))) * (nLow > 0.1 * nq ? 0.5 : 1))) * (nMarked ? 1 : 0.3);
-    const out = { ok: true, H, quad: best.src, pxmm, T, weak, base, sigma, sharp: visMed, q, version, versionSt, code, codeRaw, codeSt, cd, conf, level: conf >= 0.75 ? 'good' : conf >= 0.45 ? 'fair' : 'bad', flagged, nMarked, nLow, w, h };
+    const out = { ok: true, H, quad: best.src, pxmm, T, weak, base, sigma, mk, sharp: visMed, q, version, versionSt, code, codeRaw, codeSt, cd, conf, level: conf >= 0.75 ? 'good' : conf >= 0.45 ? 'fair' : 'bad', flagged, nMarked, nLow, w, h };
     if (opts.debug) out.raw = { qs, off: gq.map(G => G.map(p => [p.dx, p.dy])) };
     return out;
   }

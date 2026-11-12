@@ -87,7 +87,7 @@
   }
   function analyzeCanvas(cv) {
     const id = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, cv.width, cv.height), img = { data: id.data, width: id.width, height: id.height };
-    const res = O.scan(img, gOf(), { nq: X().exam.nq }); return { res, img };
+    const res = O.scan(img, gOf(), Object.assign({ nq: X().exam.nq }, C.omrLearn.opts())); return { res, img };
   }
 
   /* ---------- sonido y vibración ---------- */
@@ -112,7 +112,7 @@
     s.answers = rec.answers.slice(0, e.nq).map(a => (a && 'ABCDE'.slice(0, e.nopt).includes(a) ? a : ''));
     s.version = e.versions.includes(rec.version) ? rec.version : e.versions[0]; s.scanned = Date.now();
     if (!s.code && rec.code && R.validCode(rec.code, e.codeLen, e.codeCheck) && !e.students.some(o => o !== s && o.code === rec.code)) s.code = rec.code;
-    x.changed();
+    x.changed(); C.omrLearn.record(rec);
     const g = x.score(s), fixed = rec.fixed.filter(Boolean).length;
     S.log.push({ id: s.id, prev, created, name: R.display(s) || T('unnamed'), code: s.code, grade: g.grade, c: g.c, w: g.w, b: g.b, flagged: issuesOf(rec).length + fixed, conf: rec.res.level, ts: Date.now() });
     renderSession(); return s;
@@ -257,7 +257,7 @@
   function analyzeLive(v) {
     const k = Math.min(1, 1280 / Math.max(v.videoWidth, v.videoHeight)), w = Math.round(v.videoWidth * k), h = Math.round(v.videoHeight * k), wc = S.work; wc.width = w; wc.height = h;
     const c = wc.getContext('2d', { willReadFrequently: true }); c.drawImage(v, 0, 0, w, h);
-    const id = c.getImageData(0, 0, w, h), res = O.scan({ data: id.data, width: w, height: h }, gOf(), { nq: X().exam.nq });
+    const id = c.getImageData(0, 0, w, h), res = O.scan({ data: id.data, width: w, height: h }, gOf(), Object.assign({ nq: X().exam.nq }, C.omrLearn.opts()));
     if (!res.ok) {
       S.last = { res, f: 1 / k }; S.stable = 0; S.lost++; if (S.lost > 2) S.cool = false; return;
     }
@@ -333,6 +333,7 @@
       <div class="row" style="gap:6px 18px"><label class="check"><input type="checkbox" data-so="auto" ${o.auto ? 'checked' : ''}> ${T('optAuto')}</label><label class="check"><input type="checkbox" data-so="overlay" ${o.overlay ? 'checked' : ''}> ${T('optOverlay')}</label>
         <label class="check"><input type="checkbox" data-so="sound" ${o.sound ? 'checked' : ''}> ${T('optSound')}</label><label class="check"><input type="checkbox" data-so="vib" ${o.vib ? 'checked' : ''}> ${T('optVib')}</label></div>
       <small class="muted">${T('scPrivacy')}</small>
+      <div class="row" style="gap:8px;align-items:center"><small class="muted" id="ol-status"><b>${T('olTitle')}:</b> ${esc(C.omrLearn.status())}</small><button class="btn ghost small" data-act="x:olreset">${T('olReset')}</button></div>
     </section>
     <section class="panel stack" id="sessionbox"></section>`;
   }
@@ -348,11 +349,11 @@
   function init() {
     S.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const app = $('#app');
-    app.addEventListener('click', (ev) => {
+    app.addEventListener('click', async (ev) => {
       const b = ev.target.closest('[data-act]'); if (!b) return; const a = b.dataset.act;
       if (a === 'x:live') startLive(); else if (a === 'x:stoplive') stopLive();
       else if (a === 'x:snap') { if (S.video && !S.busy) capture(S.video); }
-      else if (a === 'x:torch') toggleTorch(); else if (a === 'x:undo') undoLast();
+      else if (a === 'x:torch') toggleTorch(); else if (a === 'x:undo') undoLast(); else if (a === 'x:olreset') { if (await K.confirm(T('olResetQ'))) { C.omrLearn.reset(); const st = $('#ol-status'); if (st) st.innerHTML = '<b>' + T('olTitle') + ':</b> ' + esc(C.omrLearn.status()); K.toast(T('olDone'), 2400); } }
       else if (a === 'x:clearlog') { S.log = []; renderSession(); }
     });
     app.addEventListener('change', (ev) => {

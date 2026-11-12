@@ -6,7 +6,7 @@
 (() => {
   'use strict';
   const V = '?v=7';
-  const LIST = ['i18n.js', 'i18n-ext.js', 'geom.js', 'hoja.js', 'omr.js', 'roster.js', 'xlsx.js', 'qr.js', 'sync.js', 'views-students.js', 'views-sheet.js', 'views-scan.js', 'views-sync.js', 'campus.js', 'picker.js', 'corrector.js'];
+  const LIST = ['i18n.js', 'i18n-ext.js', 'geom.js', 'hoja.js', 'omr.js', 'roster.js', 'xlsx.js', 'omrlearn.js', 'qr.js', 'sync.js', 'views-students.js', 'views-sheet.js', 'views-scan.js', 'views-sync.js', 'campus.js', 'picker.js', 'corrector.js'];
   /* async=false: se descargan a la vez pero se ejecutan en orden */
   const load = (src) => new Promise((ok, ko) => { const s = document.createElement('script'); s.async = false; s.src = src + V; s.onload = ok; s.onerror = () => ko(new Error('No se pudo cargar ' + src)); document.body.appendChild(s); });
   const fail = (e) => { const a = document.getElementById('app'); if (a) a.innerHTML = '<div class="panel banner-warn" role="alert">' + String(e && e.message || e).replace(/[<>&]/g, '') + '</div>'; };
