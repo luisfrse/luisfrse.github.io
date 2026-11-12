@@ -153,7 +153,7 @@
     return '<div class="unlocked"><h3>Fragment recuperat</h3>' +
       '<div class="frag" aria-label="Fragment de la clau">' + d.frag.split('').map((c, k) => '<span style="animation-delay:' + (k * 0.12) + 's">' + esc(c) + '</span>').join('') + '</div>' +
       '<p class="dim" style="margin:0">Guardeu-lo: a la clau final haureu d’ordenar tots els fragments.</p></div>' +
-      '<details class="fx" open><summary>Fitxes de repàs (' + d.fitxes.length + ' instruments)</summary><div class="fitxes">' +
+      '<details class="repas" open><summary>Fitxes de repàs (' + d.fitxes.length + ' instruments)</summary><div class="fitxes">' +
       d.fitxes.map(f => '<article class="fitxa"><figure>' + imgTag(f.id, f.nom) + '</figure><div><b>' + esc(f.nom) + '</b><span class="tp">' + esc(f.tipus) + '</span><p>' + esc(f.funcio) + '</p></div></article>').join('') +
       '</div></details>';
   }

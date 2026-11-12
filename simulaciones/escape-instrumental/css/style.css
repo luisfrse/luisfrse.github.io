@@ -164,9 +164,9 @@ select option { background: #061a1d; color: var(--ink); }
 .frag { display: inline-flex; gap: 6px; }
 .frag span { min-width: 52px; padding: 6px 12px; text-align: center; border: 2px solid var(--ok); border-radius: 4px; color: var(--ok); font: 700 2rem/1.1 var(--mono); animation: pop .5s both; }
 @keyframes pop { from { transform: translateY(10px) scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
-details.fx { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
-details.fx > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; }
-details.fx[open] > summary { border-bottom: 1px solid var(--line); }
+details.repas { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+details.repas > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; }
+details.repas[open] > summary { border-bottom: 1px solid var(--line); }
 .fitxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; padding: 16px; }
 .fitxa { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding: 10px; background: var(--panel-2); border-radius: 6px; }
 .fitxa figure { margin: 0; width: 84px; height: 84px; background: var(--paper); border-radius: 4px; overflow: hidden; }
