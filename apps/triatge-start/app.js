@@ -835,6 +835,11 @@
       p.appendChild(h('div', { class: 'empty sm' }, ic('ambulance', 'big'), h('p', null, next.length ? t('evac.noneWaiting') : t('evac.noMore'))));
       if (next.length) p.appendChild(h('ul', { class: 'eta' }, next.map((a) => h('li', null, h('b', null, t('amb.' + a.kind) + ' ' + a.id), h('span', null, t('evac.eta', { t: fmtT(a.at) }))))));
     }
+    /* ¿cabe esta víctima en esta ambulancia? (camilla o asiento; el autobús solo lleva a quien camina) */
+    const canLoad = (a, v) => { const f = L.freeSlots(a), canSeat = v.phys.walk && f.seat > 0; return (f.stretcher > 0 || canSeat) && !(a.kind === 'BUS' && !v.phys.walk); };
+    /* carga por prioridad (rojos primero) todo lo que quepa; solo en práctica/guiado: en evaluación y reto la prioridad la decide el alumno */
+    const autoFill = async function (a) { for (const v of ready.slice()) { if (v.st.loadedIn || !canLoad(a, v)) continue; const r = await run({ type: 'load', amb: a.id, id: v.id }); if (!r || !r.ok) break; } };
+    const canAuto = S.mode !== 'eval' && S.mode !== 'challenge';
     waiting.forEach(function (a) {
       const f = L.freeSlots(a);
       const slots = [];
@@ -843,20 +848,31 @@
       for (let i = 0; i < f.seat; i++) slots.push(h('li', { class: 'slot' }, ic('users'), t('evac.slot.seat')));
       const destSel = S.destSel && S.destSel[a.id] || suggestDest(a);
       const dests = h('div', { class: 'seg sm', role: 'radiogroup', 'aria-label': t('evac.dest') }, g.sc.hospitals.map(function (hs) { const st = g.hosp[hs.id]; const on = destSel === hs.id; const hh = D.HOSPITALS.find((x) => x.id === hs.id); return h('button', { type: 'button', role: 'radio', 'aria-checked': String(on), class: 'seg-b' + (on ? ' on' : ''), disabled: st.cap - st.used < Math.max(1, a.load.length), on: { click: function () { S.destSel = S.destSel || {}; S.destSel[a.id] = hs.id; refreshSide(); } } }, tx(hh.short)); }));
+      const fits = ready.filter((v) => canLoad(a, v)).length;
       p.appendChild(h('section', { class: 'ambcard' },
         h('header', null, ic('ambulance'), h('b', null, t('amb.' + a.kind) + ' · ' + a.id), h('small', null, t('evac.waitingFor', { t: fmtT(g.t - a.arrivedT) }))),
         h('p', { class: 'muted small' }, t('amb.' + a.kind + 'Desc')),
         h('ul', { class: 'slots' }, slots),
+        canAuto && fits ? btn(t('evac.autoFill'), function () { autoFill(a); }, { cls: 'ghost sm', icon: 'plus', disabled: S.busy, id: 'b-fill-' + a.id }) : null,
         h('div', { class: 'lbl' }, t('evac.dest')), dests,
         btn(t('evac.dispatch'), function () { run({ type: 'dispatch', amb: a.id, dest: destSel }, async function () { sfx.siren(); await wait(500); }).then(function (r) { if (r && r.ok && S.mode !== 'eval' && S.mode !== 'challenge') { const v = r.result.items.some((i) => i.violation), dd = r.result.items.some((i) => i.destScore < 1); if (v || dd) toast((v ? t('fb.prioViol') + ' ' : '') + (dd ? t('fb.destMeh') : ''), 'warn', 6000); else toast(t('fb.dispatchOk'), 'ok'); } }); }, { cls: 'primary', icon: 'next', disabled: !a.load.length || S.busy, id: 'b-dispatch-' + a.id })));
-      if (ready.length) {
-        p.appendChild(h('ul', { class: 'ready' }, ready.map(function (v) {
-          const canSeat = v.phys.walk && f.seat > 0, can = (f.stretcher > 0 || canSeat) && !(a.kind === 'BUS' && !v.phys.walk);
-          return h('li', null, h('span', { class: 'vnum sm tape-' + L.lastTag(v) }, String(v.num)), h('span', { class: 'r-t' }, h('b', null, who(v)), h('small', null, catName(L.lastTag(v)) + ' · ' + (v.phys.walk ? t('evac.walks') : t('evac.stretcher')))),
-            btn(t('evac.load'), function () { run({ type: 'load', amb: a.id, id: v.id }); }, { cls: 'sm', icon: 'plus', disabled: !can || S.busy, id: 'b-load-' + a.id + '-' + v.id }));
-        })));
-      }
     });
+    /* una sola lista de víctimas listas, agrupadas por cinta; cada fila tiene un botón por ambulancia que espera */
+    if (waiting.length && ready.length) {
+      const wrap = h('div', { class: 'ready-wrap' }, h('h3', { class: 'ready-h' }, t('evac.readyTitle', { n: ready.length })));
+      ['red', 'yellow', 'green'].forEach(function (tag) {
+        const grp = ready.filter((v) => L.lastTag(v) === tag); if (!grp.length) return;
+        wrap.appendChild(h('h4', { class: 'ready-g tape-' + tag }, catName(tag) + ' (' + grp.length + ')'));
+        wrap.appendChild(h('ul', { class: 'ready' }, grp.map(function (v) {
+          const btns = waiting.map(function (a) {
+            const lbl = waiting.length > 1 ? t('evac.loadTo', { amb: a.id }) : t('evac.load');
+            return btn(lbl, function () { run({ type: 'load', amb: a.id, id: v.id }); }, { cls: 'sm', icon: 'plus', disabled: !canLoad(a, v) || S.busy, id: 'b-load-' + a.id + '-' + v.id });
+          });
+          return h('li', null, h('span', { class: 'vnum sm tape-' + L.lastTag(v) }, String(v.num)), h('span', { class: 'r-t' }, h('b', null, who(v)), h('small', null, (v.phys.walk ? t('evac.walks') : t('evac.stretcher')))), h('span', { class: 'r-btns' }, btns));
+        })));
+      });
+      p.appendChild(wrap);
+    }
     if (waiting.length && !ready.length) p.appendChild(h('p', { class: 'muted small' }, t('evac.noReady')));
     const moving = g.victims.filter((v) => v.st.stationAt !== null && !v.st.atStation && !v.st.dead && !v.st.evac);
     if (moving.length) p.appendChild(h('p', { class: 'muted small' }, ic('run'), ' ', t('evac.moving', { n: moving.length })));
