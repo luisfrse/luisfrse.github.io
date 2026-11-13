@@ -32,7 +32,7 @@
     'setup.seed': 'Llavor de l\'escenari', 'setup.seedPh': 'Buit = aleatòria', 'setup.newSeed': 'Nova', 'setup.seedHelp': 'Lletres i xifres. La mateixa llavor, escenari, mida i dificultat generen el mateix incident.',
     'setup.go': 'Preparar l\'escenari', 'setup.challengeRules': '{n} víctimes, dificultat alta i {min} minuts reals. Cada segon real també passa a la simulació.',
     'diff.easy': 'Fàcil', 'diff.normal': 'Normal', 'diff.hard': 'Difícil',
-    'diff.easyDesc': 'Ambulàncies aviat, deteriorament lent i valors clars.', 'diff.normalDesc': 'Recursos ajustats, alguna víctima empitjora i hi ha una zona calenta.', 'diff.hardDesc': 'Valors propers als llindars, ambulàncies més tard i deteriorament ràpid. Quan tothom és triat s'obre una segona fase (revaloració i valoració secundària).',
+    'diff.easyDesc': 'Ambulàncies aviat, deteriorament lent i valors clars.', 'diff.normalDesc': 'Recursos ajustats, alguna víctima empitjora i hi ha una zona calenta.', 'diff.hardDesc': 'Valors propers als llindars, ambulàncies més tard i deteriorament ràpid. Quan tothom és triat s\'obre una segona fase (revaloració i valoració secundària).',
     'brief.seed': 'llavor', 'brief.victims': 'Unes {n} víctimes', 'brief.firstAmb': 'Primera ambulància a {t} · {n} unitats previstes', 'brief.tmax': 'Durada màxima: {t} min',
     'brief.safetyTitle': 'Abans d\'entrar: protegeix, avisa, socorre', 'brief.safetyHelp': 'Tria què fas abans d\'entrar a l\'escena. Cada acció consumeix temps.',
     'brief.safetyGuided': 'Marca les tres primeres: protegir-te, avisar el 112 amb dades útils i identificar perills. Les dues últimes són errors habituals.',
