@@ -852,7 +852,7 @@
     /* referència de vapor saturat */
     const ref = h('details', {}, [h('summary', { text: t().satRef })]);
     const tb = h('table', { class: 'sat' }); tb.appendChild(h('tr', {}, [h('th', { text: 'T (°C)' }), h('th', { text: 'P abs (bar)' }), h('th', { text: 'P rel (bar)' })]));
-    [100, 115, 121, 126, 134].forEach((T) => { const P = L.satP(T); tb.appendChild(h('tr', {}, [h('td', { text: String(T) }), h('td', { text: fmt(P, 2) }), h('td', { text: fmt(P - L.PATM, 2) })])); });
+    [100, 115, 121, 126, 130, 134].forEach((T) => { const P = L.satP(T); tb.appendChild(h('tr', {}, [h('td', { text: String(T) }), h('td', { text: fmt(P, 2) }), h('td', { text: fmt(P - L.PATM, 2) })])); });
     ref.appendChild(tb); card.appendChild(ref);
     if (run.prog) {
       card.appendChild(h('p', { class: 'small' }, [h('strong', { text: t().progSel + ' ' }), (run.prog.type === 'N' ? t().typeN : run.prog.type === 'L' ? t().typeL : t().typeB) + ' · ' + run.prog.T + ' °C · ' + fmt(run.prog.hold) + ' min · ' + t().dry.toLowerCase() + ' ' + run.prog.dry + ' min']));

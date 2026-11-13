@@ -30,9 +30,13 @@
   L.satP = function (T) { const c = T < 100 ? ANT_LO : ANT_HI; return Math.pow(10, c[0] - c[1] / (c[2] + T)) / 750.062; };
   L.satT = function (P) { const p = Math.max(P, 0.005); const c = p < PATM ? ANT_LO : ANT_HI; return c[1] / (c[0] - Math.log10(p * 750.062)) - c[2]; };
   L.rel = (Pabs) => Pabs - PATM;
-  /* temps mínim normalitzat de meseta (UNE-EN 285): 121 °C 15 min, 126 °C 10 min, 134 °C 3 min */
-  L.minHold = function (T) { if (T >= 134 && T <= 137) return 3; if (T >= 121 && T <= 124) return 15; return null; };
-  L.isStdT = (T) => T === 121 || T === 134;
+  /* Temperatures de meseta validades i temps (orientatiu). La norma (UNE-EN 285) fixa 121 °C 15 min, 126 °C 10 min i 134 °C 3 min;
+     els cicles de 130-133 °C (≈ 5-6 min) depenen de l'equip i del fabricant. «rec» = temps habitual de protocol. Fora d'aquestes franges, no validat. */
+  const BANDS = [[121, 124, 15, 15], [126, 129, 10, 10], [130, 133, 5, 6], [134, 137, 3, 5]];
+  const band = (T) => BANDS.find((b) => T >= b[0] && T <= b[1]) || null;
+  L.minHold = function (T) { const b = band(T); return b ? b[2] : null; };
+  L.recHold = function (T) { const b = band(T); return b ? b[3] : null; };
+  L.isStdT = (T) => !!band(T);
 
   /* ---------- simulació d'un cicle ----------
      cfg: { type B|N|L|BD|LEAK, T, hold (min), dry (min), preheated, water ok|low, fill (0-1),
@@ -342,14 +346,12 @@
     out.push({ k: 'T', ok: Tok, w: 1.5, code: Tc });
     let hc = 'ok', hok = 1;
     if (!L.isStdT(p.T)) { hc = 'T_nonstd'; hok = 0; }
-    else if (p.T === 134) {
-      if (prion) { if (p.hold < 18) { hc = 'hold_prion'; hok = 0; } }
-      else if (p.hold < 3) { hc = 'hold_short'; hok = 0; }
-      else if (p.hold < 5) { hc = 'hold_low'; hok = 0.5; }
-      else if (p.hold > 10) { hc = 'hold_long'; hok = 0.5; }
-    } else {
-      if (p.hold < 15) { hc = 'hold_short'; hok = 0; }
-      else if (p.hold > 30) { hc = 'hold_long'; hok = 0.5; }
+    else if (prion && p.T === 134) { if (p.hold < 18) { hc = 'hold_prion'; hok = 0; } }
+    else {
+      const mh = L.minHold(p.T), rh = L.recHold(p.T);
+      if (p.hold < mh) { hc = 'hold_short'; hok = 0; }
+      else if (p.hold < rh) { hc = 'hold_low'; hok = 0.5; }
+      else if (p.hold > 2 * rh) { hc = 'hold_long'; hok = 0.5; }
     }
     out.push({ k: 'hold', ok: hok, w: 1.5, code: hc });
     const need = L.dryNeeded(D, run);
@@ -519,7 +521,7 @@
         if (!sp.steam) intPass = false;
         else if (e.ci === 5) intPass = sp.F >= F_CI5;
         else if (e.ci === 4) intPass = sp.t2 >= Math.max(1.5, 0.6 * run.prog.hold);
-        else intPass = sp.t1 >= (run.prog.T >= 130 ? 3.5 : 15);
+        else intPass = sp.t1 >= (run.prog.T >= 130 ? (L.minHold(run.prog.T) || 3) + 0.5 : (L.minHold(run.prog.T) || 15));
         if (e.ciForce === 0) intPass = false;
         if (e.ciForce === 1) intPass = true;
       } else if (e.ci === 1) intPass = extOk;
