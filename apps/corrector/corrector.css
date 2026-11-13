@@ -281,6 +281,9 @@ dialog.kit-dialog.wide{max-width:96vw;max-height:94vh;overflow:auto}
 .cpdot.warn{background:#e0a100}.cpdot.wait{background:#3b82f6}.cpdot.bad{background:#d33}
 .csbadge{left:auto;right:12px}
 @media (max-width:700px){.csbadge{bottom:58px}}
+/* los indicadores fijos no deben tapar los últimos botones de la página: hueco al final para poder desplazarlos por encima */
+html[data-mode="campus"] main.kit-main{padding-bottom:72px}
+@media (max-width:700px){html[data-mode="campus"] main.kit-main{padding-bottom:124px}}
 .next-step{justify-content:flex-end;margin:18px 0 6px}
 /* cabecera más compacta: más sitio para el contenido en todas las pestañas */
 .corr-head{padding:14px 20px}

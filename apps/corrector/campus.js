@@ -23,7 +23,9 @@
     cpAuto: 'Enviar cada hoja al campus al guardarla', cpAutoHelp: 'Al guardar una hoja escaneada, su nota se envía sola al campus (la clave tiene que estar guardada). Si algo falla, queda pendiente y se envía con «Enviar resultados».', cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: 'No se pudo enviar la nota de {n}: {m}', cpAutoNoKey: 'La clave aún no está en el campus: guárdala y pulsa «Enviar resultados» para enviar las notas.', cpSentN: '{n} de {t} con nota ya enviada al campus',
     cpUnscanOk: 'Resultado quitado del campus.', cpUnscanFail: 'No se pudo quitar del campus: {m}', cpUnscanManual: 'Esa nota se cambió a mano en el campus. ¿Quitarla igualmente?',
     cpListTitle: 'Pruebas en papel del campus', cpListHelp: 'Abre una para definir su clave, imprimir las hojas personalizadas, escanear y enviar las notas. Todo queda guardado en el campus.', cpOpen: 'Abrir', cpNone: 'Aún no hay pruebas en papel. Créalas en el campus (Evaluación → Pruebas y tareas → «En papel»).', cpKeyYes: 'Con clave', cpKeyNo: 'Sin clave', cpCorrN: '{n} corregidas', cpCurrent: 'Abierta', cpListErr: 'No se pudo cargar la lista de pruebas del campus.',
-    cpScanned: '{n} escaneadas'    ,cpSaved: 'Clave guardada en el campus ✓ {t}', cpUnsaved: 'Sin guardar en el campus', cpSaving: 'Guardando en el campus…', cpFail: 'No se pudo guardar en el campus (se reintenta). Tus cambios siguen aquí.', cpSaveNow: 'Guardar en el campus', cpNoKeyYet: 'Clave aún no guardada en el campus'
+    cpScanned: '{n} escaneadas'    ,cpSaved: 'Clave guardada en el campus ✓ {t}', cpUnsaved: 'Sin guardar en el campus', cpSaving: 'Guardando en el campus…', cpFail: 'No se pudo guardar en el campus (se reintenta). Tus cambios siguen aquí.', cpSaveNow: 'Guardar en el campus', cpNoKeyYet: 'Clave aún no guardada en el campus',
+    notScanned: 'Sin escanear',
+    cpScoringNote: 'Prueba del campus: la nota es sobre 10 y las preguntas anuladas no cuentan (ni suman ni restan), igual que en el campus. La penalización que elijas aquí se guarda en el campus junto con la clave.'
   });
   Object.assign(D.ca, {
     tab_campus: 'Campus', cpTitle: 'Prova del campus', cpHelp: "Aquesta prova en paper es corregeix aquí i només s'envien al campus els codis i les respostes, mai imatges.",
@@ -38,7 +40,9 @@
     cpAuto: 'Envia cada full al campus en desar-lo', cpAutoHelp: "En desar un full escanejat, la seva nota s'envia sola al campus (la clau ha d'estar desada). Si alguna cosa falla, queda pendent i s'envia amb «Envia resultats».", cpAutoOk: '{n}: nota enviada al campus ✓', cpAutoFail: "No s'ha pogut enviar la nota de {n}: {m}", cpAutoNoKey: "La clau encara no és al campus: desa-la i prem «Envia resultats» per enviar les notes.", cpSentN: '{n} de {t} amb nota ja enviada al campus',
     cpUnscanOk: 'Resultat tret del campus.', cpUnscanFail: "No s'ha pogut treure del campus: {m}", cpUnscanManual: "Aquesta nota es va canviar a mà al campus. Treure-la igualment?",
     cpListTitle: 'Proves en paper del campus', cpListHelp: "Obre'n una per definir-ne la clau, imprimir els fulls personalitzats, escanejar i enviar les notes. Tot queda desat al campus.", cpOpen: 'Obre', cpNone: "Encara no hi ha proves en paper. Crea-les al campus (Avaluació → Proves i tasques → «En paper»).", cpKeyYes: 'Amb clau', cpKeyNo: 'Sense clau', cpCorrN: '{n} corregides', cpCurrent: 'Oberta', cpListErr: "No s'ha pogut carregar la llista de proves del campus.",
-    cpScanned: '{n} escanejats'    ,cpSaved: 'Clau desada al campus ✓ {t}', cpUnsaved: 'Sense desar al campus', cpSaving: 'Desant al campus…', cpFail: "No s'ha pogut desar al campus (es reintenta). Els teus canvis són aquí.", cpSaveNow: 'Desa al campus', cpNoKeyYet: 'Clau encara no desada al campus'
+    cpScanned: '{n} escanejats'    ,cpSaved: 'Clau desada al campus ✓ {t}', cpUnsaved: 'Sense desar al campus', cpSaving: 'Desant al campus…', cpFail: "No s'ha pogut desar al campus (es reintenta). Els teus canvis són aquí.", cpSaveNow: 'Desa al campus', cpNoKeyYet: 'Clau encara no desada al campus',
+    notScanned: 'Sense escanejar',
+    cpScoringNote: "Prova del campus: la nota és sobre 10 i les preguntes anul·lades no compten (ni sumen ni resten), igual que al campus. La penalització que triïs aquí es desa al campus juntament amb la clau."
   });
   Object.assign(D.en, {
     tab_campus: 'Campus', cpTitle: 'Campus exam', cpHelp: 'This paper exam is graded here and only codes and answers are sent to the campus, never images.',
@@ -53,7 +57,9 @@
     cpAuto: 'Send each sheet to the campus when saved', cpAutoHelp: 'When a scanned sheet is saved, its grade is sent to the campus automatically (the key must be saved). If something fails it stays pending and goes out with “Send results”.', cpAutoOk: '{n}: grade sent to the campus ✓', cpAutoFail: 'Could not send the grade of {n}: {m}', cpAutoNoKey: 'The key is not in the campus yet: save it and press “Send results” to send the grades.', cpSentN: '{n} of {t} with a grade already sent to the campus',
     cpUnscanOk: 'Result removed from the campus.', cpUnscanFail: 'Could not remove it from the campus: {m}', cpUnscanManual: 'That grade was changed by hand in the campus. Remove it anyway?',
     cpListTitle: 'Paper exams in the campus', cpListHelp: 'Open one to set its key, print the personalised sheets, scan and send the grades. Everything is saved in the campus.', cpOpen: 'Open', cpNone: 'There are no paper exams yet. Create them in the campus (Assessment → Tests and tasks → “On paper”).', cpKeyYes: 'Has a key', cpKeyNo: 'No key', cpCorrN: '{n} graded', cpCurrent: 'Open', cpListErr: 'Could not load the list of campus exams.',
-    cpScanned: '{n} scanned'    ,cpSaved: 'Key saved in the campus ✓ {t}', cpUnsaved: 'Not saved in the campus', cpSaving: 'Saving to the campus…', cpFail: 'Could not save to the campus (retrying). Your changes are kept here.', cpSaveNow: 'Save to the campus', cpNoKeyYet: 'Key not saved in the campus yet'
+    cpScanned: '{n} scanned'    ,cpSaved: 'Key saved in the campus ✓ {t}', cpUnsaved: 'Not saved in the campus', cpSaving: 'Saving to the campus…', cpFail: 'Could not save to the campus (retrying). Your changes are kept here.', cpSaveNow: 'Save to the campus', cpNoKeyYet: 'Key not saved in the campus yet',
+    notScanned: 'Not scanned',
+    cpScoringNote: 'Campus exam: the grade is out of 10 and annulled questions do not count (they neither add nor subtract), as in the campus. The penalty you choose here is saved in the campus together with the key.'
   });
 
   const MODE = document.documentElement.dataset.mode === 'campus';
@@ -72,25 +78,34 @@
 
   /* respuesta del campus → examen del corrector (conserva respuestas ya escaneadas, emparejando por código) */
   function toExam(data, prev) {
-    const a = data.assessment || {}, cfg = data.config, id = 'campus-' + Y.id;
+    const a = data.assessment || {}, cfg = data.config, id = 'campus-' + Y.id, apen = a.penalty == null ? 0.25 : +a.penalty;
     const nq = cfg ? cfg.nq : (prev ? prev.nq : 20), nopt = cfg ? Math.min(5, cfg.nopt) : 4;
     const versions = cfg ? cfg.versions.filter(v => 'ABCD'.includes(v)) : ['A'];
     const e = { id, name: a.title || 'Campus', center: (prev && prev.center) || '', subject: (prev && prev.subject) || a.subject_title || '', date: a.date || undefined, nq, nopt, versions: versions.length ? versions : ['A'], keys: {}, maps: {}, annul: [], students: [], codeLen: 6, codeCheck: false, codeMode: 'random', sheet: {} };
     if (cfg) {
       e.versions.forEach(v => { const k = cfg.keys && cfg.keys[v]; e.keys[v] = typeof k === 'string' ? k.split('').map(x => (x === '*' || x === '-' ? '' : x.toUpperCase())) : (k || []).map(x => (x === '*' ? '' : String(x || '').toUpperCase())); });
       Object.keys(cfg.maps || {}).forEach(v => { if (e.versions.includes(v)) e.maps[v] = (cfg.maps[v] || []).map(n => n - 1); });
-      (cfg.annulled || []).forEach(n => { e.annul[n - 1] = true; }); e.annulMode = 'exclude';
+      (cfg.annulled || []).forEach(n => { e.annul[n - 1] = true; });
       if (cfg.weights && cfg.weights.length) { e.weightsOn = true; e.weights = cfg.weights.map(Number); }
-      const pen = cfg.penalty_own != null ? cfg.penalty_own : (cfg.penalty != null ? cfg.penalty : a.penalty || 0);
-      e.scoring = { maxGrade: 10, pass: 5, correct: 1, preset: pen > 0 ? 'custom' : 'none', penaltyCustom: pen };
+      const pen = cfg.penalty_own != null ? cfg.penalty_own : (cfg.penalty != null ? cfg.penalty : apen);
+      e.scoring = scoringOf(pen);
     } else if (prev) { e.keys = prev.keys; e.maps = prev.maps; e.annul = prev.annul; e.scoring = prev.scoring; }
+    /* la nota que se ve aquí tiene que ser la que guarda el campus: sobre 10, anuladas fuera del cálculo y, sin nada propio, la penalización de la prueba */
+    if (!e.scoring) e.scoring = scoringOf(apen);
+    e.annulMode = 'exclude';
     const old = new Map(((prev && prev.students) || []).map(s => [s.code, s]));
     e.students = (data.students || []).map(s => {
       const o = old.get(s.code), last = [s.ap1, s.ap2].filter(Boolean).join(' ');
       return { id: 'c' + s.id, name: '', last, first: s.nombre || '', group: [s.group, s.subgroup].filter(Boolean).join(' '), code: String(s.code || ''), version: (o && o.version) || e.versions[0], answers: o ? o.answers : [], scanned: o ? o.scanned : undefined, sent: o ? o.sent : undefined };
     });
-    e.campus = Object.assign({ id: Y.id, subject: a.subject, subjectTitle: a.subject_title }, prev && prev.campus ? { last: prev.campus.last, auto: prev.campus.auto } : {});
+    e.campus = Object.assign({ id: Y.id, subject: a.subject, subjectTitle: a.subject_title, apen }, prev && prev.campus ? { last: prev.campus.last, auto: prev.campus.auto } : {});
     return e;
+  }
+  const scoringOf = (pen) => ({ maxGrade: 10, pass: 5, correct: 1, preset: pen > 0 ? 'custom' : 'none', penaltyCustom: pen });
+  /* penalización que aplica el corrector con su ajuste actual (misma regla que penFrac de corrector.js) */
+  function penOf(e) {
+    const s = e.scoring || {}, n = parseFloat(String(s.penaltyCustom).replace(',', '.'));
+    return s.preset === 'none' ? 0 : s.preset === 'chance' ? 1 / Math.max(1, e.nopt - 1) : s.preset === 'quarter' ? 0.25 : Math.max(0, Number.isFinite(n) ? n : 0);
   }
 
   const hashTab = () => ({ '#key': 'key', '#clave': 'key', '#scan': 'scan', '#escanear': 'scan', '#sheets': 'campus', '#hojas': 'campus' }[location.hash] || 'campus');
@@ -116,7 +131,10 @@
 
   function keyBody() {
     const e = X().exam;
-    const body = { nq: e.nq, nopt: e.nopt, versions: e.versions, keys: {}, annulled: [], weights: e.weightsOn ? e.weights.map(Number) : [], penalty: null };
+    /* penalización: null = la de la prueba en Notas; si en el corrector se elige otra, se guarda con la clave (si no, el campus calcularía otra nota) */
+    const pf = penOf(e), ap = e.campus && e.campus.apen != null ? e.campus.apen : null;
+    const penalty = ap != null && Math.abs(pf - ap) < 1e-9 ? null : Math.min(1, Math.round(pf * 1e6) / 1e6);
+    const body = { nq: e.nq, nopt: e.nopt, versions: e.versions, keys: {}, annulled: [], weights: e.weightsOn ? e.weights.map(Number) : [], penalty };
     e.versions.forEach(v => { body.keys[v] = (e.keys[v] || []).map(x => x || ''); if (v !== 'A' || (e.maps[v] || []).some((m, i) => m !== i)) body.maps = Object.assign(body.maps || {}, { [v]: (e.maps[v] || []).map(m => m + 1) }); });
     e.annul.forEach((a, i) => { if (a) body.annulled.push(i + 1); });
     return body;
@@ -301,5 +319,5 @@
     /* con ?assessment=… se carga esa prueba (load marca «cargando» al instante, así followExam no la suelta); sin él se sigue el examen abierto */
     if (Y.id && /^\d+$/.test(Y.id)) { load(true, hashTab()); started = true; } else { Y.id = null; started = true; followExam(); }
   }
-  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, state: Y, listPanel, mountList, followExam, active, mode: MODE, onSaved, removeResult, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
+  C.uiCampus = { render, mount() { /* nada */ }, init, start, toExam, keyBody, state: Y, listPanel, mountList, followExam, active, mode: MODE, onSaved, removeResult, openAssessment, newAssessment, listExams: async () => (await api('/api/corrector/campus-exams')).exams };
 })();

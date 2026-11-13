@@ -60,6 +60,8 @@
     e.scoring.pass = Math.max(0, num(e.scoring.pass, 5));
     e.scoring.correct = Math.max(0.01, num(e.scoring.correct, 1));
     if (!['none', 'chance', 'quarter', 'custom'].includes(e.scoring.preset)) e.scoring.preset = 'chance';
+    /* prueba del campus: misma regla que el servidor (nota sobre 10 y anuladas fuera del cálculo); si no, aquí se vería una nota y en el campus otra */
+    if (e.campus) { e.scoring.maxGrade = 10; e.annulMode = 'exclude'; }
     e.students = (Array.isArray(e.students) ? e.students : []).map(s => {
       const o = { id: s.id || K.uid(), name: String(s.name || ''), last: String(s.last || ''), first: String(s.first || ''), group: String(s.group || ''), code: String(s.code || '').replace(/\D/g, ''),
         version: e.versions.includes(s.version) ? s.version : e.versions[0], answers: fit(s.answers, e.nq, '').map(a => (letters2(e).includes(a) ? a : '')) };
@@ -152,7 +154,11 @@
   const results = () => exam.students.map(s => ({ s, r: score(s) }));
   const answered = (s) => s.answers.filter(Boolean).length;
 
+  /* prueba del campus: la lista trae a toda la clase; las estadísticas solo cuentan las hojas corregidas (si no, cada alumno sin escanear entraría como un 0) */
+  const pendingCampus = (s) => !!(exam.campus && !s.scanned && !answered(s));
+  const graded = (rs) => rs.filter(x => !pendingCampus(x.s));
   function stats(rs) {
+    rs = graded(rs);
     const g = rs.map(x => x.r.grade).filter(x => x != null).sort((a, b) => a - b);
     const n = g.length; if (!n) return null;
     const mean = g.reduce((a, b) => a + b, 0) / n;
@@ -164,6 +170,7 @@
   }
 
   function itemAnalysis(rs) {
+    rs = graded(rs);
     const n = rs.length;
     const sorted = rs.slice().sort((a, b) => b.r.raw - a.r.raw);
     const k = n >= 6 ? Math.max(2, Math.round(n * 0.27)) : 0;
@@ -304,14 +311,14 @@
       <section class="panel stack">
         <h2>${t('scoring')}</h2>
         <div class="grid cols-2">
-          <label class="field">${t('maxGrade')}<input type="number" step="any" min="0.01" data-f="maxGrade" value="${s.maxGrade}"></label>
+          <label class="field">${t('maxGrade')}<input type="number" step="any" min="0.01" data-f="maxGrade" value="${s.maxGrade}" ${exam.campus ? 'disabled' : ''}></label>
           <label class="field">${t('pass')}<input type="number" step="any" min="0" data-f="pass" value="${s.pass}"></label>
         </div>
         <label class="field">${t('pointsCorrect')}<input type="number" step="any" min="0.01" data-f="correct" value="${s.correct}"></label>
         <div class="field"><span style="font-weight:600">${t('penalty')}</span>${seg('preset', [['none', t('penNone')], ['chance', t('penChance')], ['quarter', t('penQuarter')], ['custom', t('penCustom')]], s.preset)}
           ${s.preset === 'custom' ? `<label class="field" style="margin-top:6px">${t('penCustomValue')}<input type="number" step="any" min="0" data-f="penaltyCustom" value="${s.penaltyCustom}"></label>` : ''}
           <small>${t('penaltyNote')}</small></div>
-        <div class="field"><span style="font-weight:600">${t('annulMode')}</span>${seg('annulMode', [['credit', t('annulCredit')], ['exclude', t('annulExclude')]], exam.annulMode)}</div>
+        ${exam.campus ? `<small class="muted">${t('cpScoringNote')}</small>` : `<div class="field"><span style="font-weight:600">${t('annulMode')}</span>${seg('annulMode', [['credit', t('annulCredit')], ['exclude', t('annulExclude')]], exam.annulMode)}</div>`}
         <label class="check"><input type="checkbox" data-f="weightsOn" ${exam.weightsOn ? 'checked' : ''}> ${t('weights')}</label>
         ${exam.weightsOn ? `<small class="muted">${t('weightsHelp')}</small>` : ''}
         <p class="disclaimer" id="scoresum">${sum}</p>
@@ -498,8 +505,8 @@
       <div class="row spread"><h2 style="margin:0">${t('resultsTitle')}</h2>
         <div class="row"><button class="btn small" data-act="csv">${t('exportCsv')}</button><button class="btn ghost small" data-act="copytable">${t('copyTable')}</button></div></div>
       <div class="table-wrap"><table class="kit"><thead><tr>${hasSplit(rs) ? th('last', t('colLast')) + th('first', t('colFirst')) : th('name', t('colName'))}${rs.some(x => x.s.code) ? th('code', t('colCode')) : ''}${rs.some(x => x.s.group) ? th('group', t('colGroup')) : ''}${exam.versions.length > 1 ? th('ver', t('colVersion')) : ''}${th('c', t('colCorrect'), 'num')}${th('w', t('colWrong'), 'num')}${th('b', t('colBlank'), 'num')}${th('raw', t('colPoints'), 'num')}${th('grade', t('colGrade'), 'num')}${th('res', t('colResult'))}<th></th></tr></thead>
-      <tbody>${sortedResults(rs).map(({ s, r }) => `<tr class="${r.grade == null ? '' : r.passed ? 'passed' : 'failed'}">${hasSplit(rs) ? `<td>${esc(s.last || (s.first ? '' : s.name) || t('unnamed'))}</td><td>${esc(s.first)}</td>` : `<td>${esc(s.name || t('unnamed'))}</td>`}${rs.some(x => x.s.code) ? `<td class="mono">${esc(s.code)}</td>` : ''}${rs.some(x => x.s.group) ? `<td>${esc(s.group)}</td>` : ''}${exam.versions.length > 1 ? `<td>${s.version}</td>` : ''}<td class="num">${r.c}</td><td class="num">${r.w}</td><td class="num">${r.b}</td><td class="num">${K.fmt(r.raw, 2)}</td><td class="num"><b>${r.grade == null ? '—' : K.fmt(r.grade, 2)}</b></td>
-        <td>${r.grade == null ? `<span class="tag-nogr">${t('noGrade')}</span>` : r.passed ? `<span class="tag-pass">${t('passed')}</span>` : `<span class="tag-fail">${t('failed')}</span>`}</td>
+      <tbody>${sortedResults(rs).map(({ s, r }) => `<tr class="${r.grade == null || pendingCampus(s) ? '' : r.passed ? 'passed' : 'failed'}">${hasSplit(rs) ? `<td>${esc(s.last || (s.first ? '' : s.name) || t('unnamed'))}</td><td>${esc(s.first)}</td>` : `<td>${esc(s.name || t('unnamed'))}</td>`}${rs.some(x => x.s.code) ? `<td class="mono">${esc(s.code)}</td>` : ''}${rs.some(x => x.s.group) ? `<td>${esc(s.group)}</td>` : ''}${exam.versions.length > 1 ? `<td>${s.version}</td>` : ''}<td class="num">${r.c}</td><td class="num">${r.w}</td><td class="num">${r.b}</td><td class="num">${K.fmt(r.raw, 2)}</td><td class="num"><b>${r.grade == null || pendingCampus(s) ? '—' : K.fmt(r.grade, 2)}</b></td>
+        <td>${pendingCampus(s) ? `<span class="tag-nogr">${t('notScanned')}</span>` : r.grade == null ? `<span class="tag-nogr">${t('noGrade')}</span>` : r.passed ? `<span class="tag-pass">${t('passed')}</span>` : `<span class="tag-fail">${t('failed')}</span>`}</td>
         <td><button class="btn ghost small" data-act="repstud" data-id="${s.id}">${t('report')}</button></td></tr>`).join('')}</tbody></table></div>
     </section>
     ${st ? `<section class="panel stack"><h2 style="margin:0">${t('statsTitle')}</h2>
