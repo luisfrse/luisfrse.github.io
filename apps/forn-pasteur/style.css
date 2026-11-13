@@ -340,3 +340,32 @@ details.card .card{border:0;box-shadow:none;padding:6px 0 0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:420px){.progs{grid-template-columns:repeat(2,1fr)}.choices.two{grid-template-columns:1fr}.catrow{grid-template-columns:1fr 3.4em}.catrow .cb{grid-column:1/-1;grid-row:2}}
 @media (max-width:520px){.door{border-width:16px 40px 26px 14px}.door-handle{right:-28px}.door-plate{bottom:-22px}}
+
+/* forn més gran: l'aparell ocupa la major part de l'amplada i el quadre de control queda a la dreta, més compacte */
+.wrap{max-width:1500px}
+@media (min-width:820px){
+  .cycle-grid{grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:20px}
+  .oven{max-width:820px;padding:16px 16px 6px}
+  .oven-panel{gap:12px;padding:16px}
+  .brand{font-size:1.05rem}
+  .lcd{font-size:1rem;padding:12px 14px}
+  .gauge{max-width:210px}
+  .phase-info{max-width:820px;font-size:1rem}
+  .cycle-grid>.col:last-child{font-size:.9rem}
+  .cycle-grid>.col:last-child .btn,.cycle-grid>.col:last-child button{min-height:38px;font-size:.88rem}
+}
+@media (min-width:1280px){.cycle-grid{grid-template-columns:minmax(0,1.9fr) minmax(310px,1fr)}.oven{max-width:900px}}
+/* a l'etapa del cicle, la cambra creix també en alçada perquè el forn es vegi gran i no només ample */
+@media (min-width:820px){
+  .cycle-grid .chamber{min-height:400px;padding:40px 16px 14px}
+  .cycle-grid .shelf{min-height:96px;padding:18px 6px 0;margin-bottom:14px}
+  .cycle-grid .shelf.base{min-height:70px}
+  .cycle-grid .shelf-lbl{font-size:.72rem}
+  .cycle-grid .shelf-row{grid-template-rows:auto 66px;gap:8px}
+  .cycle-grid .pkg{height:64px}.cycle-grid .pkg.pk-ctrl{height:40px}
+  .cycle-grid .pkg .ico{width:34px;height:34px}
+  .cycle-grid .door{border-width:40px 70px 52px 40px}
+  .cycle-grid .heater{height:8px}
+  .cycle-grid .fan{width:38px;height:38px}
+  .cycle-grid .led{width:17px;height:17px}.cycle-grid .led-w small{font-size:.72rem}
+}

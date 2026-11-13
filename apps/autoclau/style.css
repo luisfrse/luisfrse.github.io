@@ -181,3 +181,24 @@ table.sat td,table.sat th{border:1px solid var(--border);padding:4px 8px;text-al
 .hidden{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* equip més gran: l'aparell ocupa la major part de l'amplada i els paràmetres queden a la dreta, més compactes */
+.wrap{max-width:1560px}
+@media (min-width:980px){
+  .station{grid-template-columns:minmax(0,1.55fr) minmax(330px,1fr);gap:20px}
+  .machine{padding:18px 20px}
+  .mtop{font-size:.9rem;margin-bottom:12px}
+  .mbody{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px}
+  .lcd{font-size:1.02rem;min-height:120px;padding:12px 14px}.lcd .big{font-size:1.7rem}
+  .gauges{gap:12px}
+  .led{font-size:.78rem;padding:3px 8px}.leds{gap:6px}
+  .mbtns{gap:10px;margin-top:16px}.mbtn{font-size:1rem;min-height:52px;padding:6px 18px}
+  .mbtn.stop{width:68px;height:68px;font-size:.7rem}
+  .speed{font-size:.9rem}.speed button{min-height:42px;min-width:48px;font-size:.9rem}
+  .chart{margin-top:16px}
+  .stage-col{font-size:.9rem}
+  .stage-col h2,.stage-col h3{font-size:1.05rem}
+  .stage-col .btn,.stage-col button{min-height:38px;font-size:.88rem;padding:4px 12px}
+  .stage-col .card{padding:10px 12px}
+}
+@media (min-width:1360px){.station{grid-template-columns:minmax(0,1.8fr) minmax(340px,1fr)}.lcd .big{font-size:1.9rem}}
