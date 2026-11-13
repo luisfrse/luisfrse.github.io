@@ -17,7 +17,7 @@
   const gOf = () => C.hoja.layoutOf(X().exam);
   function interpret(res, img) {
     const x = X(), e = x.exam, nq = e.nq;
-    const rec = { res, img, answers: res.q.slice(0, nq).map(q => (q.st === 'ok' || q.st === 'doubt') ? q.a : ''), fixed: Array(nq).fill(false), version: res.version || '', student: null, cands: [], code: res.code, newName: null, ts: Date.now() };
+    const rec = { res, img, answers: res.q.slice(0, nq).map(q => (q.st === 'ok' || q.st === 'doubt') ? q.a : q.st === 'multi' ? '*' : ''), fixed: Array(nq).fill(false), version: res.version || '', student: null, cands: [], code: res.code, newName: null, ts: Date.now() };
     rec.checkFail = !!(res.code && e.codeCheck && !R.validCode(res.code, e.codeLen, true));
     if (e.versions.length > 1 && !e.versions.includes(rec.version)) rec.version = '';
     if (e.versions.length === 1) rec.version = e.versions[0];
@@ -109,7 +109,7 @@
       C.uiStudents.setName(s); e.students.push(s); created = true;
     }
     const prev = { answers: s.answers.slice(), version: s.version, scanned: s.scanned, code: s.code };
-    s.answers = rec.answers.slice(0, e.nq).map(a => (a && 'ABCDE'.slice(0, e.nopt).includes(a) ? a : ''));
+    s.answers = rec.answers.slice(0, e.nq).map(a => (a === '*' ? '*' : a && 'ABCDE'.slice(0, e.nopt).includes(a) ? a : ''));
     s.version = e.versions.includes(rec.version) ? rec.version : e.versions[0]; s.scanned = Date.now();
     if (!s.code && rec.code && R.validCode(rec.code, e.codeLen, e.codeCheck) && !e.students.some(o => o !== s && o.code === rec.code)) s.code = rec.code;
     x.changed(); C.omrLearn.record(rec); if (C.uiCampus && C.uiCampus.onSaved) C.uiCampus.onSaved(s);
