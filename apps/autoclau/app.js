@@ -29,7 +29,7 @@
       preheat: 'Precalentament', preheatBtn: 'Engegar i esperar el precalentament de la camisa', preheatDone: 'Camisa a temperatura: l\'equip està calent.', preheatNo: 'L\'equip ja ha treballat avui: està calent.',
       leak: 'Test de buit (estanquitat) · opcional', leakD: 'Fa el buit a la cambra buida i mesura quant puja la pressió en 10 min. Límit orientatiu: 1,3 mbar/min.', leakBtn: 'Fer el test de buit', leakQ: 'Resultat del test de buit:',
       bd: 'Test de Bowie-Dick', bdD: 'Comprova l\'eliminació de l\'aire i la penetració del vapor en un autoclau de prebuit. Es fa al començament de la jornada.', bdDone: 'Fet a primera hora: correcte.',
-      bdPlace: 'On poses el paquet de prova?', bdEmpty: 'Cambra buida, safata inferior, a prop del desguàs', bdLoad: 'Amb la càrrega del dia, al mig de la cambra',
+      bdWhyLoad: 'El paquet de prova va sol, a la cambra buida i a la safata inferior, a prop del desguàs: amb càrrega el test no és vàlid i surt malament. Torna-ho a provar triant la posició correcta.', bdPlace: 'On poses el paquet de prova?', bdEmpty: 'Cambra buida, safata inferior, a prop del desguàs', bdLoad: 'Amb la càrrega del dia, al mig de la cambra',
       bdBtn: 'Fer el Bowie-Dick (134 °C · 3,5 min)', bdBtn2: 'Repetir el Bowie-Dick', bdQ: 'Com interpretes la full de prova?', bdSheet: (i) => 'Full de Bowie-Dick ' + i,
       bdNext: 'La prova ha fallat. Què fas ara?', bdRepeat: 'Repetir la prova', bdContinue: 'Continuar i carregar el material', bdStop: 'Deixar l\'equip fora de servei i no carregar res',
       stoppedMsg: 'Equip aturat: no es processa cap càrrega. Ves a la decisió final.',
@@ -96,7 +96,7 @@
       preheat: 'Precalentamiento', preheatBtn: 'Encender y esperar el precalentamiento de la camisa', preheatDone: 'Camisa a temperatura: el equipo está caliente.', preheatNo: 'El equipo ya ha trabajado hoy: está caliente.',
       leak: 'Test de vacío (estanqueidad) · opcional', leakD: 'Hace el vacío en la cámara vacía y mide cuánto sube la presión en 10 min. Límite orientativo: 1,3 mbar/min.', leakBtn: 'Hacer el test de vacío', leakQ: 'Resultado del test de vacío:',
       bd: 'Test de Bowie-Dick', bdD: 'Comprueba la eliminación del aire y la penetración del vapor en un autoclave de prevacío. Se hace al empezar la jornada.', bdDone: 'Hecho a primera hora: correcto.',
-      bdPlace: '¿Dónde pones el paquete de prueba?', bdEmpty: 'Cámara vacía, bandeja inferior, cerca del desagüe', bdLoad: 'Con la carga del día, en medio de la cámara',
+      bdWhyLoad: 'El paquete de prueba va solo, en la cámara vacía y en la bandeja inferior, cerca del desagüe: con carga el test no es válido y sale mal. Vuelve a probar eligiendo la posición correcta.', bdPlace: '¿Dónde pones el paquete de prueba?', bdEmpty: 'Cámara vacía, bandeja inferior, cerca del desagüe', bdLoad: 'Con la carga del día, en medio de la cámara',
       bdBtn: 'Hacer el Bowie-Dick (134 °C · 3,5 min)', bdBtn2: 'Repetir el Bowie-Dick', bdQ: '¿Cómo interpretas la hoja de prueba?', bdSheet: (i) => 'Hoja de Bowie-Dick ' + i,
       bdNext: 'La prueba ha fallado. ¿Qué haces ahora?', bdRepeat: 'Repetir la prueba', bdContinue: 'Continuar y cargar el material', bdStop: 'Dejar el equipo fuera de servicio y no cargar nada',
       stoppedMsg: 'Equipo parado: no se procesa ninguna carga. Ve a la decisión final.',
@@ -705,15 +705,16 @@
       const canRun = !ui.testing && (!ch.bd.length || (!last.pass && ch.bdActions[ch.bdActions.length - 1] === 'repeat' && ch.bdActions.length === ch.bd.length));
       if (canRun) {
         ui.bdPlace = ui.bdPlace || null;
-        if (!ch.bd.length) {
+        {
           bd.appendChild(h('div', { class: 'lbl', text: t().bdPlace }));
           bd.appendChild(h('div', { class: 'chips' }, [chip(t().bdEmpty, ui.bdPlace === 'empty', () => { ui.bdPlace = 'empty'; renderStage(); }), chip(t().bdLoad, ui.bdPlace === 'load', () => { ui.bdPlace = 'load'; renderStage(); })]));
         }
-        bd.appendChild(h('button', { type: 'button', class: 'btn sm primary', disabled: !ui.bdPlace && !ch.bd.length, on: { click: () => {
-          const r = L.runBD(D, run, ch.bd.length ? ch.bd[0].place : ui.bdPlace);
+        bd.appendChild(h('button', { type: 'button', class: 'btn sm primary', disabled: !ui.bdPlace, on: { click: () => {
+          const r = L.runBD(D, run, ui.bdPlace);
           ui.testing = true; play(r.sim, 'bd', () => { ui.testing = false; renderStage(); }, 240); renderStage();
         } } }, [ch.bd.length ? t().bdBtn2 : t().bdBtn]));
       }
+      if (last && !last.pass && !ui.testing && last.place === 'load' && run.mode === 'practice') bd.appendChild(h('p', { class: 'small err', text: t().bdWhyLoad }));
       if (ui.testing) bd.appendChild(h('p', { class: 'small', text: t().running }));
       if (last && !last.pass && !ui.testing && ch.bdActions.length < ch.bd.length && !ch.stopped) {
         bd.appendChild(h('div', { class: 'lbl', text: t().bdNext }));
