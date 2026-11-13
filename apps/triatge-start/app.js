@@ -538,6 +538,7 @@
         ic(tb[2]), h('span', null, t(tb[1])), tb[0] === 'evac' && waiting ? h('i', { class: 'badge' }, String(waiting)) : null));
     });
     side.appendChild(tl);
+    if (L.phase2(g)) side.appendChild(h('div', { class: 'phase2', id: 'phase2', role: 'note' }, h('b', null, t('p2.title')), h('p', null, t('p2.body'))));
     const pane = h('div', { class: 'pane', id: 'pane', role: 'tabpanel', 'aria-labelledby': 'tab-' + S.tab });
     if (S.tab === 'victim') paneVictim(pane);
     else if (S.tab === 'algo') paneAlgo(pane);
@@ -622,7 +623,7 @@
     if (r.radial) rows.push(row('radial', t(v.ped ? 'chk.pulsePed' : 'chk.radial'), r.radial.present ? t('r.present') : t('r.absent'), !r.radial.present));
     if (r.crt) rows.push(row('crt', t('chk.crt'), r.crt.sec > 4 ? '> 4 s' : r.crt.sec + ' s', r.crt.sec > 2));
     if (r.mental) rows.push(v.ped ? row('mental', t('chk.avpu'), t('avpu.' + r.mental.avpu), r.mental.avpu === 'U' || r.mental.avpu === 'Pi') : row('mental', t('chk.mental'), r.mental.obeys ? t('r.obeys') : t('r.notObeys'), !r.mental.obeys));
-    v.st.interventions.forEach(function (it) { if (['pressure', 'tourniquet', 'position', 'cpr', 'secondary'].indexOf(it.what) >= 0) rows.push(row(it.what, t('do.' + it.what), t('res.' + it.res), it.res === 'mciNoCpr' || it.res === 'notStart' ? true : null)); });
+    v.st.interventions.forEach(function (it) { if (['pressure', 'tourniquet', 'position', 'cpr', 'secondary'].indexOf(it.what) >= 0) rows.push(row(it.what, t('do.' + it.what), t('res.' + it.res), it.res === 'mciNoCpr' || it.res === 'phase2Cpr' || it.res === 'notStart' ? true : null)); });
     return rows.length ? h('ul', { class: 'findings', 'aria-label': t('game.findings') }, rows) : h('p', { class: 'muted small findings-empty' }, t('game.noFindings'));
   }
   function coachText(v, nx) {
@@ -657,8 +658,8 @@
       mk('do', 'pressure', 'pressure', t('do.pressure'), L.COST.pressure),
       mk('do', 'tourniquet', 'tourniquet', t('do.tourniquet'), L.COST.tourniquet),
       mk('do', 'position', 'position', t('do.position'), L.COST.position),
-      mk('do', 'cpr', 'cpr', t('do.cpr'), L.COST.cpr, { trap: true }),
-      mk('do', 'secondary', 'secondary', t('do.secondary'), L.COST.secondary, { trap: true }));
+      mk('do', 'cpr', 'cpr', t(L.phase2(g) ? 'do.cprP2' : 'do.cpr'), L.COST.cpr, { trap: true }),
+      mk('do', 'secondary', 'secondary', t(L.phase2(g) ? 'do.secondaryP2' : 'do.secondary'), L.COST.secondary, { trap: !L.phase2(g) }));
     return h('div', { class: 'belt' }, h('h3', null, t('game.assess')), checks, h('h3', null, t('game.intervene')), dos);
   }
   function tapeBar(v, nx) {
@@ -736,7 +737,7 @@
     if (!res) return;
     if (!res.ok) return;
     const rr = res.result.res;
-    const kind = ['controlled', 'breathes', 'ok', 'minorOk'].indexOf(rr) >= 0 ? 'ok' : ['mciNoCpr', 'notStart', 'notLimb', 'noBleed', 'notNeeded', 'noPulse'].indexOf(rr) >= 0 ? 'bad' : 'info';
+    const kind = ['controlled', 'breathes', 'ok', 'minorOk', 'phase2Exam'].indexOf(rr) >= 0 ? 'ok' : ['mciNoCpr', 'phase2Cpr', 'notStart', 'notLimb', 'noBleed', 'notNeeded', 'noPulse'].indexOf(rr) >= 0 ? 'bad' : 'info';
     const msg = t((w === 'airway' || w === 'rescue') ? 'res.' + w + '.' + rr : 'res.' + rr);
     if (S.mode === 'eval' || S.mode === 'challenge') toast(msg, 'info');
     else { toast(msg + (kind === 'bad' ? ' ' + t('why.do.' + rr) : ''), kind, kind === 'bad' ? 6000 : 3500); if (kind === 'bad') sfx.bad(); else if (kind === 'ok') sfx.ok(); }

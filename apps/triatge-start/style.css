@@ -617,3 +617,7 @@ th, td { padding: 8px; border-bottom: 1px solid var(--line); text-align: left; v
 .ready-h { margin: 0 0 6px; font-size: 1rem; }
 .ready-g { display: inline-block; margin: 10px 0 4px; padding: 2px 10px; border-radius: 999px; font-size: .82rem; font-weight: 800; }
 .ready li .r-btns { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+
+/* segunda fase (solo en dificultad difícil): aviso cuando ya no queda nadie sin triar */
+.phase2 { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line2); border-left: 5px solid var(--accent); background: var(--accent-soft); color: var(--ink); }
+.phase2 p { margin: .25em 0 0; font-size: .9rem; }

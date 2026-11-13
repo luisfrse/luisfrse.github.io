@@ -293,7 +293,7 @@
       }),
       ambs: s.ambulances.map((a) => Object.assign({}, a, { status: 'scheduled', load: [], idle: 0, arrivedT: null, leftT: null, dest: null })),
       hosp: {}, idle: 0, log: [], dispatches: [], route: [{ t: 0, x: s.start.x, y: s.start.y, at: null }],
-      flags: { cpr: 0, secondary: 0, unneeded: 0 }, ccpCount: 0, stationCount: { red: 0, yellow: 0, green: 0, black: 0 }
+      flags: { cpr: 0, secondary: 0, unneeded: 0, cprBlack: 0, secondaryOk: 0 }, ccpCount: 0, stationCount: { red: 0, yellow: 0, green: 0, black: 0 }
     };
     s.hospitals.forEach((h) => { g.hosp[h.id] = { id: h.id, kind: h.kind, cap: h.cap, used: 0 }; });
     return g;
@@ -320,6 +320,8 @@
     if (v.st.loadedIn) { const a = g.ambs.find((x) => x.id === v.st.loadedIn); if (a) a.load = a.load.filter((l) => l.id !== v.id); v.st.loadedIn = null; }
     ev(events, g, 'die', { id: v.id, cause: cause, preventable: v.cat0 !== 'black' });
   }
+  /* segona fase (només en dificultat difícil): quan ja no queda ningú viu sense cinta, s'obre la revaloració i l'estabilització */
+  function phase2(g) { return !!g && !!g.sc && g.sc.difficulty === 'hard' && g.victims.length > 0 && g.victims.every((v) => v.st.dead || v.st.tags.length > 0); }
   function readyForEvac(g, v) { return v.st.atStation && !v.st.evac && !v.st.dead && !v.st.loadedIn && v.st.tags.length && lastTag(v) !== 'black'; }
   function freeSlots(a) { const st = a.load.filter((l) => l.slot === 'stretcher').length, se = a.load.filter((l) => l.slot === 'seat').length; return { stretcher: a.stretchers - st, seat: a.seats - se }; }
 
@@ -472,8 +474,19 @@
           if (!st.positioned && !st.dead && p.br && (st.airwayEver || (!p.obeys && !p.walk))) { st.positioned = true; res = 'ok'; good = true; }
           else if (st.positioned) { res = 'already'; cost = 0; }
           else { res = 'notNeeded'; g.flags.unneeded += 1; good = false; }
-        } else if (w === 'cpr') { g.flags.cpr += 1; res = 'mciNoCpr'; good = false; }
-        else if (w === 'secondary') { g.flags.secondary += 1; res = 'notStart'; good = false; }
+        } else if (w === 'cpr') {
+          if (phase2(g)) {
+            /* segona fase: la RCP en un negre és desaconsellada si hi ha pocs recursos, però no és un error greu; en qui respira no té sentit */
+            if (lastTag(v) === 'black') { g.flags.cprBlack += 1; res = 'phase2Cpr'; good = false; }
+            else { res = 'notNeeded'; g.flags.unneeded += 1; good = false; }
+          } else { g.flags.cpr += 1; res = 'mciNoCpr'; good = false; }
+        } else if (w === 'secondary') {
+          if (phase2(g)) {
+            if (st.secondaryDone) { res = 'already'; cost = 0; }
+            else if (!st.dead && (lastTag(v) === 'red' || lastTag(v) === 'yellow')) { st.secondaryDone = true; g.flags.secondaryOk += 1; res = 'phase2Exam'; good = true; }
+            else { st.secondaryDone = true; res = 'phase2ExamLow'; }
+          } else { g.flags.secondary += 1; res = 'notStart'; good = false; }
+        }
         st.interventions.push({ t: g.t, what: w, res: res });
         markIndiv(g, v); spend(g, v, cost);
         logEntry(g, { type: 'do', id: v.id, what: w, result: res, cost: cost, ok: good });
@@ -643,7 +656,7 @@
       if (r.bleed === 'major') { iMax += 1; if (r.bleedCtrl && !(r.dead && r.cause === 'bleed')) iPts += 1; }
       if (r.needsAirway) { iMax += 1.5; if (r.airwayEver) iPts += 1; if (r.positioned) iPts += 0.5; }
     });
-    const interventions = clamp01((iMax ? iPts / iMax : 1) - 0.25 * g.flags.cpr - 0.1 * g.flags.secondary - 0.03 * g.flags.unneeded);
+    const interventions = clamp01((iMax ? iPts / iMax : 1) - 0.25 * g.flags.cpr - 0.1 * g.flags.secondary - 0.03 * g.flags.unneeded - 0.05 * g.flags.cprBlack + 0.02 * Math.min(g.flags.secondaryOk, 5));
     /* organització i evacuació */
     const arrived = g.ambs.some((a) => a.status !== 'scheduled');
     const loadedItems = g.dispatches.reduce((a, d) => a.concat(d.items), []);
@@ -746,7 +759,7 @@
     hashSeed: hashSeed, seeded: seeded, shuffle: shuffle, seedCode: seedCode, inPoly: inPoly, travelSec: travelSec, dist: dist,
     classifyStart: classifyStart, classifyJump: classifyJump, classify: classify, creditOf: creditOf, errorKind: errorKind,
     composition: composition, physFor: physFor, normOpts: normOpts, generate: generate, bankScenario: bankScenario, pickBank: pickBank,
-    createGame: createGame, act: act, advance: advance, vById: vById, lastTag: lastTag, truthOf: truthOf, readyForEvac: readyForEvac,
+    createGame: createGame, act: act, advance: advance, vById: vById, lastTag: lastTag, truthOf: truthOf, readyForEvac: readyForEvac, phase2: phase2,
     freeSlots: freeSlots, destScore: destScore, requiredChecks: requiredChecks, nextStep: nextStep, rescuerAt: rescuerAt, pointOf: pointOf,
     evaluate: evaluate, grade: grade, makeCard: makeCard, scoreCards: scoreCards, validateData: validateData, median: median
   };
