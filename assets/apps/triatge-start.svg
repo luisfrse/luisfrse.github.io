@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a2a"/><stop offset="1" stop-color="#4a1630"/></linearGradient><radialGradient id="h"><stop offset="0" stop-color="#fb923c" stop-opacity=".42"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient></defs>
+<rect width="640" height="256" fill="url(#g)"/>
+<circle cx="200" cy="128" r="220" fill="url(#h)"/>
+<g stroke="#fff" stroke-opacity=".07" stroke-width="1"><path d="M0 64H640M0 128H640M0 192H640M80 0V256M160 0V256M240 0V256M320 0V256M400 0V256M480 0V256M560 0V256"/></g>
+<path d="M40 150 C110 60 250 60 330 120 S470 200 600 110" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+<rect x="80" y="60" width="150" height="130" rx="18" fill="#ef4444" fill-opacity=".12" stroke="#ef4444" stroke-opacity=".5" stroke-width="2" stroke-dasharray="8 6"/>
+<g stroke-width="3.5" stroke="#fff" stroke-opacity=".85">
+<circle cx="116" cy="102" r="14" fill="#ef4444"/><circle cx="164" cy="128" r="14" fill="#facc15"/><circle cx="118" cy="156" r="14" fill="#22c55e"/><circle cx="206" cy="94" r="14" fill="#1f2937"/><circle cx="212" cy="156" r="14" fill="#facc15"/></g>
+<g fill="#fff" fill-opacity=".9"><path d="M110 103 h12 M116 97 v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>
+<path d="M200 91 l12 6 M212 91 l-12 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+<g transform="translate(360 150)"><rect width="150" height="64" rx="12" fill="#fff" fill-opacity=".92"/><rect x="92" y="10" width="46" height="26" rx="6" fill="#9fd0f0"/><rect x="14" y="26" width="64" height="9" fill="#ef4444"/><rect x="42" y="14" width="9" height="32" fill="#ef4444"/><circle cx="36" cy="68" r="12" fill="#0d1a2a" stroke="#fff" stroke-width="4"/><circle cx="116" cy="68" r="12" fill="#0d1a2a" stroke="#fff" stroke-width="4"/></g>
+<text x="360" y="104" font-family="Verdana,sans-serif" font-weight="700" font-size="46" fill="#fff">START</text>
+<text x="362" y="128" font-family="Verdana,sans-serif" font-weight="700" font-size="14" fill="#fff" fill-opacity=".7">triaje · JumpSTART</text>
+</svg>

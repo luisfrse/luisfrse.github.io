@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Simulador d'autoclau de vapor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <button type="button" class="btn sm" id="back"></button>
+    <div class="btns">
+      <button type="button" class="btn sm" id="home"></button>
+      <button type="button" class="btn sm" id="lang" aria-label="Català / Castellano"></button>
+    </div>
+  </div>
+  <header class="hero">
+    <h1 id="title" tabindex="-1">Simulador d'autoclau de vapor</h1>
+    <p class="lead" id="lead"></p>
+    <p class="modebar" id="modebar" hidden></p>
+  </header>
+  <main id="app"></main>
+  <p class="note" id="note"></p>
+  <p class="src" id="src"></p>
+</div>
+<noscript>Cal activar JavaScript per fer servir aquesta eina.</noscript>
+<script src="logic.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

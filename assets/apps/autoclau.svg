@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d1a2a"/><stop offset="1" stop-color="#27506f"/></linearGradient><radialGradient id="h"><stop offset="0" stop-color="#93c5fd" stop-opacity=".45"/><stop offset="1" stop-color="#93c5fd" stop-opacity="0"/></radialGradient></defs>
+<rect width="640" height="256" fill="url(#g)"/>
+<circle cx="190" cy="128" r="220" fill="url(#h)"/>
+<circle cx="190" cy="132" r="92" fill="#fff" fill-opacity=".12" stroke="#bfdbfe" stroke-width="4"/>
+<circle cx="190" cy="132" r="76" fill="#0d1a2a" fill-opacity=".55" stroke="#bfdbfe" stroke-opacity=".5" stroke-width="2"/>
+<g stroke="#bfdbfe" stroke-width="3" stroke-linecap="round"><path d="M190 64 V76"/><path d="M126 100 l9 6"/><path d="M254 100 l-9 6"/><path d="M114 160 l11 -3"/><path d="M266 160 l-11 -3"/></g>
+<path d="M126 176 A76 76 0 0 1 154 78" fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+<path d="M226 78 A76 76 0 0 1 254 176" fill="none" stroke="#f87171" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+<path d="M190 132 L228 92" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="190" cy="132" r="10" fill="#fff"/>
+<text x="190" y="176" text-anchor="middle" font-family="Verdana,sans-serif" font-weight="700" font-size="16" fill="#fff" fill-opacity=".8">bar</text>
+<g fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"><path d="M300 78 q-16 -18 0 -36 q16 -18 0 -36"/><path d="M332 90 q-16 -18 0 -36 q16 -18 0 -36"/></g>
+<text x="372" y="124" font-family="Verdana,sans-serif" font-weight="700" font-size="52" fill="#fff">134</text><text x="480" y="124" font-family="Verdana,sans-serif" font-weight="700" font-size="22" fill="#fff" fill-opacity=".75">°C</text>
+<text x="374" y="154" font-family="Verdana,sans-serif" font-weight="700" font-size="14" fill="#fff" fill-opacity=".7">vapor · esterilización</text>
+<rect x="374" y="176" width="190" height="14" rx="7" fill="#fff" fill-opacity=".14"/><rect x="374" y="176" width="120" height="14" rx="7" fill="#60a5fa"/>
+</svg>
