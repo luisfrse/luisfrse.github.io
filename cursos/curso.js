@@ -42,7 +42,6 @@
       <section class="blk"><h2>${esc(t.inc)}</h2><ul class="inc">${d.inc.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>
       <section class="blk"><h2>${esc(t.how)}</h2><ul class="inc">${c.how[lang].map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>
       <section class="blk"><h2>${esc(t.tools)}</h2><p style="color:var(--soft);margin-top:0">${esc(t.toolsNote)}</p><div class="apps">${c.apps.map((a) => `<a href="${a.url}" target="_blank" rel="noopener">${esc(a[lang])}</a>`).join('')}</div></section>
-      <section class="blk"><h2>${esc(t.not)}</h2><p class="not">${esc(d.not)}</p></section>
       <section class="blk"><h2>${esc(t.faq)}</h2>${t.faqs.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</section>
       <section class="blk"><div class="acts"><a class="btn" href="../../#/contacto">${esc(t.contact)}</a><a class="btn ghost" href="https://campus.luisfs.com/asignatura/${c.slug}" target="_blank" rel="noopener">${esc(t.preview)}</a></div></section>
       <section class="blk"><h2>${esc(t.other)}</h2><div class="more">${C.filter((x) => x.page !== id).map((x) => `<a href="../${x.page}/">${esc(x[lang].name)}<span>${x.price} €</span></a>`).join('')}</div></section>`;

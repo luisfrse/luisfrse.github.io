@@ -124,7 +124,6 @@ footer{padding:10px 0 40px;text-align:center;color:var(--soft);font-size:.95rem}
           <p class="lead">${esc(d.lead)}</p>
           <div class="price"><b>${c.price} €</b><span>${esc(t.access)}</span></div>
           <ul class="inc">${d.inc.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
-          <p class="not"><b>${esc(t.not)}:</b> ${esc(d.not)}</p>
           <div class="acts"><a class="btn" href="${c.page}/">${esc(t.full)}</a><a class="btn ghost" href="../#/contacto">${esc(t.contact)}</a><a class="btn ghost" href="https://campus.luisfs.com/asignatura/${c.slug}" target="_blank" rel="noopener">${esc(t.preview)}</a>${c.app ? `<a class="btn ghost" href="${c.app.url}" target="_blank" rel="noopener">${esc(c.app[lang])}</a>` : ''}</div>
         </div></div></article>`;
     }).join('') + `<section class="how"><h2>${esc(t.how)}</h2><ul>${t.howList.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
