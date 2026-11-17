@@ -23,7 +23,7 @@
     const flat = SY.every((x) => x.items.length === 1);
     const body = flat
       ? `<details open><summary>${esc(t.syl)} (${SY.length})</summary><ol start="0" style="columns:2 320px;margin:.6em 0 0;padding-left:1.6em">${SY.map((x) => `<li style="break-inside:avoid;margin:0 0 .35em">${esc(x[lang])}</li>`).join('')}</ol></details>`
-      : SY.map((x) => `<details><summary>${esc(t.tema)} ${x.n} · ${esc(x[lang])} <span style="color:var(--soft);font-weight:400">(${x.items.length} ${esc(t.items)})</span></summary><ul class="inc" style="margin-top:.6em">${x.items.map((i) => `<li>${esc(i[lang])}</li>`).join('')}</ul></details>`).join('');
+      : SY.map((x) => `<details><summary>${esc(t.tema)} ${x.n} · ${esc(x[lang])} ${x.items.length > 1 ? `<span style="color:var(--soft);font-weight:400">(${x.items.length} ${esc(t.items)})</span>` : ''}</summary><ul class="inc" style="margin-top:.6em">${x.items.map((i) => `<li>${esc(i[lang])}</li>`).join('')}</ul></details>`).join('');
     return `<section class="blk"><h2>${esc(t.syl)}</h2><p style="color:var(--soft);margin-top:0">${esc(t.sylNote)}</p>${body}</section>`;
   };
 
