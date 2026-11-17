@@ -245,7 +245,14 @@
     'about.title': 'Quant a Triatge START', 'about.p1': 'Simulador educatiu de triatge START en un incident amb múltiples víctimes, fet per al curs de Primers auxilis del campus i publicat també com a aplicació lliure.',
     'about.p2': 'No substitueix la formació presencial ni els protocols oficials. Els escenaris, temps i evolucions són simplificacions pensades per aprendre l\'algorisme i les prioritats.',
     'about.author': 'Autor', 'about.course': 'Curs', 'about.courseV': 'Primers auxilis', 'about.version': 'Versió', 'about.keysTitle': 'Teclat',
-    'about.k1': 'Tabulador: recórrer víctimes i controls; Retorn o espai: seleccionar / anar-hi.', 'about.k2': 'Amb el mapa enfocat: + i − per al zoom, fletxes per desplaçar.', 'about.k3': 'Al mòbil: arrossega per moure el mapa i pessiga per fer zoom.', 'about.k4': 'Targeta ràpida: tecles 1–4 per a les cintes.'
+    'about.k1': 'Tabulador: recórrer víctimes i controls; Retorn o espai: seleccionar / anar-hi.', 'about.k2': 'Amb el mapa enfocat: + i − per al zoom, fletxes per desplaçar.', 'about.k3': 'Al mòbil: arrossega per moure el mapa i pessiga per fer zoom.', 'about.k4': 'Targeta ràpida: tecles 1–4 per a les cintes.',
+    'hv.prefix': 'Perill', 'hv.new': 'Perill nou', 'hv.title': 'Perills a la zona calenta', 'hv.legend': 'Perill',
+    'hv.sum.one': 'Perills: 1 actiu', 'hv.sum.many': 'Perills: {n} actius', 'hv.sum.none': 'Perills: tots retirats',
+    'hv.state.on': 'Actiu', 'hv.state.arrive': 'Equip en camí', 'hv.state.act': 'Equip actuant', 'hv.state.done': 'Despejada',
+    'hv.toggleAria': 'Llista de perills de la zona calenta: mostrar o amagar', 'hv.moreAria': 'Què és i qui ho resol: {name}',
+    'hv.who': 'Qui ho retira', 'hv.threat': 'Amenaça activa', 'hv.threatDone': 'Policia: amenaça neutralitzada. Zona assegurada.', 'hv.threatClear': 'Policia: aparcament revisat. Sense amenaça.',
+    'hv.listAria': 'Perills actius i equips que els retiren', 'hv.cleared': 'Zona despejada: {txt}',
+    'hv.help': 'Cada perill es dibuixa dins de la zona calenta, vorejada per una franja groga i negra, i també es descriu aquí en text. Quan arriba l\'hora de despeje, els equips d\'emergència hi arriben i actuen uns segons; això no canvia les regles, els temps ni la nota.'
   };
   const es = {
     'app.name': 'Triaje START', 'app.tag': 'Simulador de incidente con múltiples víctimas',
@@ -490,7 +497,14 @@
     'about.title': 'Acerca de Triaje START', 'about.p1': 'Simulador educativo de triaje START en un incidente con múltiples víctimas, hecho para el curso de Primeros auxilios del campus y publicado también como aplicación libre.',
     'about.p2': 'No sustituye a la formación presencial ni a los protocolos oficiales. Los escenarios, tiempos y evoluciones son simplificaciones pensadas para aprender el algoritmo y las prioridades.',
     'about.author': 'Autor', 'about.course': 'Curso', 'about.courseV': 'Primeros auxilios', 'about.version': 'Versión', 'about.keysTitle': 'Teclado',
-    'about.k1': 'Tabulador: recorrer víctimas y controles; Intro o espacio: seleccionar / ir.', 'about.k2': 'Con el mapa enfocado: + y − para el zoom, flechas para desplazar.', 'about.k3': 'En el móvil: arrastra para mover el mapa y pellizca para el zoom.', 'about.k4': 'Tarjeta rápida: teclas 1–4 para las cintas.'
+    'about.k1': 'Tabulador: recorrer víctimas y controles; Intro o espacio: seleccionar / ir.', 'about.k2': 'Con el mapa enfocado: + y − para el zoom, flechas para desplazar.', 'about.k3': 'En el móvil: arrastra para mover el mapa y pellizca para el zoom.', 'about.k4': 'Tarjeta rápida: teclas 1–4 para las cintas.',
+    'hv.prefix': 'Peligro', 'hv.new': 'Peligro nuevo', 'hv.title': 'Peligros en la zona caliente', 'hv.legend': 'Peligro',
+    'hv.sum.one': 'Peligros: 1 activo', 'hv.sum.many': 'Peligros: {n} activos', 'hv.sum.none': 'Peligros: todos retirados',
+    'hv.state.on': 'Activo', 'hv.state.arrive': 'Equipo en camino', 'hv.state.act': 'Equipo actuando', 'hv.state.done': 'Despejada',
+    'hv.toggleAria': 'Lista de peligros de la zona caliente: mostrar u ocultar', 'hv.moreAria': 'Qué es y quién lo resuelve: {name}',
+    'hv.who': 'Quién lo retira', 'hv.threat': 'Amenaza activa', 'hv.threatDone': 'Policía: amenaza neutralizada. Zona asegurada.', 'hv.threatClear': 'Policía: aparcamiento revisado. Sin amenaza.',
+    'hv.listAria': 'Peligros activos y equipos que los retiran', 'hv.cleared': 'Zona despejada: {txt}',
+    'hv.help': 'Cada peligro se dibuja dentro de la zona caliente, bordeada por una franja amarilla y negra, y también se describe aquí en texto. Cuando llega la hora de despeje, los equipos de emergencia llegan y actúan unos segundos; esto no cambia las reglas, los tiempos ni la nota.'
   };
   const DICT = { ca: ca, es: es };
   const I = {

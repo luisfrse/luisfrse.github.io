@@ -481,10 +481,100 @@
   const GUIDED = { setting: 'bus', seed: 'GUIA-1', n: 13, difficulty: 'easy', guided: true };
   const CHALLENGE = { n: 16, difficulty: 'hard', realSeconds: 600 };
 
+  /* Peligros visibles i resposta dels equips (NOMÉS presentació: no intervé en regles, temps, puntuació ni llavors).
+     Cada zona calenta (mateix ordre que SETTINGS[id].hots o l'única `hot`) té: desc (què és i per què no s'hi entra),
+     motifs (símbols dibuixats dins la zona; at = [fx, fy] fraccions del rectangle que l'envolta) i resp (qui ve a retirar-lo:
+     unit fire|police|tech|usar, n vehicles, park e|s = per on aparquen, acts = accions, target = punt d'actuació, say = textos).
+     `kinds` = el mateix per al perill nou a mitja partida (hazard2.kind). */
+  const SAY = (ca, es) => ({ arrive: P(ca.arrive, es.arrive), act: P(ca.act, es.act) });
+  const HAZVIS = {
+    settings: {
+      bus: { zones: [{
+        desc: P('Gasoil vessat (relliscós i inflamable) i autobús bolcat que es pot moure. No t\'hi acostis fins que els bombers l\'assegurin.', 'Gasóleo derramado (resbaladizo e inflamable) y autobús volcado que puede moverse. No te acerques hasta que los bomberos lo aseguren.'),
+        motifs: [{ m: 'spill', at: [0.38, 0.8], rx: 125, ry: 44 }, { m: 'fumes', at: [0.32, 0.7] }, { m: 'tilt', at: [0.68, 0.3], s: 1 }, { m: 'warn', at: [0.14, 0.2], sym: 'flame' }, { m: 'warn', at: [0.86, 0.82], sym: 'tilt' }],
+        resp: { unit: 'fire', n: 2, park: 'e', acts: ['foam', 'props'], target: [0.45, 0.72], work: [[0.55, 0.45], [0.38, 0.78], [0.72, 0.36]],
+          say: SAY({ arrive: 'Han arribat els bombers: estabilitzen l\'autobús amb falques i puntals i cobreixen el vessament de gasoil.', act: 'Bombers estabilitzant l\'autobús i cobrint el vessament' }, { arrive: 'Han llegado los bomberos: estabilizan el autobús con calzos y puntales y cubren el vertido de gasóleo.', act: 'Bomberos estabilizando el autobús y cubriendo el vertido' }) } }] },
+      nave: { zones: [{
+        desc: P('Fum dens, cables esquinçats que facen espurnes i una coberta que pot caure. No s\'entra a la nau fins que els bombers revisin l\'estructura.', 'Humo denso, cables rotos que sueltan chispas y una cubierta que puede caer. No se entra en la nave hasta que los bomberos revisen la estructura.'),
+        motifs: [{ m: 'smoke', at: [0.5, 0.3], n: 5 }, { m: 'cracks', at: [0.55, 0.22], s: 1 }, { m: 'sparks', at: [0.78, 0.7], s: 1 }, { m: 'dust', at: [0.3, 0.2], n: 3 }, { m: 'tilt', at: [0.2, 0.65], s: 0.8 }, { m: 'warn', at: [0.88, 0.16], sym: 'crack' }, { m: 'warn', at: [0.12, 0.2], sym: 'gas' }],
+        resp: { unit: 'fire', n: 2, park: 'e', acts: ['vent', 'props'], target: [0.5, 0.45], work: [[0.55, 0.3], [0.3, 0.6], [0.7, 0.55]],
+          say: SAY({ arrive: 'Han arribat els bombers: ventilen la nau i apuntalen l\'estructura.', act: 'Bombers ventilant i revisant l\'estructura' }, { arrive: 'Han llegado los bomberos: ventilan la nave y apuntalan la estructura.', act: 'Bomberos ventilando y revisando la estructura' }) } }] },
+      festival: { zones: [{
+        desc: P('Torre i bastida caigudes amb cables elèctrics pelats que encara tenen tensió. No et toquis res: cal que els tècnics tallin el corrent.', 'Torre y andamio caídos con cables eléctricos pelados que aún tienen tensión. No toques nada: los técnicos tienen que cortar la corriente.'),
+        motifs: [{ m: 'cable', from: [0.1, 0.18], to: [0.92, 0.78] }, { m: 'sparks', at: [0.92, 0.78], s: 1 }, { m: 'sparks', at: [0.5, 0.45], s: 0.8 }, { m: 'tilt', at: [0.3, 0.3], s: 0.9 }, { m: 'warn', at: [0.58, 0.12], sym: 'bolt' }, { m: 'warn', at: [0.12, 0.8], sym: 'bolt' }],
+        resp: { unit: 'tech', n: 2, park: 'e', acts: ['cut', 'props'], target: [0.6, 0.55], work: [[0.55, 0.5], [0.85, 0.75]],
+          say: SAY({ arrive: 'Han arribat els tècnics: tallen el corrent i asseguren l\'estructura caiguda.', act: 'Tècnics tallant el corrent' }, { arrive: 'Han llegado los técnicos: cortan la corriente y aseguran la estructura caída.', act: 'Técnicos cortando la corriente' }) } }] },
+      tren: { zones: [{
+        desc: P('Catenària caiguda amb tensió elèctrica i vagó bolcat inestable. Ningú no s\'hi acosta fins que es confirmi el tall de tensió.', 'Catenaria caída con tensión eléctrica y vagón volcado inestable. Nadie se acerca hasta que se confirme el corte de tensión.'),
+        motifs: [{ m: 'cable', from: [0.08, 0.1], to: [0.9, 0.78] }, { m: 'sparks', at: [0.1, 0.12], s: 1 }, { m: 'sparks', at: [0.55, 0.5], s: 0.9 }, { m: 'sparks', at: [0.9, 0.78], s: 0.8 }, { m: 'tilt', at: [0.5, 0.35], s: 0.9 }, { m: 'warn', at: [0.3, 0.85], sym: 'bolt' }, { m: 'warn', at: [0.82, 0.14], sym: 'tilt' }],
+        resp: { unit: 'tech', n: 2, park: 'e', acts: ['cut', 'props'], target: [0.55, 0.5], work: [[0.55, 0.5], [0.85, 0.75], [0.15, 0.2]],
+          say: SAY({ arrive: 'Ha arribat l\'equip d\'Adif i els bombers: tallen la tensió i posen la catenària a terra.', act: 'Tallant la tensió de la catenària' }, { arrive: 'Ha llegado el equipo de Adif y los bomberos: cortan la tensión y ponen la catenaria a tierra.', act: 'Cortando la tensión de la catenaria' }) } }] },
+      terremoto: { zones: [{
+        desc: P('Runa de l\'edifici esfondrat que es pot moure, amb fuita de gas i pols. Ningú no puja a la runa fins que l\'equip USAR l\'apuntali.', 'Escombros del edificio derrumbado que pueden moverse, con fuga de gas y polvo. Nadie sube a los escombros hasta que el equipo USAR los apuntale.'),
+        motifs: [{ m: 'cracks', at: [0.3, 0.3], s: 1.2 }, { m: 'cracks', at: [0.72, 0.65], s: 1 }, { m: 'dust', at: [0.5, 0.35], n: 4 }, { m: 'tilt', at: [0.5, 0.6], s: 1.1 }, { m: 'warn', at: [0.1, 0.2], sym: 'crack' }, { m: 'warn', at: [0.9, 0.2], sym: 'gas' }],
+        resp: { unit: 'usar', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.5], work: [[0.4, 0.4], [0.62, 0.55], [0.3, 0.65]],
+          say: SAY({ arrive: 'Han arribat els bombers i l\'equip USAR: apuntalen la runa i tallen el gas.', act: 'USAR apuntalant la runa' }, { arrive: 'Han llegado los bomberos y el equipo USAR: apuntalan los escombros y cortan el gas.', act: 'USAR apuntalando los escombros' }) } }],
+        shake: true },
+      incendio: { zones: [{
+        desc: P('Foc a la planta baixa i fum dens davant del portal. Sense equip de respiració no s\'entra: només hi treballen els bombers.', 'Fuego en la planta baja y humo denso delante del portal. Sin equipo de respiración no se entra: solo trabajan los bomberos.'),
+        motifs: [{ m: 'flames', at: [0.2, 0.9], n: 3, s: 1.5 }, { m: 'flames', at: [0.5, 0.9], n: 3, s: 1.2 }, { m: 'flames', at: [0.8, 0.9], n: 2, s: 0.8 }, { m: 'smoke', at: [0.45, 0.4], n: 6 }, { m: 'warn', at: [0.9, 0.2], sym: 'flame' }, { m: 'warn', at: [0.08, 0.2], sym: 'gas' }],
+        resp: { unit: 'fire', n: 2, park: 'e', acts: ['water', 'foam'], target: [0.4, 0.9], work: [[0.6, 0.85], [0.35, 0.88], [0.8, 0.8]],
+          say: SAY({ arrive: 'Han arribat els bombers i estan apagant l\'incendi.', act: 'Bombers apagant l\'incendi' }, { arrive: 'Han llegado los bomberos y están apagando el incendio.', act: 'Bomberos apagando el incendio' }) } }] },
+      atropello: { zones: [{
+        desc: P('Furgoneta amb el motor calent i vessament de combustible. La policia talla el trànsit i els bombers l\'asseguren abans que ningú s\'hi acosti.', 'Furgoneta con el motor caliente y vertido de combustible. La policía corta el tráfico y los bomberos la aseguran antes de que nadie se acerque.'),
+        motifs: [{ m: 'spill', at: [0.62, 0.78], rx: 80, ry: 28 }, { m: 'fumes', at: [0.5, 0.35] }, { m: 'cones', at: [0.96, 0.25], n: 3 }, { m: 'cones', at: [0.06, 0.88], n: 3 }, { m: 'warn', at: [0.14, 0.25], sym: 'flame' }, { m: 'warn', at: [0.88, 0.85], sym: 'excl' }],
+        resp: { unit: 'fire', n: 1, units2: 'police', park: 'e', acts: ['foam', 'secure'], target: [0.5, 0.55], work: [[0.55, 0.55], [0.7, 0.75], [0.3, 0.3]],
+          say: SAY({ arrive: 'Han arribat la policia i els bombers: acordonen, aturen el motor i recullen el vessament.', act: 'Policia i bombers assegurant la furgoneta' }, { arrive: 'Han llegado la policía y los bomberos: acordonan, paran el motor y recogen el vertido.', act: 'Policía y bomberos asegurando la furgoneta' }) } }] },
+      tiroteo: { zones: [{
+        desc: P('Amenaça activa a l\'interior de l\'edifici. Zona calenta: el personal sanitari no hi entra fins que la policia no l\'asseguri.', 'Amenaza activa en el interior del edificio. Zona caliente: el personal sanitario no entra hasta que la policía la asegure.'),
+        motifs: [{ m: 'threat', at: [0.48, 0.45] }, { m: 'warn', at: [0.14, 0.2], sym: 'excl' }, { m: 'warn', at: [0.86, 0.2], sym: 'excl' }, { m: 'warn', at: [0.3, 0.92], sym: 'excl' }, { m: 'warn', at: [0.74, 0.92], sym: 'excl' }],
+        resp: { unit: 'police', n: 3, park: 's', acts: ['police'], target: [0.48, 0.45], work: null, threat: true,
+          say: SAY({ arrive: 'Ha arribat la policia: acordona el centre comercial i hi entra en formació per neutralitzar l\'amenaça.', act: 'Policia avançant en formació cap a l\'amenaça' }, { arrive: 'Ha llegado la policía: acordona el centro comercial y entra en formación para neutralizar la amenaza.', act: 'Policía avanzando en formación hacia la amenaza' }) } }] },
+      sismo: { shake: true, zones: [
+        { desc: P('Edifici A esfondrat: runa inestable i pols. L\'equip USAR l\'apuntala abans d\'accedir-hi.', 'Edificio A derrumbado: escombros inestables y polvo. El equipo USAR lo apuntala antes de acceder.'),
+          motifs: [{ m: 'cracks', at: [0.3, 0.35], s: 1.2 }, { m: 'dust', at: [0.55, 0.4], n: 4 }, { m: 'tilt', at: [0.65, 0.6], s: 1.1 }, { m: 'warn', at: [0.1, 0.2], sym: 'crack' }],
+          resp: { unit: 'usar', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.5], work: [[0.4, 0.4], [0.62, 0.55]], say: SAY({ arrive: 'Ha arribat l\'equip USAR: apuntala {zone}.', act: 'USAR apuntalant {zone}' }, { arrive: 'Ha llegado el equipo USAR: apuntala {zone}.', act: 'USAR apuntalando {zone}' }) } },
+        { desc: P('Edifici B esfondrat, amb fuita de gas i runa inestable. L\'equip USAR talla el gas i l\'apuntala.', 'Edificio B derrumbado, con fuga de gas y escombros inestables. El equipo USAR corta el gas y lo apuntala.'),
+          motifs: [{ m: 'cracks', at: [0.5, 0.3], s: 1.3 }, { m: 'dust', at: [0.3, 0.5], n: 4 }, { m: 'tilt', at: [0.55, 0.65], s: 1.2 }, { m: 'warn', at: [0.12, 0.18], sym: 'gas' }, { m: 'warn', at: [0.88, 0.2], sym: 'crack' }],
+          resp: { unit: 'usar', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.5], work: [[0.4, 0.45], [0.65, 0.6]], say: SAY({ arrive: 'Ha arribat l\'equip USAR: talla el gas i apuntala {zone}.', act: 'USAR apuntalant {zone}' }, { arrive: 'Ha llegado el equipo USAR: corta el gas y apuntala {zone}.', act: 'USAR apuntalando {zone}' }) } },
+        { desc: P('Edifici C esfondrat: runa inestable i pols. L\'equip USAR l\'apuntala abans d\'accedir-hi.', 'Edificio C derrumbado: escombros inestables y polvo. El equipo USAR lo apuntala antes de acceder.'),
+          motifs: [{ m: 'cracks', at: [0.35, 0.4], s: 1.2 }, { m: 'dust', at: [0.6, 0.35], n: 4 }, { m: 'tilt', at: [0.6, 0.65], s: 1.1 }, { m: 'warn', at: [0.1, 0.2], sym: 'crack' }],
+          resp: { unit: 'usar', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.5], work: [[0.4, 0.4], [0.62, 0.55]], say: SAY({ arrive: 'Ha arribat l\'equip USAR: apuntala {zone}.', act: 'USAR apuntalant {zone}' }, { arrive: 'Ha llegado el equipo USAR: apuntala {zone}.', act: 'USAR apuntalando {zone}' }) } }] },
+      avion: { zones: [
+        { desc: P('Morro de l\'avió en flames, amb combustible vessat i fum dens. Els bombers de l\'aeroport l\'apaguen abans d\'accedir-hi.', 'Morro del avión en llamas, con combustible derramado y humo denso. Los bomberos del aeropuerto lo apagan antes de acceder.'),
+          motifs: [{ m: 'flames', at: [0.3, 0.45], n: 4, s: 1.6 }, { m: 'flames', at: [0.7, 0.6], n: 2, s: 1 }, { m: 'smoke', at: [0.45, 0.3], n: 5 }, { m: 'spill', at: [0.55, 0.85], rx: 110, ry: 34 }, { m: 'warn', at: [0.9, 0.2], sym: 'flame' }],
+          resp: { unit: 'fire', n: 2, park: 'e', acts: ['foam', 'water'], target: [0.4, 0.55], work: [[0.6, 0.5], [0.4, 0.6]], say: SAY({ arrive: 'Han arribat els bombers de l\'aeroport: apaguen amb aigua i escuma {zone}.', act: 'Bombers de l\'aeroport apagant {zone}' }, { arrive: 'Han llegado los bomberos del aeropuerto: apagan con agua y espuma {zone}.', act: 'Bomberos del aeropuerto apagando {zone}' }) } },
+        { desc: P('Tram central i ales: foc als motors i combustible vessat. Els bombers de l\'aeroport el refreden amb escuma.', 'Tramo central y alas: fuego en los motores y combustible derramado. Los bomberos del aeropuerto lo enfrían con espuma.'),
+          motifs: [{ m: 'flames', at: [0.3, 0.5], n: 3, s: 1.3 }, { m: 'flames', at: [0.75, 0.6], n: 3, s: 1.1 }, { m: 'smoke', at: [0.5, 0.35], n: 4 }, { m: 'spill', at: [0.5, 0.88], rx: 100, ry: 30 }, { m: 'warn', at: [0.88, 0.18], sym: 'flame' }],
+          resp: { unit: 'fire', n: 2, park: 'e', acts: ['foam', 'water'], target: [0.5, 0.55], work: [[0.55, 0.5], [0.35, 0.6]], say: SAY({ arrive: 'Han arribat els bombers de l\'aeroport: refreden amb escuma {zone}.', act: 'Bombers de l\'aeroport refredant {zone}' }, { arrive: 'Han llegado los bomberos del aeropuerto: enfrían con espuma {zone}.', act: 'Bomberos del aeropuerto enfriando {zone}' }) } },
+        { desc: P('Cua de l\'avió amb combustible vessat que pot encendre\'s. Els bombers de l\'aeroport el cobreixen d\'escuma.', 'Cola del avión con combustible derramado que puede encenderse. Los bomberos del aeropuerto lo cubren de espuma.'),
+          motifs: [{ m: 'spill', at: [0.5, 0.65], rx: 150, ry: 46 }, { m: 'fumes', at: [0.4, 0.5] }, { m: 'flames', at: [0.8, 0.35], n: 2, s: 0.9 }, { m: 'smoke', at: [0.78, 0.2], n: 3 }, { m: 'warn', at: [0.1, 0.2], sym: 'flame' }],
+          resp: { unit: 'fire', n: 2, park: 'e', acts: ['foam'], target: [0.5, 0.6], work: [[0.6, 0.55], [0.35, 0.65]], say: SAY({ arrive: 'Han arribat els bombers de l\'aeroport: cobreixen d\'escuma el combustible de {zone}.', act: 'Bombers de l\'aeroport cobrint {zone} d\'escuma' }, { arrive: 'Han llegado los bomberos del aeropuerto: cubren de espuma el combustible de {zone}.', act: 'Bomberos del aeropuerto cubriendo {zone} de espuma' }) } }] }
+    },
+    /* perill nou a mitja partida: segons el tipus (hazard2.kind) */
+    kinds: {
+      fire: { label: P('incendi', 'incendio'),
+        motifs: [{ m: 'flames', at: [0.35, 0.7], n: 4, s: 1.3 }, { m: 'flames', at: [0.7, 0.55], n: 3, s: 0.9 }, { m: 'smoke', at: [0.5, 0.4], n: 4 }, { m: 'warn', at: [0.14, 0.2], sym: 'flame' }],
+        resp: { unit: 'fire', n: 2, park: 'e', acts: ['water', 'foam'], target: [0.45, 0.65], work: [[0.55, 0.6], [0.35, 0.7]], say: SAY({ arrive: 'Han arribat els bombers i estan apagant el foc.', act: 'Bombers apagant el foc' }, { arrive: 'Han llegado los bomberos y están apagando el fuego.', act: 'Bomberos apagando el fuego' }) } },
+      collapse: { label: P('estructura a punt de caure', 'estructura a punto de caer'),
+        motifs: [{ m: 'cracks', at: [0.5, 0.35], s: 1 }, { m: 'tilt', at: [0.5, 0.6], s: 1.1 }, { m: 'dust', at: [0.3, 0.3], n: 3 }, { m: 'warn', at: [0.14, 0.2], sym: 'crack' }, { m: 'warn', at: [0.86, 0.8], sym: 'tilt' }],
+        resp: { unit: 'fire', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.55], work: [[0.4, 0.5], [0.62, 0.6]], say: SAY({ arrive: 'Han arribat els bombers: apuntalen l\'estructura que amenaça de caure.', act: 'Bombers apuntalant l\'estructura' }, { arrive: 'Han llegado los bomberos: apuntalan la estructura que amenaza con caer.', act: 'Bomberos apuntalando la estructura' }) } },
+      wire: { label: P('cable amb tensió', 'cable con tensión'),
+        motifs: [{ m: 'cable', from: [0.1, 0.2], to: [0.9, 0.8] }, { m: 'sparks', at: [0.55, 0.5], s: 1 }, { m: 'sparks', at: [0.9, 0.8], s: 0.8 }, { m: 'warn', at: [0.2, 0.75], sym: 'bolt' }, { m: 'warn', at: [0.8, 0.2], sym: 'bolt' }],
+        resp: { unit: 'tech', n: 2, park: 'e', acts: ['cut'], target: [0.55, 0.5], work: [[0.55, 0.5], [0.85, 0.75]], say: SAY({ arrive: 'Han arribat els tècnics: tallen la tensió i posen el cable a terra.', act: 'Tècnics tallant la tensió' }, { arrive: 'Han llegado los técnicos: cortan la tensión y ponen el cable a tierra.', act: 'Técnicos cortando la tensión' }) } },
+      quake: { label: P('rèplica i façana inestable', 'réplica y fachada inestable'), shake: true,
+        motifs: [{ m: 'cracks', at: [0.35, 0.35], s: 1.2 }, { m: 'cracks', at: [0.7, 0.6], s: 1 }, { m: 'dust', at: [0.5, 0.3], n: 4 }, { m: 'tilt', at: [0.5, 0.65], s: 1.1 }, { m: 'warn', at: [0.12, 0.2], sym: 'crack' }],
+        resp: { unit: 'usar', n: 2, park: 'e', acts: ['props'], target: [0.5, 0.5], work: [[0.4, 0.45], [0.62, 0.6]], say: SAY({ arrive: 'Han arribat els bombers: revisen la façana i acordonen la zona.', act: 'Bombers revisant la façana' }, { arrive: 'Han llegado los bomberos: revisan la fachada y acordonan la zona.', act: 'Bomberos revisando la fachada' }) } },
+      threat: { label: P('possible segona amenaça', 'posible segunda amenaza'), softThreat: true,
+        motifs: [{ m: 'threat', at: [0.5, 0.5] }, { m: 'warn', at: [0.14, 0.2], sym: 'excl' }, { m: 'warn', at: [0.86, 0.8], sym: 'excl' }],
+        resp: { unit: 'police', n: 2, park: 'e', acts: ['police'], target: [0.5, 0.5], work: null, threat: true, say: SAY({ arrive: 'La policia revisa l\'aparcament: els agents avancen en formació.', act: 'Policia revisant l\'aparcament' }, { arrive: 'La policía revisa el aparcamiento: los agentes avanzan en formación.', act: 'Policía revisando el aparcamiento' }) } }
+    }
+  };
+
   const D = {
     slug: 'sim-triatge-start', version: '2.0.0',
     author: 'Luis Franco Serrano',
-    COLD: COLD, SETTINGS: SETTINGS, TEMPLATES: TEMPLATES, PTEMPLATES: PTEMPLATES, HOSPITALS: HOSPITALS, BANK: BANK, GUIDED: GUIDED, CHALLENGE: CHALLENGE,
+    COLD: COLD, SETTINGS: SETTINGS, TEMPLATES: TEMPLATES, PTEMPLATES: PTEMPLATES, HOSPITALS: HOSPITALS, BANK: BANK, GUIDED: GUIDED, CHALLENGE: CHALLENGE, HAZVIS: HAZVIS,
     /* l'opció «aleatori» tria només entre els escenaris originals (reproduïbilitat de les llavors antigues) */
     RANDOM_POOL: ['bus', 'nave', 'festival', 'tren']
   };

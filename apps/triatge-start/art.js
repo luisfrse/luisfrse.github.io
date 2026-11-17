@@ -329,6 +329,176 @@
     return g('map-static', [bg, zg, labels, coldBase, road, g('map-cold', coldZone(D, prefix), { transform: 'translate(' + o.dx + ' ' + o.dy + ')' })]);
   }
 
+  /* ---------- peligros visibles i resposta dels equips d'emergència ---------- */
+  /* Tot el color surt de classes CSS (hv-*). Animació només amb CSS (pocs nodes); sense moviment, cada estat és estàtic. */
+  function bbox(poly) {
+    const xs = poly.map((p) => p[0]), ys = poly.map((p) => p[1]);
+    const x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+    return { x0: x0, y0: y0, x1: x1, y1: y1, w: x1 - x0, h: y1 - y0, cx: Math.round((x0 + x1) / 2), cy: Math.round((y0 + y1) / 2) };
+  }
+  const atF = (b, f) => [Math.round(b.x0 + f[0] * b.w), Math.round(b.y0 + f[1] * b.h)];
+  const polyPts = (pl) => pl.map((p) => p[0] + ',' + p[1]).join(' ');
+  const GLYPH = {
+    flame: 'M0 15c-8 0-11-6-8-13 2 3 4 3 4-3 5 4 12 6 12 16-2 1-5 0-8 0z',
+    bolt: 'M3 -13L-8 4H-1L-3 15L8 -4H1z',
+    crack: 'M-10 -12L-2 -2L-8 5L3 15',
+    gas: 'M-9 -10c5 4-5 8 0 12M0 -10c5 4-5 8 0 12M9 -10c5 4-5 8 0 12M-9 8h18',
+    excl: 'M0 -11V3M0 10v.5',
+    tilt: 'M-10 13L-10 -3L8 -12M8 -12l-2 8M8 -12l-8 2'
+  };
+  function hvFlames(x, y, n, sc) {
+    const R = prng(x * 31 + y * 7 + n), out = [];
+    for (let i = 0; i < n; i++) {
+      const px = Math.round(x + (i - (n - 1) / 2) * 30 * sc), hh = Math.round((46 + R() * 42) * sc), w = Math.round(15 * sc);
+      out.push(g('hv-flame', [
+        path('M' + (px - w) + ' ' + y + ' Q' + (px - w * 1.4) + ' ' + (y - hh * 0.5) + ' ' + px + ' ' + (y - hh) + ' Q' + (px + w * 1.4) + ' ' + (y - hh * 0.45) + ' ' + (px + w) + ' ' + y + ' Z', 'hv-fire1'),
+        path('M' + (px - w * 0.55) + ' ' + y + ' Q' + (px - w * 0.7) + ' ' + (y - hh * 0.3) + ' ' + px + ' ' + (y - hh * 0.62) + ' Q' + (px + w * 0.7) + ' ' + (y - hh * 0.28) + ' ' + (px + w * 0.55) + ' ' + y + ' Z', 'hv-fire2')
+      ], { style: 'animation-delay:' + (-i * 0.31).toFixed(2) + 's' }));
+    }
+    return g('hv-fire hv-out', out);
+  }
+  function hvSparks(x, y, sc) {
+    const k = [circ(x, y, Math.round(24 * sc), 'hv-glow')];
+    [20, 95, 170, 255, 320].forEach(function (deg, i) {
+      const a = deg * Math.PI / 180, ca = Math.cos(a), sa = Math.sin(a), r = (14 + (i % 2) * 8) * sc;
+      const p1 = [x + ca * r, y + sa * r], p2 = [x + ca * r * 1.8 - sa * 7, y + sa * r * 1.8 + ca * 7], p3 = [x + ca * r * 2.6 + sa * 5, y + sa * r * 2.6 - ca * 5];
+      k.push(path('M' + x + ' ' + y + ' L' + Math.round(p1[0]) + ' ' + Math.round(p1[1]) + ' L' + Math.round(p2[0]) + ' ' + Math.round(p2[1]) + ' L' + Math.round(p3[0]) + ' ' + Math.round(p3[1]), 'hv-spark'));
+    });
+    return g('hv-sparks hv-out', k, { style: 'animation-delay:' + (-((x + y) % 7) * 0.13).toFixed(2) + 's' });
+  }
+  function hvCable(a, b2) {
+    const mx = (a[0] + b2[0]) / 2, my = (a[1] + b2[1]) / 2, dx = b2[0] - a[0], dy = b2[1] - a[1];
+    const d = 'M' + a[0] + ' ' + a[1] + ' C' + Math.round(a[0] + dx * 0.25 - dy * 0.12) + ' ' + Math.round(a[1] + dy * 0.25 + dx * 0.12 + 40) + ' ' + Math.round(mx + dy * 0.1) + ' ' + Math.round(my - dx * 0.1 - 30) + ' ' + Math.round(b2[0] - dx * 0.2) + ' ' + Math.round(b2[1] - dy * 0.2 + 30) + ' S ' + b2[0] + ' ' + b2[1] + ' ' + b2[0] + ' ' + b2[1];
+    return g('hv-cablegrp', [path(d, 'hv-cable'), path(d, 'hv-cableh')]);
+  }
+  function hvSpill(x, y, rx, ry) {
+    return g('hv-spillgrp', [puddle(x, y, rx, ry, 'hv-spill'), path('M' + Math.round(x - rx * 0.55) + ' ' + Math.round(y - ry * 0.25) + ' q ' + Math.round(rx * 0.45) + ' ' + Math.round(-ry * 0.5) + ' ' + Math.round(rx * 0.95) + ' ' + Math.round(-ry * 0.1), 'hv-sheen'), path('M' + Math.round(x - rx * 0.3) + ' ' + Math.round(y + ry * 0.15) + ' q ' + Math.round(rx * 0.4) + ' ' + Math.round(-ry * 0.35) + ' ' + Math.round(rx * 0.8) + ' ' + Math.round(-ry * 0.05), 'hv-sheen hv-sheen2')]);
+  }
+  function hvFumes(x, y) {
+    return g('hv-fumes hv-out', [-34, 0, 34].map((o, i) => path('M' + (x + o) + ' ' + y + ' c 10 -14 -10 -28 0 -44 c 10 -14 -10 -28 0 -44', 'hv-fume', { style: 'animation-delay:' + (-i * 0.8) + 's' })));
+  }
+  function hvCracks(x, y, sc, seed) {
+    const R = prng(seed || x + y), d = [];
+    [-150, -20, 70, 160].forEach(function (deg) {
+      let px = x, py = y, a = deg * Math.PI / 180, str = 'M' + x + ' ' + y;
+      for (let i = 0; i < 5; i++) { a += (R() - 0.5) * 1.1; const l = (22 + R() * 22) * sc; px += Math.cos(a) * l; py += Math.sin(a) * l; str += ' L' + Math.round(px) + ' ' + Math.round(py); }
+      d.push(str);
+    });
+    return g('hv-cracks', [path(d.join(' '), 'hv-crack'), path(d.join(' '), 'hv-crackhi')]);
+  }
+  function hvDust(x, y, n) {
+    const out = []; for (let i = 0; i < n; i++) out.push(circ(x + (i % 3) * 30 - 30, y + (i % 2) * 20, 26 + i * 6, 'hv-dust', { style: 'animation-delay:' + (-i * 1.1) + 's' }));
+    return g('hv-dustgrp hv-out', out);
+  }
+  function hvTilt(x, y, sc) {
+    const w = 150 * sc, h2 = 84 * sc;
+    return g('hv-tiltgrp hv-out', [
+      rect(-w / 2, -h2 / 2, w, h2, 'hv-tiltbox', 6, { transform: rot(x, y, -9) }),
+      path('M' + Math.round(x - w / 2 - 16) + ' ' + Math.round(y + h2 / 2) + ' q -6 ' + Math.round(-h2 * 0.6) + ' ' + Math.round(h2 * 0.15) + ' ' + Math.round(-h2 * 0.8) + ' m 0 0 l -2 14 m 2 -14 l 12 8', 'hv-tiltarrow'),
+      g('', [rect(-6, -4, 12, 8, 'hv-fall', 1)], { transform: 'translate(' + Math.round(x - w * 0.2) + ' ' + Math.round(y + h2 / 2 + 6) + ')' }),
+      g('', [rect(-5, -3, 10, 6, 'hv-fall hv-fall2', 1)], { transform: 'translate(' + Math.round(x + w * 0.25) + ' ' + Math.round(y + h2 / 2 + 6) + ')' })
+    ]);
+  }
+  function hvWarn(x, y, sym) {
+    return g('hv-warn', [g('hv-warnin', [poly([[0, -36], [34, 24], [-34, 24]], 'hv-warnbg'), path(GLYPH[sym] || GLYPH.excl, 'hv-glyph')], { style: 'animation-delay:' + (-((x * 3 + y) % 5) * 0.4).toFixed(1) + 's' })], { transform: 'translate(' + x + ' ' + y + ') scale(1.2)' });
+  }
+  function hvCones(x, y, n) {
+    const out = []; for (let i = 0; i < n; i++) { const cx = x + i * 34; out.push(g('', [rect(cx - 15, y + 8, 30, 8, 'hv-conebase', 2), poly([[cx, y - 22], [cx + 13, y + 10], [cx - 13, y + 10]], 'hv-cone'), rect(cx - 8, y - 4, 16, 5, 'hv-coneband', 1)])); }
+    return g('hv-cones', out);
+  }
+  function hvThreat(x, y) {
+    const body = 'M' + (x - 28) + ' ' + (y + 32) + ' q 0 -30 28 -30 q 28 0 28 30 z';
+    return g('hv-threat', [
+      g('thr-on', [circ(x, y, 52, 'hv-thr-pulse'), circ(x, y, 52, 'hv-thr-pulse hv-thr-pulse2'), circ(x, y, 47, 'hv-thr-dash'), circ(x, y - 16, 14, 'hv-thr-body'), path(body, 'hv-thr-body'), g('', [circ(x + 36, y - 40, 14, 'hv-thr-badge'), text(x + 36, y - 33, '!', 'hv-thr-bang m-center')])]),
+      g('thr-off', [circ(x, y, 47, 'hv-thr-okring'), circ(x, y - 16, 14, 'hv-thr-calm'), path(body, 'hv-thr-calm'), g('', [circ(x + 36, y - 40, 14, 'hv-thr-okbadge'), path('M' + (x + 29) + ' ' + (y - 40) + ' l5 6 l10 -12', 'hv-thr-check')])])
+    ]);
+  }
+  function hvMotif(m, b) {
+    const p = m.at ? atF(b, m.at) : [0, 0];
+    switch (m.m) {
+      case 'flames': return hvFlames(p[0], p[1], m.n || 3, m.s || 1);
+      case 'smoke': return g('hv-smk hv-out', [smoke(p[0], p[1], m.n || 4)]);
+      case 'sparks': return hvSparks(p[0], p[1], m.s || 1);
+      case 'cable': return hvCable(atF(b, m.from), atF(b, m.to));
+      case 'spill': return hvSpill(p[0], p[1], m.rx || 100, m.ry || 34);
+      case 'fumes': return hvFumes(p[0], p[1]);
+      case 'cracks': return hvCracks(p[0], p[1], m.s || 1, p[0] * 3 + p[1]);
+      case 'dust': return hvDust(p[0], p[1], m.n || 3);
+      case 'tilt': return hvTilt(p[0], p[1], m.s || 1);
+      case 'warn': return hvWarn(p[0], p[1], m.sym);
+      case 'cones': return hvCones(p[0], p[1], m.n || 3);
+      case 'threat': return hvThreat(p[0], p[1]);
+      default: return null;
+    }
+  }
+  /* vehicles i agents (vista des de dalt, orientats cap a la dreta) */
+  function hvUnit(kind) {
+    const bk = (x, y, c) => circ(x, y, 5, c);
+    if (kind === 'police') return g('hv-unit hv-u-police', [rect(-38, -16, 84, 40, 'm-shadow', 8), rect(-42, -20, 84, 40, 'm-police', 8), rect(-8, -20, 10, 40, 'm-policestripe', 2), rect(12, -16, 18, 32, 'm-glass', 3), rect(-5, -9, 7, 18, 'hv-lightbar', 2), bk(-1, -9, 'hv-bk1'), bk(-1, 9, 'hv-bk2')]);
+    if (kind === 'tech') return g('hv-unit hv-u-tech', [rect(-50, -18, 110, 46, 'm-shadow', 8), rect(-55, -23, 110, 46, 'hv-techvan', 8), rect(32, -19, 18, 38, 'm-glass', 3), path('M-6 -13L-16 3H-9L-11 13L0 -3H-7Z', 'hv-vanbolt'), bk(-46, -12, 'hv-bkamber'), bk(-46, 12, 'hv-bkamber hv-bkb')]);
+    if (kind === 'usar') return g('hv-unit hv-u-usar', [rect(-70, -19, 150, 48, 'm-shadow', 9), rect(-75, -24, 150, 48, 'hv-usar', 9), rect(-62, -3, 80, 6, 'hv-usarstripe', 1), rect(-58, -17, 62, 9, 'hv-crane', 2), rect(44, -19, 22, 38, 'm-glass', 3), bk(-66, -15, 'hv-bk1'), bk(-66, 15, 'hv-bk2')]);
+    return g('hv-unit hv-u-fire', [rect(-70, -19, 150, 48, 'm-shadow', 9), rect(-75, -24, 150, 48, 'm-firetruck', 9), rect(-60, -7, 86, 14, 'm-ladder', 2), circ(30, 0, 8, 'hv-turret'), rect(44, -19, 22, 38, 'm-glass', 3), bk(-66, -15, 'hv-bk1'), bk(-66, 15, 'hv-bk2')]);
+  }
+  function hvAgent(kind) {
+    return g('hv-agent', [g('', [ell(2, 3, 14, 9, 'm-shadow'), ell(0, 0, 13, 9, 'hv-a-body hv-a-' + kind), circ(0, 0, 6.5, 'hv-a-helm hv-a-' + kind)], { transform: 'scale(1.6)' })]);
+  }
+  function hvActs(r, b, units) {
+    const T = atF(b, r.target), out = [];
+    const noz = (u) => [u.to.x + (u.to.a === -90 ? 0 : -80), u.to.y + (u.to.a === -90 ? -80 : 0)];
+    (r.acts || []).forEach(function (a) {
+      if (a === 'water' || (a === 'foam' && (r.acts || []).indexOf('water') < 0)) {
+        units.filter((u) => u.kind === 'fire').slice(0, 2).forEach(function (u, i) {
+          const n = noz(u), tx = T[0] + (i ? 40 : -30), ty = T[1] + (i ? 28 : -10);
+          out.push(path('M' + n[0] + ' ' + n[1] + ' Q' + Math.round((n[0] + tx) / 2) + ' ' + Math.round(Math.min(n[1], ty) - 70) + ' ' + tx + ' ' + ty, 'hv-jet' + (a === 'foam' ? ' hv-jetfoam' : '')));
+        });
+      }
+      if (a === 'water') { for (let i = 0; i < 3; i++) out.push(circ(T[0] - 30 + i * 28, T[1] - 6 + (i % 2) * 14, 7, 'hv-drop', { style: 'animation-delay:' + (-i * 0.3) + 's' })); }
+      if (a === 'foam') { [[-50, 12, 30], [10, -10, 38], [60, 18, 28], [-10, 40, 34], [40, -30, 24]].forEach(function (o, i) { out.push(circ(T[0] + o[0], T[1] + o[1], o[2], 'hv-foam', { style: 'animation-delay:' + (i * 0.35) + 's' })); }); }
+      if (a === 'props') { [[-60, 14, -32], [0, -18, 24], [60, 12, 38]].forEach(function (o) { out.push(rect(-46, -5, 92, 10, 'hv-prop', 2, { transform: rot(T[0] + o[0], T[1] + o[1], o[2]) })); }); }
+      if (a === 'vent') { [-24, 0, 24].forEach(function (dy, i) { out.push(path('M' + (T[0] - 50) + ' ' + (T[1] + dy) + ' h 70 m -16 -12 l 16 12 l -16 12', 'hv-vent', { style: 'animation-delay:' + (-i * 0.4) + 's' })); }); }
+      if (a === 'cut') { out.push(g('hv-cut', [circ(T[0], T[1], 34, 'hv-cutbg'), path('M' + (T[0] + 4) + ' ' + (T[1] - 18) + ' L' + (T[0] - 10) + ' ' + (T[1] + 4) + ' H' + (T[0] - 1) + ' L' + (T[0] - 4) + ' ' + (T[1] + 18) + ' L' + (T[0] + 10) + ' ' + (T[1] - 6) + ' H' + (T[0] + 1) + 'Z', 'hv-cutbolt'), line(T[0] - 26, T[1] - 26, T[0] + 26, T[1] + 26, 'hv-cutslash')])); }
+      if (a === 'secure') { out.push(line(b.x1 + 28, b.y0, b.x1 + 28, b.y1, 'hv-pcordon')); }
+      if (a === 'police') { out.push(s('polygon', { points: polyPts([[b.x0 - 14, b.y0 - 14], [b.x1 + 14, b.y0 - 14], [b.x1 + 14, b.y1 + 14], [b.x0 - 14, b.y1 + 14]]), class: 'hv-pcordon' })); }
+    });
+    return g('hv-act', out);
+  }
+  function responseArt(r, poly, b, o) {
+    const entry = o.entry || { x: 1660, y: 900 };
+    const kinds = []; for (let i = 0; i < (r.n || 1); i++) kinds.push(r.unit); if (r.units2) kinds.push(r.units2);
+    const m = kinds.length;
+    const units = kinds.map(function (k, i) {
+      const off = i - (m - 1) / 2;
+      const to = r.park === 's' ? { x: Math.round(b.cx + off * 130), y: b.y1 + 110, a: -90 } : { x: b.x1 + 84, y: Math.round(b.cy + off * 80), a: -180 };
+      const legs = [{ x: to.x, y: entry.y, a: 180 }, { x: to.x, y: to.y, a: -90 }];
+      if (to.a !== -90) legs.push({ x: to.x, y: to.y, a: to.a });
+      const inner = g('hv-mvr', [hvUnit(k)]), outer = g('hv-mv hv-unitwrap', [inner]);
+      return { kind: k, outer: outer, inner: inner, from: { x: entry.x, y: entry.y }, legs: legs, to: to };
+    });
+    const T = atF(b, r.target);
+    const ring = [[-90, 70], [90, 70], [-48, -66], [48, -66], [0, 96]];
+    const crewKind = (u) => (u.kind === 'fire' ? 'fire' : u.kind === 'police' ? 'police' : u.kind === 'tech' ? 'tech' : 'usar');
+    const crewN = Math.min(4, Math.max(2, units.length * 2));
+    const crew = [];
+    for (let i = 0; i < crewN; i++) {
+      const u = units[i % units.length], w = r.work && r.work.length ? atF(b, r.work[i % r.work.length]) : [T[0] + ring[i % ring.length][0], T[1] + ring[i % ring.length][1]];
+      const sx = u.to.x + (u.to.a === -90 ? (i - 1.5) * 20 : -40), sy = u.to.y + (u.to.a === -90 ? -50 : (i % 2 ? 22 : -22));
+      crew.push({ outer: g('hv-mv hv-crew', [hvAgent(crewKind(u))]), from: { x: sx, y: sy }, to: { x: w[0] + (r.work ? (i % 2 ? 22 : -22) : 0), y: w[1] + (r.work && i > 1 ? 18 : 0) }, delay: i * 0.18 });
+    }
+    const acts = hvActs(r, b, units);
+    const el = g('dz-resp', [acts].concat(units.map((u) => u.outer)).concat(crew.map((c) => c.outer)));
+    return { el: el, units: units, crew: crew };
+  }
+  /* zona de perill: franja groga i negra, símbols del perill, rètol i (si en té) la resposta dels equips. spec: {key, poly, def, label, state, entry} */
+  function hazardZone(spec) {
+    const b = bbox(spec.poly), def = spec.def || {};
+    const tape = g('dz-tape', [s('polygon', { points: polyPts(spec.poly), class: 'hv-tape-b' }), s('polygon', { points: polyPts(spec.poly), class: 'hv-tape-y' })]);
+    const art = g('dz-art', (def.motifs || []).map((m) => hvMotif(m, b)).filter(Boolean));
+    const label = text(b.cx, b.y0 - 18, spec.label || '', 'm-label m-center hv-label');
+    const resp = def.resp ? responseArt(def.resp, spec.poly, b, { entry: spec.entry }) : null;
+    const el = g('dz' + (def.shake ? ' dz-shake' : ''), [tape, art, label].concat(resp ? [resp.el] : []), { 'data-key': spec.key, 'data-state': spec.state || 'on' });
+    return { el: el, label: label, resp: resp, bbox: b };
+  }
+
   /* ---------- marcadors ---------- */
   const SKIN = ['sk0', 'sk1', 'sk2', 'sk3'], CLOTH = ['cl0', 'cl1', 'cl2', 'cl3', 'cl4', 'cl5'];
   function victimMarker(v) {
@@ -518,6 +688,6 @@
       path('M10 44 C 50 40 80 50 118 46', 'wr-artery'), g('wr-beat', [circ(78, 46, 12, 'wr-ring'), circ(78, 46, 6, 'wr-dot')], { style: '--hb:' + (o.period || 1) + 's' }),
       g('wr-fingers', [rect(68, 52, 34, 10, 'fg-glove', 5), rect(66, 40, 34, 10, 'fg-glove', 5)])]);
   }
-  const A = { s: s, icon: icon, drawMap: drawMap, wrist: wrist, victimMarker: victimMarker, rescuer: rescuer, ambulance: ambulance, speakerUnit: speakerUnit, figure: figure, hero: hero, ICONS: Object.keys(IC) };
+  const A = { s: s, icon: icon, drawMap: drawMap, hazardZone: hazardZone, wrist: wrist, victimMarker: victimMarker, rescuer: rescuer, ambulance: ambulance, speakerUnit: speakerUnit, figure: figure, hero: hero, ICONS: Object.keys(IC) };
   if (typeof module !== 'undefined' && module.exports) module.exports = A; else root.TriageArt = A;
 })(typeof window !== 'undefined' ? window : this);

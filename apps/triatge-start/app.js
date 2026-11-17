@@ -301,7 +301,7 @@
   function viewBrief() {
     const sc = S.sc, St = D.SETTINGS[sc.setting], guided = S.mode === 'guided';
     const wrap = h('div', { class: 'brief' });
-    const prev = A.s('svg', { viewBox: '0 0 ' + mapW(sc) + ' ' + mapH(sc), class: 'map preview', role: 'img', 'aria-label': tx(St.name) }, [A.drawMap(D, sc.setting)]);
+    const prev = A.s('svg', { viewBox: '0 0 ' + mapW(sc) + ' ' + mapH(sc), class: 'map preview', role: 'img', 'aria-label': tx(St.name) + '. ' + t('hv.prefix') + ': ' + tx(St.hazard) }, [A.drawMap(D, sc.setting)].concat(hvZoneDefs(sc).filter((z) => z.type === 'hot').map((z) => A.hazardZone(hvSpec(sc, z, 'on')).el)));
     const first = sc.ambulances[0];
     wrap.appendChild(h('div', { class: 'brief-head' },
       h('div', null,
@@ -315,7 +315,7 @@
           h('li', null, ic('clock'), t('brief.tmax', { t: Math.round(sc.tMax / 60) })),
           sc.difficulty === 'vhard' ? h('li', { class: 'fact-warn' }, ic('secondary'), t('brief.vhard')) : null)),
       h('figure', { class: 'brief-map' }, prev, h('figcaption', { class: 'legend' },
-        h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold'))))));
+        h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold')), h('span', { class: 'lg lg-haz' }, t('hv.legend'))))));
     /* checklist de seguretat */
     const items = ['protect', 'alert', 'hazards', 'rushIn', 'moveAll'];
     const list = h('div', { class: 'safety', role: 'group', 'aria-label': t('brief.safetyTitle') });
@@ -367,6 +367,7 @@
     const hud = h('div', { class: 'hud', id: 'hud' });
     const svg = A.s('svg', { class: 'map live', id: 'map', viewBox: '0 0 ' + mapW(sc) + ' ' + mapH(sc), role: 'application', 'aria-label': t('game.mapAria'), tabindex: '0', preserveAspectRatio: 'xMidYMid meet' }, []);
     svg.appendChild(A.drawMap(D, sc.setting));
+    const hv = hvBuild(sc); svg.appendChild(hv.layer);
     const layerAmb = A.s('g', { class: 'layer-amb' }), layerV = A.s('g', { class: 'layer-v' }), layerR = A.s('g', { class: 'layer-r' });
     const layerCalls = A.s('g', { class: 'layer-calls', 'aria-hidden': 'true' });
     /* perills que apareixen a mitja partida: polígons amagats fins que s'activen */
@@ -398,8 +399,8 @@
       btn('', function () { zoom(1.25); }, { icon: 'minus', cls: 'icon', aria: t('game.zoomOut'), title: t('game.zoomOut') }),
       btn('', function () { const sc2 = S.game.sc; S.cam = { x: 0, y: 0, w: mapW(sc2), h: mapH(sc2) }; applyCam(); }, { icon: 'map', cls: 'icon', aria: t('game.fit'), title: t('game.fit') }),
       btn('', function () { centerOn(S.game.rescuer.x, S.game.rescuer.y, 700); }, { icon: 'target', cls: 'icon', aria: t('game.center'), title: t('game.center') }));
-    const legend = h('div', { class: 'maplegend', 'aria-hidden': 'true' }, h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold')));
-    const mapwrap = h('div', { class: 'mapwrap', id: 'mapwrap' }, svg, ctl, legend, h('div', { class: 'maptoast', id: 'maptoast', 'aria-hidden': 'true' }));
+    const legend = h('div', { class: 'maplegend', 'aria-hidden': 'true' }, h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold')), h('span', { class: 'lg lg-haz' }, t('hv.legend')));
+    const mapwrap = h('div', { class: 'mapwrap', id: 'mapwrap' }, svg, ctl, hv.bar, legend, h('div', { class: 'maptoast', id: 'maptoast', 'aria-hidden': 'true' }));
     const side = h('aside', { class: 'side', id: 'side', 'aria-label': t('game.panel') });
     root.appendChild(hud);
     root.appendChild(h('div', { class: 'stage' }, mapwrap, side));
@@ -407,6 +408,7 @@
     S.dom = { hud: hud, svg: svg, markers: markers, rescuer: rs, ambs: ambs, side: side, route: pathLine, ccp: ccpBtn, spk: spk, calls: layerCalls, haz: layerHaz };
     bindMap(svg);
     applyCam();
+    hvSync();
     refreshGame();
   }
   function coldOff(sc) { return (sc && sc.cold) || { dx: 0, dy: 0 }; }
@@ -537,6 +539,7 @@
     const g = S.game, lay = S.dom.haz; if (!g || !lay || !g.haz) return;
     (lay.childNodes ? Array.prototype.slice.call(lay.childNodes) : []).forEach(function (p) { const s = g.haz[Number(p.getAttribute('data-i'))]; p.setAttribute('class', 'hz-poly' + (s && s.on && !s.over ? ' on' : '')); });
   }
+  function refreshHazardsAll() { refreshHazards(); hvSync(); }
   function lockMsg(g, v) {
     const St = D.SETTINGS[g.sc.setting];
     if (L.hazLocked(g, v)) return t('game.hazardLocked');
@@ -639,9 +642,9 @@
     evs.forEach(function (e) {
       const v = e.id ? L.vById(g, e.id) : null;
       const St = D.SETTINGS[g.sc.setting];
-      if (e.type === 'hotClear') { const z = e.zone !== undefined && St.hots ? St.hots[e.zone] : null; toast(z ? tx(z.clear) : tx(St.hotClear), 'info', 5000); sfx.hotClear(); SND.setThreat(!g.hotCleared); refreshHazards(); }
-      else if (e.type === 'hazard') { toast(tx(St.hazard2.text) + (e.retreat ? ' ' + t('ev.retreat') : ''), 'bad', 8000); if (St.hazard2.kind === 'quake' || St.hazard2.kind === 'collapse') sfx.quake(); sfx.hazard(); refreshHazards(); }
-      else if (e.type === 'hazardClear') { toast(tx(St.hazard2.clear), 'info', 5000); sfx.radio(); refreshHazards(); }
+      if (e.type === 'hotClear') { const z = e.zone !== undefined && St.hots ? St.hots[e.zone] : null, doneTxt = z ? tx(z.clear) : tx(St.hotClear); sfx.hotClear(); SND.setThreat(!g.hotCleared); if (!hvResolve('z' + (e.zone !== undefined ? e.zone : 0), doneTxt)) toast(doneTxt, 'info', 5000); refreshHazardsAll(); }
+      else if (e.type === 'hazard') { toast(tx(St.hazard2.text) + (e.retreat ? ' ' + t('ev.retreat') : ''), 'bad', 8000); if (St.hazard2.kind === 'quake' || St.hazard2.kind === 'collapse') sfx.quake(); sfx.hazard(); hvAppear(e.idx); refreshHazardsAll(); }
+      else if (e.type === 'hazardClear') { sfx.radio(); if (!hvResolve('h' + e.idx, tx(St.hazard2.clear))) toast(tx(St.hazard2.clear), 'info', 5000); refreshHazardsAll(); }
       else if (e.type === 'found') { toast(e.how === 'report' ? t('ev.foundReport', { n: v.num }) : t('ev.found', { n: v.num }), 'warn', 5000); sfx.alert(); flash(v.id); }
       else if (e.type === 'ambArrive') { toast(t('ev.amb', { kind: t('amb.' + e.kind), id: e.amb }), 'amb', 5000); sfx.siren(); }
       else if (e.type === 'worsen' && S.mode === 'guided') { toast(t('ev.worsen', { n: v.num }), 'warn', 6000); sfx.worsen(); flash(v.id); }
@@ -651,6 +654,151 @@
     });
   }
   function flash(id) { S.flash[id] = true; W.setTimeout(function () { delete S.flash[id]; if (S.screen === 'game') refreshMap(); }, 2400); }
+
+  /* ---------- peligros visibles y respuesta de los equipos de emergencia (solo presentación) ----------
+     No interviene en reglas, tiempos, puntuación ni semillas: dibuja el peligro de cada zona caliente mientras el motor la
+     mantiene cerrada y, cuando el motor emite hotClear / hazardClear, anima unos segundos reales la llegada y la actuación
+     de los equipos. El juego no se bloquea (no usa S.busy) ni se toca el reloj: es turnos (el reloj avanza con las acciones),
+     así que no hay pausa ni velocidad que respetar; la animación es solo visual y se completa aunque el jugador siga actuando.
+     Con prefers-reduced-motion no hay desplazamientos: peligro → equipo actuando (estático, con texto) → despejada. */
+  function hvSnd(name) { try { if (SND.FX && SND.FX.indexOf(name) >= 0) SND.play(name); } catch (e) { /* hook de sonido opcional */ } }
+  function hvZoneDefs(sc) {
+    const St = D.SETTINGS[sc.setting], V = D.HAZVIS.settings[sc.setting] || { zones: [] }, out = [];
+    const hots = St.hots || [{ poly: St.hot }];
+    hots.forEach(function (z, i) {
+      const def = V.zones[Math.min(i, V.zones.length - 1)]; if (!def) return;
+      out.push({ key: 'z' + i, type: 'hot', idx: i, poly: z.poly, def: Object.assign({ shake: !!V.shake }, def), multi: !!St.hots, zone: z, sector: St.sectors && St.sectors[i] ? St.sectors[i] : null, clear: z.clear || St.hotClear, threat: !!(def.resp && def.resp.threat) });
+    });
+    (sc.hazards || []).forEach(function (hz, i) {
+      const k = D.HAZVIS.kinds[hz.kind]; if (!k) return;
+      out.push({ key: 'h' + i, type: 'haz', idx: i, poly: hz.poly, def: k, clear: St.hazard2.clear, text: St.hazard2.text, threat: !!(k.resp && k.resp.threat), kindLabel: k.label });
+    });
+    return out;
+  }
+  const hvName = (z) => z.type === 'haz' ? t('hv.new') + ': ' + tx(z.kindLabel) : (z.multi && z.zone ? tx(z.zone.name) + ' · ' : '') + tx(D.SETTINGS[S.game ? S.game.sc.setting : S.sc.setting].hazard);
+  const hvMapLabel = (z) => z.type === 'haz' ? t('hv.new') + ': ' + tx(z.kindLabel) : z.threat ? t('hv.threat') : t('hv.prefix') + (z.sector ? ' · ' + tx(z.sector.name) : '');
+  function hvSay(z, which) {
+    const r = z.def.resp, o = r && r.say ? r.say[which] : null, nm = z.zone && z.zone.name ? tx(z.zone.name).toLowerCase() : '';
+    return o ? tx(o).split('{zone}').join(nm) : '';
+  }
+  function hvStateOf(g, z) {
+    if (z.type === 'hot') return (g.hotZ ? g.hotZ[z.idx] : g.hotCleared) ? 'done' : 'on';
+    const s = g.haz && g.haz[z.idx]; return !s || !s.on ? 'off' : s.over ? 'done' : 'on';
+  }
+  function hvSpec(sc, z, state) { const o = coldOff(sc); return { key: z.key, poly: z.poly, def: z.def, label: hvMapLabel(z), state: state, entry: { x: D.COLD.entry.x + 60 + o.dx, y: D.COLD.entry.y + o.dy } }; }
+  function hvBuild(sc) {
+    const g = S.game, layer = A.s('g', { class: 'layer-danger', 'aria-hidden': 'true' }, []);
+    const hv = { zones: {}, order: [], layer: layer, open: false, detail: {}, bar: h('div', { class: 'hzbar', id: 'hzbar', role: 'group', 'aria-label': t('hv.title'), hidden: true }) };
+    hvZoneDefs(sc).forEach(function (z) {
+      const node = A.hazardZone(hvSpec(sc, z, g ? hvStateOf(g, z) : 'on'));
+      layer.appendChild(node.el);
+      hv.zones[z.key] = { z: z, node: node, state: g ? hvStateOf(g, z) : 'on', seq: [], anim: false, token: 0, secured: false };
+      hv.order.push(z.key);
+    });
+    S.hv = hv;
+    return hv;
+  }
+  function hvSet(rec, st, sub) {
+    rec.state = st; rec.seq.push(st);
+    rec.node.el.setAttribute('data-state', st);
+    if (sub !== undefined) rec.node.el.setAttribute('data-sub', sub);
+    hvBar();
+  }
+  /* sincroniza el dibujo con el estado del motor (sin animar) */
+  function hvSync() {
+    const hv = S.hv, g = S.game; if (!hv || !g) return;
+    hv.order.forEach(function (k) { const rec = hv.zones[k]; if (rec.anim) return; const s = hvStateOf(g, rec.z); if (rec.state !== s) { if (s === 'on') { rec.secured = false; rec.node.label.textContent = hvMapLabel(rec.z); } hvSet(rec, s, ''); } });
+    hvBar();
+  }
+  function hvStateText(rec) {
+    const z = rec.z;
+    if (rec.state === 'arrive') return t('hv.state.arrive');
+    if (rec.state === 'act') return t('hv.state.act') + (z.def.resp ? ': ' + hvSay(z, 'act') : '');
+    if (rec.state === 'done') return t('hv.state.done');
+    return t('hv.state.on');
+  }
+  function hvBar() {
+    const hv = S.hv; if (!hv || !hv.bar) return;
+    const fid = doc.activeElement && /^hz-/.test(doc.activeElement.id || '') ? doc.activeElement.id : null;
+    const recs = hv.order.map((k) => hv.zones[k]).filter((r) => r.state !== 'off');
+    clear(hv.bar);
+    if (!recs.length) { hv.bar.setAttribute('hidden', ''); return; }
+    hv.bar.removeAttribute('hidden');
+    const active = recs.filter((r) => r.state !== 'done').length;
+    const sum = active === 0 ? t('hv.sum.none') : active === 1 ? t('hv.sum.one') : t('hv.sum.many', { n: active });
+    hv.bar.appendChild(h('button', { type: 'button', class: 'hzsum' + (active ? '' : ' ok'), id: 'hz-sum', 'aria-expanded': String(!!hv.open), 'aria-controls': 'hzlist', title: t('hv.toggleAria'), 'aria-label': t('hv.toggleAria') + '. ' + sum,
+      on: { click: function () { hv.open = !hv.open; hvBar(); const b = $('hz-sum'); if (b && b.focus) b.focus(); } } }, ic(active ? 'warn' : 'check'), h('span', null, sum)));
+    if (hv.open) {
+      const ul = h('ul', { class: 'hzlist', id: 'hzlist', 'aria-label': t('hv.listAria') });
+      recs.forEach(function (r) {
+        const z = r.z, name = hvName(z), on = !!hv.detail[z.key];
+        const desc = z.type === 'haz' ? tx(z.text) : tx(z.def.desc);
+        const who = z.def.resp ? hvSay(z, 'act') : '';
+        ul.appendChild(h('li', { class: 'hzi st-' + r.state },
+          h('button', { type: 'button', class: 'hzname', id: 'hz-d-' + z.key, 'aria-expanded': String(on), title: t('hv.moreAria', { name: name }), 'aria-label': name + '. ' + hvStateText(r) + '. ' + t('hv.moreAria', { name: name }),
+            on: { click: function () { hv.detail[z.key] = !hv.detail[z.key]; if (S.game && S.game.sc.map && hv.detail[z.key]) { const bb = r.node.bbox; centerOn(bb.cx, bb.cy, Math.max(1100, bb.w + 500)); } hvBar(); const b = $('hz-d-' + z.key); if (b && b.focus) b.focus(); } } },
+          ic(r.state === 'done' ? 'check' : 'warn'), h('span', { class: 'hzt' }, name), h('span', { class: 'hzs' }, hvStateText(r))),
+          h('p', { class: 'hzd', hidden: !on }, desc, who ? h('span', null, ' ', h('b', null, t('hv.who') + ': '), who) : null)));
+      });
+      hv.bar.appendChild(ul);
+      hv.bar.appendChild(h('p', { class: 'hzhelp small' }, t('hv.help')));
+    }
+    if (fid) { const el = $(fid); if (el && el.focus) el.focus(); }
+  }
+  /* aparece un peligro nuevo (muy difícil / réplica): se dibuja y se avisa en el mapa */
+  function hvAppear(idx) {
+    const hv = S.hv, rec = hv && hv.zones['h' + idx]; if (!rec) return;
+    rec.secured = false; rec.node.label.textContent = hvMapLabel(rec.z);
+    hvSet(rec, 'on', '');
+    mapToast(t('hv.new') + ': ' + tx(rec.z.kindLabel));
+    hvSnd('hvNew');
+  }
+  /* despeje: anima la llegada y la actuación del equipo; devuelve true si ha tomado a su cargo el mensaje final */
+  function hvResolve(key, doneText) {
+    const hv = S.hv, g = S.game, rec = hv && hv.zones[key];
+    if (!rec || !g || S.screen !== 'game' || !rec.node.resp || rec.state === 'done' || rec.anim) return false;
+    rec.anim = true; rec.token += 1;
+    hvRun(rec, hv, g, rec.token, doneText).catch(function () { /* animación opcional */ }).then(function () { if (S.hv === hv) { rec.anim = false; if (rec.state !== 'done') hvSet(rec, 'done', ''); } });
+    return true;
+  }
+  async function hvRun(rec, hv, g, tok, doneText) {
+    const ok = () => S.hv === hv && S.game === g && S.screen === 'game' && rec.token === tok;
+    const z = rec.z, resp = rec.node.resp, say = hvSay(z, 'arrive');
+    announce(say); mapToast(hvSay(z, 'act')); hvSnd('hvArrive');
+    const flip = (n, deg, dur) => { if (n.style && n.style.setProperty) n.style.setProperty('transition-duration', dur + 's'); n.style.transform = 'rotate(' + deg + 'deg)'; };
+    const secure = () => { if (!z.def.resp.threat) return; rec.secured = true; const tx2 = z.type === 'hot' ? t('hv.threatDone') : t('hv.threatClear'); rec.node.label.textContent = tx2; rec.node.el.setAttribute('data-sub', 'secured'); announce(tx2); hvBar(); };
+    if (reduced) {
+      /* estados estáticos: peligro → equipo actuando (texto) → despejada */
+      resp.units.forEach(function (u) { place(u.outer, u.to.x, u.to.y, false); flip(u.inner, u.to.a, 0); });
+      resp.crew.forEach(function (c) { place(c.outer, c.to.x, c.to.y, false); });
+      hvSet(rec, 'act', '');
+      await pause(3600); if (!ok()) return; secure();
+      await pause(2400); if (!ok()) return;
+    } else {
+      hvSet(rec, 'arrive', '');
+      resp.units.forEach(function (u) { place(u.outer, u.from.x, u.from.y, false); flip(u.inner, 180, 0); });
+      await pause(80); if (!ok()) return;
+      await Promise.all(resp.units.map(async function (u, i) {
+        if (i) await pause(i * 450);
+        let cur = u.from;
+        for (let k = 0; k < u.legs.length; k++) {
+          const leg = u.legs[k], d = Math.hypot(leg.x - cur.x, leg.y - cur.y), dur = d < 1 ? 0.5 : Math.max(0.5, Math.min(2.2, d / 520));
+          if (!ok()) return;
+          flip(u.inner, leg.a, 0.35); place(u.outer, leg.x, leg.y, true, dur); cur = leg;
+          await pause(dur * 1000);
+        }
+      }));
+      if (!ok()) return;
+      hvSet(rec, 'act', '');
+      resp.crew.forEach(function (c) { place(c.outer, c.from.x, c.from.y, false); });
+      await pause(80); if (!ok()) return;
+      resp.crew.forEach(function (c) { place(c.outer, c.to.x, c.to.y, true, 1.8, c.delay); });
+      await pause(3200); if (!ok()) return; secure();
+      await pause(2000); if (!ok()) return;
+    }
+    hvSet(rec, 'done', '');
+    toast(doneText, 'info', 6000); announce(t('hv.cleared', { txt: doneText })); hvSnd('hvDone');
+  }
 
   /* ---------- panell lateral ---------- */
   function refreshSide() {
