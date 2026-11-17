@@ -17,7 +17,7 @@
   const qm = /[?&]campus=([^&#]+)/.exec((W.location && W.location.search) || '');
   const S = {
     lang: initLang(), screen: 'home', campus: !!qm, sent: false, evalDone: false,
-    prefs: Object.assign({ sound: false, theme: 'auto' }, jsonGet(KEY_PREFS, {})),
+    prefs: normPrefs(jsonGet(KEY_PREFS, {})),
     best: jsonGet(KEY_BEST, {}),
     setup: { setting: 'random', n: 14, difficulty: 'normal', kids: false, seed: '' },
     mode: null, sc: null, game: null, sel: null, tab: 'victim', busy: false, anim: null, flash: {},
@@ -74,30 +74,62 @@
   }
   const $ = (id) => doc.getElementById(id);
   function wait(ms) { return new Promise(function (res) { W.setTimeout(res, reduced ? 0 : ms); }); }
+  /* pausa real també amb moviment reduït (per llegir els rètols «Cridant…») */
+  function pause(ms) { return new Promise(function (res) { W.setTimeout(res, ms); }); }
   function announce(msg) { const lv = $('live'); if (lv) { lv.textContent = ''; W.setTimeout(function () { lv.textContent = msg; }, 30); } }
 
-  /* ---------- so (Web Audio, opcional) ---------- */
-  let actx = null;
-  function beep(freq, dur, type, vol, when) {
-    if (!S.prefs.sound) return;
-    try {
-      const AC = W.AudioContext || W.webkitAudioContext; if (!AC) return;
-      actx = actx || new AC();
-      const o = actx.createOscillator(), gn = actx.createGain(), t0 = actx.currentTime + (when || 0);
-      o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t0);
-      gn.gain.setValueAtTime(0.0001, t0); gn.gain.exponentialRampToValueAtTime(vol || 0.08, t0 + 0.02); gn.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-      o.connect(gn); gn.connect(actx.destination); o.start(t0); o.stop(t0 + dur + 0.05);
-    } catch (e) { /* sense àudio */ }
+  /* ---------- so (Web Audio sintetitzat a sound.js; desactivat per defecte) ---------- */
+  /* Preferències: soundMode 'off' | 'alerts' | 'all' i volum 0–1. Les preferències antigues {sound: true/false} es migren. */
+  function normPrefs(p) {
+    p = Object.assign({ sound: false, theme: 'auto' }, p || {});
+    if (['off', 'alerts', 'all'].indexOf(p.soundMode) < 0) p.soundMode = p.sound ? 'all' : 'off';
+    const vol = Number(p.volume); p.volume = isFinite(vol) && p.volume !== null && p.volume !== '' ? Math.max(0, Math.min(1, vol)) : 0.6;
+    p.sound = p.soundMode !== 'off';
+    return p;
   }
+  const NOSND = { available: false, configure() { return NOSND; }, play() { return false; }, ambience() { return false; }, setThreat() {}, stop() {}, suspend() {}, resume() {}, allowed() { return false; } };
+  const SND = (function () { try { return W.TriageSound ? W.TriageSound.create(W) : NOSND; } catch (e) { return NOSND; } })();
+  SND.configure({ mode: S.prefs.soundMode, volume: S.prefs.volume });
   const sfx = {
-    tap: () => beep(660, 0.06, 'triangle', 0.05),
-    tag: () => { beep(520, 0.08, 'triangle', 0.07); beep(780, 0.1, 'triangle', 0.06, 0.08); },
-    ok: () => { beep(660, 0.1, 'sine', 0.06); beep(990, 0.14, 'sine', 0.06, 0.1); },
-    bad: () => beep(200, 0.25, 'sawtooth', 0.04),
-    siren: () => { for (let i = 0; i < 4; i++) beep(i % 2 ? 640 : 860, 0.32, 'sine', 0.035, i * 0.34); },
-    alert: () => { beep(880, 0.12, 'square', 0.03); beep(880, 0.12, 'square', 0.03, 0.2); },
-    breath: () => beep(300, 0.05, 'sine', 0.025)
+    tap: () => SND.play('click'), tag: () => SND.play('tag'), ok: () => SND.play('ok'), bad: () => SND.play('bad'),
+    siren: () => SND.play('siren'), sirenOut: () => SND.play('sirenOut'), alert: () => SND.play('alert'), breath: () => SND.play('breath'),
+    speaker: () => SND.play('speaker'), radio: () => SND.play('radio'), hotClear: () => SND.play('hotClear'), hazard: () => SND.play('hazard'),
+    quake: () => SND.play('quake'), death: () => SND.play('death'), worsen: () => SND.play('worsen'), timeUp: () => SND.play('timeUp')
   };
+  function ambienceFor(g) { const St = g && D.SETTINGS[g.sc.setting]; return St ? (St.ambience || 'road') : null; }
+  function syncAmbience() {
+    const g = S.game;
+    if (S.screen === 'game' && g && !g.over) { SND.setThreat(!g.hotCleared); SND.ambience(ambienceFor(g)); } else SND.ambience(null);
+  }
+  try { doc.addEventListener('visibilitychange', function () { if (doc.hidden) SND.suspend(); else SND.resume(); }); } catch (e) { /* res */ }
+  function setSound(mode, volume) {
+    if (mode !== undefined) S.prefs.soundMode = mode;
+    if (volume !== undefined) S.prefs.volume = Math.max(0, Math.min(1, volume));
+    S.prefs.sound = S.prefs.soundMode !== 'off';
+    savePrefs(); SND.configure({ mode: S.prefs.soundMode, volume: S.prefs.volume }); syncAmbience(); renderTop();
+  }
+  function openSound() {
+    const p = S.prefs, on = p.soundMode !== 'off';
+    const body = [];
+    if (!SND.available) body.push(h('p', { class: 'fb warn' }, t('ui.soundUnavailable')));
+    const sw = h('input', { type: 'checkbox', id: 'snd-on', role: 'switch', checked: on, 'aria-checked': String(on), on: { change: function (e) { setSound(e.target.checked ? (S.prefs.lastMode || 'all') : 'off'); if (e.target.checked) sfx.ok(); openSound(); } } });
+    body.push(h('label', { class: 'switch big', for: 'snd-on' }, sw, h('span', null, h('b', null, t('ui.soundEnable')), h('small', null, t('ui.soundState.' + p.soundMode)))));
+    const modes = h('div', { class: 'snd-modes', role: 'radiogroup', 'aria-labelledby': 'snd-mode-l' });
+    ['all', 'alerts'].forEach(function (m) {
+      const sel = p.soundMode === m || (!on && (p.lastMode || 'all') === m);
+      modes.appendChild(h('button', { type: 'button', role: 'radio', 'aria-checked': String(sel), class: 'snd-mode' + (sel ? ' on' : ''), id: 'snd-' + m, disabled: !on,
+        on: { click: function () { S.prefs.lastMode = m; setSound(m); sfx.alert(); openSound(); } } },
+      h('b', null, t('ui.sound.' + m)), h('small', null, t('ui.sound.' + m + 'D'))));
+    });
+    body.push(h('p', { class: 'lbl', id: 'snd-mode-l' }, t('ui.soundWhat')), modes);
+    const out = h('output', { id: 'snd-vol-o', for: 'snd-vol' }, Math.round(p.volume * 100) + ' %');
+    body.push(h('label', { class: 'lbl', for: 'snd-vol' }, t('ui.soundVol'), ' ', out),
+      h('input', { type: 'range', id: 'snd-vol', min: '0', max: '100', step: '5', value: String(Math.round(p.volume * 100)), disabled: !on,
+        on: { input: function (e) { const v = Number(e.target.value) / 100; S.prefs.volume = v; SND.configure({ volume: v }); out.textContent = Math.round(v * 100) + ' %'; }, change: function (e) { setSound(undefined, Number(e.target.value) / 100); sfx.siren(); } } }),
+      h('div', { class: 'row' }, btn(t('ui.soundTest'), function () { if (S.prefs.soundMode === 'all') sfx.speaker(); else sfx.siren(); }, { cls: 'ghost', icon: 'soundOn', id: 'snd-test', disabled: !on })),
+      h('p', { class: 'note' }, ic('info'), h('span', null, t('ui.soundNote'))));
+    modal(t('ui.soundTitle'), body, [[t('ui.close'), null, 'primary', 'b-sound-close']], true);
+  }
 
   /* ---------- tema ---------- */
   function applyTheme() { const r = doc.documentElement; if (S.prefs.theme === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', S.prefs.theme); }
@@ -120,16 +152,17 @@
     top.appendChild(h('div', { class: 'tb-right' },
       btn(I.LANG_LABEL[I.LANGS[(I.LANGS.indexOf(S.lang) + 1) % I.LANGS.length]], function () { S.lang = I.LANGS[(I.LANGS.indexOf(S.lang) + 1) % I.LANGS.length]; lsSet(KEY_LANG, S.lang); doc.documentElement.setAttribute('lang', S.lang); renderAll(); }, { cls: 'ghost', id: 'b-lang', aria: t('ui.langAria') }),
       btn('', function () { S.prefs.theme = S.prefs.theme === 'auto' ? 'light' : S.prefs.theme === 'light' ? 'dark' : 'auto'; savePrefs(); applyTheme(); renderTop(); }, { icon: themeIcon, cls: 'ghost icon', aria: t('ui.theme.' + S.prefs.theme), title: t('ui.theme.' + S.prefs.theme) }),
-      btn('', function () { S.prefs.sound = !S.prefs.sound; savePrefs(); renderTop(); if (S.prefs.sound) sfx.ok(); }, { icon: S.prefs.sound ? 'soundOn' : 'soundOff', cls: 'ghost icon', aria: S.prefs.sound ? t('ui.soundOff') : t('ui.soundOn'), title: S.prefs.sound ? t('ui.soundOff') : t('ui.soundOn'), pressed: S.prefs.sound, id: 'b-sound' }),
+      btn('', openSound, { icon: S.prefs.soundMode === 'off' ? 'soundOff' : S.prefs.soundMode === 'alerts' ? 'soundAlerts' : 'soundOn', cls: 'ghost icon', aria: t('ui.soundBtn', { state: t('ui.soundState.' + S.prefs.soundMode) }), title: t('ui.soundBtn', { state: t('ui.soundState.' + S.prefs.soundMode) }), id: 'b-sound' }),
       btn('', openAbout, { icon: 'info', cls: 'ghost icon', aria: t('ui.about'), title: t('ui.about'), id: 'b-about' })));
   }
 
   /* ---------- navegació ---------- */
   function go(screen) {
-    stopTimers();
+    stopTimers(); closeCloseup();
     S.screen = screen;
     if (screen !== 'game') S.dom = {};
     renderAll();
+    syncAmbience();
     const m = $('main'); if (m && m.focus) { try { m.focus({ preventScroll: true }); } catch (e) { m.focus(); } }
     try { W.scrollTo(0, 0); } catch (e) { /* res */ }
   }
@@ -142,7 +175,7 @@
     m.setAttribute('class', 'scr scr-' + S.screen);
     if (S.screen === 'game') { S.dom = {}; clear(m); buildGame(m); return; }
     clear(m);
-    const fn = { home: viewHome, setup: viewSetup, brief: viewBrief, results: viewResults, cards: viewCards }[S.screen] || viewHome;
+    const fn = { home: viewHome, setup: viewSetup, brief: viewBrief, warn: viewWarn, results: viewResults, cards: viewCards }[S.screen] || viewHome;
     m.appendChild(fn());
   }
 
@@ -208,20 +241,24 @@
     const wrap = h('div', { class: 'setup narrow' });
     wrap.appendChild(h('h1', { id: 'h1', tabindex: '-1' }, t('mode.' + S.mode)));
     wrap.appendChild(h('p', { class: 'lead' }, t(ch ? 'setup.challengeLead' : 'setup.practiceLead')));
-    const keys = ['random'].concat(Object.keys(D.SETTINGS));
+    const keys = ['random'].concat(Object.keys(D.SETTINGS).filter((k) => !(ch && D.SETTINGS[k].big)));
+    if (ch && su.setting !== 'random' && D.SETTINGS[su.setting] && D.SETTINGS[su.setting].big) su.setting = 'random';
+    const NR = L.nRange(D.SETTINGS[su.setting]);
+    if (su.n < NR.min || su.n > NR.max) su.n = NR.def;
     const grid = h('div', { class: 'scen-grid', role: 'radiogroup', 'aria-label': t('setup.scenario') });
     keys.forEach(function (k) {
       const on = su.setting === k;
       grid.appendChild(h('button', { type: 'button', role: 'radio', 'aria-checked': String(on), class: 'scen' + (on ? ' on' : ''), on: { click: function () { su.setting = k; go('setup'); } } },
-        h('span', { class: 'scen-ic' }, ic(k === 'random' ? 'dice' : 'map')), h('span', null, k === 'random' ? t('setup.random') : tx(D.SETTINGS[k].short))));
+        h('span', { class: 'scen-ic' }, ic(k === 'random' ? 'dice' : (A.ICONS.indexOf(D.SETTINGS[k].icon) >= 0 ? D.SETTINGS[k].icon : 'map'))), h('span', null, k === 'random' ? t('setup.random') : tx(D.SETTINGS[k].short), k !== 'random' && D.SETTINGS[k].contentWarning ? h('small', { class: 'scen-cw' }, t('cw.badge')) : null, k !== 'random' && D.SETTINGS[k].big ? h('small', { class: 'scen-big' }, t('setup.bigBadge')) : null)));
     });
     wrap.appendChild(h('fieldset', { class: 'card fs' }, h('legend', null, t('setup.scenario')), grid));
     if (!ch) {
-      const nIn = h('input', { type: 'range', min: '10', max: '20', step: '1', value: String(su.n), id: 'in-n', on: { input: function (e) { su.n = Number(e.target.value); const o = $('out-n'); if (o) o.textContent = String(su.n); } } });
+      const nIn = h('input', { type: 'range', min: String(NR.min), max: String(NR.max), step: String(NR.step), value: String(su.n), id: 'in-n', on: { input: function (e) { su.n = Number(e.target.value); const o = $('out-n'); if (o) o.textContent = String(su.n); } } });
       wrap.appendChild(h('div', { class: 'card fs' },
         h('label', { for: 'in-n', class: 'lbl' }, t('setup.victims'), ' ', h('output', { id: 'out-n' }, String(su.n))), nIn,
+        NR.max > 20 ? h('p', { class: 'muted small' }, t('setup.bigHelp', { min: NR.min, max: NR.max, step: NR.step })) : null,
         h('div', { class: 'lbl', id: 'lbl-diff' }, t('setup.difficulty')),
-        h('div', { class: 'seg', role: 'radiogroup', 'aria-labelledby': 'lbl-diff' }, ['easy', 'normal', 'hard'].map((d) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(su.difficulty === d), class: 'seg-b' + (su.difficulty === d ? ' on' : ''), on: { click: function () { su.difficulty = d; go('setup'); } } }, t('diff.' + d)))),
+        h('div', { class: 'seg', role: 'radiogroup', 'aria-labelledby': 'lbl-diff' }, L.LEVELS.map((d) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(su.difficulty === d), class: 'seg-b' + (su.difficulty === d ? ' on' : ''), on: { click: function () { su.difficulty = d; go('setup'); } } }, t('diff.' + d)))),
         h('p', { class: 'muted small' }, t('diff.' + su.difficulty + 'Desc')),
         h('label', { class: 'switch' }, h('input', { type: 'checkbox', id: 'in-kids', checked: su.kids, on: { change: function (e) { su.kids = !!e.target.checked; } } }), h('span', null, t('setup.kids'))),
         h('p', { class: 'muted small' }, t('setup.kidsHelp'))));
@@ -241,11 +278,30 @@
   }
 
   /* ---------- briefing i seguretat ---------- */
-  function prepare(sc) { S.sc = sc; S.game = null; S.safetySel = {}; S.report = null; go('brief'); }
+  function prepare(sc) {
+    S.sc = sc; S.game = null; S.safetySel = {}; S.report = null;
+    /* escenaris amb contingut sensible (tiroteig): advertència prèvia que cal acceptar, amb opció de triar-ne un altre */
+    if (D.SETTINGS[sc.setting].contentWarning && !S.cwOk) { go('warn'); return; }
+    go('brief');
+  }
+  function viewWarn() {
+    const St = D.SETTINGS[S.sc.setting];
+    const wrap = h('div', { class: 'setup narrow cw' });
+    wrap.appendChild(h('section', { class: 'card cw-card', role: 'alertdialog', 'aria-labelledby': 'h1', 'aria-describedby': 'cw-txt' },
+      h('div', { class: 'cw-ic' }, ic('warn')),
+      h('h1', { id: 'h1', tabindex: '-1' }, t('cw.title')),
+      h('p', { class: 'lead', id: 'cw-txt' }, t('cw.text', { name: tx(St.name) })),
+      h('ul', { class: 'list' }, ['cw.l1', 'cw.l2', 'cw.l3'].map((k) => h('li', null, t(k)))),
+      h('p', { class: 'muted small' }, t('cw.help')),
+      h('div', { class: 'row end' },
+        btn(t('cw.other'), function () { S.sc = null; go(S.mode === 'practice' || S.mode === 'challenge' ? 'setup' : 'home'); }, { cls: 'ghost', icon: 'back', id: 'b-cw-back' }),
+        btn(t('cw.accept'), function () { S.cwOk = true; go('brief'); }, { cls: 'primary lg', icon: 'next', id: 'b-cw-ok' }))));
+    return wrap;
+  }
   function viewBrief() {
     const sc = S.sc, St = D.SETTINGS[sc.setting], guided = S.mode === 'guided';
     const wrap = h('div', { class: 'brief' });
-    const prev = A.s('svg', { viewBox: '0 0 1600 1000', class: 'map preview', role: 'img', 'aria-label': tx(St.name) }, [A.drawMap(D, sc.setting)]);
+    const prev = A.s('svg', { viewBox: '0 0 ' + mapW(sc) + ' ' + mapH(sc), class: 'map preview', role: 'img', 'aria-label': tx(St.name) }, [A.drawMap(D, sc.setting)]);
     const first = sc.ambulances[0];
     wrap.appendChild(h('div', { class: 'brief-head' },
       h('div', null,
@@ -256,7 +312,8 @@
           h('li', null, ic('users'), t('brief.victims', { n: sc.n })),
           h('li', null, ic('warn'), tx(St.hazard)),
           h('li', null, ic('ambulance'), t('brief.firstAmb', { t: fmtT(first.at), n: sc.ambulances.filter((a) => a.kind !== 'BUS').length })),
-          h('li', null, ic('clock'), t('brief.tmax', { t: Math.round(sc.tMax / 60) })))),
+          h('li', null, ic('clock'), t('brief.tmax', { t: Math.round(sc.tMax / 60) })),
+          sc.difficulty === 'vhard' ? h('li', { class: 'fact-warn' }, ic('secondary'), t('brief.vhard')) : null)),
       h('figure', { class: 'brief-map' }, prev, h('figcaption', { class: 'legend' },
         h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold'))))));
     /* checklist de seguretat */
@@ -280,7 +337,7 @@
   }
   function startGame() {
     const g = L.createGame(S.sc, { mode: S.mode });
-    S.game = g; S.sel = null; S.tab = 'victim'; S.flash = {}; S.destSel = {}; S.lastFeedback = null; S.cam = { x: 0, y: 0, w: 1600, h: 1000 };
+    S.game = g; S.sel = null; S.tab = 'victim'; S.flash = {}; S.destSel = {}; S.lastFeedback = null; S.cam = initCam(g.sc);
     const items = Object.keys(S.safetySel).filter((k) => S.safetySel[k]);
     const r = L.act(g, { type: 'safety', items: items }, D);
     go('game');
@@ -308,11 +365,18 @@
     const g = S.game, sc = g.sc;
     const root = h('div', { class: 'game' });
     const hud = h('div', { class: 'hud', id: 'hud' });
-    const svg = A.s('svg', { class: 'map live', id: 'map', viewBox: '0 0 1600 1000', role: 'application', 'aria-label': t('game.mapAria'), tabindex: '0', preserveAspectRatio: 'xMidYMid meet' }, []);
+    const svg = A.s('svg', { class: 'map live', id: 'map', viewBox: '0 0 ' + mapW(sc) + ' ' + mapH(sc), role: 'application', 'aria-label': t('game.mapAria'), tabindex: '0', preserveAspectRatio: 'xMidYMid meet' }, []);
     svg.appendChild(A.drawMap(D, sc.setting));
     const layerAmb = A.s('g', { class: 'layer-amb' }), layerV = A.s('g', { class: 'layer-v' }), layerR = A.s('g', { class: 'layer-r' });
+    const layerCalls = A.s('g', { class: 'layer-calls', 'aria-hidden': 'true' });
+    /* perills que apareixen a mitja partida: polígons amagats fins que s'activen */
+    const layerHaz = A.s('g', { class: 'layer-haz', 'aria-hidden': 'true' }, (sc.hazards || []).map((hz, i) => A.s('polygon', { points: hz.poly.map((p) => p.join(',')).join(' '), class: 'hz-poly', 'data-i': String(i) })));
+    svg.appendChild(layerHaz);
     const pathLine = A.s('polyline', { class: 'route', points: '' });
-    svg.appendChild(pathLine); svg.appendChild(layerAmb); svg.appendChild(layerV); svg.appendChild(layerR);
+    /* la teva ambulància amb l'altaveu (unitat de primera resposta), aparcada a la vora de la zona freda */
+    const sp = speakerPos(sc);
+    const spk = A.speakerUnit({ x: sp.x, y: sp.y, label: t('game.speakerUnit') });
+    svg.appendChild(pathLine); svg.appendChild(layerAmb); svg.appendChild(spk); svg.appendChild(layerCalls); svg.appendChild(layerV); svg.appendChild(layerR);
     const markers = {};
     g.victims.forEach(function (v) {
       const mk = A.victimMarker(v);
@@ -322,17 +386,17 @@
       place(mk, v.x, v.y, false);
       layerV.appendChild(mk); markers[v.id] = mk;
     });
-    const ccpBtn = A.s('g', { class: 'ccp-hit', tabindex: '0', role: 'button' }, [A.s('rect', { x: 1240, y: 420, width: 320, height: 150, rx: 10, class: 'ccp-rect' }), A.s('text', { x: 1400, y: 562, class: 'm-label m-center m-small ccp-t' }, [''])]);
+    const ccpBtn = A.s('g', { class: 'ccp-hit', tabindex: '0', role: 'button' }, [A.s('rect', { x: 1240 + coldOff(sc).dx, y: 420 + coldOff(sc).dy, width: 320, height: 150, rx: 10, class: 'ccp-rect' }), A.s('text', { x: 1400 + coldOff(sc).dx, y: 562 + coldOff(sc).dy, class: 'm-label m-center m-small ccp-t' }, [''])]);
     ccpBtn.addEventListener('click', function () { if (!S.panMoved) onCCP(); });
     ccpBtn.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCCP(); } });
     layerV.insertBefore ? layerV.insertBefore(ccpBtn, layerV.firstChild) : layerV.appendChild(ccpBtn);
     const rs = A.rescuer(); place(rs, g.rescuer.x, g.rescuer.y, false); layerR.appendChild(rs);
     const ambs = {};
-    g.ambs.forEach(function (a) { const am = A.ambulance(a.kind); am.setAttribute('data-id', a.id); place(am, 1660, 880, false); layerAmb.appendChild(am); ambs[a.id] = am; });
+    g.ambs.forEach(function (a) { const am = A.ambulance(a.kind); am.setAttribute('data-id', a.id); place(am, 1660 + coldOff(sc).dx, 880 + coldOff(sc).dy, false); layerAmb.appendChild(am); ambs[a.id] = am; });
     const ctl = h('div', { class: 'mapctl' },
       btn('', function () { zoom(0.8); }, { icon: 'plus', cls: 'icon', aria: t('game.zoomIn'), title: t('game.zoomIn') }),
       btn('', function () { zoom(1.25); }, { icon: 'minus', cls: 'icon', aria: t('game.zoomOut'), title: t('game.zoomOut') }),
-      btn('', function () { S.cam = { x: 0, y: 0, w: 1600, h: 1000 }; applyCam(); }, { icon: 'map', cls: 'icon', aria: t('game.fit'), title: t('game.fit') }),
+      btn('', function () { const sc2 = S.game.sc; S.cam = { x: 0, y: 0, w: mapW(sc2), h: mapH(sc2) }; applyCam(); }, { icon: 'map', cls: 'icon', aria: t('game.fit'), title: t('game.fit') }),
       btn('', function () { centerOn(S.game.rescuer.x, S.game.rescuer.y, 700); }, { icon: 'target', cls: 'icon', aria: t('game.center'), title: t('game.center') }));
     const legend = h('div', { class: 'maplegend', 'aria-hidden': 'true' }, h('span', { class: 'lg lg-hot' }, t('zone.hot')), h('span', { class: 'lg lg-warm' }, t('zone.warm')), h('span', { class: 'lg lg-cold' }, t('zone.cold')));
     const mapwrap = h('div', { class: 'mapwrap', id: 'mapwrap' }, svg, ctl, legend, h('div', { class: 'maptoast', id: 'maptoast', 'aria-hidden': 'true' }));
@@ -340,19 +404,25 @@
     root.appendChild(hud);
     root.appendChild(h('div', { class: 'stage' }, mapwrap, side));
     m.appendChild(root);
-    S.dom = { hud: hud, svg: svg, markers: markers, rescuer: rs, ambs: ambs, side: side, route: pathLine, ccp: ccpBtn };
+    S.dom = { hud: hud, svg: svg, markers: markers, rescuer: rs, ambs: ambs, side: side, route: pathLine, ccp: ccpBtn, spk: spk, calls: layerCalls, haz: layerHaz };
     bindMap(svg);
     applyCam();
     refreshGame();
   }
-  function place(node, x, y, animate, dur) {
+  function coldOff(sc) { return (sc && sc.cold) || { dx: 0, dy: 0 }; }
+  function speakerPos(sc) { const o = coldOff(sc); return { x: 1300 + o.dx, y: 700 + o.dy }; }
+  function place(node, x, y, animate, dur, delay) {
     if (!node || !node.style) return;
-    if (node.style.setProperty) node.style.setProperty('transition-duration', animate ? (dur || 0.8) + 's' : '0s');
+    if (node.style.setProperty) { node.style.setProperty('transition-duration', animate ? (dur || 0.8) + 's' : '0s'); node.style.setProperty('transition-delay', animate && delay ? delay + 's' : '0s'); }
     node.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
   }
   /* càmera: zoom i desplaçament */
   function applyCam() { const c = S.cam, svg = S.dom.svg; if (svg) svg.setAttribute('viewBox', [c.x, c.y, c.w, c.h].map(Math.round).join(' ')); }
-  function clampCam() { const c = S.cam; c.w = Math.max(320, Math.min(1600, c.w)); c.h = c.w * 0.625; c.x = Math.max(-100, Math.min(1700 - c.w, c.x)); c.y = Math.max(-60, Math.min(1060 - c.h, c.y)); }
+  function clampCam() { const sc = S.game && S.game.sc, W0 = mapW(sc), H0 = mapH(sc); const c = S.cam; c.w = Math.max(320, Math.min(W0, c.w)); c.h = c.w * 0.625; c.x = Math.max(-100, Math.min(W0 + 100 - c.w, c.x)); c.y = Math.max(-60, Math.min(H0 + 60 - c.h, c.y)); }
+  /* mida del mapa (gran catàstrofe: 2400 × 1500) i càmera inicial (als mapes grans, apropada a la zona freda i l'entrada) */
+  function mapW(sc) { return sc && sc.map ? sc.map.w : 1600; }
+  function mapH(sc) { return sc && sc.map ? sc.map.h : 1000; }
+  function initCam(sc) { if (!sc || !sc.map) return { x: 0, y: 0, w: 1600, h: 1000 }; const w = 1500, h = w * 0.625; return { x: Math.max(0, sc.start.x - w * 0.78), y: Math.max(0, sc.start.y - h / 2), w: w, h: h }; }
   function zoom(f, cx, cy) { const c = S.cam; cx = cx === undefined ? c.x + c.w / 2 : cx; cy = cy === undefined ? c.y + c.h / 2 : cy; const nw = c.w * f; c.x = cx - (cx - c.x) * (nw / c.w); c.y = cy - (cy - c.y) * (nw / c.w); c.w = nw; clampCam(); applyCam(); }
   function centerOn(x, y, w) { const c = S.cam; c.w = w || c.w; c.h = c.w * 0.625; c.x = x - c.w / 2; c.y = y - c.h / 2; clampCam(); applyCam(); }
   function bindMap(svg) {
@@ -389,7 +459,7 @@
   function refreshGame() { refreshHud(); refreshMap(); refreshSide(); }
   function counts(g) {
     const c = { none: 0, red: 0, yellow: 0, green: 0, black: 0, evac: 0, dead: 0 };
-    g.victims.forEach(function (v) { if (v.st.evac) c.evac++; const l = L.lastTag(v); if (l) c[l]++; else c.none++; if (v.st.dead && S.mode !== 'eval') c.dead++; });
+    g.victims.forEach(function (v) { if (v.st.evac) c.evac++; const l = L.lastTag(v); if (l) c[l]++; else if (L.isSeen(v)) c.none++; if (v.st.dead && S.mode !== 'eval') c.dead++; });
     return c;
   }
   function refreshHud() {
@@ -402,9 +472,13 @@
       ['red', 'yellow', 'green', 'black'].map((k) => h('li', { class: 'cnt cnt-' + k, title: catName(k) }, h('i', { class: 'tape-' + k }), h('b', null, String(c[k])))),
       h('li', { class: 'cnt cnt-evac', title: t('game.evacuated') }, ic('ambulance'), h('b', null, String(c.evac))),
       S.mode !== 'eval' && c.dead ? h('li', { class: 'cnt cnt-dead', title: t('game.deaths') }, ic('cross'), h('b', null, String(c.dead))) : null));
+    const hz = activeHazards(g);
+    if (hz.length) hud.appendChild(h('div', { class: 'hud-haz', role: 'status' }, ic('warn'), h('span', null, hz.map((x) => x.label).join(' · '))));
     hud.appendChild(h('div', { class: 'hud-amb' + (waiting ? ' on' : '') }, ic('ambulance'), h('span', null, waiting ? t('game.ambWaiting', { n: waiting }) : next ? t('game.ambNext', { t: fmtT(next.at) }) : t('game.ambNone'))));
+    const used = g.walkCallT !== null, calling = !!S.calling;
     hud.appendChild(h('div', { class: 'hud-act' },
-      btn(t('game.megaphone'), doWalkCall, { icon: 'megaphone', cls: 'sm' + (g.walkCallT === null ? ' accent' : ''), disabled: g.walkCallT !== null || S.busy, id: 'b-walk', title: t('game.megaphoneHelp') }),
+      h('button', { type: 'button', id: 'b-walk', class: 'btn speakbtn' + (used ? ' used' : ' accent') + (calling ? ' calling' : ''), disabled: used || S.busy, title: t('game.megaphoneHelp'), 'aria-describedby': 'b-walk-sub', on: { click: doWalkCall } },
+        ic('speaker'), h('span', { class: 'btn-l' }, h('b', null, calling ? t('game.calling') : used ? t('game.speakerUsed') : t('game.megaphone')), h('small', { id: 'b-walk-sub' }, used && !calling ? t('game.speakerUsedSub') : t('game.speakerSub')))),
       btn(t('game.wait'), function () { run({ type: 'wait', sec: 30 }); }, { icon: 'wait', cls: 'sm ghost', disabled: S.busy, id: 'b-wait', title: t('game.waitHelp') }),
       btn(t('game.end'), confirmEnd, { icon: 'flag', cls: 'sm ghost', id: 'b-end' })));
   }
@@ -418,7 +492,8 @@
       cls.push(tg ? 'tag-' + tg : 'untagged');
       if (v.phys.walk && !v.st.dead) cls.push('standing');
       if (v.bleed === 'major' && !v.st.bleedCtrl) cls.push('has-bleed'); else if (v.bleed === 'major') cls.push('bleed-ctrl');
-      if (v.hot && !g.hotCleared && !v.st.atCCP) cls.push('locked');
+      if (L.isLocked(g, v)) cls.push('locked');
+      if (!L.isSeen(v)) cls.push('unseen');
       if (S.sel === v.id) cls.push('sel');
       if (g.rescuer.at === v.id) cls.push('here');
       if (v.st.evac) cls.push('gone');
@@ -426,8 +501,10 @@
       if (showDeath && v.st.dead) cls.push('dead');
       if (coach && tg && tg !== L.truthOf(v) && !v.st.evac) cls.push('alert');
       if (S.flash[v.id]) cls.push('flash');
+      if (S.walkingIds && S.walkingIds[v.id]) cls.push('walking');
       mk.setAttribute('class', cls.join(' '));
       mk.setAttribute('aria-label', markerLabel(v));
+      if (L.isSeen(v)) { mk.setAttribute('tabindex', '0'); mk.removeAttribute('aria-hidden'); } else { mk.setAttribute('tabindex', '-1'); mk.setAttribute('aria-hidden', 'true'); }
       const key = Math.round(v.x) + ',' + Math.round(v.y);
       if (mk.getAttribute('data-pos') !== key) { const moving = mk.getAttribute('data-pos') !== null; place(mk, v.x, v.y, moving, v.st.atStation ? 1.6 : 2.4); mk.setAttribute('data-pos', key); }
     });
@@ -438,9 +515,10 @@
     const bayIdx = {};
     g.ambs.forEach(function (a) {
       const am = d.ambs[a.id]; if (!am) return;
-      let x = 1680, y = 880;
-      if (a.status === 'waiting') { const k = (bayIdx.n = (bayIdx.n || 0) + 1) - 1; x = 1290 + (k % 4) * 82; y = 840 + Math.floor(k / 4) * 50; }
-      else if (a.status === 'gone') { x = 1720; y = 880; }
+      const o = coldOff(g.sc);
+      let x = 1680 + o.dx, y = 880 + o.dy;
+      if (a.status === 'waiting') { const k = (bayIdx.n = (bayIdx.n || 0) + 1) - 1; x = 1290 + (k % 4) * 82 + o.dx; y = 840 + Math.floor(k / 4) * 50 + o.dy; }
+      else if (a.status === 'gone') { x = 1720 + o.dx; y = 880 + o.dy; }
       const key = x + ',' + y;
       if (am.getAttribute('data-pos') !== key) { place(am, x, y, true, 1.4); am.setAttribute('data-pos', key); }
       am.setAttribute('class', 'amb amb-' + a.kind + ' st-' + a.status);
@@ -448,12 +526,29 @@
     const r = g.rescuer; place(d.rescuer, r.x, r.y, true, S.anim ? S.anim.dur : 0.6);
     if (d.route) d.route.setAttribute('points', g.route.slice(-6).map((p) => Math.round(p.x) + ',' + Math.round(p.y)).join(' '));
   }
+  /* perills actius per al HUD (zona calenta amb amenaça o perill nou) */
+  function activeHazards(g) {
+    const out = [], St = D.SETTINGS[g.sc.setting];
+    if (g.haz) g.sc.hazards.forEach(function (hz, i) { if (g.haz[i].on && !g.haz[i].over) out.push({ label: t('game.hazardActive') }); });
+    if (St.threatLabel && !g.hotCleared) out.push({ label: tx(St.threatLabel) });
+    return out;
+  }
+  function refreshHazards() {
+    const g = S.game, lay = S.dom.haz; if (!g || !lay || !g.haz) return;
+    (lay.childNodes ? Array.prototype.slice.call(lay.childNodes) : []).forEach(function (p) { const s = g.haz[Number(p.getAttribute('data-i'))]; p.setAttribute('class', 'hz-poly' + (s && s.on && !s.over ? ' on' : '')); });
+  }
+  function lockMsg(g, v) {
+    const St = D.SETTINGS[g.sc.setting];
+    if (L.hazLocked(g, v)) return t('game.hazardLocked');
+    return t('game.lockedHelp', { hz: lockName(g, v) });
+  }
+  function lockName(g, v) { const St = D.SETTINGS[g.sc.setting]; const zone = St.hots && v && v.hz !== undefined ? St.hots[v.hz] : null; return zone ? tx(zone.name) : tx(St.hazard); }
   function markerLabel(v) {
     const g = S.game, tg = L.lastTag(v);
     const parts = [t('victimN', { n: v.num }), who(v)];
     parts.push(tg ? t('game.tagged', { cat: catName(tg) }) : t('game.untriaged'));
     if (v.st.evac) parts.push(t('game.evacuated'));
-    if (v.hot && !g.hotCleared && !v.st.atCCP) parts.push(t('zone.hot'));
+    if (L.isLocked(g, v)) parts.push(L.hazLocked(g, v) ? t('game.hazardZone') : t('zone.hot'));
     if (g.rescuer.at !== v.id) parts.push(t('game.distance', { m: Math.round(L.dist(g.rescuer, v) * 0.1), s: L.travelSec(L.dist(g.rescuer, v)) }));
     return parts.join(' · ');
   }
@@ -463,7 +558,7 @@
   function onMarker(id) {
     if (S.busy) return;
     const g = S.game, v = L.vById(g, id); if (!v) return;
-    if (S.sel === id && !L.rescuerAt(g, v)) { if (v.hot && !g.hotCleared && !v.st.atCCP) { toast(t('game.lockedHelp', { hz: tx(D.SETTINGS[g.sc.setting].hazard) }), 'warn'); return; } goTo(id); return; }
+    if (S.sel === id && !L.rescuerAt(g, v)) { if (L.isLocked(g, v)) { toast(lockMsg(g, v), 'warn'); return; } goTo(id); return; }
     S.sel = id; S.tab = 'victim'; sfx.tap();
     refreshMap(); refreshSide();
   }
@@ -471,7 +566,11 @@
   async function goTo(target) {
     const g = S.game; if (S.busy || g.over) return;
     const r = L.act(g, { type: 'move', target: target }, D);
-    if (!r.ok) { if (r.reason === 'hot') { toast(t('game.hotBlocked', { hz: tx(D.SETTINGS[g.sc.setting].hazard) }), 'bad'); sfx.bad(); refreshSide(); } return; }
+    if (!r.ok) {
+      if (r.reason === 'hot') { const v = L.vById(g, target); toast(t('game.hotBlocked', { hz: lockName(g, v) }), 'bad'); sfx.bad(); refreshSide(); }
+      else if (r.reason === 'hazard') { toast(t('game.hazardLocked'), 'bad'); sfx.bad(); handleEvents(r.events); if (!checkOver()) refreshGame(); }
+      return;
+    }
     S.sel = target; S.tab = 'victim';
     const dur = reduced ? 0 : Math.max(0.35, Math.min(1.6, r.cost / 40));
     S.anim = { dur: dur }; S.busy = true;
@@ -481,16 +580,41 @@
     handleEvents(r.events);
     if (!checkOver()) refreshGame();
   }
+  /* Altaveu de l'ambulància: ones sonores animades, rètol «Cridant…» i els que caminen es desplacen cap a la zona verda */
   async function doWalkCall() {
     const g = S.game; if (S.busy || g.walkCallT !== null) return;
-    S.busy = true;
+    const from = {}; g.victims.forEach(function (v) { from[v.id] = { x: v.x, y: v.y }; });
+    S.busy = true; S.calling = true;
     const r = L.act(g, { type: 'walkCall' }, D);
-    sfx.alert();
+    const moved = r.result.moved || [];
+    sfx.speaker();
+    announce(t('game.callingAria'));
     mapToast(t('game.walkCallSay'));
-    refreshMap(); refreshHud();
-    await wait(1400);
-    S.busy = false;
-    toast(t('game.walkCallDone', { n: r.result.moved.length }), 'info');
+    const spk = S.dom.spk; if (spk) { spk.classList.add('calling'); const lb = spk.lastChild; if (lb) lb.textContent = t('game.calling'); }
+    /* rastres de cada persona que camina: de la posició inicial a la zona verda */
+    const calls = S.dom.calls;
+    if (calls) {
+      clear(calls);
+      moved.forEach(function (id, i) {
+        const v = L.vById(g, id), a = from[id]; if (!v || !a) return;
+        calls.appendChild(A.s('g', { class: 'walk-trail', style: 'animation-delay:' + (reduced ? 0 : i * 0.12) + 's' }, [
+          A.s('line', { x1: Math.round(a.x), y1: Math.round(a.y), x2: Math.round(v.x), y2: Math.round(v.y), class: 'wt-line' }),
+          A.s('circle', { cx: Math.round(a.x), cy: Math.round(a.y), r: 9, class: 'wt-from' }),
+          A.s('circle', { cx: Math.round(v.x), cy: Math.round(v.y), r: 7, class: 'wt-to' })]));
+      });
+    }
+    refreshHud();
+    /* primer s'escolta la crida (ones), després es mouen de manera esglaonada */
+    await pause(reduced ? 600 : 900);
+    const mk = S.dom.markers || {};
+    S.walkingIds = {}; moved.forEach(function (id) { S.walkingIds[id] = true; });
+    moved.forEach(function (id, i) { const v = L.vById(g, id), m = mk[id]; if (v && m) { place(m, v.x, v.y, !reduced, 2.6, reduced ? 0 : Math.min(1.2, i * 0.12)); m.setAttribute('data-pos', Math.round(v.x) + ',' + Math.round(v.y)); } });
+    refreshMap();
+    await pause(reduced ? 1400 : 2600 + Math.min(1200, moved.length * 120));
+    S.busy = false; S.calling = false; S.walkingIds = null;
+    if (spk) { spk.classList.remove('calling'); const lb = spk.lastChild; if (lb) lb.textContent = ''; }
+    W.setTimeout(function () { if (calls && S.screen === 'game') clear(calls); }, reduced ? 4000 : 2500);
+    toast(t('game.walkCallDone', { n: moved.length }), 'info');
     handleEvents(r.events);
     if (!checkOver()) refreshGame();
   }
@@ -514,12 +638,16 @@
     const live = S.mode !== 'eval';
     evs.forEach(function (e) {
       const v = e.id ? L.vById(g, e.id) : null;
-      if (e.type === 'hotClear') { toast(tx(D.SETTINGS[g.sc.setting].hotClear), 'info', 5000); sfx.ok(); }
+      const St = D.SETTINGS[g.sc.setting];
+      if (e.type === 'hotClear') { const z = e.zone !== undefined && St.hots ? St.hots[e.zone] : null; toast(z ? tx(z.clear) : tx(St.hotClear), 'info', 5000); sfx.hotClear(); SND.setThreat(!g.hotCleared); refreshHazards(); }
+      else if (e.type === 'hazard') { toast(tx(St.hazard2.text) + (e.retreat ? ' ' + t('ev.retreat') : ''), 'bad', 8000); if (St.hazard2.kind === 'quake' || St.hazard2.kind === 'collapse') sfx.quake(); sfx.hazard(); refreshHazards(); }
+      else if (e.type === 'hazardClear') { toast(tx(St.hazard2.clear), 'info', 5000); sfx.radio(); refreshHazards(); }
+      else if (e.type === 'found') { toast(e.how === 'report' ? t('ev.foundReport', { n: v.num }) : t('ev.found', { n: v.num }), 'warn', 5000); sfx.alert(); flash(v.id); }
       else if (e.type === 'ambArrive') { toast(t('ev.amb', { kind: t('amb.' + e.kind), id: e.amb }), 'amb', 5000); sfx.siren(); }
-      else if (e.type === 'worsen' && S.mode === 'guided') { toast(t('ev.worsen', { n: v.num }), 'warn', 6000); sfx.alert(); flash(v.id); }
-      else if (e.type === 'airwayLost' && live) { toast(t('ev.airwayLost', { n: v.num }), 'bad', 6000); sfx.bad(); flash(v.id); }
-      else if (e.type === 'die' && live && e.preventable) { toast(t('ev.die', { n: v.num }), 'bad', 6000); sfx.bad(); }
-      else if (e.type === 'timeUp') toast(t('ev.timeUp'), 'warn');
+      else if (e.type === 'worsen' && S.mode === 'guided') { toast(t('ev.worsen', { n: v.num }), 'warn', 6000); sfx.worsen(); flash(v.id); }
+      else if (e.type === 'airwayLost' && live) { toast(t('ev.airwayLost', { n: v.num }), 'bad', 6000); sfx.worsen(); flash(v.id); }
+      else if (e.type === 'die' && live && e.preventable) { toast(t('ev.die', { n: v.num }), 'bad', 6000); sfx.death(); }
+      else if (e.type === 'timeUp') { toast(t('ev.timeUp'), 'warn'); sfx.timeUp(); }
     });
   }
   function flash(id) { S.flash[id] = true; W.setTimeout(function () { delete S.flash[id]; if (S.screen === 'game') refreshMap(); }, 2400); }
@@ -576,7 +704,7 @@
       tg ? h('span', { class: 'pill tape-' + tg }, catName(tg)) : h('span', { class: 'pill' }, t('game.untriaged'))));
     if (v.st.evac) { p.appendChild(h('p', { class: 'fb info' }, t('game.evacTo', { h: hospName(v.st.evac.dest), t: fmtT(v.st.evac.t) }))); p.appendChild(btn(t('ui.close'), function () { S.sel = null; refreshSide(); refreshMap(); }, { cls: 'ghost' })); return; }
     if (!here) {
-      const locked = v.hot && !g.hotCleared && !v.st.atCCP;
+      const locked = L.isLocked(g, v);
       p.appendChild(h('p', { class: 'desc' }, ic('secondary'), h('span', null, tx(v.desc))));
       if (locked) p.appendChild(h('p', { class: 'fb bad' }, ic('lock'), h('span', null, t('game.lockedHelp', { hz: tx(D.SETTINGS[g.sc.setting].hazard) }))));
       const d = L.dist(g.rescuer, L.pointOf(g, v.id, D));
@@ -592,6 +720,8 @@
     p.appendChild(h('p', { class: 'desc' }, tx(v.desc)));
     const figWrap = h('div', { class: 'figwrap', id: 'figwrap' }, A.figure(figState(v)), h('div', { class: 'overlay', id: 'overlay', 'aria-live': 'polite' }));
     p.appendChild(figWrap);
+    p.appendChild(h('div', { class: 'row closeup-row' }, btn(t('cl.open'), function () { openCloseup(v); }, { cls: 'closeup-btn', icon: 'secondary', id: 'b-closeup', disabled: S.busy }), h('small', { class: 'muted' }, t('cl.openHelp'))));
+    if (v.relative && !v.st.relCalm && !v.st.dead) p.appendChild(h('div', { class: 'fb warn relbox', role: 'note' }, h('b', null, t('game.relTitle')), h('p', null, t('game.relHelp', { s: L.REL_EXTRA }))));
     p.appendChild(findings(v));
     const nx = S.mode === 'guided' ? L.nextStep(g, v) : null;
     if (S.mode === 'guided') {
@@ -602,6 +732,104 @@
     p.appendChild(tapeBar(v, nx));
     p.appendChild(h('div', { class: 'row between mt' }, btn(t('game.listAll'), function () { S.sel = null; refreshSide(); refreshMap(); }, { cls: 'ghost sm', icon: 'list' }), h('span', { class: 'muted small' }, t('game.timeHere', { s: Math.round(v.st.timeSpent) }))));
   }
+  /* sense ajudes: mode avaluable, repte i nivell molt difícil (sense correcció immediata ni colors als resultats) */
+  /* nota didàctica del perfil (embaràs, persona sorda, gent gran, lesió oculta…) */
+  function profNote(v) { const k = v && v.profile ? 'prof.' + v.profile : null; const s = k ? I.get(S.lang, k) : null; return s ? ' ' + s : ''; }
+  function noHelp() { return S.mode === 'eval' || S.mode === 'challenge' || !!(S.game && S.game.sc.difficulty === 'vhard' && S.mode !== 'guided'); }
+  /* ---------- vista ampliada de la víctima: pistes visuals i respiració / pols en temps real ----------
+     Només llegeix l'estat (L.cues): obrir-la, comptar amb el cronòmetre o mirar el pols no costa temps de joc ni canvia res.
+     Les accions que costen temps (comptar FR, pols, reompliment…) es continuen fent amb els botons del panell. */
+  function explicitCues() { const g = S.game; return !!g && (S.mode === 'guided' || S.mode === 'practice') && (g.sc.difficulty === 'easy' || g.sc.difficulty === 'normal'); }
+  function cueList(v, c) {
+    const out = [];
+    const site = (s) => t('site.' + (s || 'trunk'));
+    out.push(t('cue.posture.' + c.posture) + (c.moving === 'still' ? ' ' + t('cue.still') : ''));
+    out.push(!c.breath.on ? t('cue.breath.none') : t('cue.breath.' + c.breath.pattern) + (c.breath.showRate ? ' ' + t('cue.breath.rate', { rr: c.breath.rr }) : ' ' + t('cue.breath.count')));
+    if (c.breath.noisy) out.push(t('cue.noisy'));
+    if (c.bleed.kind !== 'none') out.push(t(c.bleed.controlled ? 'cue.bleed.ctrl' : 'cue.bleed.' + c.bleed.kind, { site: site(c.bleed.site) }));
+    if (c.skin.cyan) out.push(t('cue.cyan'));
+    if (c.skin.pale) out.push(t('cue.pale'));
+    else if (!c.pulse.known && c.breath.on) out.push(t('cue.paleUnknown'));
+    if (c.skin.sweat) out.push(t('cue.sweat'));
+    if (c.skin.soot) out.push(t('cue.soot'));
+    if (c.skin.burns) out.push(t('cue.burns', { site: site(c.skin.burns) }));
+    if (c.deform) out.push(t('cue.deform', { site: site(c.site) }));
+    out.push(t('cue.eyes.' + c.eyes));
+    if (c.mental) out.push(t('cue.mental.' + c.mental));
+    out.push(!c.pulse.known ? t('cue.pulse.unknown') : !c.pulse.present ? t('cue.pulse.absent') : t('cue.pulse.' + c.pulse.strength) + (c.explicit ? ' ' + t('cue.pulse.rate', { hr: c.pulse.rate }) : ''));
+    out.push(c.crt.known ? t('cue.crt.sec', { s: c.crt.sec > 4 ? '> 4' : c.crt.sec }) : t('cue.crt.unknown'));
+    return out;
+  }
+  function closeCloseup() {
+    const cl = S.closeup; if (!cl) return;
+    if (cl.beat) W.clearInterval(cl.beat); if (cl.sw) W.clearInterval(cl.sw);
+    try { if (W.navigator && W.navigator.vibrate) W.navigator.vibrate(0); } catch (e) { /* res */ }
+    if (cl.el && cl.el.parentNode) cl.el.parentNode.removeChild(cl.el);
+    S.closeup = null; if (cl.prev && cl.prev.focus) cl.prev.focus();
+  }
+  function startBeat() {
+    const cl = S.closeup; if (!cl) return; if (cl.beat) { W.clearInterval(cl.beat); cl.beat = null; }
+    const c = cl.c; if (!c.pulse.known || !c.pulse.present || doc.hidden) return;
+    const hapt = !!S.prefs.haptic && S.prefs.soundMode !== 'off' && W.navigator && typeof W.navigator.vibrate === 'function';
+    const tick = S.prefs.soundMode === 'all' && !!S.prefs.pulseTick;
+    if (!hapt && !tick) return;
+    cl.beat = W.setInterval(function () { if (doc.hidden) return; if (hapt) { try { W.navigator.vibrate(c.pulse.strength === 'weak' ? 12 : 25); } catch (e) { /* res */ } } if (tick) SND.play('pulse'); }, Math.round(60000 / Math.max(30, c.pulse.rate)));
+  }
+  function openCloseup(v) {
+    closeCloseup();
+    const g = S.game, explicit = explicitCues();
+    const c = L.cues(v, { explicit: explicit }, D);
+    const base = figState(v);
+    const fig = A.figure(Object.assign({}, base, { exact: true, pattern: c.breath.pattern, eyes: c.eyes, sweat: c.skin.sweat, soot: c.skin.soot, burns: c.skin.burns, deform: c.deform, noisy: c.breath.noisy,
+      pale: c.skin.pale, cyan: c.skin.cyan, dead: base.dead && !!v.st.dead, breathing: c.breath.on, rr: c.breath.rr }));
+    fig.setAttribute('aria-hidden', 'true');
+    const items = cueList(v, c);
+    const sw = h('b', { class: 'mono', id: 'cl-sw' }, '15'), swBtn = btn(t('cl.stopwatch'), function () {
+      const cl = S.closeup; if (!cl) return; if (cl.sw) { W.clearInterval(cl.sw); cl.sw = null; }
+      let left = 15; sw.textContent = '15'; swBtn.classList.add('on');
+      cl.sw = W.setInterval(function () { if (doc.hidden) return; left -= 1; sw.textContent = String(Math.max(0, left)); if (left <= 0) { W.clearInterval(cl.sw); cl.sw = null; swBtn.classList.remove('on'); announce(t('cl.swDone')); } }, 1000);
+    }, { cls: 'sm', icon: 'timer', id: 'cl-sw-btn' });
+    const period = c.breath.on ? (60 / c.breath.rr).toFixed(2) + 's' : '0s';
+    const pulseKnown = c.pulse.known;
+    const wr = A.wrist({ present: pulseKnown && c.pulse.present, weak: c.pulse.strength === 'weak', period: c.pulse.rate ? (60 / c.pulse.rate).toFixed(3) : 1, skin: 'sk' + (v.look.skin % 4) });
+    const nail = h('div', { class: 'nail cl-nail', id: 'cl-nail' }, h('i', { class: 'nail-bed' }));
+    const crtBtn = btn(t('cl.crtShow'), async function () {
+      if (!c.crt.known) return;
+      nail.classList.remove('refill'); nail.classList.add('press'); await pause(reduced ? 300 : 900); nail.classList.remove('press'); nail.classList.add('refill');
+      if (nail.style && nail.style.setProperty) nail.style.setProperty('--refill', Math.min(c.crt.sec, 5) + 's');
+      await pause(Math.min(c.crt.sec, 5) * 1000); announce(t('cue.crt.sec', { s: c.crt.sec > 4 ? '> 4' : c.crt.sec }));
+    }, { cls: 'sm', icon: 'crt', id: 'cl-crt', disabled: !c.crt.known });
+    const rhythm = h('button', { type: 'button', class: 'btn sm ghost', id: 'cl-rhythm', 'aria-pressed': 'false',
+      on: { pointerdown: function () { el.classList.add('play'); }, pointerup: function () { el.classList.remove('play'); }, pointerleave: function () { el.classList.remove('play'); },
+        keydown: function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); el.classList.add('play'); } }, keyup: function () { el.classList.remove('play'); } } }, ic('play'), h('span', { class: 'btn-l' }, t('cl.rhythm')));
+    const hapticOk = W.navigator && typeof W.navigator.vibrate === 'function';
+    const prefs = h('div', { class: 'cl-prefs' },
+      hapticOk ? h('label', { class: 'switch' }, h('input', { type: 'checkbox', id: 'cl-haptic', checked: !!S.prefs.haptic, disabled: S.prefs.soundMode === 'off', on: { change: function (e) { S.prefs.haptic = !!e.target.checked; savePrefs(); startBeat(); } } }), h('span', null, t('cl.haptic'))) : null,
+      h('label', { class: 'switch' }, h('input', { type: 'checkbox', id: 'cl-tick', checked: !!S.prefs.pulseTick, disabled: S.prefs.soundMode !== 'all', on: { change: function (e) { S.prefs.pulseTick = !!e.target.checked; savePrefs(); startBeat(); } } }), h('span', null, t('cl.tick'))),
+      S.prefs.soundMode === 'off' ? h('small', { class: 'muted' }, t('cl.needSound')) : null);
+    const tg = L.lastTag(v), here = L.rescuerAt(g, v);
+    const tapes = h('div', { class: 'tape-row' }, ['red', 'yellow', 'green', 'black'].map((cat) => h('button', { type: 'button', class: 'tapebtn tape-' + cat + (tg === cat ? ' cur' : ''), id: 'cl-tape-' + cat, disabled: !here || g.over || S.busy, 'aria-label': t('game.tagAria', { cat: catName(cat) }), on: { click: function () { closeCloseup(); doTag(v, cat); } } }, h('b', null, catName(cat)), h('small', null, t('cat.' + cat + 'Sub')))));
+    const el = h('div', { class: 'sheet-root' + (doc.hidden ? ' paused' : ''), id: 'closeup' },
+      h('div', { class: 'scrim', on: { click: closeCloseup } }),
+      h('section', { class: 'sheet', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'cl-title', on: { keydown: function (e) { if (e.key === 'Escape') closeCloseup(); } } },
+        h('header', { class: 'sheet-h' }, h('div', { class: 'vnum' + (tg ? ' tape-' + tg : '') }, String(v.num)), h('div', null, h('h2', { id: 'cl-title' }, t('cl.title', { n: v.num })), h('p', { class: 'muted small' }, who(v), ' · ', t(explicit ? 'cl.modeExplicit' : 'cl.modeSubtle'))),
+          btn('', closeCloseup, { icon: 'cross', cls: 'icon ghost', aria: t('ui.close'), id: 'cl-close' })),
+        h('div', { class: 'sheet-b' },
+          h('div', { class: 'cl-fig', style: '--br:' + period }, fig),
+          h('div', { class: 'cl-side' },
+            h('h3', null, t('cl.see')), h('ul', { class: 'cl-cues', id: 'cl-cues', 'aria-label': t('cl.see') }, items.map((x) => h('li', null, x))),
+            h('div', { class: 'cl-box' }, h('h3', null, ic('rr'), ' ', t('cl.breathing')), h('p', { class: 'small' }, t('cl.countHelp')), h('div', { class: 'row' }, swBtn, sw, h('small', { class: 'muted' }, 's'), reduced ? rhythm : null)),
+            h('div', { class: 'cl-box' }, h('h3', null, ic('radial'), ' ', t('cl.pulse')), wr, h('p', { class: 'small muted' }, pulseKnown ? (c.pulse.present ? t(c.explicit ? 'cl.pulseKnownRate' : 'cl.pulseKnown', { hr: c.pulse.rate }) : t('cue.pulse.absent')) : t('cl.pulseNeedCheck'))),
+            h('div', { class: 'cl-box' }, h('h3', null, ic('crt'), ' ', t('cl.crt')), h('div', { class: 'row' }, nail, crtBtn), h('p', { class: 'small muted' }, c.crt.known ? t('cl.crtHelp') : t('cl.crtNeedCheck'))),
+            prefs)),
+        h('footer', { class: 'sheet-f' }, h('h3', null, here ? (tg ? t('game.retag') : t('game.tag')) : t('cl.goFirst')), tapes,
+          h('p', { class: 'muted small' }, t('cl.note')))));
+    (doc.body || doc.documentElement).appendChild(el);
+    S.closeup = { el: el, c: c, v: v.id, prev: doc.activeElement, beat: null, sw: null };
+    startBeat();
+    const cb = $('cl-close'); if (cb && cb.focus) cb.focus();
+  }
+  try { doc.addEventListener('visibilitychange', function () { const cl = S.closeup; if (!cl) return; if (doc.hidden) { cl.el.classList.add('paused'); if (cl.beat) { W.clearInterval(cl.beat); cl.beat = null; } } else { cl.el.classList.remove('paused'); startBeat(); } }); } catch (e) { /* res */ }
   function hospName(id) { const hh = D.HOSPITALS.find((x) => x.id === id); return hh ? tx(hh.short) : id; }
   function figState(v, extra) {
     const p = v.phys, st = v.st;
@@ -613,9 +841,9 @@
     }, extra || {});
   }
   function findings(v) {
-    const r = v.st.results, rows = [], neutral = S.mode === 'eval' || S.mode === 'challenge';
+    const r = v.st.results, rows = [], neutral = noHelp();
     const row = (icn, label, val, bad) => h('li', { class: 'fd' + (neutral ? '' : bad === true ? ' bad' : bad === false ? ' good' : '') }, ic(icn), h('span', { class: 'fd-l' }, label), h('b', null, val));
-    if (r.walk) rows.push(row('walk', t('chk.walk'), r.walk.walks ? t('r.walkYes') : t('r.walkNo'), null));
+    if (r.walk) rows.push(row('walk', t('chk.walk'), r.walk.walks ? t(r.walk.deaf ? 'r.walkDeaf' : 'r.walkYes') : t('r.walkNo'), null));
     else if (v.st.atCCP) rows.push(row('walk', t('chk.walk'), t('r.walkedCCP'), null));
     if (r.breath) rows.push(row('breath', t('chk.breath'), r.breath.breathing ? t('r.yes') : t('r.no'), !r.breath.breathing));
     v.st.interventions.forEach(function (it) { if (it.what === 'airway' || it.what === 'rescue') rows.push(row(it.what === 'airway' ? 'airway' : 'rescue', t('do.' + it.what), t('res.' + it.what + '.' + it.res), it.res === 'noBreath')); });
@@ -658,6 +886,7 @@
       mk('do', 'pressure', 'pressure', t('do.pressure'), L.COST.pressure),
       mk('do', 'tourniquet', 'tourniquet', t('do.tourniquet'), L.COST.tourniquet),
       mk('do', 'position', 'position', t('do.position'), L.COST.position),
+      v.relative ? mk('do', 'delegate', 'users', t('do.delegate'), L.COST.delegate) : null,
       mk('do', 'cpr', 'cpr', t(L.phase2(g) ? 'do.cprP2' : 'do.cpr'), L.COST.cpr, { trap: true }),
       mk('do', 'secondary', 'secondary', t(L.phase2(g) ? 'do.secondaryP2' : 'do.secondary'), L.COST.secondary, { trap: !L.phase2(g) }));
     return h('div', { class: 'belt' }, h('h3', null, t('game.assess')), checks, h('h3', null, t('game.intervene')), dos);
@@ -709,7 +938,7 @@
         overlay([h('div', { class: 'ov-box talk' }, h('p', { class: 'bubble me' }, t(v.ped ? 'anim.avpuSay' : 'anim.mentalSay')), h('p', { class: 'bubble them' }, v.ped ? t('anim.avpu.' + r.result.avpu) : r.result.obeys ? t('anim.squeeze') : t('anim.noSqueeze')))], 'clear');
         await wait(1500);
       } else if (c === 'walk') {
-        overlay([h('div', { class: 'ov-box talk' }, h('p', { class: 'bubble me' }, t('anim.walkSay')), h('p', { class: 'bubble them' }, r.result.walks ? t('anim.walkYes') : t('anim.walkNo')))], 'clear');
+        overlay([h('div', { class: 'ov-box talk' }, h('p', { class: 'bubble me' }, t('anim.walkSay')), h('p', { class: 'bubble them' }, r.result.walks ? t(r.result.deaf ? 'anim.walkDeaf' : 'anim.walkYes') : t('anim.walkNo')))], 'clear');
         await wait(1200);
       } else {
         await progress(t('anim.breath'), 1300, 'breath');
@@ -720,7 +949,7 @@
     });
   }
   function resultText(v, c, r) {
-    if (c === 'walk') return r.walks ? t('r.walkYes') : t('r.walkNo');
+    if (c === 'walk') return r.walks ? t(r.deaf ? 'r.walkDeaf' : 'r.walkYes') : t('r.walkNo');
     if (c === 'breath') return r.breathing ? t('r.yes') : t('r.no');
     if (c === 'rr15' || c === 'rr30') return t('r.rr', { c: r.count, w: r.window, rr: r.rr });
     if (c === 'radial') return r.present ? t('r.present') : t('r.absent');
@@ -737,9 +966,9 @@
     if (!res) return;
     if (!res.ok) return;
     const rr = res.result.res;
-    const kind = ['controlled', 'breathes', 'ok', 'minorOk', 'phase2Exam'].indexOf(rr) >= 0 ? 'ok' : ['mciNoCpr', 'phase2Cpr', 'notStart', 'notLimb', 'noBleed', 'notNeeded', 'noPulse'].indexOf(rr) >= 0 ? 'bad' : 'info';
+    const kind = ['controlled', 'breathes', 'ok', 'minorOk', 'phase2Exam', 'delegated', 'delegatedAirway'].indexOf(rr) >= 0 ? 'ok' : ['mciNoCpr', 'phase2Cpr', 'notStart', 'notLimb', 'noBleed', 'notNeeded', 'noPulse', 'noRelative'].indexOf(rr) >= 0 ? 'bad' : 'info';
     const msg = t((w === 'airway' || w === 'rescue') ? 'res.' + w + '.' + rr : 'res.' + rr);
-    if (S.mode === 'eval' || S.mode === 'challenge') toast(msg, 'info');
+    if (noHelp()) toast(msg, 'info');
     else { toast(msg + (kind === 'bad' ? ' ' + t('why.do.' + rr) : ''), kind, kind === 'bad' ? 6000 : 3500); if (kind === 'bad') sfx.bad(); else if (kind === 'ok') sfx.ok(); }
   }
   async function doTag(v, cat) {
@@ -747,8 +976,8 @@
     const r = await run({ type: 'tag', id: v.id, cat: cat }, async function () { sfx.tag(); await wait(450); });
     if (!r || !r.ok) return;
     const res = r.result;
-    const why = t((v.ped ? 'whyJ.' : 'why.') + res.step, { rr: v.phys.rr });
-    if (S.mode === 'guided' || S.mode === 'practice') {
+    const why = t((v.ped ? 'whyJ.' : 'why.') + res.step, { rr: v.phys.rr }) + profNote(v);
+    if (!noHelp()) {
       S.lastFeedback = { id: v.id, kind: res.kind, truth: res.truth, why: why };
       if (res.kind === 'ok') { sfx.ok(); toast(t('fb.okShort', { n: v.num, cat: catName(cat) }), 'ok'); }
       else { sfx.bad(); toast(res.kind === 'over' ? t('fb.over', { cat: catName(res.truth) }) : t('fb.under', { cat: catName(res.truth) }), res.kind === 'over' ? 'warn' : 'bad', 5000); }
@@ -762,16 +991,43 @@
   }
   function victimList() {
     const g = S.game;
-    const list = g.victims.slice().filter((v) => !v.st.evac).sort(function (a, b) { const ta = L.lastTag(a) ? 1 : 0, tb = L.lastTag(b) ? 1 : 0; return ta - tb || L.dist(g.rescuer, a) - L.dist(g.rescuer, b); });
-    return h('div', { class: 'vlist' }, h('h3', null, t('game.allVictims')), h('ul', null, list.map(function (v) {
+    const St = D.SETTINGS[g.sc.setting];
+    const all = g.victims.slice().filter((v) => !v.st.evac && L.isSeen(v)).sort(function (a, b) { const ta = L.lastTag(a) ? 1 : 0, tb = L.lastTag(b) ? 1 : 0; return ta - tb || L.dist(g.rescuer, a) - L.dist(g.rescuer, b); });
+    /* filtres (útils amb moltes víctimes, sobretot al mòbil) */
+    const F = { all: () => true, none: (v) => !L.lastTag(v), red: (v) => L.lastTag(v) === 'red', yellow: (v) => L.lastTag(v) === 'yellow', green: (v) => L.lastTag(v) === 'green', locked: (v) => L.isLocked(g, v) };
+    const cur = F[S.vfilter] ? S.vfilter : 'all';
+    const chips = h('div', { class: 'vfilters', role: 'group', 'aria-label': t('game.filter') }, ['all', 'none', 'red', 'yellow', 'green', 'locked'].map(function (k) {
+      const n = all.filter(F[k]).length; if (!n && k !== 'all' && k !== cur) return null;
+      return h('button', { type: 'button', class: 'vf' + (cur === k ? ' on' : '') + (['red', 'yellow', 'green'].indexOf(k) >= 0 ? ' vf-' + k : ''), id: 'vf-' + k, 'aria-pressed': String(cur === k), on: { click: function () { S.vfilter = k; refreshSide(); } } }, t('vf.' + k), h('b', null, String(n)));
+    }));
+    const next = all.find((v) => !L.lastTag(v) && !v.st.atCCP && !L.isLocked(g, v));
+    const nextBtn = next ? btn(t('game.nextUntriaged', { n: next.num }), function () { onMarker(next.id); centerOn(next.x, next.y, Math.min(S.cam.w, 900)); }, { cls: 'sm ghost', icon: 'target', id: 'b-next-untriaged' }) : null;
+    const list = all.filter(F[cur]);
+    const row = function (v) {
       const tg = L.lastTag(v), d = L.dist(g.rescuer, L.pointOf(g, v.id, D));
-      const locked = v.hot && !g.hotCleared && !v.st.atCCP;
+      const locked = L.isLocked(g, v);
       return h('li', null, h('button', { type: 'button', class: 'vrow' + (S.sel === v.id ? ' on' : ''), on: { click: function () { onMarker(v.id); } } },
         h('span', { class: 'vnum sm' + (tg ? ' tape-' + tg : '') }, String(v.num)),
         h('span', { class: 'vrow-t' }, h('b', null, who(v)), h('small', null, v.st.atCCP && !v.st.atStation ? t('zone.ccp') : tg ? catName(tg) : t('game.untriaged'))),
         locked ? ic('lock') : null, v.bleed === 'major' && !v.st.bleedCtrl && !(v.st.dead && S.mode !== 'eval') ? h('span', { class: 'dot-bleed', title: t('game.bleedSeen') }) : null,
         h('small', { class: 'vrow-d' }, L.rescuerAt(g, v) ? t('game.here') : Math.round(d * 0.1) + ' m')));
-    })));
+    };
+    const head = h('div', { class: 'vlist-head' }, h('h3', null, t('game.allVictims') + ' (' + all.length + ')'), nextBtn);
+    if (!St.sectors) return h('div', { class: 'vlist' }, head, all.length > 8 ? chips : null, h('ul', null, list.map(row)));
+    /* gran catàstrofe: agrupades per sector (el més proper); la zona verda i les estacions, a part */
+    const groups = St.sectors.map((s, i) => ({ key: 's' + i, label: String.fromCharCode(65 + i) + ' · ' + tx(s.name), items: [] }));
+    const cold = { key: 'cold', label: t('zone.cold'), items: [] };
+    list.forEach(function (v) {
+      if (v.st.atCCP || v.st.atStation) { cold.items.push(v); return; }
+      let bi = 0, bd = Infinity; St.sectors.forEach((s, i) => { const dd = Math.hypot(v.x - s.x, v.y - s.y); if (dd < bd) { bd = dd; bi = i; } });
+      groups[bi].items.push(v);
+    });
+    return h('div', { class: 'vlist' }, head, chips, groups.concat([cold]).filter((gr) => gr.items.length).map(function (gr) {
+      const pend = gr.items.filter((v) => !L.lastTag(v)).length;
+      return h('details', { class: 'vgroup', open: S.closedGroups && S.closedGroups[gr.key] ? null : true, on: { toggle: function (e) { S.closedGroups = S.closedGroups || {}; S.closedGroups[gr.key] = !e.target.open; } } },
+        h('summary', null, h('b', null, gr.label), h('span', { class: 'muted small' }, t('game.groupCount', { n: gr.items.length, p: pend }))),
+        h('ul', null, gr.items.map(row)));
+    }));
   }
   function paneCCP(p) {
     const g = S.game, here = g.rescuer.at === 'ccp';
@@ -851,7 +1107,7 @@
         h('p', { class: 'muted small' }, t('amb.' + a.kind + 'Desc')),
         h('ul', { class: 'slots' }, slots),
         h('div', { class: 'lbl' }, t('evac.dest')), dests,
-        btn(t('evac.dispatch'), function () { run({ type: 'dispatch', amb: a.id, dest: destSel }, async function () { sfx.siren(); await wait(500); }).then(function (r) { if (r && r.ok && S.mode !== 'eval' && S.mode !== 'challenge') { const v = r.result.items.some((i) => i.violation), dd = r.result.items.some((i) => i.destScore < 1); if (v || dd) toast((v ? t('fb.prioViol') + ' ' : '') + (dd ? t('fb.destMeh') : ''), 'warn', 6000); else toast(t('fb.dispatchOk'), 'ok'); } }); }, { cls: 'primary', icon: 'next', disabled: !a.load.length || S.busy, id: 'b-dispatch-' + a.id })));
+        btn(t('evac.dispatch'), function () { run({ type: 'dispatch', amb: a.id, dest: destSel }, async function () { sfx.sirenOut(); await wait(500); }).then(function (r) { if (r && r.ok && S.mode !== 'eval' && S.mode !== 'challenge') { const v = r.result.items.some((i) => i.violation), dd = r.result.items.some((i) => i.destScore < 1); if (v || dd) toast((v ? t('fb.prioViol') + ' ' : '') + (dd ? t('fb.destMeh') : ''), 'warn', 6000); else toast(t('fb.dispatchOk'), 'ok'); } }); }, { cls: 'primary', icon: 'next', disabled: !a.load.length || S.busy, id: 'b-dispatch-' + a.id })));
     });
     /* una sola lista de víctimas listas, agrupadas por cinta; cada fila tiene un botón por ambulancia que espera */
     if (waiting.length && ready.length) {
@@ -956,6 +1212,8 @@
     comps.appendChild(h('p', { class: 'muted small' }, t('res.formula')));
     wrap.appendChild(comps);
     /* matriu de confusió */
+    const St = D.SETTINGS[sc.setting];
+    if (St.lessons) wrap.appendChild(h('section', { class: 'card lessons' }, h('h2', null, ic('grad'), ' ', t('res.lessons')), h('ul', { class: 'list' }, St.lessons.map((x) => h('li', null, tx(x)))), St.sources ? h('p', { class: 'src' }, tx(St.sources)) : null));
     wrap.appendChild(h('section', { class: 'card' }, h('h2', null, t('res.matrix')), h('p', { class: 'muted small' }, t('res.matrixHelp')), confusionTable(r.confusion)));
     /* repetició */
     wrap.appendChild(replaySection());
@@ -997,7 +1255,7 @@
     const rows = r.per.slice().sort((a, b) => a.num - b.num).map(function (p) {
       const v = L.vById(g, p.id);
       const out = p.dead ? (p.preventable ? t('rev.diedPrev', { t: fmtT(p.diedAt) }) : t('rev.dead')) : p.evac ? t('rev.evac', { h: hospName(p.evac.dest) }) : t('rev.onScene');
-      const why = t((p.ped ? 'whyJ.' : 'why.') + p.firstStep, { rr: v.phys.rr || '' });
+      const why = t((p.ped ? 'whyJ.' : 'why.') + p.firstStep, { rr: v.phys.rr || '' }) + profNote(v) + (p.unseen ? ' ' + (p.foundAt === null ? t('rev.neverFound') : t('rev.found', { t: fmtT(p.foundAt) })) : '');
       return h('tr', { class: 'k-' + (p.kind || 'missed') },
         h('td', null, h('span', { class: 'vnum sm' + (p.firstTag ? ' tape-' + p.firstTag : '') }, String(p.num))),
         h('td', null, h('b', null, who(v)), h('small', null, tx(v.desc))),
@@ -1011,7 +1269,7 @@
   /* repetició sobre el mapa */
   function replaySection() {
     const g = S.game;
-    const svg = A.s('svg', { class: 'map replay', viewBox: '0 0 1600 1000', role: 'img', 'aria-label': t('res.replayAria') }, [A.drawMap(D, g.sc.setting)]);
+    const svg = A.s('svg', { class: 'map replay', viewBox: '0 0 ' + mapW(g.sc) + ' ' + mapH(g.sc), role: 'img', 'aria-label': t('res.replayAria') }, [A.drawMap(D, g.sc.setting)]);
     const routeAll = A.s('polyline', { class: 'route all', points: g.route.map((p) => Math.round(p.x) + ',' + Math.round(p.y)).join(' ') });
     const routeNow = A.s('polyline', { class: 'route now', points: '' });
     svg.appendChild(routeAll); svg.appendChild(routeNow);
@@ -1070,7 +1328,7 @@
       wrap.appendChild(h('p', { class: 'lead' }, t('cards.lead')));
       wrap.appendChild(h('div', { class: 'card fs' },
         h('div', { class: 'lbl', id: 'lbl-cd' }, t('setup.difficulty')),
-        h('div', { class: 'seg', role: 'radiogroup', 'aria-labelledby': 'lbl-cd' }, ['easy', 'normal', 'hard'].map((d) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(cs.difficulty === d), class: 'seg-b' + (cs.difficulty === d ? ' on' : ''), on: { click: function () { cs.difficulty = d; go('cards'); } } }, t('diff.' + d) + ' · ' + L.DIFF[d].card + ' s'))),
+        h('div', { class: 'seg', role: 'radiogroup', 'aria-labelledby': 'lbl-cd' }, L.LEVELS.map((d) => h('button', { type: 'button', role: 'radio', 'aria-checked': String(cs.difficulty === d), class: 'seg-b' + (cs.difficulty === d ? ' on' : ''), on: { click: function () { cs.difficulty = d; go('cards'); } } }, t('diff.' + d) + ' · ' + L.DIFF[d].card + ' s'))),
         h('label', { class: 'switch' }, h('input', { type: 'checkbox', checked: cs.kids, on: { change: function (e) { cs.kids = !!e.target.checked; } } }), h('span', null, t('setup.kids')))));
       wrap.appendChild(h('div', { class: 'row end' }, btn(t('ui.back'), function () { go('home'); }, { cls: 'ghost', icon: 'back' }), btn(t('cards.start'), startCards, { cls: 'primary lg', icon: 'next', id: 'b-cards' })));
       return wrap;
@@ -1152,16 +1410,22 @@
   }
 
   /* ---------- modal, avisos ---------- */
-  function modal(title, body, actions) {
-    const root = $('modal-root'); if (!root) return; clear(root);
-    const prev = doc.activeElement;
-    const close = function () { clear(root); root.setAttribute('class', ''); if (prev && prev.focus) prev.focus(); };
+  function modal(title, body, actions, reuse) {
+    const root = $('modal-root'); if (!root) return;
+    const open = root.getAttribute('class') === 'open';
+    const keepId = reuse && open && doc.activeElement ? doc.activeElement.getAttribute && doc.activeElement.getAttribute('id') : null;
+    const prev = reuse && open && S.modalPrev ? S.modalPrev : doc.activeElement;
+    S.modalPrev = prev;
+    clear(root);
+    const close = function () { clear(root); root.setAttribute('class', ''); S.modalPrev = null; if (prev && prev.focus) prev.focus(); };
     const dlg = h('div', { class: 'dlg', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'dlg-t', on: { keydown: function (e) { if (e.key === 'Escape') close(); } } },
       h('h2', { id: 'dlg-t' }, title), h('div', { class: 'dlg-b' }, body),
       h('div', { class: 'row end' }, actions.map((a) => btn(a[0], function () { close(); if (a[1]) a[1](); }, { cls: a[2], id: a[3] }))));
     root.appendChild(h('div', { class: 'scrim', on: { click: close } }));
     root.appendChild(dlg); root.setAttribute('class', 'open');
-    const first = dlg.lastChild && dlg.lastChild.lastChild; if (first && first.focus) first.focus();
+    const again = keepId ? $(keepId) : null;
+    if (again && again.focus) again.focus();
+    else { const first = dlg.lastChild && dlg.lastChild.lastChild; if (first && first.focus) first.focus(); }
   }
   function openAbout() {
     modal(t('about.title'), [

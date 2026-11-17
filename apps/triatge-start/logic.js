@@ -16,10 +16,12 @@
   const COST = {
     walk: 5, breath: 10, airway: 5, rr15: 15, rr30: 30, radial: 5, crt: 5, mental: 5, rescue: 10,
     tag: 5, pressure: 20, tourniquet: 30, position: 20, cpr: 120, secondary: 120,
-    walkCall: 45, load: 5, dispatch: 15, protect: 15, alert: 45, hazards: 20, rushIn: 0, moveAll: 60
+    walkCall: 45, load: 5, dispatch: 15, protect: 15, alert: 45, hazards: 20, rushIn: 0, moveAll: 60, delegate: 10
   };
+  /* segons extra per acció quan un familiar molt nerviós interromp i no se li ha donat cap tasca (nivell molt difícil) */
+  const REL_EXTRA = 8;
   const CHECKS = ['walk', 'breath', 'rr15', 'rr30', 'radial', 'crt', 'mental'];
-  const DOS = ['airway', 'rescue', 'pressure', 'tourniquet', 'position', 'cpr', 'secondary'];
+  const DOS = ['airway', 'rescue', 'pressure', 'tourniquet', 'position', 'cpr', 'secondary', 'delegate'];
   const SAFETY_GOOD = ['protect', 'alert', 'hazards'];
   const SAFETY_BAD = ['rushIn', 'moveAll'];
   const WALK_SPEED = 1.4, TORTUOSITY = 1.2, M_PER_UNIT = 0.1;
@@ -30,8 +32,14 @@
   const DIFF = {
     easy: { first: 360, gap: 120, spare: 3, bleedDeath: 600, airwayDeath: 900, redMargin: 900, yellowWorsen: 1320, worsenDeath: 1080, greenHidden: false, hiddenAt: 0, hotClear: 180, tMax: 2400, near: false, hotCount: 1, card: 15 },
     normal: { first: 480, gap: 150, spare: 2, bleedDeath: 480, airwayDeath: 720, redMargin: 600, yellowWorsen: 1200, worsenDeath: 900, greenHidden: true, hiddenAt: 960, hotClear: 300, tMax: 2700, near: false, hotCount: 2, card: 10 },
-    hard: { first: 600, gap: 180, spare: 1, bleedDeath: 420, airwayDeath: 600, redMargin: 420, yellowWorsen: 900, worsenDeath: 720, greenHidden: true, hiddenAt: 840, hotClear: 420, tMax: 3000, near: true, hotCount: 3, card: 6 }
+    hard: { first: 600, gap: 180, spare: 1, bleedDeath: 420, airwayDeath: 600, redMargin: 420, yellowWorsen: 900, worsenDeath: 720, greenHidden: true, hiddenAt: 840, hotClear: 420, tMax: 3000, near: true, hotCount: 3, card: 6 },
+    /* Molt difícil (nou): recursos justos però sense esperes llargues (primera ambulància als 7 min i després cada 1 min 50 s),
+       deteriorament més ràpid i més víctimes que empitjoren (retriatge obligatori), víctimes que no es veuen fins que t'hi acostes,
+       un perill nou a mitja partida, familiars que interrompen, persones que es desplacen i temps màxim més curt. Sense ajudes. */
+    vhard: { first: 420, gap: 110, spare: 0, bleedDeath: 390, airwayDeath: 540, redMargin: 480, yellowWorsen: 660, worsenDeath: 780, greenHidden: true, hiddenAt: 600, hotClear: 360, tMax: 2400, near: true, hotCount: 3, card: 5,
+      ext: true, worsenCount: 2, unseenFrac: 0.15, sightR: 300, revealAt: 900, relatives: 2, wander: true, hazard: [480, 720], hazardDur: 300 }
   };
+  const LEVELS = ['easy', 'normal', 'hard', 'vhard'];
   const ACHIEVEMENTS = ['noDeaths', 'noUnder', 'perfect', 'fast', 'megaphone', 'bleeds', 'airway', 'evac', 'retriage', 'safe'];
 
   /* ---------- utilitats ---------- */
@@ -144,7 +152,12 @@
     const yellow = Math.round(n * 0.25);
     return { black: black, red: red, yellow: yellow, green: n - black - red - yellow };
   }
-  const RED_ROUTES = ['bleed', 'airway', 'rr', 'mental', 'shock', 'rr', 'bleed'];
+  /* gran catàstrofe: més morts i més vermells en proporció */
+  function compositionBig(n) {
+    const black = Math.round(n * 0.08), red = Math.round(n * 0.25), yellow = Math.round(n * 0.27);
+    return { black: black, red: red, yellow: yellow, green: n - black - red - yellow };
+  }
+  const RED_ROUTES = ['bleed','airway', 'rr', 'mental', 'shock', 'rr', 'bleed'];
   function physFor(route, rng, near) {
     const base = { walk: false, br: true, airwayFix: false, rr: 18, rrAfter: 0, radial: true, crt: 1, obeys: true, avpu: 'A', rescueFix: false };
     const p = Object.assign({}, base);
@@ -170,26 +183,108 @@
   const TPL_OF = { walk: 'walk', yellow: 'yellow', airway: 'airway', rr: 'rr', bleed: 'bleed', bleedJunction: 'bleedJunction', shock: 'shock', mental: 'mental', black: 'black', jWalk: 'jWalk', jRr: 'jRr', jRescue: 'jRescue', jMental: 'jMental', jYellow: 'jYellow' };
   const isPedRoute = (r) => r.charAt(0) === 'j';
 
+  /* ---------- perfils de víctima ampliats (només escenaris i nivells nous) ----------
+     Cada perfil té una fisiologia coherent amb START i una categoria declarada (`cat`) que es comprova a les proves.
+     like: via de l'algorisme a què s'assembla ('walk', 'yellow', 'rr', 'perf', 'mental', 'bleed', 'airway', 'black');
+     determina les intervencions i el curs clínic (hemorràgia massiva, via aèria) i si pot ser a la zona calenta.
+     worsen: lesió oculta o síndrome que empitjora (cal retriar). deaf: no sent l'altaveu (no hi va, però camina). */
+  const ph = (o) => Object.assign({ walk: false, br: true, airwayFix: false, rr: 18, rrAfter: 0, radial: true, crt: 1, obeys: true, avpu: 'A', rescueFix: false }, o);
+  const PROFILES = {
+    /* verds: caminen (START: qui camina és verd, encara que respiri de pressa o tingui por) */
+    pAnxiety: { cat: 'green', like: 'walk', phys: (r) => ph({ walk: true, rr: rint(r, 31, 38), crt: 1 }) },
+    pBurnW: { cat: 'green', like: 'walk', phys: (r) => ph({ walk: true, rr: rint(r, 16, 24), crt: rint(r, 1, 2) }) },
+    pElderW: { cat: 'green', like: 'walk', age: [72, 91], phys: (r) => ph({ walk: true, rr: rint(r, 14, 22), crt: 2 }) },
+    pPregW: { cat: 'green', like: 'walk', sex: 'f', age: [22, 41], phys: (r) => ph({ walk: true, rr: rint(r, 18, 24), crt: 1 }) },
+    pSmokeW: { cat: 'green', like: 'walk', phys: (r) => ph({ walk: true, rr: rint(r, 20, 28), crt: 1 }) },
+    pDeaf: { cat: 'green', like: 'walk', deaf: true, phys: (r) => ph({ walk: true, rr: rint(r, 14, 22), crt: 1 }) },
+    pHidden: { cat: 'green', like: 'walk', worsen: { base: 'hiddenAt', jitter: 150, set: (r) => ({ walk: false, radial: false, crt: 3, rr: rint(r, 24, 28) }), cause: 'hidden', extra: 300 }, phys: (r) => ph({ walk: true, rr: rint(r, 16, 24), crt: 2 }) },
+    /* grocs: no caminen, però respiren ≤ 30, tenen pols radial / reompliment ≤ 2 s i obeeixen */
+    pBurnY: { cat: 'yellow', like: 'yellow', phys: (r, n) => ph({ rr: n && r() < 0.5 ? rint(r, 26, 29) : rint(r, 18, 26), crt: rint(r, 1, 2) }) },
+    pCrush: { cat: 'yellow', like: 'yellow', worsen: { base: 'yellowWorsen', jitter: 120, set: (r) => ({ radial: false, crt: 3, rr: rint(r, 24, 29) }), cause: 'crush', extra: 300 }, phys: (r) => ph({ rr: rint(r, 18, 26), crt: 2 }) },
+    pPregY: { cat: 'yellow', like: 'yellow', sex: 'f', age: [22, 41], phys: (r) => ph({ rr: rint(r, 20, 26), crt: rint(r, 1, 2) }) },
+    pElderY: { cat: 'yellow', like: 'yellow', age: [72, 92], phys: (r, n) => ph({ rr: n && r() < 0.5 ? rint(r, 26, 29) : rint(r, 16, 24), crt: 2 }) },
+    pWheel: { cat: 'yellow', like: 'yellow', phys: (r) => ph({ rr: rint(r, 14, 22), crt: 1 }) },
+    pImpaled: { cat: 'yellow', like: 'yellow', phys: (r) => ph({ rr: rint(r, 18, 26), crt: rint(r, 1, 2) }) },
+    /* vermells */
+    pSmokeR: { cat: 'red', like: 'rr', phys: (r, n) => ph({ rr: n && r() < 0.6 ? rint(r, 31, 33) : rint(r, 32, 42), crt: rint(r, 1, 2), obeys: r() < 0.7 }) },
+    pBurnR: { cat: 'red', like: 'rr', phys: (r, n) => ph({ rr: n && r() < 0.6 ? rint(r, 31, 33) : rint(r, 32, 40), crt: 2, obeys: true }) },
+    pCrushR: { cat: 'red', like: 'rr', phys: (r, n) => ph({ rr: n && r() < 0.6 ? rint(r, 31, 33) : rint(r, 33, 40), crt: 2, obeys: true }) },
+    pGswChest: { cat: 'red', like: 'rr', phys: (r) => ph({ rr: rint(r, 33, 44), crt: 2, obeys: true }) },
+    pGswAbd: { cat: 'red', like: 'perf', phys: (r) => ph({ rr: rint(r, 22, 28), radial: false, crt: rint(r, 3, 4), obeys: true }) },
+    pHeadOld: { cat: 'red', like: 'mental', age: [70, 90], phys: (r) => ph({ rr: rint(r, 14, 22), crt: 2, obeys: false, avpu: 'V' }) },
+    pNoObey: { cat: 'red', like: 'mental', age: [68, 90], phys: (r) => ph({ rr: rint(r, 14, 20), crt: rint(r, 1, 2), obeys: false, avpu: 'V' }) },
+    pAmput: { cat: 'red', like: 'bleed', phys: (r) => ph({ rr: rint(r, 22, 28), radial: false, crt: rint(r, 3, 4) }) },
+    pGswLimb: { cat: 'red', like: 'bleed', phys: (r) => ph({ rr: rint(r, 20, 28), radial: r() < 0.5, crt: rint(r, 3, 4) }) },
+    pGswJunc: { cat: 'red', like: 'bleed', phys: (r) => ph({ rr: rint(r, 22, 28), radial: false, crt: rint(r, 3, 4) }) },
+    pAirwayP: { cat: 'red', like: 'airway', phys: (r) => ph({ br: false, airwayFix: true, rr: 0, rrAfter: rint(r, 8, 16), crt: 2, obeys: false, avpu: 'U' }) },
+    /* negre */
+    pBlack: { cat: 'black', like: 'black', phys: () => ph(Object.assign({}, DEAD)) },
+    pBlackGsw: { cat: 'black', like: 'black', phys: () => ph(Object.assign({}, DEAD)) },
+    pBlackGen: { cat: 'black', like: 'black', phys: () => ph(Object.assign({}, DEAD)) }
+  };
+  const CAT_OF_ROUTE = { walk: 'green', yellow: 'yellow', airway: 'red', rr: 'red', bleed: 'red', bleedJunction: 'red', shock: 'red', mental: 'red', black: 'black' };
+  const LIKE_OF_ROUTE = { walk: 'walk', yellow: 'yellow', airway: 'airway', rr: 'rr', bleed: 'bleed', bleedJunction: 'bleed', shock: 'perf', mental: 'mental', black: 'black' };
+  const likeOf = (r) => (PROFILES[r] ? PROFILES[r].like : LIKE_OF_ROUTE[r] || null);
+  /* conjunt genèric de perfils (nivell molt difícil en els escenaris originals) */
+  const GENERIC_POOL = { green: ['pAnxiety', 'pElderW', 'pPregW', 'pDeaf', 'pHidden', 'pBurnW'], yellow: ['pElderY', 'pPregY', 'pWheel', 'pCrush', 'pImpaled'], rr: ['pCrushR'], mental: ['pHeadOld', 'pNoObey'], perf: [], bleed: ['pAmput'], airway: [], black: ['pBlack'] };
+  const POOL_P = { green: 0.55, yellow: 0.65, red: 0.5, black: 0.5 };
+  /* substitueix part de les vies bàsiques per perfils de la mateixa categoria i el mateix tipus d'intervenció */
+  function applyProfiles(routes, pool, rng, force, poolP) {
+    const PP = Object.assign({}, POOL_P, poolP || {});
+    const usedW = {};
+    (force || []).forEach((f) => { if (PROFILES[f] && PROFILES[f].worsen) usedW[f] = true; });
+    const out = routes.map(function (r) {
+      if (isPedRoute(r)) return r;
+      const cat = CAT_OF_ROUTE[r]; if (!cat) return r;
+      const key = cat === 'red' ? LIKE_OF_ROUTE[r] : cat;
+      const list = pool[key] || []; if (!list.length) return r;
+      if (rng() >= (PP[cat] || 0.5)) return r;
+      /* com a molt un perfil que empitjora de cada tipus (si no, l'incident seria injust) */
+      const pr = pick(rng, list);
+      if (PROFILES[pr].worsen && usedW[pr]) return r;
+      if (PROFILES[pr].worsen) usedW[pr] = true;
+      return pr;
+    });
+    (force || []).forEach(function (pr) {
+      if (out.indexOf(pr) >= 0) return;
+      const cat = PROFILES[pr].cat;
+      const i = out.findIndex((r) => !isPedRoute(r) && force.indexOf(r) < 0 && ((CAT_OF_ROUTE[r] === cat && LIKE_OF_ROUTE[r] === PROFILES[pr].like) || (cat !== 'red' && CAT_OF_ROUTE[r] === cat) || (PROFILES[r] && PROFILES[r].cat === cat && PROFILES[r].like === PROFILES[pr].like)));
+      if (i >= 0) out[i] = pr;
+    });
+    return out;
+  }
+
+  /* Rang de víctimes: escenaris normals 10–20 (sense canvis); gran catàstrofe 30–50 en passos de 5 */
+  function nRange(S) { return S && S.big ? { min: 30, max: 50, step: 5, def: 40 } : { min: 10, max: 20, step: 1, def: 14 }; }
   function normOpts(D, opts) {
     opts = opts || {};
     const keys = Object.keys(D.SETTINGS);
+    /* l'elecció «aleatòria» per llavor es fa només entre els escenaris originals: així les llavors antigues sense escenari
+       continuen donant el mateix incident (els escenaris nous s'han de triar explícitament) */
+    const pool = (D.RANDOM_POOL || keys).filter((k) => keys.indexOf(k) >= 0);
     const difficulty = DIFF[opts.difficulty] ? opts.difficulty : 'normal';
-    const n = Math.max(10, Math.min(20, Math.round(Number(opts.n) || 14)));
     const seed = opts.seed !== undefined && opts.seed !== null && String(opts.seed).trim() ? String(opts.seed).trim().toUpperCase() : seedCode(seeded(Date.now() ^ Math.floor(Math.random() * 1e9)));
     let setting = opts.setting;
-    if (keys.indexOf(setting) < 0) setting = keys[hashSeed('S|' + seed) % keys.length];
+    if (keys.indexOf(setting) < 0) setting = pool[hashSeed('S|' + seed) % pool.length];
+    const R = nRange(D.SETTINGS[setting]);
+    let n = Math.max(R.min, Math.min(R.max, Math.round(Number(opts.n) || R.def)));
+    if (R.step > 1) n = R.min + Math.round((n - R.min) / R.step) * R.step;
     return { setting: setting, seed: seed, n: n, difficulty: difficulty, kids: !!opts.kids, guided: !!opts.guided };
   }
+  /* escenari «ampliat»: escenari nou o nivell nou (els originals amb els nivells originals no canvien gens) */
+  const isExt = (D, o) => !!(DIFF[o.difficulty].ext || D.SETTINGS[o.setting].ext);
 
   /* Genera un escenari complet (objecte pla i serialitzable) */
   function generate(D, opts) {
     const o = normOpts(D, opts);
     const S = D.SETTINGS[o.setting], C = D.COLD, df = DIFF[o.difficulty];
     const rng = seeded([o.seed, o.setting, o.n, o.difficulty, o.kids ? 'k' : '-'].join('|'));
-    const comp = composition(o.n);
+    const ext = isExt(D, o);
+    const comp = S.big ? compositionBig(o.n) : composition(o.n);
     let routes = [];
-    const reds = RED_ROUTES.slice(0, comp.red);
-    if (o.difficulty === 'hard' && comp.red >= 5) reds[4] = 'bleedJunction';
+    const RR = (ext && S.redRoutes) || RED_ROUTES;
+    const reds = ext ? Array.from({ length: comp.red }, (x, i) => RR[i % RR.length]) : RED_ROUTES.slice(0, comp.red);
+    if ((o.difficulty === 'hard' || (ext && o.difficulty === 'vhard')) && comp.red >= 5) reds[4] = 'bleedJunction';
     reds.forEach((r) => routes.push(r));
     for (let i = 0; i < comp.yellow; i++) routes.push('yellow');
     for (let i = 0; i < comp.green; i++) routes.push('walk');
@@ -200,70 +295,109 @@
       const lastRr = routes.lastIndexOf('rr'); if (lastRr >= 0) routes[lastRr] = rng() < 0.5 ? 'jRr' : 'jRescue';
       if (o.n >= 16) swap('mental', 'jMental');
     }
+    if (ext) routes = applyProfiles(routes, S.profiles || GENERIC_POOL, rng, (S.forceProfiles || []).concat(o.difficulty === 'vhard' ? ['pDeaf', 'pHidden'] : []), S.poolP);
     routes = shuffle(routes, rng);
     /* marques de deteriorament */
-    const yIdx = routes.indexOf('yellow');
+    let yIdx = routes.indexOf('yellow');
     const gIdx = df.greenHidden ? routes.indexOf('walk') : -1;
+    const worsenSet = {};
+    if (ext) {
+      /* escenaris i nivells nous: 1 (o 2 en molt difícil) víctimes grogues sense perfil propi que empitjoren */
+      const ys = routes.map((r, i) => i).filter((i) => (routes[i] === 'yellow' || (PROFILES[routes[i]] && PROFILES[routes[i]].cat === 'yellow' && !PROFILES[routes[i]].worsen)));
+      shuffle(ys, rng).slice(0, df.worsenCount || 1).forEach((i) => { worsenSet[i] = true; });
+      yIdx = -1;
+    }
 
-    /* posicions */
-    const spots = S.spots.map((s) => ({ x: s[0], y: s[1], hot: inPoly(s[0], s[1], S.hot) }));
+    /* posicions (zones calentes: una en els escenaris originals; diverses en els de gran catàstrofe) */
+    const hots = S.hots || [{ poly: S.hot }];
+    const zoneOf = (x, y) => { for (let z = 0; z < hots.length; z++) if (inPoly(x, y, hots[z].poly)) return z; return -1; };
+    const spots = S.spots.map((s) => { const z = zoneOf(s[0], s[1]); return { x: s[0], y: s[1], hot: z >= 0, z: z }; });
     const hotSpots = shuffle(spots.filter((s) => s.hot), rng), warmSpots = shuffle(spots.filter((s) => !s.hot), rng);
-    const hotEligible = shuffle(routes.map((r, i) => i).filter((i) => ['yellow', 'rr', 'mental', 'black', 'walk'].indexOf(routes[i]) >= 0 && i !== gIdx), rng);
-    const hotSet = {}; hotEligible.slice(0, Math.min(df.hotCount, hotSpots.length)).forEach((i) => { hotSet[i] = true; });
+    const HOT_LIKE = ['yellow', 'rr', 'mental', 'black', 'walk'];
+    const hotEligible = shuffle(routes.map((r, i) => i).filter((i) => (ext ? HOT_LIKE.indexOf(likeOf(routes[i])) >= 0 && !(PROFILES[routes[i]] && PROFILES[routes[i]].worsen) : HOT_LIKE.indexOf(routes[i]) >= 0) && i !== gIdx), rng);
+    const hotCount = ext && S.big ? Math.round(o.n * 0.18) : df.hotCount;
+    const hotSet = {}; hotEligible.slice(0, Math.min(hotCount, hotSpots.length)).forEach((i) => { hotSet[i] = true; });
 
     const victims = routes.map(function (route, i) {
-      const ped = isPedRoute(route);
-      const tplList = D.TEMPLATES[TPL_OF[route]];
+      const ped = isPedRoute(route), prof = PROFILES[route] || null;
+      const tplList = prof ? D.PTEMPLATES[route] : D.TEMPLATES[TPL_OF[route]];
       const ti = Math.floor(rng() * tplList.length), tpl = tplList[ti];
       const spot = hotSet[i] ? hotSpots.shift() : warmSpots.shift();
-      const phys = physFor(route, rng, df.near);
+      const phys = prof ? prof.phys(rng, df.near) : physFor(route, rng, df.near);
+      if (prof && phys.rr === 30) phys.rr = 29;
       const v = {
         id: 'v' + (i + 1), num: i + 1, route: route, ped: ped,
         age: ped ? rint(rng, 3, 8) : rint(rng, 18, 84), sex: rng() < 0.5 ? 'f' : 'm',
         x: spot.x + rint(rng, -12, 12), y: spot.y + rint(rng, -12, 12), hot: !!hotSet[i],
-        tpl: TPL_OF[route] + ':' + ti, desc: tpl.d, site: tpl.site || 'trunk', post: tpl.post || 'lie', bleed: tpl.bleed || 'none',
+        tpl: (prof ? route : TPL_OF[route]) + ':' + ti, desc: tpl.d, site: tpl.site || 'trunk', post: tpl.post || 'lie', bleed: tpl.bleed || 'none',
         look: { skin: rint(rng, 0, 3), cloth: rint(rng, 0, 5), hair: rint(rng, 0, 3), angle: rint(rng, -50, 50) },
-        phys: phys, course: [], needsAirway: route === 'airway' || route === 'jRescue',
-        worsen: i === yIdx, hidden: i === gIdx
+        phys: phys, course: [], needsAirway: route === 'airway' || route === 'jRescue' || (!!prof && prof.like === 'airway'),
+        worsen: ext ? !!worsenSet[i] : i === yIdx, hidden: i === gIdx
       };
+      if (ext) {
+        if (prof && prof.age) v.age = rint(rng, prof.age[0], prof.age[1]);
+        if (prof && prof.sex) v.sex = prof.sex;
+        if (tpl.sex) v.sex = tpl.sex;
+        if (prof) v.profile = route;
+        if (prof && prof.deaf) v.deaf = true;
+        if (hots.length > 1 && v.hot) v.hz = spot.z;
+        if (tpl.zone) v.zone = tpl.zone;
+      }
       v.cat0 = (ped ? classifyJump(phys) : classifyStart(phys)).cat;
       return v;
     });
 
-    /* ambulàncies */
-    const nAmb = comp.red + comp.yellow + df.spare;
+    /* ambulàncies (gran catàstrofe: més unitats, de dues en dues, i dos autobusos sanitaris) */
+    /* recursos justos però suficients: als escenaris nous també es compten els verds que empitjoraran (lesió oculta) */
+    const greenWorse = ext ? victims.filter((v) => v.hidden || (PROFILES[v.route] && PROFILES[v.route].cat === 'green' && PROFILES[v.route].worsen)).length : 0;
+    const nAmb = comp.red + comp.yellow + df.spare + greenWorse + (ext && S.big ? 2 : 0);
     const ambulances = [];
+    /* gran catàstrofe: arriben de dues en dues i repartides al llarg del temps que costa triar tothom */
+    const bigGap = ext && S.big ? Math.round(Math.max(df.gap * 0.8, (o.n * 78) / Math.ceil(nAmb / 2))) : 0;
+    const gapK = (k) => (ext && S.big ? Math.floor(k / 2) * bigGap : df.gap * k);
     for (let k = 0; k < nAmb; k++) {
       const kind = k % 3 === 0 ? 'SVA' : 'SVB';
-      ambulances.push({ id: 'A' + (k + 1), kind: kind, at: df.first + df.gap * k, stretchers: 1, seats: kind === 'SVB' ? 1 : 0 });
+      ambulances.push({ id: 'A' + (k + 1), kind: kind, at: df.first + gapK(k), stretchers: 1, seats: kind === 'SVB' ? 1 : 0 });
     }
     ambulances.push({ id: 'BUS', kind: 'BUS', at: df.first + df.gap * 4 + 120, stretchers: 0, seats: 12 });
+    if (ext && S.big) ambulances.push({ id: 'BUS2', kind: 'BUS', at: df.first + df.gap * 7 + 120, stretchers: 0, seats: 12 });
     ambulances.sort((a, b) => a.at - b.at);
 
     /* curs clínic */
     const redVictims = victims.filter((v) => v.cat0 === 'red');
     /* Termini sense evacuació: prou ampli perquè, si els vermells surten primer (en qualsevol ordre), tots arribin a temps */
     const stretcherAmbs = ambulances.filter((a) => a.stretchers > 0);
-    const redDeadline = (stretcherAmbs[Math.min(stretcherAmbs.length - 1, comp.red + 1)] || stretcherAmbs[stretcherAmbs.length - 1]).at + df.redMargin;
+    let redDeadline = (stretcherAmbs[Math.min(stretcherAmbs.length - 1, comp.red + 1)] || stretcherAmbs[stretcherAmbs.length - 1]).at + df.redMargin;
+    /* gran catàstrofe: una sola persona triant 30–50 víctimes; el termini creix amb la mida de l'incident */
+    if (ext && S.big) redDeadline = Math.max(redDeadline + (o.n - 20) * 35, df.first + o.n * 70 + df.redMargin);
+    /* gran catàstrofe: altres intervinients i ciutadans fan compressió o aguanten el cap mentre arribes (més marge) */
+    const bigK = ext && S.big ? 1.7 : 1;
+    const isBleedRoute = (r) => r === 'bleed' || r === 'bleedJunction' || (ext && likeOf(r) === 'bleed');
     redVictims.forEach(function (v) {
-      if (v.route === 'bleed' || v.route === 'bleedJunction') v.course.push({ at: df.bleedDeath + rint(rng, 0, 60), kind: 'die', unless: 'bleedCtrl', cause: 'bleed' });
-      if (v.needsAirway) v.course.push({ at: df.airwayDeath, kind: 'die', unless: 'airwayEver', cause: 'airway' });
+      if (isBleedRoute(v.route)) v.course.push({ at: Math.round(df.bleedDeath * bigK) + rint(rng, 0, 60), kind: 'die', unless: 'bleedCtrl', cause: 'bleed' });
+      if (v.needsAirway) v.course.push({ at: Math.round(df.airwayDeath * bigK), kind: 'die', unless: 'airwayEver', cause: 'airway' });
       v.course.push({ at: redDeadline + rint(rng, 0, 120), kind: 'die', cause: 'untreated' });
     });
     victims.forEach(function (v) {
       if (v.worsen) {
-        v.course.push({ at: df.yellowWorsen, kind: 'worsen', set: { radial: false, crt: 3, rr: rint(rng, 24, 28) }, cause: 'shock' });
-        v.course.push({ at: df.yellowWorsen + df.worsenDeath, kind: 'die', cause: 'untreated' });
+        v.course.push({ at: df.yellowWorsen + (ext ? rint(rng, 0, 180) : 0), kind: 'worsen', set: { radial: false, crt: 3, rr: rint(rng, 24, 28) }, cause: 'shock' });
+        v.course.push({ at: df.yellowWorsen + Math.round(df.worsenDeath * bigK) + (ext ? 180 : 0), kind: 'die', cause: 'untreated' });
       }
       if (v.hidden) {
         v.course.push({ at: df.hiddenAt, kind: 'worsen', set: { walk: false, radial: false, crt: 3, rr: rint(rng, 22, 28) }, cause: 'hidden' });
         v.course.push({ at: df.hiddenAt + df.worsenDeath + 120, kind: 'die', cause: 'untreated' });
       }
+      const pw = ext && PROFILES[v.route] && PROFILES[v.route].worsen;
+      if (pw) {
+        const at = Math.round((df[pw.base] || DIFF.normal[pw.base]) * bigK) + rint(rng, 0, pw.jitter);
+        v.course.push({ at: at, kind: 'worsen', set: pw.set(rng), cause: pw.cause });
+        v.course.push({ at: at + Math.round(df.worsenDeath * bigK) + (pw.extra || 0), kind: 'die', cause: 'untreated' });
+      }
       v.course.sort((a, b) => a.at - b.at);
     });
 
     const caps = { H1: Math.max(2, comp.red - 1), H2: comp.yellow + 3, H3: 99 };
-    return {
+    const sc = {
       v: 2, setting: o.setting, seed: o.seed, n: o.n, difficulty: o.difficulty, kids: o.kids, guided: o.guided,
       composition: comp, hotClearAt: df.hotClear, tMax: df.tMax,
       start: { x: C.start.x, y: C.start.y },
@@ -271,6 +405,59 @@
       hospitals: D.HOSPITALS.map((h) => ({ id: h.id, kind: h.kind, cap: caps[h.id] })),
       victims: victims
     };
+    if (ext) extendScenario(D, sc, S, df, o, rng, warmSpots);
+    return sc;
+  }
+
+  /* Afegits dels escenaris i nivells nous: zona freda desplaçada (mapes grans), zones calentes múltiples, perill nou a mitja
+     partida, víctimes que no es veuen, familiars, persones que es desplacen i temps màxim. Mai s'executa per als originals. */
+  function extendScenario(D, sc, S, df, o, rng, freeSpots) {
+    sc.ext = true;
+    const off = S.cold || { dx: 0, dy: 0 };
+    if (S.cold) { sc.cold = { dx: off.dx, dy: off.dy }; sc.start = { x: D.COLD.start.x + off.dx, y: D.COLD.start.y + off.dy }; }
+    if (S.map) sc.map = { w: S.map.w, h: S.map.h };
+    const vhard = o.difficulty === 'vhard';
+    /* zones calentes: temps d'alliberament de cada una (la primera, el de la dificultat) */
+    if (S.hots && S.hots.length > 1) {
+      sc.hotZones = S.hots.map((z, i) => ({ clearAt: Math.round(df.hotClear * (z.k || 1)), i: i }));
+      sc.hotClearAt = Math.max.apply(null, sc.hotZones.map((z) => z.clearAt));
+    } else if (S.hotK) sc.hotClearAt = Math.round(df.hotClear * S.hotK);
+    if (S.big) { sc.tMax = Math.round(df.tMax * 1.6 + (o.n - 30) * 40); }
+    if (S.tMaxK) sc.tMax = Math.round(sc.tMax * S.tMaxK);
+    /* perill nou a mitja partida (rèplica, segon incident, amenaça…) */
+    const hz = S.hazard2;
+    if (hz && (df.hazard || S.alwaysHazard)) {
+      const win = df.hazard || [720, 900];
+      const at = rint(rng, win[0], win[1]);
+      sc.hazards = [{ at: at, clearAt: at + (df.hazardDur || 240), poly: hz.poly, safe: { x: hz.safe[0], y: hz.safe[1] }, kind: hz.kind }];
+    }
+    const alive = (v) => v.cat0 !== 'black';
+    const far = (v) => !v.hot && likeOf(v.route) !== 'bleed' && likeOf(v.route) !== 'airway';
+    if (vhard) {
+      /* víctimes que no es veuen fins que t'hi acostes (sempre a prop d'una altra víctima visible) o fins que un testimoni avisa */
+      const k = Math.max(1, Math.round(sc.n * df.unseenFrac));
+      const cands = shuffle(sc.victims.filter((v) => far(v) && !v.phys.walk && alive(v)), rng);
+      let made = 0;
+      cands.forEach(function (v) {
+        if (made >= k) return;
+        const near = sc.victims.some((w) => w !== v && !w.unseen && !w.hot && dist(v, w) <= df.sightR * 0.9);
+        if (near) { v.unseen = true; made += 1; }
+      });
+      if (!made && cands.length) {
+        /* cap candidata a prop d'una altra: s'acosta la primera a la víctima visible més propera (darrere de restes) */
+        const v = cands[0], w = sc.victims.filter((x) => x !== v && !x.hot).sort((a, b) => dist(a, v) - dist(b, v))[0];
+        if (w) { const d = dist(v, w), f = d > df.sightR * 0.7 ? (df.sightR * 0.7) / d : 1; v.x = Math.round(w.x + (v.x - w.x) * f); v.y = Math.round(w.y + (v.y - w.y) * f); v.unseen = true; }
+      }
+      sc.sightR = df.sightR; sc.revealAt = df.revealAt;
+      /* familiars molt nerviosos al costat d'algunes víctimes que no caminen */
+      shuffle(sc.victims.filter((v) => !v.hot && !v.phys.walk && alive(v) && !v.ped && !v.unseen), rng).slice(0, df.relatives).forEach((v) => { v.relative = true; });
+      /* les persones sordes no senten l'altaveu i, desorientades, es desplacen */
+      if (df.wander) sc.victims.filter((v) => v.deaf && !v.hot).forEach(function (v) {
+        const sp = freeSpots.shift(); if (!sp) return;
+        v.course.push({ at: rint(rng, 240, 480), kind: 'move', x: sp.x + rint(rng, -10, 10), y: sp.y + rint(rng, -10, 10) });
+        v.course.sort((a, b) => a.at - b.at);
+      });
+    }
   }
   function bankScenario(D, i) { const b = D.BANK[((i % D.BANK.length) + D.BANK.length) % D.BANK.length]; return generate(D, b); }
   /* Tria justa: tots els escenaris del banc tenen la mateixa composició; elecció uniforme */
@@ -288,6 +475,8 @@
         v.st = { tags: [], firstTag: null, done: {}, results: {}, airwayOpen: false, airwayEver: false, airwayTried: false, rescueEver: false, positioned: false,
           bleedCtrl: false, unatt: 0, apneaSince: null, dead: false, diedAt: null, cause: null, worsened: [], atStation: false, stationAt: null,
           atCCP: false, evac: null, loadedIn: null, arrivedAt: null, timeSpent: 0, interventions: [] };
+        if (v.unseen) { v.st.seen = false; v.st.foundAt = null; }
+        if (v.relative) v.st.relCalm = false;
         v.course.forEach((e) => { e.done = false; });
         return v;
       }),
@@ -296,7 +485,25 @@
       flags: { cpr: 0, secondary: 0, unneeded: 0, cprBlack: 0, secondaryOk: 0 }, ccpCount: 0, stationCount: { red: 0, yellow: 0, green: 0, black: 0 }
     };
     s.hospitals.forEach((h) => { g.hosp[h.id] = { id: h.id, kind: h.kind, cap: h.cap, used: 0 }; });
+    if (s.hotZones) g.hotZ = s.hotZones.map((z) => z.clearAt <= 0);
+    if (s.hazards) { g.haz = s.hazards.map(() => ({ on: false, over: false })); g.exposed = 0; }
     return g;
+  }
+  /* víctima inaccessible ara: zona calenta encara no alliberada o perill nou actiu */
+  function hotLocked(g, v) {
+    if (!v.hot || v.st.atCCP) return false;
+    if (g.hotZ && v.hz !== undefined) return !g.hotZ[v.hz];
+    return !g.hotCleared;
+  }
+  function hazLocked(g, v) { return !!g.haz && v.st.blocked !== undefined && v.st.blocked !== null && !v.st.atCCP && !v.st.atStation && g.haz[v.st.blocked] && !g.haz[v.st.blocked].over; }
+  function isLocked(g, v) { return hotLocked(g, v) || hazLocked(g, v); }
+  const isSeen = (v) => !v.unseen || !!(v.st && v.st.seen);
+  /* troba les víctimes amagades a prop del rescatador */
+  function discover(g, events, why) {
+    g.victims.forEach(function (v) {
+      if (v.st.seen !== false) return;
+      if (why === 'report' || dist(g.rescuer, v) <= (g.sc.sightR || 300)) { v.st.seen = true; v.st.foundAt = g.t; ev(events, g, 'found', { id: v.id, how: why || 'near' }); }
+    });
   }
   const vById = (g, id) => g.victims.find((v) => v.id === id) || null;
   const lastTag = (v) => (v.st.tags.length ? v.st.tags[v.st.tags.length - 1].cat : null);
@@ -304,13 +511,17 @@
   function ccpSlot(g, k, D) {
     const c = (D && D.COLD && D.COLD.ccp) || { x: 1400, y: 495, w: 320, h: 150 };
     const cols = 6, col = k % cols, row = Math.floor(k / cols) % 4;
-    return { x: c.x - c.w / 2 + 30 + col * ((c.w - 60) / (cols - 1)), y: c.y - c.h / 2 + 28 + row * 32 };
+    const o = coff(g);
+    return { x: c.x - c.w / 2 + 30 + col * ((c.w - 60) / (cols - 1)) + o.dx, y: c.y - c.h / 2 + 28 + row * 32 + o.dy };
   }
   const STATION_POS = { red: { x: 1315, y: 340, w: 150, h: 100 }, yellow: { x: 1485, y: 340, w: 150, h: 100 }, green: { x: 1400, y: 495, w: 320, h: 150 }, black: { x: 1520, y: 660, w: 120, h: 80 } };
-  function stationSlot(cat, k) {
-    const s = STATION_POS[cat]; const cols = cat === 'green' ? 6 : 3;
+  /* límit de la zona d'incident (x de la zona freda, desplaçada als mapes grans) */
+  const D_COLDX = (g) => 1180 + ((g && g.sc && g.sc.cold) ? g.sc.cold.dx : 0);
+  const coff = (g) => (g && g.sc && g.sc.cold) || { dx: 0, dy: 0 };
+  function stationSlot(cat, k, g) {
+    const s = STATION_POS[cat]; const cols = cat === 'green' ? 6 : 3; const o = coff(g);
     const col = k % cols, row = Math.floor(k / cols) % 3;
-    return { x: s.x - s.w / 2 + 24 + col * ((s.w - 48) / Math.max(1, cols - 1)), y: s.y - s.h / 2 + 24 + row * 26 };
+    return { x: s.x - s.w / 2 + 24 + col * ((s.w - 48) / Math.max(1, cols - 1)) + o.dx, y: s.y - s.h / 2 + 24 + row * 26 + o.dy };
   }
   function ev(events, g, type, o) { const e = Object.assign({ t: g.t, type: type }, o || {}); events.push(e); return e; }
 
@@ -321,24 +532,53 @@
     ev(events, g, 'die', { id: v.id, cause: cause, preventable: v.cat0 !== 'black' });
   }
   /* segona fase (només en dificultat difícil): quan ja no queda ningú viu sense cinta, s'obre la revaloració i l'estabilització */
-  function phase2(g) { return !!g && !!g.sc && g.sc.difficulty === 'hard' && g.victims.length > 0 && g.victims.every((v) => v.st.dead || v.st.tags.length > 0); }
+  function phase2(g) { return !!g && !!g.sc && (g.sc.difficulty === 'hard' || g.sc.difficulty === 'vhard') && g.victims.length > 0 && g.victims.every((v) => v.st.dead || v.st.tags.length > 0); }
   function readyForEvac(g, v) { return v.st.atStation && !v.st.evac && !v.st.dead && !v.st.loadedIn && v.st.tags.length && lastTag(v) !== 'black'; }
   function freeSlots(a) { const st = a.load.filter((l) => l.slot === 'stretcher').length, se = a.load.filter((l) => l.slot === 'seat').length; return { stretcher: a.stretchers - st, seat: a.seats - se }; }
 
   function tick(g, events) {
     g.t += 1; const t = g.t;
-    if (!g.hotCleared && t >= g.sc.hotClearAt) { g.hotCleared = true; ev(events, g, 'hotClear'); }
+    if (g.hotZ) {
+      g.sc.hotZones.forEach(function (z, i) { if (!g.hotZ[i] && t >= z.clearAt) { g.hotZ[i] = true; ev(events, g, 'hotClear', { zone: i }); } });
+      g.hotCleared = g.hotZ.every(Boolean);
+    } else if (!g.hotCleared && t >= g.sc.hotClearAt) { g.hotCleared = true; ev(events, g, 'hotClear'); }
+    if (g.haz) g.sc.hazards.forEach(function (hz, i) {
+      const s = g.haz[i];
+      if (!s.on && t >= hz.at) {
+        s.on = true;
+        const blocked = [];
+        const extracted = [];
+        g.victims.forEach(function (v) {
+          if (v.st.evac || v.st.atCCP || v.st.atStation || v.st.loadedIn || !inPoly(v.x, v.y, hz.poly)) return;
+          /* fora del nivell molt difícil, els bombers treuen de la zona qui té una amenaça vital immediata sense tractar */
+          const urgent = !v.st.dead && ((v.needsAirway && !v.st.airwayEver) || (v.bleed === 'major' && !v.st.bleedCtrl));
+          if (urgent && g.sc.difficulty !== 'vhard') {
+            const xs = hz.poly.map((p) => p[0]), ys = hz.poly.map((p) => p[1]);
+            const opts = [{ x: Math.min.apply(null, xs) - 50, y: v.y }, { x: Math.max.apply(null, xs) + 50, y: v.y }, { x: v.x, y: Math.min.apply(null, ys) - 50 }, { x: v.x, y: Math.max.apply(null, ys) + 50 }].filter((p) => p.x > 40 && p.y > 40 && p.x < (D_COLDX(g) - 20));
+            const p = opts.sort((a, b) => dist(a, v) - dist(b, v))[0];
+            if (p) { v.x = p.x; v.y = p.y; extracted.push(v.id); return; }
+          }
+          v.st.blocked = i; blocked.push(v.id);
+        });
+        let retreat = false;
+        if (inPoly(g.rescuer.x, g.rescuer.y, hz.poly)) { retreat = true; g.exposed += 1; g.rescuer.x = hz.safe.x; g.rescuer.y = hz.safe.y; g.rescuer.at = null; g.route.push({ t: t, x: hz.safe.x, y: hz.safe.y, at: null }); }
+        ev(events, g, 'hazard', { idx: i, kind: hz.kind, blocked: blocked, retreat: retreat, extracted: extracted });
+      }
+      if (s.on && !s.over && t >= hz.clearAt) { s.over = true; ev(events, g, 'hazardClear', { idx: i, kind: hz.kind }); }
+    });
+    if (g.sc.revealAt && t === g.sc.revealAt) discover(g, events, 'report');
     g.ambs.forEach(function (a) { if (a.status === 'scheduled' && a.at <= t) { a.status = 'waiting'; a.arrivedT = t; ev(events, g, 'ambArrive', { amb: a.id, kind: a.kind }); } });
     g.victims.forEach(function (v) {
       const st = v.st; if (st.evac || st.dead) return;
       for (let i = 0; i < v.course.length; i++) {
         const e = v.course[i]; if (e.done || e.at > t) continue; e.done = true;
         if (e.unless && st[e.unless]) continue;
-        if (e.kind === 'worsen') { Object.assign(v.phys, e.set); st.worsened.push(t); ev(events, g, 'worsen', { id: v.id, cause: e.cause }); }
+        if (e.kind === 'move') { if (!st.atCCP && !st.atStation && st.stationAt === null && g.rescuer.at !== v.id && !isLocked(g, v)) { v.x = e.x; v.y = e.y; ev(events, g, 'moved', { id: v.id }); } }
+        else if (e.kind === 'worsen') { Object.assign(v.phys, e.set); st.worsened.push(t); ev(events, g, 'worsen', { id: v.id, cause: e.cause }); }
         else if (e.kind === 'die') { die(g, v, e.cause, events); return; }
       }
       if (st.airwayEver) {
-        const attended = g.rescuer.at === v.id || st.atStation;
+        const attended = g.rescuer.at === v.id || st.atStation || !!st.helperAirway;
         if (st.airwayOpen && !st.positioned && !attended) {
           st.unatt += 1;
           if (st.unatt >= 180) { st.airwayOpen = false; v.phys.br = false; st.apneaSince = t; st.unatt = 0; ev(events, g, 'airwayLost', { id: v.id }); }
@@ -347,7 +587,7 @@
       }
       if (st.stationAt !== null && !st.atStation && t >= st.stationAt) {
         const cat = lastTag(v); st.atStation = true;
-        if (!st.atCCP || cat !== 'green') { const p = stationSlot(cat, g.stationCount[cat]++); v.x = p.x; v.y = p.y; }
+        if (!st.atCCP || cat !== 'green') { const p = stationSlot(cat, g.stationCount[cat]++, g); v.x = p.x; v.y = p.y; }
         ev(events, g, 'toStation', { id: v.id, cat: cat });
       }
     });
@@ -367,12 +607,14 @@
   function logEntry(g, o) { const e = Object.assign({ t: g.t, rx: g.rescuer.x, ry: g.rescuer.y }, o); g.log.push(e); return e; }
   function rescuerAt(g, v) { return v.st.atCCP && !v.st.atStation ? g.rescuer.at === 'ccp' : g.rescuer.at === v.id; }
   function pointOf(g, target, D) {
-    if (target === 'ccp') { const c = (D && D.COLD.ccp) || STATION_POS.green; return { x: c.x, y: c.y }; }
-    if (target === 'pma') return { x: 1390, y: 210 };
+    const o = coff(g);
+    if (target === 'ccp') { const c = (D && D.COLD.ccp) || STATION_POS.green; return { x: c.x + o.dx, y: c.y + o.dy }; }
+    if (target === 'pma') return { x: 1390 + o.dx, y: 210 + o.dy };
     const v = vById(g, target); if (!v) return null;
-    if (v.st.atCCP && !v.st.atStation) { const c = (D && D.COLD.ccp) || STATION_POS.green; return { x: c.x, y: c.y }; }
+    if (v.st.atCCP && !v.st.atStation) { const c = (D && D.COLD.ccp) || STATION_POS.green; return { x: c.x + o.dx, y: c.y + o.dy }; }
     return { x: v.x, y: v.y };
   }
+  const relExtra = (v) => (v.relative && v.st && !v.st.relCalm ? REL_EXTRA : 0);
   function markIndiv(g, v) { if (g.firstIndivT === null && !v.st.atCCP) g.firstIndivT = g.t; }
   function spend(g, v, cost) { if (v && !v.st.firstTag) v.st.timeSpent += cost; }
 
@@ -396,8 +638,9 @@
         if (g.walkCallT !== null) return fail('done');
         const moved = [];
         g.victims.forEach(function (x) {
-          if (x.phys.walk && !x.st.dead && !x.st.evac && !x.st.atStation && !x.st.atCCP) {
+          if (x.phys.walk && !x.deaf && !x.st.dead && !x.st.evac && !x.st.atStation && !x.st.atCCP && !hazLocked(g, x)) {
             const p = ccpSlot(g, g.ccpCount++, D); x.st.atCCP = true; x.x = p.x; x.y = p.y; x.hot = false; moved.push(x.id);
+            if (x.st.seen === false) { x.st.seen = true; x.st.foundAt = g.t; }
             if (g.rescuer.at === x.id) g.rescuer.at = null;
           }
         });
@@ -410,16 +653,20 @@
         if (target !== 'ccp' && target !== 'pma') {
           v = vById(g, target); if (!v) return fail('bad');
           if (v.st.evac) return fail('gone');
-          if (v.hot && !g.hotCleared && !v.st.atCCP) { g.hotAttempts += 1; logEntry(g, { type: 'hotBlocked', id: v.id, ok: false }); return fail('hot'); }
+          if (!isSeen(v)) return fail('bad');
+          if (hotLocked(g, v)) { g.hotAttempts += 1; logEntry(g, { type: 'hotBlocked', id: v.id, ok: false }); return fail('hot'); }
+          if (hazLocked(g, v)) { g.hotAttempts += 1; logEntry(g, { type: 'hotBlocked', id: v.id, ok: false, hazard: true }); return fail('hazard'); }
         }
         const p = pointOf(g, target, D);
         if (g.rescuer.at === target && Math.abs(g.rescuer.x - p.x) < 1 && Math.abs(g.rescuer.y - p.y) < 1) return { ok: true, cost: 0, result: { already: true }, events: [] };
         const cost = travelSec(dist(g.rescuer, p));
         g.rescuer.at = null;
         const events = advance(g, cost);
+        if (g.haz && v && hazLocked(g, v)) { logEntry(g, { type: 'move', id: target, cost: cost, aborted: true }); return { ok: false, reason: 'hazard', cost: cost, events: events }; }
         g.rescuer.x = p.x; g.rescuer.y = p.y; g.rescuer.at = target;
         g.route.push({ t: g.t, x: p.x, y: p.y, at: target });
         if (v && v.st.arrivedAt === null) v.st.arrivedAt = g.t;
+        if (g.sc.sightR) discover(g, events, 'near');
         logEntry(g, { type: 'move', id: target, cost: cost });
         return { ok: true, cost: cost, result: { x: p.x, y: p.y }, events: events };
       }
@@ -429,7 +676,7 @@
         if (v.st.evac) return fail('gone');
         if (!rescuerAt(g, v)) return fail('far');
         const p = v.phys, c = a.check; let r;
-        if (c === 'walk') r = { walks: !!p.walk };
+        if (c === 'walk') { r = { walks: !!p.walk }; if (v.deaf) r.deaf = true; }
         else if (c === 'breath') r = { breathing: !!p.br };
         else if (c === 'rr15' || c === 'rr30') { const win = c === 'rr15' ? 15 : 30; const count = p.br ? Math.round(p.rr * win / 60) : 0; r = { count: count, window: win, rr: count * (60 / win) }; }
         else if (c === 'radial') r = { present: !!p.radial };
@@ -437,9 +684,10 @@
         else if (c === 'mental') r = v.ped ? { avpu: p.br ? p.avpu : 'U' } : { obeys: !!(p.br && p.obeys) };
         const key = c === 'rr15' || c === 'rr30' ? 'rr' : c === 'radial' || c === 'crt' ? 'perf' : c;
         v.st.done[key] = true; v.st.done[c] = true; v.st.results[c] = r;
-        markIndiv(g, v); spend(g, v, COST[c]);
-        logEntry(g, { type: 'check', id: v.id, check: c, result: r, cost: COST[c] });
-        return done(COST[c], r);
+        const cc = COST[c] + relExtra(v);
+        markIndiv(g, v); spend(g, v, cc);
+        logEntry(g, Object.assign({ type: 'check', id: v.id, check: c, result: r, cost: cc }, cc !== COST[c] ? { rel: true } : {}));
+        return done(cc, r);
       }
       case 'do': {
         v = vById(g, a.id); if (!v) return fail('bad');
@@ -480,6 +728,12 @@
             if (lastTag(v) === 'black') { g.flags.cprBlack += 1; res = 'phase2Cpr'; good = false; }
             else { res = 'notNeeded'; g.flags.unneeded += 1; good = false; }
           } else { g.flags.cpr += 1; res = 'mciNoCpr'; good = false; }
+        } else if (w === 'delegate') {
+          /* donar una tasca al familiar: deixa d'interrompre i, si cal, manté la via aèria oberta */
+          if (v.relative && !st.relCalm) { st.relCalm = true; if (st.airwayEver && !st.dead) st.helperAirway = true; res = st.helperAirway ? 'delegatedAirway' : 'delegated'; good = true; }
+          else if (v.relative && st.relCalm && st.airwayEver && !st.helperAirway && !st.dead) { st.helperAirway = true; res = 'delegatedAirway'; good = true; }
+          else if (v.relative) { res = 'already'; cost = 0; }
+          else { res = 'noRelative'; g.flags.unneeded += 1; good = false; }
         } else if (w === 'secondary') {
           if (phase2(g)) {
             if (st.secondaryDone) { res = 'already'; cost = 0; }
@@ -487,6 +741,7 @@
             else { st.secondaryDone = true; res = 'phase2ExamLow'; }
           } else { g.flags.secondary += 1; res = 'notStart'; good = false; }
         }
+        if (w !== 'delegate') cost += relExtra(v);
         st.interventions.push({ t: g.t, what: w, res: res });
         markIndiv(g, v); spend(g, v, cost);
         logEntry(g, { type: 'do', id: v.id, what: w, result: res, cost: cost, ok: good });
@@ -504,7 +759,7 @@
         if (!v.st.firstTag) { v.st.timeSpent += COST.tag; v.st.firstTag = entry; }
         if (a.cat !== 'black' && !v.st.atStation && v.st.stationAt === null) v.st.stationAt = g.t + COST.tag + (v.st.atCCP || v.phys.walk ? 30 : 150);
         const prev = entry.retag ? v.st.tags[v.st.tags.length - 2].cat : null;
-        if (v.st.atStation && prev && prev !== a.cat && a.cat !== 'black' && !(a.cat === 'green' && v.st.atCCP)) { /* reubicació a la nova estació */ const p = stationSlot(a.cat, g.stationCount[a.cat]++); v.x = p.x; v.y = p.y; v.st.atCCP = false; if (g.rescuer.at === v.id) g.rescuer.at = null; }
+        if (v.st.atStation && prev && prev !== a.cat && a.cat !== 'black' && !(a.cat === 'green' && v.st.atCCP)) { /* reubicació a la nova estació */ const p = stationSlot(a.cat, g.stationCount[a.cat]++, g); v.x = p.x; v.y = p.y; v.st.atCCP = false; if (g.rescuer.at === v.id) g.rescuer.at = null; }
         const kind = errorKind(c.cat, a.cat);
         logEntry(g, { type: 'tag', id: v.id, cat: a.cat, truth: c.cat, step: c.step, retag: entry.retag, ok: kind === 'ok', kind: kind, credit: creditOf(c.cat, a.cat) });
         return done(COST.tag, { cat: a.cat, truth: c.cat, step: c.step, kind: kind, path: c.path });
@@ -580,7 +835,7 @@
   function adherenceOf(g, v) {
     const f = v.st.firstTag; if (!f) return 0;
     const req = requiredChecks(v.ped, f.step);
-    const knowsWalk = v.st.done.walk || (g.walkCallT !== null && g.walkCallT <= f.t);
+    const knowsWalk = v.st.done.walk || (g.walkCallT !== null && g.walkCallT <= f.t && !v.deaf);
     const ok = req.filter((k) => (k === 'walk' ? knowsWalk : !!v.st.done[k])).length;
     return ok / req.length;
   }
@@ -589,7 +844,8 @@
     const st = v.st, p = v.phys, r = st.results;
     if (st.dead && !st.tags.length) return { kind: 'tag', cat: 'black' };
     if (v.bleed === 'major' && !st.bleedCtrl) return { kind: 'do', what: (v.site === 'arm' || v.site === 'leg') ? 'tourniquet' : 'pressure' };
-    const knowsWalk = st.done.walk || g.walkCallT !== null;
+    if (v.relative && !st.relCalm && !st.dead) return { kind: 'do', what: 'delegate' };
+    const knowsWalk = st.done.walk || (g.walkCallT !== null && !v.deaf);
     if (!knowsWalk) return { kind: 'check', check: 'walk' };
     if (p.walk && (st.done.walk || st.atCCP)) return st.tags.length ? null : { kind: 'tag', cat: 'green' };
     if (!st.done.breath) return { kind: 'check', check: 'breath' };
@@ -600,7 +856,7 @@
       if (!p.br) return lastTag(v) === 'black' ? null : { kind: 'tag', cat: 'black' };
     }
     if (st.airwayEver) {
-      if (!st.positioned) return { kind: 'do', what: 'position' };
+      if (!st.positioned && !st.helperAirway) return { kind: 'do', what: 'position' };
       return lastTag(v) === 'red' ? null : { kind: 'tag', cat: 'red' };
     }
     if (!st.done.rr) return { kind: 'check', check: 'rr15' };
@@ -633,7 +889,8 @@
         dead: v.st.dead, preventable: v.st.dead && v.cat0 !== 'black', cause: v.st.cause, diedAt: v.st.diedAt,
         evac: v.st.evac, timeSpent: f ? v.st.timeSpent : null, viaCCP: v.st.atCCP, adherence: adherenceOf(g, v),
         deteriorated: deteriorated, retriageOk: retriageOk, bleed: v.bleed, needsAirway: v.needsAirway,
-        bleedCtrl: v.st.bleedCtrl, airwayEver: v.st.airwayEver, positioned: v.st.positioned
+        bleedCtrl: v.st.bleedCtrl, airwayEver: v.st.airwayEver, positioned: v.st.positioned || !!v.st.helperAirway,
+        profile: v.profile || null, deaf: !!v.deaf, unseen: !!v.unseen, foundAt: v.unseen ? v.st.foundAt : null, relative: !!v.relative
       };
     });
     /* matriu de confusió [real][etiqueta|none] */
@@ -735,6 +992,55 @@
     return { score10: round1(10 * pts / n), correct: correct, under: under, over: over, timeouts: timeouts, bestStreak: best, total: results.length };
   }
 
+  /* ---------- pistes visuals de la vista ampliada (només lectura: no canvien l'estat ni la nota) ----------
+     Es deriven de la mateixa font que el motor (v.phys, perfil i plantilla) perquè mai no contradiguin el text ni la categoria.
+     explicit (fàcil/normal en pràctica o guiat): es veuen la palidesa, el pols i el reompliment, i la xifra de FR;
+     subtil (difícil, molt difícil, repte, avaluable): només el que es veu a primer cop d'ull; pols i reompliment apareixen
+     quan s'han comprovat (accions que costen temps) i la FR s'ha de comptar (sense xifra a la vista). */
+  const SMOKE_P = { pSmokeW: 1, pSmokeR: 1, pBurnR: 1 }, BURN_P = { pBurnW: 'arm', pBurnY: 'leg', pBurnR: 'head' };
+  const AGITATED_P = { pAnxiety: 1 }, CONFUSED_P = { pHeadOld: 1, pNoObey: 1, pElderW: 1 };
+  /* freqüència cardíaca orientativa (no forma part de START): estable per víctima i coherent amb la perfusió */
+  function heartRate(v) {
+    const p = v.phys, h = hashSeed('hr|' + v.id + '|' + (v.tpl || '')) % 1000 / 1000;
+    if (v.ped) return Math.round((!p.radial ? 150 : 100) + h * 30);
+    if (!p.radial || p.crt > 2) return Math.round(118 + h * 26);
+    if (p.rr > RR_LIMIT) return Math.round(104 + h * 20);
+    if (AGITATED_P[v.profile]) return Math.round(100 + h * 16);
+    return Math.round(68 + h * 26);
+  }
+  function tplOf(v, D) { if (!D || !v.tpl) return null; const k = v.tpl.split(':'), list = (D.PTEMPLATES && D.PTEMPLATES[k[0]]) || (D.TEMPLATES && D.TEMPLATES[k[0]]); return list ? list[Number(k[1])] || null : null; }
+  function cues(v, o, D) {
+    o = o || {};
+    const p = v.phys, st = v.st || {}, r = st.results || {}, explicit = !!o.explicit;
+    /* mort només si ja ha mort a la partida: abans de valorar-la, qui no respira té el mateix aspecte sigui vermell o negre */
+    const dead = !!st.dead;
+    const tpl = tplOf(v, D) || {};
+    const breathing = !!p.br && !dead;
+    const pattern = !breathing ? 'none' : tpl.para ? 'paradoxical' : (v.ped ? (p.rr > J_RR_HIGH || p.rr < J_RR_LOW) : p.rr > RR_LIMIT) ? 'fastShallow' : p.rr < 12 ? 'slowDeep' : 'normal';
+    const hr = dead ? 0 : heartRate(v);
+    const weak = !p.radial || p.crt > 2;
+    /* sense respiració, el pols no forma part de START (adults): no es mostra fins que es busca, per no avançar la categoria */
+    const pulseKnown = (explicit && !!p.br && !st.dead) || !!r.radial || !!r.crt;
+    const crtKnown = (explicit && !!p.br && !st.dead) || !!r.crt;
+    const mentalKnown = explicit || !!r.mental;
+    const out = {
+      explicit: explicit, dead: dead,
+      posture: p.walk && !dead ? 'walk' : st.positioned ? 'recovery' : (v.post === 'stand' ? 'sit' : v.post),
+      moving: p.walk && !dead ? 'walks' : dead ? 'still' : (p.obeys || v.ped && (p.avpu === 'A' || p.avpu === 'V')) ? 'moves' : 'still',
+      breath: { on: breathing, rr: breathing ? p.rr : 0, pattern: pattern, showRate: explicit, noisy: breathing && !!SMOKE_P[v.profile] && p.rr > RR_LIMIT },
+      /* el que no s'ha comprovat queda emmascarat (null) perquè la vista no doni informació que el joc no ha donat */
+      pulse: pulseKnown ? { known: true, present: !!p.radial && !dead, rate: p.radial && !dead ? hr : 0, strength: !p.radial || dead ? 'none' : weak ? 'weak' : 'strong', irregular: false } : { known: false, present: null, rate: 0, strength: 'unknown', irregular: false },
+      crt: crtKnown ? { known: true, sec: dead ? 5 : (p.radial || p.crt <= 4 ? p.crt : 5) } : { known: false, sec: null },
+      skin: { pale: (pulseKnown || crtKnown) && weak && !dead, cyan: !breathing, sweat: (pulseKnown || crtKnown) && weak && !dead, soot: !!SMOKE_P[v.profile], burns: BURN_P[v.profile] || null },
+      eyes: dead ? 'closed' : (!p.br ? 'closed' : v.ped ? (p.avpu === 'U' ? 'closed' : p.avpu === 'Pi' || p.avpu === 'P' ? 'lost' : 'open') : (p.obeys || p.walk ? 'open' : (p.avpu === 'U' ? 'closed' : 'lost'))),
+      mental: !mentalKnown ? null : dead || !p.br ? 'none' : v.ped ? (p.avpu === 'A' ? 'alert' : p.avpu === 'V' ? 'voice' : 'unresponsive') : (p.obeys || p.walk) ? (AGITATED_P[v.profile] ? 'agitated' : CONFUSED_P[v.profile] ? 'disoriented' : 'alert') : 'confused',
+      bleed: { kind: v.bleed || 'none', site: v.site, controlled: !!st.bleedCtrl },
+      deform: !!tpl.deform, site: v.site, deaf: !!v.deaf,
+      airway: { open: !!st.airwayOpen, noisy: breathing && !!SMOKE_P[v.profile] && p.rr > RR_LIMIT }
+    };
+    return out;
+  }
+
   /* ---------- validació de dades ---------- */
   function validateData(D) {
     const errs = [];
@@ -742,12 +1048,27 @@
     Object.keys(D.SETTINGS).forEach(function (k) {
       const s = D.SETTINGS[k];
       ['name', 'short', 'brief', 'hazard', 'hotClear'].forEach((f) => pair(s[f], k + '.' + f));
-      const hot = s.spots.filter((p) => inPoly(p[0], p[1], s.hot)).length;
+      const hots = s.hots ? s.hots.map((z) => z.poly) : [s.hot];
+      const isHot = (p) => hots.some((poly) => inPoly(p[0], p[1], poly));
+      const hot = s.spots.filter(isHot).length;
+      const R = nRange(s), need = s.big ? R.max + 6 : 20;
       if (hot < 3) errs.push(k + ': calen 3 punts calents o més');
-      if (s.spots.length - hot < 20) errs.push(k + ': calen 20 punts no calents o més');
-      s.spots.forEach((p) => { if (p[0] < 30 || p[0] > 1170 || p[1] < 30 || p[1] > 990) errs.push(k + ': punt fora de la zona d\'incident ' + p); });
+      if (s.spots.length - hot < need) errs.push(k + ': calen ' + need + ' punts no calents o més (' + (s.spots.length - hot) + ')');
+      const xMax = D.COLD.x + (s.cold ? s.cold.dx : 0) - 10, yMax = (s.map ? s.map.h : 1000) - 10;
+      s.spots.forEach((p) => { if (p[0] < 30 || p[0] > xMax || p[1] < 30 || p[1] > yMax) errs.push(k + ': punt fora de la zona d\'incident ' + p); });
+      if (s.hots) s.hots.forEach((z, i) => { pair(z.clear, k + '.hots[' + i + '].clear'); pair(z.name, k + '.hots[' + i + '].name'); });
+      if (s.hazard2) { pair(s.hazard2.text, k + '.hazard2.text'); pair(s.hazard2.clear, k + '.hazard2.clear'); }
+      if (s.sectors) s.sectors.forEach((x, i) => pair(x.name, k + '.sectors[' + i + ']'));
+      if (s.sources) pair(s.sources, k + '.sources'); if (s.threatLabel) pair(s.threatLabel, k + '.threatLabel');
+      if (s.ext) ['lessons'].forEach((f) => { if (!s[f] || !s[f].length) errs.push(k + ': falta ' + f); else s[f].forEach((x, i) => pair(x, k + '.' + f + '[' + i + ']')); });
+      if (s.profiles) Object.keys(s.profiles).forEach((g) => s.profiles[g].forEach((pr) => { if (!PROFILES[pr]) errs.push(k + ': perfil desconegut ' + pr); }));
     });
     Object.keys(D.TEMPLATES).forEach((k) => D.TEMPLATES[k].forEach((t, i) => pair(t.d, 'plantilla ' + k + '/' + i)));
+    Object.keys(PROFILES).forEach(function (k) {
+      const l = D.PTEMPLATES && D.PTEMPLATES[k];
+      if (!l || !l.length) errs.push('falten plantilles del perfil ' + k);
+      else l.forEach((t, i) => { pair(t.d, 'perfil ' + k + '/' + i); if (PROFILES[k].like === 'bleed' && t.bleed !== 'major') errs.push('perfil ' + k + '/' + i + ': cal hemorràgia massiva'); });
+    });
     D.HOSPITALS.forEach((h) => { pair(h.name, h.id); pair(h.short, h.id); });
     return errs;
   }
@@ -755,12 +1076,14 @@
   const L = {
     CATS: CATS, PRIO: PRIO, RANK: RANK, RR_LIMIT: RR_LIMIT, CRT_LIMIT: CRT_LIMIT, J_RR_LOW: J_RR_LOW, J_RR_HIGH: J_RR_HIGH,
     COST: COST, CHECKS: CHECKS, DOS: DOS, SAFETY_GOOD: SAFETY_GOOD, SAFETY_BAD: SAFETY_BAD, WEIGHTS: WEIGHTS, DEATH_PENALTY: DEATH_PENALTY,
-    CAT_WEIGHT: CAT_WEIGHT, DIFF: DIFF, ACHIEVEMENTS: ACHIEVEMENTS,
+    CAT_WEIGHT: CAT_WEIGHT, DIFF: DIFF, ACHIEVEMENTS: ACHIEVEMENTS, LEVELS: LEVELS, PROFILES: PROFILES, GENERIC_POOL: GENERIC_POOL, REL_EXTRA: REL_EXTRA,
+    nRange: nRange, isExt: isExt, compositionBig: compositionBig, likeOf: likeOf, isLocked: isLocked, hotLocked: hotLocked, hazLocked: hazLocked, isSeen: isSeen,
     hashSeed: hashSeed, seeded: seeded, shuffle: shuffle, seedCode: seedCode, inPoly: inPoly, travelSec: travelSec, dist: dist,
     classifyStart: classifyStart, classifyJump: classifyJump, classify: classify, creditOf: creditOf, errorKind: errorKind,
     composition: composition, physFor: physFor, normOpts: normOpts, generate: generate, bankScenario: bankScenario, pickBank: pickBank,
     createGame: createGame, act: act, advance: advance, vById: vById, lastTag: lastTag, truthOf: truthOf, readyForEvac: readyForEvac, phase2: phase2,
     freeSlots: freeSlots, destScore: destScore, requiredChecks: requiredChecks, nextStep: nextStep, rescuerAt: rescuerAt, pointOf: pointOf,
+    cues: cues, heartRate: heartRate,
     evaluate: evaluate, grade: grade, makeCard: makeCard, scoreCards: scoreCards, validateData: validateData, median: median
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = L; else root.TriageLogic = L;

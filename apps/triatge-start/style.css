@@ -621,3 +621,166 @@ th, td { padding: 8px; border-bottom: 1px solid var(--line); text-align: left; v
 /* segunda fase (solo en dificultad difícil): aviso cuando ya no queda nadie sin triar */
 .phase2 { margin: 8px 0 0; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line2); border-left: 5px solid var(--accent); background: var(--accent-soft); color: var(--ink); }
 .phase2 p { margin: .25em 0 0; font-size: .9rem; }
+
+/* ---------- altaveu de l'ambulància ---------- */
+.speakbtn { min-height: 52px; padding: 6px 14px 6px 10px; gap: 10px; text-align: left; border-width: 2px; }
+.speakbtn .ic { width: 26px; height: 26px; }
+.speakbtn .btn-l { display: flex; flex-direction: column; line-height: 1.15; }
+.speakbtn .btn-l b { font-size: .95rem; }
+.speakbtn .btn-l small { font-size: .74rem; font-weight: 600; opacity: .85; }
+.speakbtn.accent { border-color: #b35f00; }
+.speakbtn.calling { opacity: 1 !important; background: var(--focus); color: #1c1200; border-color: #b35f00; }
+.speakbtn.calling .ic { animation: spkIcon .6s ease-in-out infinite alternate; }
+.speakbtn.used:not(.calling) { background: var(--surface2); }
+@keyframes spkIcon { to { transform: scale(1.15); } }
+.spk { pointer-events: none; }
+.spk-pad { fill: color-mix(in srgb, var(--focus) 16%, transparent); stroke: var(--focus); stroke-width: 3; stroke-dasharray: 6 6; }
+.spk-horn { fill: #ffb347; stroke: #7a3d00; stroke-width: 2; }
+.spk-horn-base { fill: #4a4e69; }
+.spk-cap { font-size: 18px; }
+.spk-label { fill: #7a3d00; stroke: #fff4d6; stroke-width: 7px; font-size: 30px; }
+.spk-wave { fill: none; stroke: var(--focus); stroke-width: 6; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.spk.calling .spk-wave { animation: spkWave 1.35s ease-out infinite; }
+.spk.calling .spk-pad { fill: color-mix(in srgb, var(--focus) 35%, transparent); }
+@keyframes spkWave { 0% { transform: scale(.1); opacity: 1; stroke-width: 12; } 70% { opacity: .5; } 100% { transform: scale(1); opacity: 0; stroke-width: 4; } }
+.walk-trail { animation: fadeIn .4s ease both; }
+.wt-line { stroke: var(--t-green); stroke-width: 5; stroke-dasharray: 3 12; stroke-linecap: round; opacity: .9; animation: march .7s linear infinite; }
+.wt-from { fill: none; stroke: var(--t-green); stroke-width: 3; opacity: .7; }
+.wt-to { fill: var(--t-green); stroke: #fff; stroke-width: 2; }
+@keyframes march { to { stroke-dashoffset: -30; } }
+.vm.walking .vm-halo { opacity: 1; stroke: var(--t-green); stroke-width: 5; animation: halo 1s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  /* sense animació contínua: anells estàtics i rastres fixos */
+  .spk.calling .spk-wave { animation: none !important; opacity: .55; }
+  .spk.calling .spk-wave:nth-child(1) { transform: scale(.35); } .spk.calling .spk-wave:nth-child(2) { transform: scale(.65); } .spk.calling .spk-wave:nth-child(3) { transform: scale(1); }
+  .wt-line { animation: none !important; }
+  .speakbtn.calling .ic { animation: none !important; }
+}
+@media (max-width: 420px) {
+  .hud-act .speakbtn .btn-l { display: flex; }
+  .hud-act { width: 100%; }
+  .hud-act .speakbtn { flex: 1 1 auto; }
+  .maptoast { font-size: .86rem; padding: 8px 14px; border-radius: 16px; max-width: 78%; }
+}
+
+/* ---------- opcions de so ---------- */
+.switch.big { align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: var(--surface2); border: 1px solid var(--line); margin: 0 0 12px; }
+.switch.big input { width: 26px; height: 26px; margin-top: 2px; }
+.switch.big span { display: flex; flex-direction: column; } .switch.big small { color: var(--muted); font-weight: 600; }
+.snd-modes { display: grid; gap: 8px; margin-bottom: 12px; }
+.snd-mode { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 56px; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--line); background: var(--surface2); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.snd-mode small { color: var(--muted); font-size: .84rem; }
+.snd-mode.on { border-color: var(--lilac); background: var(--accent-soft); }
+.snd-mode:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---------- art dels escenaris nous ---------- */
+:root { --m-sidewalk: #d9d6cf; --m-rubble: #a59d90; --m-slab: #bdb6aa; --m-wallstub: #9a9184; --m-build2: #c9ccd3; --m-win: rgba(40, 60, 90, .35); --m-crack: #3b3f46;
+  --m-firetruck: #c62828; --m-ladder: #e0e0e0; --m-firewin: #ff9a3c; --m-fire: #ff7a1a; --m-hose: #f2c94c; --m-zebra: #f3f4f6; --m-shelter: #8fb8d8; --m-van: #f0f0ec; --m-vanroof: #d8d8d2;
+  --m-terrace: #e8d9c0; --m-awning2: #2e7d6b; --m-table: #8a6a4a; --m-chair: #5b616b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --m-sidewalk: #4a4d52; --m-rubble: #5c574f; --m-slab: #6d675d; --m-wallstub: #57524a; --m-build2: #5b616d; --m-win: rgba(160, 190, 230, .25); --m-crack: #0f1114; --m-van: #c9c9c2; --m-vanroof: #a9a9a2; --m-terrace: #5e5444; --m-zebra: #9aa1ab; } }
+:root[data-theme="dark"] { --m-sidewalk: #4a4d52; --m-rubble: #5c574f; --m-slab: #6d675d; --m-wallstub: #57524a; --m-build2: #5b616d; --m-win: rgba(160, 190, 230, .25); --m-crack: #0f1114; --m-van: #c9c9c2; --m-vanroof: #a9a9a2; --m-terrace: #5e5444; --m-zebra: #9aa1ab; }
+.m-sidewalk { fill: var(--m-sidewalk); } .m-rubble { fill: var(--m-rubble); } .m-slab { fill: var(--m-slab); stroke: rgba(0, 0, 0, .25); stroke-width: 2; } .m-wallstub { fill: var(--m-wallstub); }
+.m-build2 { fill: var(--m-build2); } .m-win { fill: var(--m-win); } .m-crack, .m-crackroad { fill: none; stroke: var(--m-crack); stroke-width: 4; stroke-linejoin: round; }
+.m-crackroad { stroke-width: 3; opacity: .7; }
+.m-firetruck { fill: var(--m-firetruck); } .m-ladder { fill: var(--m-ladder); } .m-firewin { fill: var(--m-firewin); } .m-hose { fill: none; stroke: var(--m-hose); stroke-width: 5; stroke-linecap: round; }
+.m-fire { fill: var(--m-fire); opacity: .9; }
+.a-flame { animation: flame 1.2s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes flame { to { transform: scale(1.06, 1.18); opacity: .75; } }
+.m-zebra { fill: var(--m-zebra); } .m-shelter { fill: var(--m-shelter); opacity: .85; } .m-van { fill: var(--m-van); stroke: rgba(0, 0, 0, .25); stroke-width: 2; } .m-vanroof { fill: var(--m-vanroof); }
+.m-mall { fill: var(--m-build2); stroke: rgba(0, 0, 0, .2); stroke-width: 2; } .m-skylight { fill: var(--m-glass); opacity: .8; } .m-door { fill: var(--m-dark); }
+.m-police { fill: #1f3c88; } .m-policestripe { fill: #f2f2f2; } .m-bench { fill: var(--m-table); }
+.m-cordon { fill: none; stroke: #f2c200; stroke-width: 6; stroke-dasharray: 22 14; }
+.m-faint { opacity: .5; }
+.m-plane { fill: #f4f5f7; stroke: rgba(0, 0, 0, .3); stroke-width: 3; } .m-wing { fill: #d5d9e0; stroke: rgba(0, 0, 0, .25); stroke-width: 2; } .m-engine { fill: #7d838d; }
+.m-sector { font-size: 64px; opacity: .55; }
+.m-plaza { fill: var(--m-sidewalk); opacity: .7; } .m-planter { fill: var(--m-wallstub); }
+.m-terrace { fill: var(--m-terrace); } .m-awning2 { fill: var(--m-awning2); } .m-table { fill: var(--m-table); } .m-chair { fill: var(--m-chair); }
+
+/* ---------- llista de víctimes: filtres i grups (gran catàstrofe) ---------- */
+.vlist-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.vlist-head h3 { margin: 14px 0 6px; }
+.vfilters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.vf { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line2); background: var(--surface2); color: var(--ink); font: 600 .84rem inherit; cursor: pointer; }
+.vf b { font-variant-numeric: tabular-nums; color: var(--muted); }
+.vf.on { border-color: var(--lilac); background: var(--accent-soft); color: var(--accent-text); }
+.vf-red { border-left: 6px solid var(--t-red); } .vf-yellow { border-left: 6px solid var(--t-yellow); } .vf-green { border-left: 6px solid var(--t-green); }
+.vgroup { border: 1px solid var(--line); border-radius: 12px; margin: 6px 0; background: var(--surface); }
+.vgroup summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; min-height: 44px; padding: 6px 12px; cursor: pointer; }
+.vgroup ul { list-style: none; margin: 0; padding: 0 6px 6px; display: grid; gap: 4px; }
+.scen-big { display: block; font-size: .72rem; font-weight: 700; color: var(--accent-text); }
+
+/* ---------- advertència de contingut ---------- */
+.cw-card { border-left: 6px solid var(--warn); }
+.cw-ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--warn-bg); color: var(--warn); margin-bottom: 10px; }
+.cw-ic .ic { width: 30px; height: 30px; }
+.scen-cw { display: block; font-size: .72rem; font-weight: 700; color: var(--warn); }
+
+/* ---------- nivell molt difícil: perills nous, víctimes amagades, familiars ---------- */
+.hz-poly { display: none; }
+.hz-poly.on { display: inline; fill: color-mix(in srgb, #ff7a00 22%, transparent); stroke: #e05a00; stroke-width: 5; stroke-dasharray: 18 8; }
+.vm.unseen { display: none; }
+.hud-haz { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 10px; background: var(--bad-bg); color: var(--bad); border: 1px solid var(--bad); font-size: .85rem; font-weight: 700; }
+.relbox b { color: var(--warn); }
+.facts .fact-warn { color: var(--warn); }
+
+/* ---------- vista ampliada de la víctima ---------- */
+.closeup-row { margin: -4px 0 10px; }
+.closeup-btn { border-color: var(--lilac); }
+.sheet-root { position: fixed; inset: 0; z-index: 70; display: grid; place-items: end center; }
+.sheet-root .scrim { position: absolute; inset: 0; }
+.sheet { position: relative; width: min(980px, 100%); max-height: 96dvh; overflow-y: auto; background: var(--surface); color: var(--ink); border-radius: 20px 20px 0 0; box-shadow: var(--shadow-lg); animation: rise .25s ease both; padding: 0 0 max(12px, env(safe-area-inset-bottom)); }
+.sheet-h { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.sheet-h > div:nth-child(2) { flex: 1; min-width: 0; } .sheet-h h2 { margin: 0; } .sheet-h p { margin: 0; }
+.sheet-b { display: grid; gap: 14px; padding: 14px 16px; }
+.sheet-f { padding: 4px 16px 8px; border-top: 1px solid var(--line); }
+.cl-fig { border-radius: 16px; background: linear-gradient(180deg, var(--surface2), var(--surface)); border: 1px solid var(--line); overflow: hidden; }
+.cl-fig .fig { width: 100%; height: auto; }
+.cl-fig .fg-chest { animation-duration: var(--br) !important; }
+.cl-cues { margin: 0 0 8px; padding-left: 1.2em; } .cl-cues li { margin: .25em 0; }
+.cl-box { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin: 8px 0; background: var(--surface2); }
+.cl-box h3 { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; color: var(--ink); }
+.cl-box .row { align-items: center; }
+#cl-sw { font-size: 1.4rem; min-width: 2ch; text-align: right; }
+#cl-sw-btn.on { border-color: var(--focus); }
+.cl-prefs { display: grid; gap: 2px; margin-top: 6px; }
+.cl-nail { width: 54px; height: 70px; }
+/* patrons respiratoris */
+.fig.br-fastShallow .fg-chest { animation-name: breatheShallow; }
+.fig.br-slowDeep .fg-chest { animation-name: breatheDeep; }
+@keyframes breatheShallow { 0%, 100% { transform: scale(1, 1); } 45% { transform: scale(1.01, 1.04); } }
+@keyframes breatheDeep { 0%, 100% { transform: scale(1, 1); } 45% { transform: scale(1.03, 1.14); } }
+.fg-para { fill: color-mix(in srgb, var(--ink) 14%, transparent); animation: paradox var(--br, 2s) ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes paradox { 0%, 100% { transform: scale(1, 1); } 45% { transform: scale(.94, .8); } }
+.fg-drop { fill: #8fd3ff; stroke: #4a90c2; stroke-width: 1; }
+.fg-sootmark { fill: rgba(30, 30, 30, .55); }
+.fg-burn { fill: rgba(214, 70, 40, .55); } .fg-blister { fill: rgba(255, 236, 200, .85); stroke: rgba(200, 120, 80, .7); stroke-width: 1; }
+.fg-deform { fill: none; stroke: #7d0d10; stroke-width: 3.5; stroke-linejoin: round; stroke-dasharray: 5 3; }
+.fg-wave { fill: none; stroke: var(--warn); stroke-width: 3; stroke-linecap: round; animation: wave 1.2s ease-in-out infinite; } .fg-wave2 { animation-delay: .3s; }
+@keyframes wave { 50% { opacity: .2; } }
+.fg-eyewhite { fill: #fff; stroke: #4a2c22; stroke-width: 1; }
+/* canell i pols */
+.wrist { width: 100%; max-width: 260px; height: auto; display: block; }
+.wr-arm, .wr-hand { stroke: rgba(0, 0, 0, .12); stroke-width: 2; }
+.wr-arm.sk0, .wr-hand.sk0 { fill: var(--skin0); } .wr-arm.sk1, .wr-hand.sk1 { fill: var(--skin1); } .wr-arm.sk2, .wr-hand.sk2 { fill: var(--skin2); } .wr-arm.sk3, .wr-hand.sk3 { fill: var(--skin3); }
+.wr-artery { fill: none; stroke: rgba(160, 30, 40, .35); stroke-width: 4; stroke-linecap: round; }
+.wr-ring { fill: none; stroke: var(--t-red); stroke-width: 3; opacity: 0; } .wr-dot { fill: var(--t-red); opacity: .35; }
+.wrist.on .wr-beat { animation: hbeat var(--hb, 1s) ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.wrist.on .wr-ring { animation: hring var(--hb, 1s) ease-out infinite; transform-box: fill-box; transform-origin: center; }
+.wrist.on .wr-dot { opacity: .9; }
+.wrist.weak .wr-beat { --amp: 1.12; } .wrist.weak .wr-dot { opacity: .55; }
+.wrist.off .wr-dot { fill: var(--line2); }
+/* batec suau, sense flaix (≤ 3 per segon) */
+@keyframes hbeat { 0% { transform: scale(1); } 15% { transform: scale(var(--amp, 1.3)); } 45%, 100% { transform: scale(1); } }
+@keyframes hring { 0% { opacity: .6; transform: scale(.6); } 60%, 100% { opacity: 0; transform: scale(1.6); } }
+.sheet-root.paused * { animation-play-state: paused !important; }
+@media (min-width: 760px) {
+  .sheet-root { place-items: center; padding: 16px; }
+  .sheet { border-radius: 20px; max-height: calc(100dvh - 32px); }
+  .sheet-b { grid-template-columns: 1.1fr 1fr; align-items: start; }
+  .cl-fig { position: sticky; top: 70px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* sense animació contínua: només mentre es manté premut «Veure el ritme» */
+  .sheet-root.play .cl-fig .fg-chest { animation-name: breathe !important; animation-duration: var(--br) !important; animation-iteration-count: infinite !important; }
+  .sheet-root.play .wrist.on .wr-beat { animation-duration: var(--hb, 1s) !important; animation-iteration-count: infinite !important; }
+}
