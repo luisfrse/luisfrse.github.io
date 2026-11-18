@@ -47,6 +47,12 @@
   let ref = null, cursor = null, challenge = null, chalResult = null, capLine = null, bands = null, hoverT = -1, selT = -1;
   let playing = false, raf = 0, lastTs = 0, acc = 0, resumeOnVisible = false, lastStamp = '', bandsBusy = false;
   const els = {};
+  const SIZES = ['mini', 'compact', 'large'], GLYPH = { mini: '▁', compact: '▄', large: '█' };
+  let dashSize = SIZES.includes(store.get('dsize', 'compact')) ? store.get('dsize', 'compact') : 'compact';
+  let dashCv = ['evo', 'inc', 're'].includes(store.get('cv', 'evo')) ? store.get('cv', 'evo') : 'evo';
+  const TABS = ['scen', 'disease', 'pop', 'measures', 'vaccines', 'view'];
+  let curTab = TABS.includes(store.get('tab', 'scen')) ? store.get('tab', 'scen') : 'scen', drawerOpen = store.get('drawer', true) !== false;
+  let rState = '', rAnnAt = 0;
 
   /* ================= estado y utilidades ================= */
   const pat = (id) => Core.data.pathogens[id || P.pid];
@@ -158,26 +164,52 @@
     ctx.fillStyle = vg; ctx.fillRect(0, 0, W, W);
   }
   function drawWorld(time) {
-    els.world.style.aspectRatio = String(worldAspect());
-    const c = sizeCanvas(els.world, els.world.clientWidth / worldAspect()); if (!c) return;
+    const ar = worldAspect();
+    if (ar !== drawWorld.ar) { drawWorld.ar = ar; els.dash.style.setProperty('--ar', String(ar)); }
+    const c = sizeCanvas(els.world, els.world.clientWidth / ar); if (!c) return;
     if (isMap()) { if (view && sim.territory) Map_.draw(c.ctx, c.w, c.h, view, sim, { sel: selT, hover: hoverT, time, reduce: RM }); }
     else drawAgents(c.ctx, c.w, time);
   }
 
   /* gráficos (áreas apiladas e infecciosos) */
+  /* márgenes del gráfico; en los pequeños (panel compacto) se recortan para dejar sitio a la curva */
+  const chMargins = (fs, h) => { const tiny = h < 170; return { l: fs * 3.3, r: 12, t: fs * (tiny ? .9 : 1.3), b: fs * (tiny ? 2 : 3.2), tiny }; };
+  /* momentos en que empieza cada medida (y la vacunación): [{d, label}] agrupados por día */
+  function flagList() {
+    const by = new Map(), add = (d, l) => { if (!by.has(d)) by.set(d, []); by.get(d).push(l); };
+    (P.sel || []).forEach((m, i) => add(Math.max(0, +m.start || 0), String(i + 1)));
+    if ((P.vsel || []).length && P.vacc > 0) add(Math.max(0, +P.vstart || 0), 'V');
+    return [...by.entries()].map(([d, l]) => ({ d, label: l.join('·') })).sort((a, b) => a.d - b.d);
+  }
+  function drawFlags(ctx, flags, X, m, ph, xmax, w, fs) {
+    if (!flags || !flags.length) return;
+    const fsz = Math.max(9, fs - 2), vis = flags.filter(f => f.d <= xmax);
+    ctx.save(); ctx.lineWidth = 1.2; ctx.setLineDash([4, 3]); ctx.strokeStyle = 'rgba(196,166,236,.85)';
+    for (const f of vis) { const x = X(f.d); ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, m.t + ph); ctx.stroke(); }
+    ctx.setLineDash([]); ctx.font = `700 ${fsz}px "Source Sans 3",system-ui,sans-serif`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    let lastEnd = -1e9;
+    for (const f of vis) {
+      const x = X(f.d), tw = ctx.measureText(f.label).width + 8, left = x + tw > w - 4 ? x - tw : x;
+      if (left < lastEnd + 2) continue; lastEnd = left + tw;
+      ctx.fillStyle = '#c4a6ec'; ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(left, m.t, tw, fsz + 5, 4); else ctx.rect(left, m.t, tw, fsz + 5); ctx.fill();
+      ctx.fillStyle = '#0d1a2a'; ctx.fillText(f.label, left + 4, m.t + (fsz + 5) / 2 + .5);
+    }
+    ctx.restore();
+  }
+  const cursorLine = (ctx, o, X, m, ph, n) => { if (o.cursor != null && o.cursor < n) { const xx = X(o.hist.t[o.cursor]); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 1.2; ctx.setLineDash([]); ctx.beginPath(); ctx.moveTo(xx, m.t); ctx.lineTo(xx, m.t + ph); ctx.stroke(); } };
   const niceMax = (v) => { for (const s of [4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 60, 80, 100]) if (v <= s) return s; return 100; };
   const niceStep = (span) => { for (const s of [5, 10, 20, 25, 50, 100, 200, 250]) if (span / s <= 8) return s; return 365; };
   function drawStack(o) {
     const { ctx, w, h, hist, N, xmax } = o, fs = o.fs || 12;
-    const m = { l: fs * 3.3, r: 12, t: fs * 1.3, b: fs * 3.2 }, pw = w - m.l - m.r, ph = h - m.t - m.b;
+    const m = chMargins(fs, h), pw = w - m.l - m.r, ph = h - m.t - m.b;
     if (o.bg) { ctx.fillStyle = o.bg; ctx.fillRect(0, 0, w, h); } else ctx.clearRect(0, 0, w, h);
     ctx.font = `${fs}px "Source Sans 3",system-ui,sans-serif`; ctx.textBaseline = 'middle';
     const X = (tt) => m.l + tt / xmax * pw, Y = (v) => m.t + ph - v / N * ph;
     ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.fillStyle = 'rgba(185,198,214,.9)'; ctx.lineWidth = 1; ctx.textAlign = 'right';
-    for (const v of [0, 25, 50, 75, 100]) { const yy = Y(v / 100 * N); ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.fillText(v + '%', m.l - 6, yy); }
+    for (const v of (m.tiny ? [0, 50, 100] : [0, 25, 50, 75, 100])) { const yy = Y(v / 100 * N); ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.fillText(v + '%', m.l - 6, yy); }
     ctx.textAlign = 'center'; const step = niceStep(xmax);
     for (let d = 0; d <= xmax; d += step) ctx.fillText(String(d), X(d), m.t + ph + fs * 1.1);
-    ctx.fillStyle = 'rgba(142,160,181,.95)'; ctx.fillText(t('x_days'), m.l + pw / 2, m.t + ph + fs * 2.3);
+    if (!m.tiny) { ctx.fillStyle = 'rgba(142,160,181,.95)'; ctx.fillText(t('x_days'), m.l + pw / 2, m.t + ph + fs * 2.3); }
     const n = hist.t.length; if (!n) return;
     const order = ['V', 'R', 'D', 'I', 'E', 'S'], cum = new Array(n).fill(0), prev = new Array(n).fill(0);
     for (const k of order) {
@@ -190,14 +222,15 @@
     }
     if (o.hit > 0) {
       const yy = Y(o.hit * N); ctx.save(); ctx.setLineDash([6, 5]); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.restore();
-      ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(`${t('hit_line')} ${K.fmt(o.hit * 100, 0)}%`, m.l + 8, Math.max(m.t + fs * .7, yy - fs * .8));
+      ctx.textAlign = 'left'; ctx.fillStyle = '#fff'; ctx.fillText(m.tiny ? `${K.fmt(o.hit * 100, 0)}%` : `${t('hit_line')} ${K.fmt(o.hit * 100, 0)}%`, m.l + 8, Math.max(m.t + fs * .7, yy - fs * .8));
     }
     if (o.vday != null && o.vday <= xmax) { const xx = X(o.vday); ctx.save(); ctx.setLineDash([2, 3]); ctx.strokeStyle = '#7fd3ff'; ctx.beginPath(); ctx.moveTo(xx, m.t); ctx.lineTo(xx, m.t + ph); ctx.stroke(); ctx.restore(); }
-    if (o.cursor != null && o.cursor < n) { const xx = X(hist.t[o.cursor]); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(xx, m.t); ctx.lineTo(xx, m.t + ph); ctx.stroke(); }
+    drawFlags(ctx, o.flags, X, m, ph, xmax, w, fs);
+    cursorLine(ctx, o, X, m, ph, n);
   }
   function drawInc(o) {
     const { ctx, w, h, hist, N, xmax } = o, fs = o.fs || 12;
-    const m = { l: fs * 3.3, r: 12, t: fs * 1.3, b: fs * 3.2 }, pw = w - m.l - m.r, ph = h - m.t - m.b;
+    const m = chMargins(fs, h), pw = w - m.l - m.r, ph = h - m.t - m.b;
     ctx.clearRect(0, 0, w, h);
     ctx.font = `${fs}px "Source Sans 3",system-ui,sans-serif`; ctx.textBaseline = 'middle';
     const agent = hist.I.map(v => v / N * 100);
@@ -212,10 +245,10 @@
     const ymax = niceMax(Math.max(peakV * 1.12, 3));
     const X = (tt) => m.l + tt / xmax * pw, Y = (v) => m.t + ph - v / ymax * ph;
     ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.fillStyle = 'rgba(185,198,214,.9)'; ctx.lineWidth = 1; ctx.textAlign = 'right';
-    for (let i = 0; i <= 4; i++) { const v = ymax * i / 4, yy = Y(v); ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.fillText(K.fmt(v, v < 10 ? 1 : 0) + '%', m.l - 6, yy); }
+    for (let i = 0; i <= (m.tiny ? 2 : 4); i++) { const v = ymax * i / (m.tiny ? 2 : 4), yy = Y(v); ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.fillText(K.fmt(v, v < 10 ? 1 : 0) + '%', m.l - 6, yy); }
     ctx.textAlign = 'center'; const step = niceStep(xmax);
     for (let d = 0; d <= xmax; d += step) ctx.fillText(String(d), X(d), m.t + ph + fs * 1.1);
-    ctx.fillStyle = 'rgba(142,160,181,.95)'; ctx.fillText(t('x_days'), m.l + pw / 2, m.t + ph + fs * 2.3);
+    if (!m.tiny) { ctx.fillStyle = 'rgba(142,160,181,.95)'; ctx.fillText(t('x_days'), m.l + pw / 2, m.t + ph + fs * 2.3); }
     if (o.bands) {
       const b = o.bands; ctx.beginPath(); let first = true;
       for (let i = 0; i < b.t.length; i++) { if (b.t[i] > xmax) break; const px = X(b.t[i]), py = Y(b.hi[i] * 100); first ? ctx.moveTo(px, py) : ctx.lineTo(px, py); first = false; }
@@ -247,6 +280,49 @@
         ctx.textAlign = pxx > w * .7 ? 'right' : 'left'; ctx.fillStyle = '#fff'; ctx.fillText(t('peak_lbl', { p: K.fmt(pv, pv < 10 ? 2 : 1), d: K.fmt(o.peakDay, 1) }), pxx + (pxx > w * .7 ? -8 : 8), Math.max(m.t + fs * .7, pyy - fs * .9));
       }
     }
+    drawFlags(ctx, o.flags, X, m, ph, xmax, w, fs);
+    cursorLine(ctx, o, X, m, ph, n);
+  }
+  /* R efectivo en el tiempo (escala logarítmica: R = 1 queda siempre bien visible), con zonas «crece/retrocede» y las medidas marcadas */
+  function drawRe(o) {
+    const { ctx, w, h, hist, xmax } = o, fs = o.fs || 12, m = chMargins(fs, h), pw = w - m.l - m.r, ph = h - m.t - m.b, n = hist.t.length;
+    ctx.clearRect(0, 0, w, h); ctx.font = `${fs}px "Source Sans 3",system-ui,sans-serif`; ctx.textBaseline = 'middle';
+    let mx = 1; for (let i = 0; i < n; i++) if (hist.t[i] <= xmax && hist.Re[i] > mx) mx = hist.Re[i];
+    if (o.ode && o.showSEIR) for (let i = 0; i < o.ode.t.length; i++) if (o.ode.t[i] <= xmax && o.ode.Re[i] > mx) mx = o.ode.Re[i];
+    const lo = -2, hi = Math.max(1, Math.ceil(Math.log2(mx * 1.04))), L2 = (v) => Math.log2(Math.max(v, 0.25));
+    const X = (tt) => m.l + tt / xmax * pw, Y = (v) => m.t + ph - (L2(v) - lo) / (hi - lo) * ph, y1 = Y(1);
+    ctx.fillStyle = 'rgba(255,93,115,.07)'; ctx.fillRect(m.l, m.t, pw, y1 - m.t);
+    ctx.fillStyle = 'rgba(74,222,128,.07)'; ctx.fillRect(m.l, y1, pw, m.t + ph - y1);
+    ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.fillStyle = 'rgba(185,198,214,.9)'; ctx.lineWidth = 1; ctx.textAlign = 'right';
+    const kk = ph / (hi - lo) < fs * 1.9 ? 2 : 1;
+    for (let e = lo; e <= hi; e++) { if (e % kk !== 0) continue; const v = Math.pow(2, e), yy = Y(v); ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(w - m.r, yy); ctx.stroke(); ctx.fillText(K.fmt(v, 2), m.l - 6, yy); }
+    ctx.textAlign = 'center'; const step = niceStep(xmax);
+    for (let d = 0; d <= xmax; d += step) ctx.fillText(String(d), X(d), m.t + ph + fs * 1.1);
+    if (!m.tiny) { ctx.fillStyle = 'rgba(142,160,181,.95)'; ctx.fillText(t('x_days'), m.l + pw / 2, m.t + ph + fs * 2.3); }
+    ctx.save(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.6; ctx.setLineDash([6, 4]); ctx.beginPath(); ctx.moveTo(m.l, y1); ctx.lineTo(w - m.r, y1); ctx.stroke(); ctx.restore();
+    ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = `700 ${fs}px "Source Sans 3",system-ui,sans-serif`; ctx.fillText('R = 1', w - m.r - 4, y1 - fs * .85);
+    ctx.font = `${fs}px "Source Sans 3",system-ui,sans-serif`;
+    if (o.ode && o.showSEIR) {
+      ctx.save(); ctx.setLineDash([7, 5]); ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 1.6; ctx.beginPath(); let f0 = true;
+      for (let i = 0; i < o.ode.t.length; i++) { if (o.ode.t[i] > xmax) break; const px = X(o.ode.t[i]), py = Y(o.ode.Re[i]); f0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py); f0 = false; }
+      ctx.stroke(); ctx.restore();
+    }
+    if (n) {
+      ctx.lineWidth = 2.4; ctx.lineJoin = 'round'; let side = null; ctx.beginPath();
+      for (let i = 0; i < n; i++) {
+        const v = hist.Re[i], sd = v >= 1, px = X(hist.t[i]), py = Y(v);
+        if (side === null) { ctx.moveTo(px, py); side = sd; continue; }
+        if (sd !== side) { ctx.lineTo(px, py); ctx.strokeStyle = side ? '#ff5d73' : '#4ade80'; ctx.stroke(); ctx.beginPath(); ctx.moveTo(px, py); side = sd; } else ctx.lineTo(px, py);
+      }
+      ctx.strokeStyle = side ? '#ff5d73' : '#4ade80'; ctx.stroke();
+      const cur = hist.Re[n - 1], cx = X(hist.t[n - 1]), cy = Y(cur);
+      ctx.fillStyle = cur >= 1 ? '#ff5d73' : '#4ade80'; ctx.beginPath(); ctx.arc(cx, cy, 4, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.font = `700 ${fs}px "Source Sans 3",system-ui,sans-serif`; ctx.fillStyle = '#fff'; ctx.textAlign = cx > w * .6 ? 'right' : 'left';
+      ctx.fillText(K.fmt(cur, 2), cx + (cx > w * .6 ? -8 : 8), Math.min(m.t + ph - fs * .6, Math.max(m.t + fs * .6, cy + (cy < y1 ? -fs * .9 : fs * .9))));
+    }
+    drawFlags(ctx, o.flags, X, m, ph, xmax, w, fs);
+    cursorLine(ctx, o, X, m, ph, n);
   }
   function xmaxNow() {
     const tmax = Math.max(sim.t, ref ? ref.t[ref.t.length - 1] : 0, bands ? bands.t[bands.t.length - 1] : 0);
@@ -256,10 +332,13 @@
   function drawCharts() {
     if (!sim) return;
     const xmax = xmaxNow(), vd = P.varOn ? P.varDay : null;
+    const flags = flagList();
     const a = sizeCanvas(els.stack, els.stack.clientHeight);
-    if (a) drawStack({ ctx: a.ctx, w: a.w, h: a.h, hist: sim.h, N: sim.N, xmax, cursor, hit: dBase.hitEff, vday: vd });
+    if (a) drawStack({ ctx: a.ctx, w: a.w, h: a.h, hist: sim.h, N: sim.N, xmax, cursor, hit: dBase.hitEff, vday: vd, flags });
     const b = sizeCanvas(els.inc, els.inc.clientHeight);
-    if (b) drawInc({ ctx: b.ctx, w: b.w, h: b.h, hist: sim.h, N: sim.N, xmax, ode, showSEIR, cf, showCF, ref, bands, cap: capLine, peakDay: sim.peakDay, vday: vd });
+    if (b) drawInc({ ctx: b.ctx, w: b.w, h: b.h, hist: sim.h, N: sim.N, xmax, ode, showSEIR, cf, showCF, ref, bands, cap: capLine, peakDay: sim.peakDay, vday: vd, flags, cursor });
+    const c = sizeCanvas(els.re, els.re.clientHeight);
+    if (c) drawRe({ ctx: c.ctx, w: c.w, h: c.h, hist: sim.h, xmax, ode, showSEIR, flags, cursor });
     updateAria();
   }
 
@@ -267,12 +346,12 @@
   /* ocupación hospitalaria aproximada: ingresos = infecciones × fracción hospitalizada, estancia media STAY días */
   function hospCalc() {
     const h = sim.h, hp = pat() ? pat().hosp : 0.02, scale = popReal() / sim.N, n = h.t.length, w = Math.round(STAY / 0.5);
-    let sumWin = 0, peak = 0, peakDay = 0;
-    for (let i = 0; i < n; i++) { sumWin += h.inc[i]; if (i >= w) sumWin -= h.inc[i - w]; const o = sumWin * hp * scale; if (o > peak) { peak = o; peakDay = h.t[i]; } }
-    return { peak, peakDay, total: sim.cum * hp * scale };
+    let sumWin = 0, peak = 0, peakDay = 0, now = 0;
+    for (let i = 0; i < n; i++) { sumWin += h.inc[i]; if (i >= w) sumWin -= h.inc[i - w]; const o = sumWin * hp * scale; now = o; if (o > peak) { peak = o; peakDay = h.t[i]; } }
+    return { peak, peakDay, now, total: sim.cum * hp * scale };
   }
-  function updateResults() {
-    const s = sim.summary(), scale = popReal() / sim.N, pop = popReal(), H = hospCalc();
+  function updateResults(H) {
+    const s = sim.summary(), scale = popReal() / sim.N, pop = popReal();
     const cap = P.beds / 1000 * pop, sat = H.peak > cap && cap >= 0;
     const tiles = [
       { b: fmtN(pop), l: t('r_pop') }, { b: fmtN(s.infected * scale), l: t('r_cases', { p: pct(s.attack, 1) }) },
@@ -291,12 +370,38 @@
     const r = Math.log(a / b) / 7, D = Math.max(0.1, P.infect), Lt = Math.max(0, P.latent);
     return Math.pow(1 + r * D / 3, 3) * (Lt > 0 ? Math.pow(1 + r * Lt / 3, 3) : 1);
   }
-  function updateStats() {
-    const s = sim.summary(), d = dBase, N = sim.N;
-    const Re = sim.reNow ? sim.reNow() : d.R0eff, re2 = rEstimate();
+  /* indicadores clave del panel de mando (nodos fijos: solo se cambia el texto) */
+  const setTxt = (id, v) => { const e = els.k[id]; if (e && e.textContent !== v) e.textContent = v; };
+  function reState(Re, s) {
+    if (s.t > 0 && s.I < 1 && sim.cnt[1] < 1) return 'none';
+    return Re > 1.05 ? 'grow' : Re < 0.95 ? 'fall' : 'flat';
+  }
+  function updateKpis(s, Re, H) {
+    const k = popReal() / sim.N, pop = popReal(), h = sim.h, n = h.t.length, cap = P.beds / 1000 * pop;
+    const st = reState(Re, s), prev = n > 15 ? h.Re[n - 15] : Re, rel = (Re - prev) / Math.max(prev, 0.1);
+    const tr = rel > 0.03 ? 'up' : rel < -0.03 ? 'dn' : 'eq', arrow = { up: '▲', dn: '▼', eq: '►' }[tr];
+    els.kpiR.dataset.tone = { grow: 'bad', flat: 'warn', fall: 'ok', none: 'idle' }[st];
+    els.kpiR.title = t('tr_' + tr);
+    setTxt('re', K.fmt(Re, 2)); setTxt('re_s', st === 'none' ? t('k_none') : `${arrow} ${t('k_' + st)}`);
+    setTxt('day', K.fmt(s.t, 0)); setTxt('day_s', t('k_of', { n: P.days }));
+    setTxt('inf', fmtN(s.I * k)); setTxt('inf_s', t('k_pop_p', { p: pct(s.I / sim.N, s.I / sim.N < 0.01 ? 2 : 1) }));
+    setTxt('dead', fmtN(s.D * k)); setTxt('dead_s', t('k_pop_p', { p: pct(s.D / sim.N, 2) }));
+    setTxt('hosp', '≈ ' + fmtN(H.now)); setTxt('hosp_s', t('k_beds', { c: fmtN(cap) }));
+    els.kpiHosp.dataset.tone = H.now > cap ? 'bad' : '';
+    setTxt('imm', fmtN((s.R + s.V) * k)); setTxt('imm_s', t('k_pop_p', { p: pct((s.R + s.V) / sim.N, 0) }));
+    setTxt('peak', ode ? pct(ode.peak, 1) + ' %' : '—'); setTxt('peak_s', ode ? t('k_day_n', { d: K.fmt(ode.peakDay, 0) }) : '');
+    /* aviso hablado solo cuando cambia el estado (crece / estable / retrocede), sin repetir ni saturar */
+    if (st !== rState) {
+      const now = performance.now();
+      if (!rState) rState = st;
+      else if (now - rAnnAt > 4000) { rState = st; rAnnAt = now; els.liveR.textContent = t('live_r', { r: K.fmt(Re, 2), s: t('live_' + st) }); }
+    }
+  }
+  function updateStats(H) {
+    const s = sim.summary(), d = dBase, Re = sim.reNow ? sim.reNow() : d.R0eff, re2 = rEstimate();
     const theory = finalSize(d.R0eff, d.s0), hit = d.hitEff;
+    updateKpis(s, Re, H);
     const tiles = [
-      { b: K.fmt(s.t, 1), l: t('s_day') },
       { b: K.fmt(d.R0eff, 2), l: t('s_r0eff'), cls: d.R0eff < 1 ? 'ok' : '' },
       { b: K.fmt(Re, 2), l: t('s_re'), cls: Re < 1 ? 'ok' : (s.I > 0 ? 'bad' : ''), hl: true },
       { b: re2 == null ? '—' : K.fmt(re2, 2), l: t('s_rest') },
@@ -306,13 +411,36 @@
     ];
     els.stats.innerHTML = tiles.map(x => `<div class="stat ${x.hl ? 'hl' : ''} ${x.cls || ''}"><b>${x.b}</b><span>${K.esc(x.l)}</span></div>`).join('');
   }
+  function renderReKey() {
+    const fl = P && ((P.sel || []).length || ((P.vsel || []).length && P.vacc > 0));
+    $('#re-key').innerHTML = `<span class="chip" style="color:#ff5d73"><i></i>${K.esc(t('re_k_sim'))}</span>${showSEIR ? `<span class="chip dsh" style="color:#fff"><i></i>${K.esc(t('re_k_model'))}</span>` : ''}${fl ? `<span class="chip" style="color:#c4a6ec"><i></i>${K.esc(t('re_k_flag'))}</span>` : ''}`;
+  }
+  /* resumen de lo activo: medidas numeradas (el número coincide con la marca en las gráficas) y vacunación */
+  const shortName = (n) => n.replace(/\s*\([^)]*\)/g, '').trim();
+  function updateActive() {
+    if (!els.active || !P) return;
+    const sel = P.sel || [], vac = (P.vsel || []).length && P.vacc > 0, eff = sel.length ? Core.measureEffects(P) : {};
+    const tAt = sel.length ? Math.max(...sel.map(m => +m.start || 0)) + 0.01 : 0, rAll = P.R0 * Core.controlAt(P, tAt).mult, parts = [];
+    if (sel.length || vac) {
+      if (sel.length) parts.push(`<span class="achip sum">${K.esc(t(sel.length === 1 ? 'ch_meas1' : 'ch_meas', { n: sel.length, a: K.fmt(P.R0, 1), b: K.fmt(rAll, 1) }))}</span>`);
+      if (vac) parts.push(`<span class="achip sum">${K.esc(t('ch_vac', { v: K.fmt(P.vacc, 0), d: K.fmt(+P.vstart || 0, 0) }))}</span>`);
+      sel.slice(0, 6).forEach((m, i) => {
+        const def = Core.data.measures[m.id], e = eff[m.id], nm = L(def.name), v = e ? K.fmt(e.alone * 100, 0) : '0';
+        parts.push(`<span class="achip list" title="${K.esc(t('ch_title', { n: nm, d: K.fmt(+m.start || 0, 0), v }))}"><span class="n">${i + 1}</span>${K.esc(shortName(nm))}${e && e.alone >= 0.01 ? ` <b>${K.esc(t('ch_eff', { v }))}</b>` : ''}</span>`);
+      });
+      if (sel.length > 6) parts.push(`<span class="achip list more">${K.esc(t('ch_more', { n: sel.length - 6 }))}</span>`);
+    }
+    els.active.innerHTML = parts.join(''); renderReKey();
+    els.tcMeas.textContent = sel.length ? String(sel.length) : '';
+    els.tcVac.textContent = vac ? K.fmt(P.vacc, 0) + '%' : '';
+  }
   function updateLegend() {
     const stamp = sim.cnt.join(',') + '|' + popReal();
     if (stamp === lastStamp) return; lastStamp = stamp;
     els.legend.querySelectorAll('[data-s]').forEach(e => { e.querySelector('em').textContent = fmtN(Math.round(sim.cnt[STATES.indexOf(e.dataset.s)] * (popReal() / sim.N))); });
   }
   function renderLegend() {
-    els.legend.innerHTML = STATES.map(s => `<span class="chip" data-s="${s}" title="${K.esc(t('sd_' + s))}"><i style="background:${COL[s]}"></i>${K.esc(t('st_' + s))}<em>0</em></span>`).join('');
+    els.legend.innerHTML = STATES.map(s => `<span class="chip" data-s="${s}" title="${K.esc(t('sd_' + s))}"><i style="background:${COL[s]}"></i><span class="lb">${K.esc(t('st_' + s))}</span><em>0</em></span>`).join('');
     lastStamp = ''; if (sim) updateLegend();
   }
   function updateReadout() {
@@ -324,6 +452,7 @@
     const summ = t('sum_now', { d: K.fmt(s.t, 1), I: f(s.I), S: f(s.S), p: K.fmt(s.peak * 100, 2), pd: K.fmt(s.peakDay, 1) });
     els.stack.setAttribute('aria-label', t('stack_aria', { s: summ }));
     els.inc.setAttribute('aria-label', t('inc_aria', { s: summ }));
+    els.re.setAttribute('aria-label', t('re_aria', { s: t('live_r', { r: K.fmt(sim.reNow ? sim.reNow() : 0, 2), s: t('live_' + reState(sim.reNow ? sim.reNow() : 0, s)) }) + ' ' + summ }));
     els.world.setAttribute('aria-label', t(isMap() ? 'map_aria' : 'world_aria', { d: K.fmt(s.t, 1), S: f(s.S), E: f(s.E), I: f(s.I), R: f(s.R), V: f(s.V), D: f(s.D), pl: t('pl_' + P.place) }));
   }
   function announce() { els.live.textContent = t('sum_now', { d: K.fmt(sim.t, 0), I: fmtN(sim.cnt[2]), S: fmtN(sim.cnt[0]), p: K.fmt(sim.peak / sim.N * 100, 2), pd: K.fmt(sim.peakDay, 1) }); }
@@ -343,11 +472,14 @@
   }
 
   /* ================= bucle ================= */
-  function setPlayLabel() { els.play.textContent = playing ? t('btn_pause') : (sim.t > 0 && !sim.finished ? t('btn_resume') : t('btn_play')); }
+  function setPlayLabel() {
+    const lbl = playing ? t('btn_pause') : (sim.t > 0 && !sim.finished ? t('btn_resume') : t('btn_play'));
+    els.play.innerHTML = `<span aria-hidden="true">${playing ? '❚❚' : '▶\uFE0E'}</span><span>${K.esc(lbl)}</span>`;
+  }
   function render(ts) {
     drawWorld((ts || performance.now()) / 1000);
     const len = sim.h.t.length;
-    if (len !== render.len) { render.len = len; updateStats(); updateResults(); drawCharts(); updateReadout(); if (isMap()) { Panels.updateRank(); updateMapInfo(); } if (Math.round(sim.t) % 10 === 0) announce(); }
+    if (len !== render.len) { render.len = len; const H = hospCalc(); updateStats(H); updateResults(H); drawCharts(); updateReadout(); if (isMap()) { Panels.updateRank(); updateMapInfo(); } if (Math.round(sim.t) % 10 === 0) announce(); }
     updateLegend();
   }
   function maybeVariant(s) {
@@ -396,7 +528,7 @@
     if (isMap() && !geo().features.some(f => f.id === P.origin)) P.origin = defaultOrigin(geo());
     sim = makeSim(P); cursor = null; chalResult = null; bands = null; dirty = false; hoverT = -1; selT = -1;
     els.dirty.hidden = true; els.apply.hidden = true; els.msg.hidden = true; render.len = -1;
-    refreshDerive(); updateRatio(); render(); setPlayLabel(); renderBanner(); els.bandout.textContent = '';
+    refreshDerive(); rState = ''; updateActive(); updateRatio(); render(); setPlayLabel(); renderBanner(); els.bandout.textContent = '';
     if (isMap()) { Panels.renderMapSide(); updateMapInfo(); }
     if (autoplay && !RM) play(); else if (RM) { els.msg.textContent = t('world_msg_rm'); els.msg.hidden = false; }
   }
@@ -503,21 +635,21 @@
   /* ================= controles ================= */
   const num = (u, d = 0) => v => K.fmt(v, d) + (u ? ' ' + u : '');
   const CTL = [
-    { g: 'g_disease', items: [
+    { g: 'g_disease', tab: 'disease', items: [
       { k: 'R0', min: 0.5, max: 20, step: 0.1, f: num('', 1) }, { k: 'latent', min: 0, max: 21, step: 0.5, f: num('d', 1) },
       { k: 'infect', min: 1, max: 30, step: 0.5, f: num('d', 1) }, { k: 'cfr', min: 0, max: 30, step: 0.05, f: v => K.fmt(v, v < 0.1 ? 3 : 2) + ' %' },
       { k: 'prior', min: 0, max: 95, step: 1, f: num('%') }, { k: 'wane', min: 0, max: 1500, step: 10, f: v => (v > 0 ? K.fmt(v, 0) + ' d' : t('imm_life')), get: () => P.path.wane || 0, set: v => { P.path.wane = v; } }] },
-    { g: 'g_pop', items: [
+    { g: 'g_pop', tab: 'pop', items: [
       { k: 'N', min: 100, max: 20000, step: 100, f: num('', 0), show: () => !isMap() },
       { k: 'seeds', min: 1, max: 50, step: 1, f: num('', 0), show: () => !isMap() },
       { k: 'days', min: 30, max: 1095, step: 5, f: num('d', 0) },
       { k: 'seed', seed: true }] },
-    { g: 'g_extra', items: [
+    { g: 'g_extra', tab: 'pop', items: [
       { k: 'doy', month: true },
       { k: 'imp', min: 0, max: 50, step: 1, f: num('', 0) },
       { k: 'kdisp', min: 0, max: 5, step: 0.1, f: v => (v > 0 ? K.fmt(v, 1) : t('off')), show: () => !isMap() },
       { k: 'beds', min: 0, max: 5, step: 0.1, f: num('', 1) }] },
-    { g: 'g_variant', items: [
+    { g: 'g_variant', tab: 'disease', items: [
       { k: 'varOn', check: true },
       { k: 'varDay', min: 5, max: 1000, step: 5, f: num('d', 0) },
       { k: 'varEsc', min: 0, max: 100, step: 5, f: num('%') },
@@ -525,14 +657,14 @@
   ];
   const ctlItems = () => CTL.flatMap(g => g.items);
   function renderControls() {
-    els.controls.innerHTML = CTL.map(grp => `<div class="ctl-group"><h3>${K.esc(t(grp.g))}</h3>${grp.items.filter(it => !it.show || it.show()).map(it => {
+    els.controls.innerHTML = CTL.map(grp => `<div class="ctl-group" data-tab="${grp.tab}"><h3>${K.esc(t(grp.g))}</h3>${grp.items.filter(it => !it.show || it.show()).map(it => {
       if (it.seed) return `<div class="ctl"><label class="top" for="c-seed"><span>${K.esc(t('c_seed'))}</span></label><div class="seed-row"><input type="number" id="c-seed" data-k="seed" min="1" max="999999" step="1" value="${P.seed}"><button class="icon-btn" type="button" data-dice="1" title="${K.esc(t('dice'))}" aria-label="${K.esc(t('dice'))}">🎲</button></div><small>${K.esc(t('c_seed_h'))}</small></div>`;
       if (it.month) return `<div class="ctl"><label class="top" for="c-doy"><span>${K.esc(t('c_doy'))}</span></label><select id="c-doy" data-k="doy">${FIRST_DOY.map((d, i) => `<option value="${d}" ${(() => { let b = 0; FIRST_DOY.forEach((x, j) => { if (P.doy >= x) b = j; }); return b === i; })() ? 'selected' : ''}>${K.esc(new Date(2025, i, 1).toLocaleDateString(K.locale(), { month: 'long' }))}</option>`).join('')}</select><small>${K.esc(t('c_doy_h'))}</small></div>`;
       if (it.check) return `<label class="check"><input type="checkbox" data-k="varOn" ${P.varOn ? 'checked' : ''}><span>${K.esc(t('c_varOn'))}</span></label><small class="muted">${K.esc(t('c_varOn_h'))}</small>`;
       const val = it.get ? it.get() : P[it.k];
       return `<div class="ctl"><label class="top" for="c-${it.k}"><span>${K.esc(t('c_' + it.k))}</span><output id="o-${it.k}">${it.f(val)}</output></label>
         <input type="range" id="c-${it.k}" data-k="${it.k}" min="${it.min}" max="${it.max}" step="${it.step}" value="${val}"><small>${K.esc(t('c_' + it.k + '_h'))}</small></div>`;
-    }).join('')}</div>`).join('') + `<div class="ctl-group"><h3>${K.esc(t('g_runs'))}</h3><p class="small muted">${K.esc(t('runs_p'))}</p><div class="row"><button class="btn small" type="button" id="btn-bands">${K.esc(t('runs_btn'))}</button><button class="btn ghost small" type="button" id="btn-bandsx" ${bands ? '' : 'hidden'}>${K.esc(t('runs_clear'))}</button></div><p class="small" id="bandout" aria-live="polite"></p></div>`;
+    }).join('')}</div>`).join('') + `<div class="ctl-group" data-tab="pop"><h3>${K.esc(t('g_runs'))}</h3><p class="small muted">${K.esc(t('runs_p'))}</p><div class="row"><button class="btn small" type="button" id="btn-bands">${K.esc(t('runs_btn'))}</button><button class="btn ghost small" type="button" id="btn-bandsx" ${bands ? '' : 'hidden'}>${K.esc(t('runs_clear'))}</button></div><p class="small" id="bandout" aria-live="polite"></p></div>`;
     els.bandout = $('#bandout'); if (bands && bands.text) els.bandout.textContent = bands.text;
   }
   function onControl(k, raw) {
@@ -541,7 +673,7 @@
     if (it.set) it.set(v); else P[k] = v;
     saveP();
     const out = $('#o-' + k); if (out && it.f) out.textContent = it.f(v);
-    refreshDerive();
+    refreshDerive(); updateActive();
     if (BASE_KEYS.includes(k) && scenId !== 'custom') { scenId = 'custom'; store.set('scen', scenId); }
     Panels.renderCard(); Panels.renderPathogens(); Panels.updateMeasureSummary(); Panels.updateVaxInfo(); recomputeODE();
     if (k === 'days') { sim.setParams({ days: P.days }); render.len = -1; if (!playing) render(); return; }
@@ -551,14 +683,16 @@
   }
   function renderStatic() {
     document.title = `${t('title')} · Luis Franco Serrano`;
-    $('#speed').innerHTML = SPEEDS.map((s, i) => `<button type="button" data-speed="${i}" aria-pressed="${i === speedIdx}">×${K.fmt(s, 2)}</button>`).join('');
-    $('#t-stack').textContent = t('t_stack'); $('#t-inc').textContent = t('t_inc');
-    $('#inc-key').innerHTML = `<span class="chip" style="color:#ff5d73"><i></i>${K.esc(t('k_agents'))}</span><span class="chip dash" style="color:#fff"><i></i>${K.esc(t('k_seir'))}</span><span class="chip dash" style="color:#f5b82e"><i></i>${K.esc(t('k_cf'))}</span>${ref ? `<span class="chip dash" style="color:#5eead4"><i></i>${K.esc(t('k_ref'))}</span>` : ''}${bands ? `<span class="chip" style="color:#7fd3ff"><i></i>${K.esc(t('k_bands'))}</span>` : ''}`;
+    $('#speed').innerHTML = SPEEDS.map((s, i) => `<option value="${i}" ${i === speedIdx ? 'selected' : ''}>×${K.fmt(s, 2)}</option>`).join('');
+    $('#t-stack').textContent = t('t_stack'); $('#t-inc').textContent = t('t_inc'); $('#t-re').textContent = t('t_re');
+    renderReKey();
+    applySize(); applyDrawer(); applyTab();
+    $('#inc-key').innerHTML = `<span class="chip" style="color:#ff5d73"><i></i>${K.esc(t('k_agents'))}</span><span class="chip dsh" style="color:#fff"><i></i>${K.esc(t('k_seir'))}</span><span class="chip dsh" style="color:#f5b82e"><i></i>${K.esc(t('k_cf'))}</span>${ref ? `<span class="chip dsh" style="color:#5eead4"><i></i>${K.esc(t('k_ref'))}</span>` : ''}${bands ? `<span class="chip" style="color:#7fd3ff"><i></i>${K.esc(t('k_bands'))}</span>` : ''}`;
     els.ref.textContent = ref ? t('ref_clear') : t('ref_set');
     $('#opt-radius').checked = showRadius; $('#opt-live').checked = liveApply; $('#opt-seir').checked = showSEIR; $('#opt-cf').checked = showCF;
     $('#explain-body').innerHTML = `<h2>${K.esc(t('ex_h'))}</h2><div class="banner disc">${K.esc(t('disc'))}</div>` +
       ['ex1', 'ex2', 'ex3', 'ex4', 'ex5', 'ex6'].map((k, i) => `<details ${i === 0 ? 'open' : ''}><summary>${K.esc(t(k + '_t'))}</summary>${k === 'ex1' ? `<ul>${STATES.map(s => `<li><span class="sw" style="background:${COL[s]}"></span><b>${K.esc(t('st_' + s))}</b>: ${K.esc(t('sd_' + s))}</li>`).join('')}</ul>` : ''}<p>${K.esc(t(k + '_p'))}</p></details>`).join('');
-    renderLegend(); Panels.renderAll(); renderControls(); renderChallenges(); renderBanner(); updateRatio(); updateMapInfo();
+    renderLegend(); Panels.renderAll(); renderControls(); renderChallenges(); renderBanner(); updateRatio(); updateMapInfo(); updateActive();
     if (sim) { setPlayLabel(); K.applyDom(); render.len = -1; render(); if (sim.finished) { els.msg.textContent = t('world_msg_done', { d: K.fmt(sim.finishedAt ?? sim.t, 1), p: pct(sim.summary().attack, 1) }); els.msg.hidden = false; } }
     else K.applyDom();
   }
@@ -622,12 +756,53 @@
     K, t, Core, geoCache, fmtN, get P() { return P; }, get sim() { return sim; }, get scenId() { return scenId; }, get derive() { return dBase; },
     isMap, setPlace: (id) => { challenge = null; capLine = null; renderBanner(); renderChallenges(); setPlace(id); },
     pickScenario: loadPathogen,
-    measuresChanged() { refreshDerive(); sim.setParams(P); saveP(); Panels.updateMeasureSummary(); Panels.renderCard(); recomputeODE(); render.len = -1; if (!playing) render(); },
-    vaccinesChanged() { refreshDerive(); saveP(); Panels.updateVaxInfo(); Panels.renderCard(); recomputeODE(); needReset(); },
+    measuresChanged() { refreshDerive(); updateActive(); sim.setParams(P); saveP(); Panels.updateMeasureSummary(); Panels.renderCard(); recomputeODE(); render.len = -1; if (!playing) render(); },
+    vaccinesChanged() { refreshDerive(); updateActive(); saveP(); Panels.updateVaxInfo(); Panels.renderCard(); recomputeODE(); needReset(); },
     mapParamChanged(k, reset) { saveP(); sim.setParams(P); if (reset) needReset(); else { render.len = -1; if (!playing) render(); } },
     setOrigin(id) { P.origin = id; saveP(); restart(playing); }
   };
   const Panels = window.EpiPanels;
+
+  /* ================= panel de mando y ajustes: tamaño, gráfico visible, pestañas y cajón ================= */
+  function applySize() {
+    els.dash.dataset.size = dashSize;
+    const b = $('#btn-size'), lbl = t('size_now', { s: t('sz_' + dashSize) });
+    $('#size-ico').textContent = GLYPH[dashSize]; $('#size-lbl').textContent = lbl; b.title = lbl;
+  }
+  function applyCv() {
+    els.dash.dataset.cv = dashCv;
+    $('#cv-seg').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cv === dashCv)));
+  }
+  function applyTab() {
+    els.drawer.dataset.tab = curTab;
+    $('#dtabs').querySelectorAll('[role=tab]').forEach(b => { const on = b.dataset.t === curTab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+    $('#dbody').setAttribute('aria-labelledby', 'tab-' + curTab);
+  }
+  function applyDrawer() {
+    els.layout.dataset.drawer = drawerOpen ? 'open' : 'closed';
+    const b = $('#btn-drawer'), lbl = t(drawerOpen ? 'drawer_close' : 'drawer_open');
+    b.setAttribute('aria-expanded', String(drawerOpen)); b.title = lbl; $('#drawer-lbl').textContent = lbl; $('#drawer-ico').textContent = drawerOpen ? '▸' : '◂';
+  }
+  function setTab(id, focus) {
+    if (!TABS.includes(id)) return;
+    curTab = id; store.set('tab', id); applyTab(); $('#dbody').scrollTop = 0;
+    if (focus) $('#tab-' + id).focus();
+    const dr = els.drawer.getBoundingClientRect(), dh = els.dash.getBoundingClientRect();
+    if (getComputedStyle(els.dash).position === 'sticky' && dr.top < dh.bottom - 4) els.drawer.scrollIntoView({ block: 'start', behavior: RM ? 'auto' : 'smooth' });
+  }
+  function wirePanel() {
+    $('#btn-size').addEventListener('click', () => { dashSize = SIZES[(SIZES.indexOf(dashSize) + 1) % SIZES.length]; store.set('dsize', dashSize); applySize(); render.len = -1; if (sim) render(); });
+    $('#cv-seg').addEventListener('click', e => { const b = e.target.closest('[data-cv]'); if (!b) return; dashCv = b.dataset.cv; store.set('cv', dashCv); applyCv(); if (sim) drawCharts(); });
+    $('#dtabs').addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (b) setTab(b.dataset.t, false); });
+    $('#dtabs').addEventListener('keydown', e => {
+      const i = TABS.indexOf(curTab); let j = i;
+      if (e.key === 'ArrowRight') j = (i + 1) % TABS.length; else if (e.key === 'ArrowLeft') j = (i - 1 + TABS.length) % TABS.length; else if (e.key === 'Home') j = 0; else if (e.key === 'End') j = TABS.length - 1; else return;
+      e.preventDefault(); setTab(TABS[j], true);
+    });
+    $('#btn-drawer').addEventListener('click', () => { drawerOpen = !drawerOpen; store.set('drawer', drawerOpen); applyDrawer(); });
+    if ('ResizeObserver' in window) new ResizeObserver(() => els.layout.style.setProperty('--dash-h', els.dash.offsetHeight + 'px')).observe(els.dash);
+    applySize(); applyCv(); applyTab(); applyDrawer();
+  }
 
   /* ================= eventos ================= */
   function wire() {
@@ -636,7 +811,8 @@
     $('#btn-week').addEventListener('click', () => stepDays(7));
     $('#btn-reset').addEventListener('click', () => restart(false));
     els.apply.addEventListener('click', () => restart(true));
-    $('#speed').addEventListener('click', e => { const b = e.target.closest('[data-speed]'); if (!b) return; speedIdx = +b.dataset.speed; store.set('speed', speedIdx); $('#speed').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.speed === speedIdx))); });
+    $('#speed').addEventListener('change', e => { speedIdx = K.clamp(+e.target.value || 0, 0, SPEEDS.length - 1); store.set('speed', speedIdx); });
+    wirePanel();
     $('#opt-live').addEventListener('change', e => { liveApply = e.target.checked; store.set('live', liveApply); });
     $('#opt-radius').addEventListener('change', e => { showRadius = e.target.checked; store.set('radius', showRadius); render.len = -1; render(); });
     $('#opt-seir').addEventListener('change', e => { showSEIR = e.target.checked; store.set('seir', showSEIR); drawCharts(); });
@@ -687,12 +863,14 @@
       } else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sim.introduce(Math.random(), Math.random()); render.len = -1; render(); }
     });
     const announceIntro = (i) => { els.live.textContent = t('intro_live', { n: L(geo().features[i].n) }); };
-    const setCursorFromX = (clientX) => {
-      const r = els.stack.getBoundingClientRect(), fs = 12, ml = fs * 3.3, pw = r.width - ml - 12;
+    const setCursorFromX = (clientX, cv) => {
+      const r = cv.getBoundingClientRect(), fs = 12, ml = fs * 3.3, pw = r.width - ml - 12;
       const tt = (clientX - r.left - ml) / pw * xmaxNow(); cursor = K.clamp(Math.round(tt / 0.5), 0, sim.h.t.length - 1); drawCharts(); updateReadout();
     };
-    els.stack.addEventListener('pointermove', e => setCursorFromX(e.clientX));
-    els.stack.addEventListener('pointerleave', () => { cursor = null; drawCharts(); updateReadout(); });
+    [els.stack, els.inc, els.re].forEach(cv => {
+      cv.addEventListener('pointermove', e => setCursorFromX(e.clientX, cv));
+      cv.addEventListener('pointerleave', () => { cursor = null; drawCharts(); updateReadout(); });
+    });
     els.stack.addEventListener('keydown', e => {
       const n = sim.h.t.length, cur = cursor == null ? n - 1 : cursor; let c = cur;
       if (e.key === 'ArrowLeft') c = cur - (e.shiftKey ? 10 : 1); else if (e.key === 'ArrowRight') c = cur + (e.shiftKey ? 10 : 1); else if (e.key === 'Home') c = 0; else if (e.key === 'End') c = n - 1; else if (e.key === 'Escape') { cursor = null; drawCharts(); updateReadout(); return; } else return;
@@ -702,7 +880,7 @@
       if (document.hidden && playing) { pause(); resumeOnVisible = true; } else if (!document.hidden && resumeOnVisible) { resumeOnVisible = false; play(); }
     });
     window.addEventListener('beforeunload', () => store.set('P2', serial()));
-    if ('ResizeObserver' in window) { const ro = new ResizeObserver(K.debounce(() => { if (sim) { render.len = -1; render(); } }, 60)); [els.world, els.stack, els.inc].forEach(c => ro.observe(c)); }
+    if ('ResizeObserver' in window) { const ro = new ResizeObserver(K.debounce(() => { if (sim) { render.len = -1; render(); } }, 60)); [els.world, els.stack, els.inc, els.re].forEach(c => ro.observe(c)); }
     else window.addEventListener('resize', K.debounce(() => { if (sim) { render.len = -1; render(); } }, 100));
     K.onLang(() => { renderStatic(); });
   }
@@ -711,7 +889,9 @@
   function boot() {
     Object.assign(els, { world: $('#world'), stack: $('#cv-stack'), inc: $('#cv-inc'), legend: $('#legend'), stats: $('#stats'), play: $('#btn-play'), ref: $('#btn-ref'), msg: $('#world-msg'),
       readout: $('#readout'), live: $('#live'), controls: $('#controls'), dirty: $('#dirty'), apply: $('#btn-apply'), banner: $('#challenge-banner'), results: $('#results'),
-      ratio: $('#ratio'), mapinfo: $('#map-info') });
+      ratio: $('#ratio'), mapinfo: $('#map-info'), dash: $('#dash'), layout: $('#layout'), drawer: $('#drawer'), re: $('#cv-re'), kpiR: $('#kpi-r'), kpiHosp: $('#kpi-hosp'),
+      active: $('#active-strip'), tcMeas: $('#tc-measures'), tcVac: $('#tc-vaccines'), liveR: $('#live-r'), k: {} });
+    ['re', 'day', 'inf', 'dead', 'hosp', 'imm', 'peak'].forEach(id => { els.k[id] = $('#kv-' + id); els.k[id + '_s'] = $('#ks-' + id); });
     Panels.init(host); wire();
     const fromUrl = readCfg();
     restoreP(fromUrl || store.get('P2', null));

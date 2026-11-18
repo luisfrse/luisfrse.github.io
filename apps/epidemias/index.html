@@ -11,114 +11,162 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../shared/app.css?v=5">
-<link rel="stylesheet" href="epidemias.css">
+<link rel="stylesheet" href="epidemias.css?v=2">
 </head>
 <body>
 <main class="kit-main" id="app">
-<div class="epi-layout">
+<div class="epi-layout" id="layout" data-drawer="open">
 
-  <!-- Lugar, patógeno y ficha -->
-  <section class="panel intro epi-intro">
-    <div class="intro-text">
-      <h2 data-i18n="intro_h"></h2>
-      <p class="muted" data-i18n="intro_p"></p>
-    </div>
-    <div class="pick"><span class="pick-l" data-i18n="place_l"></span><div class="scen-chips" id="place-chips" role="group" data-i18n-aria="place_l"></div></div>
-    <div class="pick"><span class="pick-l" data-i18n="pathogen_l"></span><div class="scen-chips pgroups" id="scen-chips" role="group" data-i18n-aria="pathogen_l"></div></div>
-    <article class="scen-card" id="scen-card" aria-live="polite"></article>
+  <!-- Panel de mando: siempre a la vista (mapa, evolución, R efectivo e indicadores) -->
+  <section class="dash" id="dash" data-size="compact" data-cv="evo" aria-label="Panel de mando" data-i18n-aria="dash_l">
     <div class="banner challenge-banner" id="challenge-banner" hidden></div>
+    <div class="banner dirty-bar" id="dirty" hidden role="status"><span data-i18n="dirty"></span><button class="btn small" id="btn-apply" type="button" hidden data-i18n="apply"></button></div>
+
+    <!-- Indicadores clave -->
+    <div class="kpis" id="kpis" role="group" data-i18n-aria="kpi_l">
+      <div class="kpi kpi-r" id="kpi-r" data-tone="idle">
+        <span class="k-l" data-i18n="k_re"></span>
+        <b class="k-v" id="kv-re">—</b>
+        <span class="k-s" id="ks-re"></span>
+      </div>
+      <div class="kpi"><span class="k-l" data-i18n="k_day"></span><b class="k-v" id="kv-day">0</b><span class="k-s" id="ks-day"></span></div>
+      <div class="kpi"><span class="k-l" data-i18n="k_inf"></span><b class="k-v" id="kv-inf">0</b><span class="k-s" id="ks-inf"></span></div>
+      <div class="kpi" id="kpi-dead"><span class="k-l" data-i18n="k_dead"></span><b class="k-v" id="kv-dead">0</b><span class="k-s" id="ks-dead"></span></div>
+      <div class="kpi opt" id="kpi-hosp"><span class="k-l" data-i18n="k_hosp"></span><b class="k-v" id="kv-hosp">0</b><span class="k-s" id="ks-hosp"></span></div>
+      <div class="kpi opt"><span class="k-l" data-i18n="k_imm"></span><b class="k-v" id="kv-imm">0</b><span class="k-s" id="ks-imm"></span></div>
+      <div class="kpi opt"><span class="k-l" data-i18n="k_peak"></span><b class="k-v" id="kv-peak">—</b><span class="k-s" id="ks-peak"></span></div>
+    </div>
+
+    <!-- Reproducir, pausa y velocidad -->
+    <div class="transport" role="group" data-i18n-aria="transport_l">
+      <button class="btn play" id="btn-play" type="button"></button>
+      <button class="btn ghost" id="btn-step" type="button" data-i18n-aria="btn_step"><span class="t-full" data-i18n="btn_step"></span><span class="t-short" aria-hidden="true" data-i18n="btn_step_s"></span></button>
+      <button class="btn ghost" id="btn-week" type="button" data-i18n-aria="btn_week"><span class="t-full" data-i18n="btn_week"></span><span class="t-short" aria-hidden="true" data-i18n="btn_week_s"></span></button>
+      <button class="btn ghost" id="btn-reset" type="button" data-i18n-aria="btn_reset"><span aria-hidden="true">↺</span><span class="t-lbl" data-i18n="btn_reset"></span></button>
+      <label class="speed"><span class="sr-only" data-i18n="speed_l"></span><select id="speed"></select></label>
+      <button class="btn ghost size-btn" id="btn-size" type="button" aria-pressed="false"><span aria-hidden="true" id="size-ico">▾</span><span class="sr-only" id="size-lbl"></span></button>
+    </div>
+
+    <!-- Medidas y vacunación activas -->
+    <div class="active-strip" id="active-strip"></div>
+
+    <!-- Mapa y gráficos -->
+    <div class="viz">
+      <div class="viz-map">
+        <div class="map-box">
+          <div class="world-wrap">
+            <canvas id="world" role="img" tabindex="0"></canvas>
+            <div class="world-msg" id="world-msg" hidden></div>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <p class="small muted ratio" id="ratio"></p>
+        <p class="small map-info" id="map-info" hidden></p>
+        <p class="muted small click-hint" data-i18n="click_hint"></p>
+      </div>
+      <div class="viz-charts">
+        <div class="seg cv-seg" id="cv-seg" role="group" data-i18n-aria="cv_l">
+          <button type="button" data-cv="evo" aria-pressed="true" data-i18n="cv_evo"></button>
+          <button type="button" data-cv="inc" aria-pressed="false" data-i18n="cv_inc"></button>
+          <button type="button" data-cv="re" aria-pressed="false" data-i18n="cv_re"></button>
+        </div>
+        <div class="chart-block" data-cv="evo">
+          <h3 id="t-stack"></h3>
+          <canvas id="cv-stack" role="img" tabindex="0"></canvas>
+          <p class="readout" id="readout"></p>
+        </div>
+        <div class="chart-block" data-cv="inc">
+          <h3 id="t-inc"></h3>
+          <canvas id="cv-inc" role="img"></canvas>
+          <div class="legend key" id="inc-key"></div>
+        </div>
+        <div class="chart-block" data-cv="re">
+          <h3 id="t-re"></h3>
+          <canvas id="cv-re" role="img"></canvas>
+          <div class="legend key" id="re-key"></div>
+        </div>
+      </div>
+    </div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+    <p class="sr-only" id="live-r" role="status" aria-live="polite"></p>
   </section>
 
-  <!-- Simulación y gráficos: columna fija a un lado mientras se ajustan los parámetros -->
-  <section class="epi-live" aria-label="Simulación">
-    <div class="panel world-panel">
-      <div class="world-head">
-        <h2 data-i18n="world_h"></h2>
-        <div class="legend" id="legend"></div>
+  <!-- Ajustes: pestañas (escenario, enfermedad, población, medidas, vacunas, vista) -->
+  <aside class="drawer" id="drawer" data-tab="scen" aria-label="Ajustes" data-i18n-aria="drawer_l">
+    <div class="drawer-head">
+      <div class="dtabs" id="dtabs" role="tablist" data-i18n-aria="drawer_l">
+        <button type="button" role="tab" id="tab-scen" data-t="scen" aria-selected="true" aria-controls="dbody"><span data-i18n="tab_scen"></span></button>
+        <button type="button" role="tab" id="tab-disease" data-t="disease" aria-selected="false" aria-controls="dbody" tabindex="-1"><span data-i18n="tab_disease"></span></button>
+        <button type="button" role="tab" id="tab-pop" data-t="pop" aria-selected="false" aria-controls="dbody" tabindex="-1"><span data-i18n="tab_pop"></span></button>
+        <button type="button" role="tab" id="tab-measures" data-t="measures" aria-selected="false" aria-controls="dbody" tabindex="-1"><span data-i18n="tab_measures"></span><span class="tc" id="tc-measures"></span></button>
+        <button type="button" role="tab" id="tab-vaccines" data-t="vaccines" aria-selected="false" aria-controls="dbody" tabindex="-1"><span data-i18n="tab_vaccines"></span><span class="tc" id="tc-vaccines"></span></button>
+        <button type="button" role="tab" id="tab-view" data-t="view" aria-selected="false" aria-controls="dbody" tabindex="-1"><span data-i18n="tab_view"></span></button>
       </div>
-      <div class="world-wrap">
-        <canvas id="world" role="img" tabindex="0"></canvas>
-        <div class="world-msg" id="world-msg" hidden></div>
-      </div>
-      <p class="small muted ratio" id="ratio"></p>
-      <p class="small map-info" id="map-info" hidden></p>
-      <div class="toolbar">
-        <button class="btn" id="btn-play" type="button"></button>
-        <button class="btn ghost" id="btn-step" type="button" data-i18n="btn_step"></button>
-        <button class="btn ghost" id="btn-week" type="button" data-i18n="btn_week"></button>
-        <button class="btn ghost" id="btn-reset" type="button" data-i18n="btn_reset"></button>
-      </div>
-      <div class="row opts">
-        <span class="small muted" data-i18n="speed_l"></span>
-        <div class="seg" id="speed" role="group" data-i18n-aria="speed_l"></div>
-        <label class="check"><input type="checkbox" id="opt-radius"><span data-i18n="opt_radius"></span></label>
-        <label class="check"><input type="checkbox" id="opt-live"><span data-i18n="opt_live"></span></label>
-      </div>
-      <p class="muted small" data-i18n="click_hint"></p>
+      <button type="button" class="icon-btn drawer-toggle" id="btn-drawer" aria-expanded="true" aria-controls="dbody"><span aria-hidden="true" id="drawer-ico">▸</span><span class="sr-only" id="drawer-lbl"></span></button>
     </div>
+    <div class="drawer-body" id="dbody" role="tabpanel" aria-labelledby="tab-scen" tabindex="-1">
 
-    <div class="panel charts-panel">
-      <div class="stats" id="stats"></div>
-      <div class="chart-block">
-        <h3 id="t-stack"></h3>
-        <canvas id="cv-stack" role="img" tabindex="0"></canvas>
-        <p class="readout" id="readout"></p>
+      <!-- Escenario: lugar, patógeno y ficha -->
+      <section class="dsec epi-intro" data-tab="scen">
+        <h2 data-i18n="intro_h"></h2>
+        <p class="muted small" data-i18n="intro_p"></p>
+        <div class="pick"><span class="pick-l" data-i18n="place_l"></span><div class="scen-chips" id="place-chips" role="group" data-i18n-aria="place_l"></div></div>
+        <div class="pick"><span class="pick-l" data-i18n="pathogen_l"></span><div class="scen-chips pgroups" id="scen-chips" role="group" data-i18n-aria="pathogen_l"></div></div>
+        <article class="scen-card" id="scen-card" aria-live="polite"></article>
+      </section>
+
+      <!-- Parámetros (enfermedad y población): los grupos se reparten por pestañas -->
+      <div id="controls-panel">
+        <div class="ctl-grid" id="controls"></div>
       </div>
-      <div class="chart-block">
-        <h3 id="t-inc"></h3>
-        <canvas id="cv-inc" role="img"></canvas>
-        <div class="row opts">
+
+      <!-- Mapa: origen y movilidad -->
+      <section class="dsec" id="map-panel" data-tab="pop" hidden>
+        <h2 data-i18n="map_h"></h2>
+        <div id="map-side"></div>
+      </section>
+
+      <!-- Medidas de control -->
+      <section class="dsec" id="measures-panel" data-tab="measures">
+        <h2 data-i18n="measures_h"></h2>
+        <p class="muted small" data-i18n="measures_p"></p>
+        <div id="measures"></div>
+      </section>
+
+      <!-- Vacunas -->
+      <section class="dsec" id="vaccines-panel" data-tab="vaccines">
+        <h2 data-i18n="vaccines_h"></h2>
+        <p class="muted small" data-i18n="vaccines_p"></p>
+        <div id="vaccines"></div>
+      </section>
+
+      <!-- Visualización y exportación -->
+      <section class="dsec" data-tab="view">
+        <h2 data-i18n="view_h"></h2>
+        <div class="view-opts">
+          <label class="check"><input type="checkbox" id="opt-live"><span data-i18n="opt_live"></span></label>
+          <label class="check"><input type="checkbox" id="opt-radius"><span data-i18n="opt_radius"></span></label>
           <label class="check"><input type="checkbox" id="opt-seir"><span data-i18n="opt_seir"></span></label>
           <label class="check"><input type="checkbox" id="opt-cf"><span data-i18n="opt_cf"></span></label>
         </div>
-        <div class="legend key" id="inc-key"></div>
-      </div>
-      <div class="row chart-actions">
-        <button class="btn ghost small" id="btn-ref" type="button"></button>
-        <button class="btn ghost small" id="btn-csv" type="button" data-i18n="btn_csv"></button>
-        <button class="btn ghost small" id="btn-png" type="button" data-i18n="btn_png"></button>
-        <button class="btn ghost small" id="btn-share" type="button" data-i18n="btn_share"></button>
-      </div>
-      <p class="sr-only" id="live" aria-live="polite"></p>
+        <h3 data-i18n="view_export"></h3>
+        <div class="row chart-actions">
+          <button class="btn ghost small" id="btn-ref" type="button"></button>
+          <button class="btn ghost small" id="btn-csv" type="button" data-i18n="btn_csv"></button>
+          <button class="btn ghost small" id="btn-png" type="button" data-i18n="btn_png"></button>
+          <button class="btn ghost small" id="btn-share" type="button" data-i18n="btn_share"></button>
+        </div>
+      </section>
     </div>
-  </section>
+  </aside>
 
   <div class="epi-rest">
 
   <!-- Cifras absolutas y capacidad asistencial -->
   <section class="panel">
     <h2 data-i18n="res_h"></h2>
+    <div class="stats" id="stats"></div>
     <div id="results"></div>
-  </section>
-
-  <!-- Medidas de control -->
-  <section class="panel" id="measures-panel">
-    <h2 data-i18n="measures_h"></h2>
-    <p class="muted" data-i18n="measures_p"></p>
-    <div id="measures"></div>
-  </section>
-
-  <!-- Vacunas -->
-  <section class="panel" id="vaccines-panel">
-    <h2 data-i18n="vaccines_h"></h2>
-    <p class="muted" data-i18n="vaccines_p"></p>
-    <div id="vaccines"></div>
-  </section>
-
-  <!-- Mapa: origen y movilidad -->
-  <section class="panel" id="map-panel" hidden>
-    <h2 data-i18n="map_h"></h2>
-    <div id="map-side"></div>
-  </section>
-
-  <!-- Parámetros -->
-  <section class="panel" id="controls-panel">
-    <div class="row spread">
-      <h2 data-i18n="ctl_h"></h2>
-      <button class="btn small" id="btn-apply" type="button" hidden data-i18n="apply"></button>
-    </div>
-    <div class="banner" id="dirty" hidden data-i18n="dirty"></div>
-    <div class="ctl-grid" id="controls"></div>
   </section>
 
   <!-- Retos -->
